@@ -34,7 +34,7 @@ class Advanced_Ads_Admin {
      * @since    1.0.0
      * @var      string
      */
-    protected $plugin_screen_hook_suffix = null;
+    public $plugin_screen_hook_suffix = null;
 
     /**
      * Slug of the ad group page
@@ -74,7 +74,7 @@ class Advanced_Ads_Admin {
          */
         $plugin = Advanced_Ads::get_instance();
         $this->plugin_slug = $plugin->get_plugin_slug();
-        $this->post_type = $plugin::POST_TYPE_SLUG;
+        $this->post_type = constant("Advanced_Ads::POST_TYPE_SLUG");
 
         // Load admin style sheet and JavaScript.
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_styles'));
@@ -89,8 +89,11 @@ class Advanced_Ads_Admin {
         // save ads post type
         add_action('save_post', array($this, 'save_ad'));
 
+        // settings handling
+        add_action('admin_init', array($this, 'settings_init'));
+
         // Add an action link pointing to the options page.
-        $plugin_basename = plugin_basename(plugin_dir_path(__DIR__) . $this->plugin_slug . '.php');
+        $plugin_basename = plugin_basename(plugin_dir_path('__DIR__') . $this->plugin_slug . '.php');
         add_filter('plugin_action_links_' . $plugin_basename, array($this, 'add_action_links'));
     }
 
@@ -156,22 +159,35 @@ class Advanced_Ads_Admin {
      */
     public function add_plugin_admin_menu() {
 
+        // add settings page
         $this->plugin_screen_hook_suffix = add_submenu_page(
-                'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG, __('Advanced Ads Settings', $this->plugin_slug), __('Settings', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-settings', array($this, 'display_plugin_admin_page')
+                'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG, __('Advanced Ads Settings', $this->plugin_slug), __('Settings', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-settings', array($this, 'display_plugin_settings_page')
+        );
+        add_submenu_page(
+                null, __('Advanced Ads Debugging', $this->plugin_slug), __('Debug', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-debug', array($this, 'display_plugin_debug_page')
         );
     }
 
     /**
-     * Render the settings page for this plugin.
+     * Render the settings page
      *
      * @since    1.0.0
      */
-    public function display_plugin_admin_page() {
+    public function display_plugin_settings_page() {
+        include_once( 'views/settings.php' );
+    }
+
+    /**
+     * Render the debug page
+     *
+     * @since    1.0.1
+     */
+    public function display_plugin_debug_page() {
         // load array with ads by condition
         $plugin = Advanced_Ads::get_instance();
         $ads_by_conditions = $plugin->get_ads_by_conditions_array();
 
-        include_once( 'views/admin.php' );
+        include_once( 'views/debug.php' );
     }
 
     /**
@@ -275,7 +291,7 @@ class Advanced_Ads_Admin {
         $plugin = Advanced_Ads::get_instance();
 
         $defaultargs = array(
-            'post_type' => $plugin::POST_TYPE_SLUG,
+            'post_type' => constant("Advanced_Ads::POST_TYPE_SLUG"),
             'page' => 'advanced-ads-groups',
         );
         $args = $args + $defaultargs;
@@ -377,6 +393,8 @@ class Advanced_Ads_Admin {
 
     /**
      * get action from the params
+     *
+     * @since 1.0.0
      */
     public function current_action() {
         if (isset($_REQUEST['action']) && -1 != $_REQUEST['action'])
@@ -384,5 +402,19 @@ class Advanced_Ads_Admin {
 
         return false;
     }
+
+    /**
+     * initialize settings
+     *
+     * @since 1.0.1
+     */
+    public function settings_init(){
+
+        // no additional settings registered yet, but some addons might need this
+
+        // register settings
+ 	register_setting($this->plugin_screen_hook_suffix, 'advancedads');
+    }
+
 
 }

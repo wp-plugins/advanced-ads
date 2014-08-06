@@ -77,6 +77,14 @@ class Advanced_Ads {
     public $ad_types = array();
 
     /**
+     * plugin options
+     *
+     * @since   1.0.1
+     * @var     array (if loaded)
+     */
+    protected $options = false;
+
+    /**
      * Initialize the plugin by setting localization and loading public scripts
      * and styles.
      *
@@ -526,5 +534,20 @@ class Advanced_Ads {
                 error_log($message);
             }
         }
+    }
+
+    /**
+     * return plugin options
+     *
+     * @since 1.0.1
+     * @return arr $options
+     * @todo parse default options
+     */
+    public function options(){
+        if($this->options === false){
+            $this->options = get_option(ADVADS_SLUG, array());
+        }
+
+        return $this->options;
     }
 }
