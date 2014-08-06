@@ -12,3 +12,4 @@
     <?php $type = (isset($types[$ad->type])) ? $types[$ad->type] : current($types);
         $type->render_parameters($ad); ?>
 </div>
+<?php do_action('advanced-ads-ad-params-after', $ad, $types);

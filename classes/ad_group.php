@@ -253,7 +253,8 @@ class Advads_Ad_Group {
         asort($ad_weights);
 
         // use maximum ad weight for ads without this
-        $rand = mt_rand(1, (int) array_sum($ad_weights));
+        $max = (int) array_sum($ad_weights);
+        $rand = mt_rand(1, $max);
 
         foreach ($ad_weights as $key => $value) {
             $rand -= $value;

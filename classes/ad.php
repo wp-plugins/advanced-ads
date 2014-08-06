@@ -135,17 +135,20 @@ class Advads_Ad {
      * @since 1.0.0
      * @todo check against default values
      */
-    private function options($field = ''){
+    public function options($field = ''){
         // retrieve options, if not given yet
         if($this->options == array()) {
             $this->options = get_post_meta($this->id, self::$options_meta_field, true);
         }
+
         // return specific option
         if($field != '') {
             if(!empty($this->options[$field]))
                 return $this->options[$field];
+        } else { // return all options
+            if(!empty($this->options))
+                return $this->options;
         }
-
     }
 
     /**
@@ -316,6 +319,9 @@ class Advads_Ad {
             'type' => $this->type,
             'conditions' => $conditions,
         );
+
+        // filter to manipulate options or add more to be saved
+        $options = apply_filters('advanced-ads-save-options', $options, $this);
 
         $this->update_general_ad_conditions($conditions);
 
