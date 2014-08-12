@@ -124,7 +124,7 @@ class Advanced_Ads_Admin {
     public function enqueue_admin_styles() {
 
         global $post;
-        if (!isset($this->plugin_screen_hook_suffix) && Advanced_Ads::POST_TYPE_SLUG != $post->type) {
+        if (!isset($this->plugin_screen_hook_suffix) && isset($post) && Advanced_Ads::POST_TYPE_SLUG != $post->type) {
             return;
         }
 
@@ -141,7 +141,7 @@ class Advanced_Ads_Admin {
     public function enqueue_admin_scripts() {
 
         global $post;
-        if (!isset($this->plugin_screen_hook_suffix) && Advanced_Ads::POST_TYPE_SLUG != $post->type) {
+        if (!isset($this->plugin_screen_hook_suffix) && isset($post) && Advanced_Ads::POST_TYPE_SLUG != $post->type) {
             return;
         }
 

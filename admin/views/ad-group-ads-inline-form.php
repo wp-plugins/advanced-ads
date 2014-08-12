@@ -1,5 +1,5 @@
 <?php if(count($ads)) : ?>
-<form method="get" action="" class="ad-group-ads-form">
+<p><form method="get" action="" class="ad-group-ads-form">
     <table>
         <tbody>
             <?php foreach($ads as $_ad) : ?>
@@ -30,5 +30,5 @@
     </p>
 </form>
 <?php else : ?>
-<p><?php _e('There are no ads in this group', Advanced_Ads::plugin_slug); ?>
+<p><?php _e('There are no ads in this group', Advanced_Ads::TD); ?></p>
 <?php endif; ?>
