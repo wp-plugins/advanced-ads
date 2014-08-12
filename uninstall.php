@@ -2,11 +2,11 @@
 /**
  * Fired when the plugin is uninstalled.
  *
- * @package   Plugin_Name
- * @author    Your Name <email@example.com>
+ * @package   Advanced_Ads_Admin
+ * @author    Thomas Maier <thomas.maier@webgilde.com>
  * @license   GPL-2.0+
- * @link      http://example.com
- * @copyright 2013 Your Name or Company Name
+ * @link      http://webgilde.com
+ * @copyright 2013 Thomas Maier, webgilde GmbH
  */
 
 // If uninstall not called from WordPress, then exit

@@ -160,7 +160,7 @@ class Advads_Ad_Group {
      * @since 1.0.0
      */
     public function get_all_ads() {
-        if(count($this->ads) == 0)
+        if(count($this->ads) > 0)
             return $this->ads;
         else
             return $this->load_all_ads();

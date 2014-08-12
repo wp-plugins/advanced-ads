@@ -1,0 +1,25 @@
+{
+    "name": "webgilde/advanced-ads",
+    "description": "Advanced Ads: Manage and optimize your ads in WordPress",
+    "keywords": ["wordpress", "ads", "plugin"],
+    "homepage": "http://webgilde.com",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Thomas Maier",
+            "email": "thomas.maier@webgilde.com"
+        }
+    ],
+    "type": "wordpress-plugin",
+    "require": {
+        "composer/installers": "~1.0"
+    },
+    "autoload": {
+        "classmap": [ "classes/", "includes/", "public/class-advanced-ads.php" ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    }
+}

@@ -78,6 +78,7 @@ class Advads_Ad {
         if(!empty($id)) $this->load($id);
 
         // dynamically add sanitize filters for condition types
+        $_types = array();
         foreach($advanced_ads_ad_conditions as $_condition) {
             $_types[] = $_condition['type'];
         }
