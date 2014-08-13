@@ -3,7 +3,7 @@ Contributors: webzunft
 Tags: ads, ad, adsense
 Requires at least: 3.5
 Tested up to: 3.9.2
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,6 +87,10 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 2. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.0.3 =
+
+* bugfix added missing file to repository
 
 = 1.0.2 =
 
