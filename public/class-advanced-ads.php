@@ -109,11 +109,17 @@ class Advanced_Ads {
         // add short codes
         add_shortcode('the_ad', array($this, 'shortcode_display_ad'));
         add_shortcode('the_ad_group', array($this, 'shortcode_display_ad_group'));
+        add_shortcode('the_ad_placement', array($this, 'shortcode_display_ad_placement'));
         // remove default ad group menu item
         add_action('admin_menu', array($this, 'remove_taxonomy_menu_item'));
 
         // setup default ad types
         add_filter('advanced-ads-ad-types', array($this, 'setup_default_ad_types'));
+
+        // register hooks and filters for auto ad injection
+        add_action('wp_head', array($this, 'inject_header'), 20);
+        add_action('wp_footer', array($this, 'inject_footer'), 20);
+        add_filter('the_content', array($this, 'inject_content'), 20);
     }
 
     /**
@@ -352,6 +358,7 @@ class Advanced_Ads {
      *
      * @since 1.0.0
      * @return arr $ads_by_conditions
+     * @todo make static
      */
     public function get_ads_by_conditions_array(){
 
@@ -361,8 +368,42 @@ class Advanced_Ads {
             $ads_by_conditions = array();
         }
 
-        // load conditions from options
         return $ads_by_conditions;
+    }
+
+    /**
+     * get the array with global ad injections
+     *
+     * @since 1.1.0
+     * @return arr $ad_injections
+     * @todo make static
+     */
+    public function get_ad_injections_array(){
+
+        $ad_injections = get_option('advads-ads-injections', array());
+        // load default array if not saved yet
+        if(!is_array($ad_injections)){
+            $ad_injections = array();
+        }
+
+        return $ad_injections;
+    }
+
+    /**
+     * get the array with ad placements
+     *
+     * @since 1.1.0
+     * @return arr $ad_placements
+     */
+    static public function get_ad_placements_array(){
+
+        $ad_placements = get_option('advads-ads-placements', array());
+        // load default array if not saved yet
+        if(!is_array($ad_placements)){
+            $ad_placements = array();
+        }
+
+        return $ad_placements;
     }
 
     /**
@@ -393,6 +434,21 @@ class Advanced_Ads {
 
         // use the public available function here
         return get_ad_group($id);
+    }
+
+    /**
+     * shortcode to display content of an ad placement in frontend
+     *
+     * @since 1.1.0
+     * @param arr $atts
+     */
+    public function shortcode_display_ad_placement($atts){
+        extract( shortcode_atts( array(
+            'id' => '',
+	), $atts ) );
+
+        // use the public available function here
+        return get_ad_placement($id);
     }
 
     /**
@@ -549,5 +605,102 @@ class Advanced_Ads {
         }
 
         return $this->options;
+    }
+
+    /**
+     * injected ad into header
+     *
+     * @since 1.1.0
+     */
+    public function inject_header(){
+        // get information about injected ads
+        $injections = get_option('advads-ads-injections', array());
+        if(isset($injections['header']) && is_array($injections['header'])){
+            $ads = $injections['header'];
+            // randomize ads
+            shuffle($ads);
+            // check ads one by one for being able to be displayed on this spot
+            foreach ($ads as $_ad_id) {
+                // load the ad object
+                $ad = new Advads_Ad($_ad_id);
+                if ($ad->can_display()) {
+                    // display the ad
+                    echo $ad->output();
+                }
+            }
+        }
+    }
+
+    /**
+     * injected ads into footer
+     *
+     * @since 1.1.0
+     */
+    public function inject_footer(){
+        // get information about injected ads
+        $injections = get_option('advads-ads-injections', array());
+        if(isset($injections['footer']) && is_array($injections['footer'])){
+            $ads = $injections['footer'];
+            // randomize ads
+            shuffle($ads);
+            // check ads one by one for being able to be displayed on this spot
+            foreach ($ads as $_ad_id) {
+                // load the ad object
+                $ad = new Advads_Ad($_ad_id);
+                if ($ad->can_display()) {
+                    // display the ad
+                    echo $ad->output();
+                }
+            }
+        }
+    }
+
+    /**
+     * injected ad into content (before and after)
+     * displays ALL ads
+     *
+     * @since 1.1.0
+     * @param str $content post content
+     */
+    public function inject_content($content = ''){
+        // run only on single pages
+        if(!is_single()) return;
+
+        // get information about injected ads
+        $injections = get_option('advads-ads-injections', array());
+
+        // display ad before the content
+        if(isset($injections['post_start']) && is_array($injections['post_start'])){
+            $ads = $injections['post_start'];
+            // randomize ads
+            shuffle($ads);
+            // check ads one by one for being able to be displayed on this spot
+            foreach ($ads as $_ad_id) {
+                // load the ad object
+                $ad = new Advads_Ad($_ad_id);
+                if ($ad->can_display()) {
+                    // display the ad
+                    $content = $ad->output() . $content;
+                }
+            }
+        }
+
+        // display ad after the content
+        if(isset($injections['post_end']) && is_array($injections['post_end'])){
+            $ads = $injections['post_end'];
+            // randomize ads
+            shuffle($ads);
+            // check ads one by one for being able to be displayed on this spot
+            foreach ($ads as $_ad_id) {
+                // load the ad object
+                $ad = new Advads_Ad($_ad_id);
+                if ($ad->can_display()) {
+                    // display the ad
+                    $content .= $ad->output();
+                }
+            }
+        }
+
+        return $content;
     }
 }

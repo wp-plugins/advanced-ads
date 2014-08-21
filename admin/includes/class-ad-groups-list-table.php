@@ -131,6 +131,7 @@ class AdvAds_Groups_List_Table extends AdvAds_List_Table {
      * render the ads column (number of ads belonging to this group)
      *
      * @since 1.0.0
+     * @updated 1.1.0 only display published ads
      * @param obj $tag
      * @return string
      */
@@ -140,6 +141,7 @@ class AdvAds_Groups_List_Table extends AdvAds_List_Table {
         $tax = get_taxonomy($this->taxonomy);
         $args = array(
             'post_type' => $this->post_type,
+            'post_status' => 'publish',
             $this->taxonomy => $tag->slug
         );
         $ads = new WP_Query($args);

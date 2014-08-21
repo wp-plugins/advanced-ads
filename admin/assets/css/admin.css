@@ -45,6 +45,16 @@
 .ad-group-ads-form table td.ad-group-ads-weight input { width: 3em; }
 
 /**
+ AD PLACEMENTS
+*/
+.advads-placements-new-form label { display: inline-block; width: 10em; }
+.advads-placements-new-form input { display: inline-block; }
+.advads-placements-table { min-width: 80%; }
+.advads-placements-table thead tr { background: #fff; }
+.advads-placements-table tbody tr:nth-child(even) { background: #fff; }
+.advads-placements-table th { margin: 0; padding: 10px; text-align: left; }
+.advads-placements-table td { margin: 0; padding: 10px; text-align: left; }
+/**
  GENERAL ELEMENTS
 */
 .advads-toggle-link { cursor: pointer; }

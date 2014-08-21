@@ -10,9 +10,9 @@
                         <span class="title"><?php _ex('weight', 'ad group ads form', Advanced_Ads::TD); ?></span>
                         <select name="weight[<?php echo $_ad->ID; ?>]">
                             <?php $ad_weight = (isset($weights[$_ad->ID])) ? $weights[$_ad->ID] : Advads_Ad_Group::MAX_AD_GROUP_WEIGHT; ?>
-                            <? for($i = 0; $i <= Advads_Ad_Group::MAX_AD_GROUP_WEIGHT; $i++) : ?>
+                            <?php for($i = 0; $i <= Advads_Ad_Group::MAX_AD_GROUP_WEIGHT; $i++) : ?>
                             <option <?php selected($ad_weight, $i); ?>><?php echo $i; ?></option>
-                            <? endfor; ?>
+                            <?php endfor; ?>
                         </select>
                     </label>
                 </td>

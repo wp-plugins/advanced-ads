@@ -13,4 +13,7 @@
     <h2><?php _e('Ad Condition Overview', $this->plugin_slug); ?></h2>
     <pre><?php print_r($ads_by_conditions); ?></pre>
 
+    <h2><?php _e('Ad Injections', $this->plugin_slug); ?></h2>
+    <pre><?php print_r($ad_injections); ?></pre>
+
 </div>

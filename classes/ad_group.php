@@ -26,7 +26,7 @@ class Advads_Ad_Group {
     /**
      * id of the taxonomy of this ad group
      */
-    protected $id = 0;
+    public $id = 0;
 
     /**
      * name of the taxonomy
@@ -167,15 +167,17 @@ class Advads_Ad_Group {
     }
 
     /**
-     * load all ads for this group
+     * load all public ads for this group
      *
      * @since 1.0.0
+     * @update 1.1.0 load only public ads
      * @return arr $ads array with ad (post) objects
      */
     private function load_all_ads() {
 
         $args = array(
             'post_type' => $this->post_type,
+            'post_status' => 'publish',
             $this->taxonomy => $this->slug,
             'orderby' => 'id'
         );

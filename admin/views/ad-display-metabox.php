@@ -1,5 +1,6 @@
 <?php $types = Advanced_Ads::get_instance()->ad_types; ?>
-<h4><?php _e('Where to display the ad', $this->plugin_slug); ?></h4>
+<h4><?php _e('Display conditions', $this->plugin_slug); ?></h4>
+<p class="description"><?php _e('Display conditions that are based on the content type.', ADVADS_SLUG); ?></p>
 <p class="advads-toggle-link" onclick="advads_toggle('#advads-how-it-works')">>>><?php _e('Click to see Help', $this->plugin_slug); ?><<<</p>
 <ul id="advads-how-it-works" style="display: none;">
     <li><?php _e('If you want to display the ad everywhere, don’t do anything here. ', $this->plugin_slug); ?></li>
