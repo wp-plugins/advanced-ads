@@ -1,0 +1,60 @@
+/**
+* AD EDIT PAGE
+*/
+#ad-main-box { overflow: hidden; }
+.post-type-advanced_ads .meta-box-sortables .hndle { display: none; }
+.post-type-advanced_ads .meta-box-sortables .handlediv { display: none; }
+.post-type-advanced_ads #poststuff .meta-box-sortables .inside {
+    margin: 0;
+    padding: 0;
+}
+.post-type-advanced_ads .meta-box-sortables .inside > * {
+    margin: 20px 10px;
+}
+.post-type-advanced_ads .meta-box-sortables .inside h4 {
+    background: linear-gradient(to top, #ECECEC, #F9F9F9) repeat scroll 0 0 #F1F1F1;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1;
+    margin: 0;
+    padding: 10px 10px 5px;
+}
+#advanced-ad-type .description {
+    display: block;
+    margin-left: 24px;
+}
+.post-type-advanced_ads #advanced_ad_content_others textarea {
+    width: 100%;
+    height: 20em;
+}
+
+.post-type-advanced_ads #advanced-ad-conditions {
+    text-align: left;
+}
+.post-type-advanced_ads #advads-ad-content-plain {
+    width: 100%;
+}
+.post-type-advanced_ads #ad-parameters-box .advads-ad-parameters-spinner { display: block; float: none; }
+
+/**
+ AD GROUP LIST
+*/
+.advads-groups-ads-list { margin: 0; }
+.ad-group-ads-form table td { margin: 0; padding: 3px 5px 3px 0; }
+.ad-group-ads-form table td:first-child { font-weight: bold; }
+.ad-group-ads-form table td.ad-group-ads-weight input { width: 3em; }
+
+/**
+ AD PLACEMENTS
+*/
+.advads-placements-new-form label { display: inline-block; width: 10em; }
+.advads-placements-new-form input { display: inline-block; }
+.advads-placements-table { min-width: 80%; }
+.advads-placements-table thead tr { background: #fff; }
+.advads-placements-table tbody tr:nth-child(even) { background: #fff; }
+.advads-placements-table th { margin: 0; padding: 10px; text-align: left; }
+.advads-placements-table td { margin: 0; padding: 10px; text-align: left; }
+/**
+ GENERAL ELEMENTS
+*/
+.advads-toggle-link { cursor: pointer; }
