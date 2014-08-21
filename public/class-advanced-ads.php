@@ -664,7 +664,7 @@ class Advanced_Ads {
      */
     public function inject_content($content = ''){
         // run only on single pages
-        if(!is_single()) return;
+        if(!is_single()) return $content;
 
         // get information about injected ads
         $injections = get_option('advads-ads-injections', array());
