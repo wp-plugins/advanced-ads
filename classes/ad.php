@@ -153,6 +153,28 @@ class Advads_Ad {
     }
 
     /**
+     * set an option of the ad
+     *
+     * @since 1.1.0
+     * @param string $option name of the option
+     * @param mixed $value value of the option
+     */
+    public function set_option($option = '', $value = ''){
+        if($option == '') return;
+
+        // get current options
+        $options = $this->options();
+
+        // set options
+        $options[$option] = $value;
+
+        // save options
+        $this->options = $options;
+
+    }
+
+
+    /**
      * return ad content for frontend output
      */
     public function output(){
@@ -168,6 +190,20 @@ class Advads_Ad {
      * @return bool $can_display true if can be displayed in frontend
      */
     public function can_display(){
+
+        if($this->can_display_by_conditions()
+                && $this->can_display_by_visitor())
+            return true;
+        else return false;
+    }
+
+    /**
+     * check display conditions
+     *
+     * @since 1.1.0 moved here from can_display()
+     * @return bool $can_display true if can be displayed in frontend
+     */
+    public function can_display_by_conditions(){
         global $post;
 
         if(empty($this->options['conditions']) ||
@@ -299,6 +335,34 @@ class Advads_Ad {
     }
 
     /**
+     * check visitor conditions
+     *
+     * @since 1.1.0
+     * @return bool $can_display true if can be displayed in frontend based on visitor settings
+     */
+    public function can_display_by_visitor(){
+
+        if(empty($this->options['visitor']) ||
+                !is_array($this->options['visitor'])) return true;
+
+        $visitor_conditions = $this->options('visitor');
+
+        // check mobile condition
+        if(!empty($visitor_conditions['mobile'])){
+            switch($visitor_conditions['mobile']){
+                case 'only' :
+                    if(!wp_is_mobile()) return false;
+                    break;
+                case 'no' :
+                    if(wp_is_mobile()) return false;
+                    break;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * save an ad to the database
      * takes values from the current state
      */
@@ -316,14 +380,15 @@ class Advads_Ad {
         $conditions = self::sanitize_conditions_on_save($this->conditions);
 
         // save other options to post meta field
-        $options = array(
-            'type' => $this->type,
-            'conditions' => $conditions,
-        );
+        $options = $this->options();
+
+        $options['type'] = $this->type;
+        $options['conditions'] = $conditions;
 
         // filter to manipulate options or add more to be saved
         $options = apply_filters('advanced-ads-save-options', $options, $this);
 
+        // update global settings
         $this->update_general_ad_conditions($conditions);
 
         update_post_meta($this->id, self::$options_meta_field, $options);

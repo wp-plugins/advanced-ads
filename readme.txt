@@ -3,33 +3,55 @@ Contributors: webzunft
 Tags: ads, ad, adsense
 Requires at least: 3.5
 Tested up to: 3.9.2
-Stable tag: 1.0.2
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Manage and optimize your ads in WordPress with this easy to use and extendable plugin.
+Manage and optimize your ads in WordPress as easy as creating posts.
 
 == Description ==
 
-= Features =
+Advanced Ads is made by publishers for publishers. Based on my experience delivering millions of ads per month I build this plugin as a powerful, but light weight solution to not only manage and serve ads in WordPress, but to test and optimize them as well.
 
-* create and manage ads
-* deliver ads based on conditions (e.g. post type, post id, category)
+Learn more on the [plugin homepage](http://wpadvancedads.com).
+
+= create and manage ads =
+
+* create ads as easy as creating posts
+* group ads
+
+= display ads =
+
+* auto inject ads into header, footer and posts
 * display ad in template files (with functions)
 * display ad in post content (with shortcodes)
-* group ads
-* display ads from groups with customized ad weight
-* integrated into WordPress to be as much compatible as possible with WP standards, functions and plugins
+* display grouped ads based on customizable ad weight
+* use placements in your theme to change ads and groups in template files without coding
+
+= display conditions =
+
+deliver ads based on conditions like
+* post type
+* post id
+* category
+* single, category and archive pages
+* special page types like 404, attachment and front page
+
+= visitor conditions =
+
+display ads by conditions based on the visitor
+* all devices, mobile only or exclude mobile users
+
+= based on WordPress standards =
+
+* integrated into WordPress using standards like custom post types, taxonomies and hooks
 * easily customizable by any WordPress plugin developer
 
-= Insights for developers =
+Learn more on the [plugin homepage](http://wpadvancedads.com).
 
-* ads are custom post types
-* many filters and hooks to add new functions without hacking the plugin and keeping it updateable
-* e.g. add your own ad types and display conditions using the api
-* an extended online manual is in progress
+= AddOns =
 
-learn more on the [plugin homepage](http://wpadvancedads.com).
+* increase click rates with fixed, sticky and anchor ads with Sticky Ads - [Demo](http://wpadvancedads.com/sticky-ads/demo/)
 
 == Installation ==
 
@@ -75,6 +97,11 @@ Use these functions to insert an ad or ad group into your template file.
 `<?php the_ad(24); ?>`
 `<?php the_ad_group(5); ?>`
 
+In addition to directly displaying ads and groups you can define ad placements and assign either an ad or group to them.
+
+`[the_ad_placement id="header-left"]`
+`<?php the_ad_placement('header-left'); ?>`
+
 == Frequently Asked Questions ==
 
 = Is there a revenue share? =
@@ -87,6 +114,19 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 2. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.1.0 =
+
+* allow displaying ads on mobile devices only or exclude from mobile devices
+* auto inject ad into header, footer and post content
+* display Ad id on Ad edit page
+* hide Ad for groups if the Ad is not made public
+* use Ad Placements to be more flexible when displaying ads or ad group in template files
+* bugfixes
+
+= 1.0.3 =
+
+* bugfix added missing file to repository
 
 = 1.0.2 =
 

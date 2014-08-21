@@ -62,3 +62,30 @@ function the_ad_group($id = 0){
     echo get_ad_group($id);
 
 }
+
+/**
+ * return content of an ad placement
+ *
+ * @since 1.1.0
+ * @param string $id slug of the ad placement
+ *
+ */
+function get_ad_placement($id = ''){
+    if($id == '') return;
+
+    // get placement content
+    $output = Advads_Ad_Placements::output($id);
+    return $output;
+}
+
+/**
+ * return content of an ad placement
+ *
+ * @since 1.1.0
+ * @param string $id slug of the ad placement
+ */
+function the_ad_placement($id = ''){
+
+    echo get_ad_placement($id);
+
+}

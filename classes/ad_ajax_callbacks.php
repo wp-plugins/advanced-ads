@@ -16,7 +16,7 @@
  * @package Advanced_Ads_Ajax_Callbacks
  * @author  Thomas Maier <thomas.maier@webgilde.com>
  */
-class Advanced_Ads_Ajax_Callbacks {
+class Advads_Ad_Ajax_Callbacks {
 
     public function __construct() {
 
@@ -95,5 +95,3 @@ class Advanced_Ads_Ajax_Callbacks {
     }
 
 }
-
-$advanced_ads_ajax_calls = new Advanced_Ads_Ajax_Callbacks;

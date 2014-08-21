@@ -84,6 +84,8 @@ class Advanced_Ads_Admin {
         add_action('admin_menu', array($this, 'add_ad_group_menu'));
         add_action('admin_menu', array($this, 'add_plugin_admin_menu'));
 
+        // on post/ad edit screen
+        add_action('edit_form_after_title', array($this, 'edit_form_below_title'));
         add_action('admin_init', array($this, 'add_meta_boxes'));
 
         // save ads post type
@@ -95,6 +97,7 @@ class Advanced_Ads_Admin {
         // Add an action link pointing to the options page.
         $plugin_basename = plugin_basename(plugin_dir_path('__DIR__') . $this->plugin_slug . '.php');
         add_filter('plugin_action_links_' . $plugin_basename, array($this, 'add_action_links'));
+
     }
 
     /**
@@ -159,6 +162,10 @@ class Advanced_Ads_Admin {
      */
     public function add_plugin_admin_menu() {
 
+        // add placements page
+        add_submenu_page(
+            'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG, __('Ad Placements', $this->plugin_slug), __('Placements', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-placements', array($this, 'display_placements_page')
+        );
         // add settings page
         $this->plugin_screen_hook_suffix = add_submenu_page(
                 'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG, __('Advanced Ads Settings', $this->plugin_slug), __('Settings', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-settings', array($this, 'display_plugin_settings_page')
@@ -178,6 +185,29 @@ class Advanced_Ads_Admin {
     }
 
     /**
+     * Render the placements page
+     *
+     * @since    1.1.0
+     */
+    public function display_placements_page() {
+        // sace new placement
+        if(isset($_POST['advads']['placement'])){
+            $return = Advads_Ad_Placements::save_new_placement($_POST['advads']['placement']);
+        }
+        // save placement data
+        if(isset($_POST['advads']['placements'])){
+            $return = Advads_Ad_Placements::save_placements($_POST['advads']['placements']);
+        }
+        $error = false;
+        if(isset($return) && $return !== true) $error = $return;
+        $placements = Advanced_Ads::get_ad_placements_array();
+        // load ads and groups for select field
+
+        // display view
+        include_once( 'views/placements.php' );
+    }
+
+    /**
      * Render the debug page
      *
      * @since    1.0.1
@@ -186,6 +216,7 @@ class Advanced_Ads_Admin {
         // load array with ads by condition
         $plugin = Advanced_Ads::get_instance();
         $ads_by_conditions = $plugin->get_ads_by_conditions_array();
+        $ad_injections = $plugin->get_ad_injections_array();
 
         include_once( 'views/debug.php' );
     }
@@ -314,6 +345,19 @@ class Advanced_Ads_Admin {
     }
 
     /**
+     * add information about the ad below the ad title
+     *
+     * @since 1.1.0
+     * @param obj $post
+     */
+    public function edit_form_below_title($post){
+        if (!isset($post->post_type) || $post->post_type != $this->post_type) {
+            return;
+        }
+        echo "<p>Ad Id: <strong>$post->ID</strong></p>";
+    }
+
+    /**
      * Add meta boxes
      *
      * @since    1.0.0
@@ -328,7 +372,13 @@ class Advanced_Ads_Admin {
                 'ad-parameters-box', __('Fine tune your ad', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
         add_meta_box(
-                'ad-display-box', __('Where to display your ads', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+                'ad-display-box', __('Where to display this ads', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+        );
+        add_meta_box(
+                'ad-visitor-box', __('For whom to display this ads', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+        );
+        add_meta_box(
+                'ad-inject-box', __('Auto injection of ads', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
     }
 
@@ -352,6 +402,12 @@ class Advanced_Ads_Admin {
                 break;
             case 'ad-display-box':
                 $view = 'ad-display-metabox.php';
+                break;
+            case 'ad-visitor-box':
+                $view = 'ad-visitor-metabox.php';
+                break;
+            case 'ad-inject-box':
+                $view = 'ad-inject-metabox.php';
                 break;
         }
 
@@ -377,18 +433,36 @@ class Advanced_Ads_Admin {
             return;
         }
 
+        // don’t do this on revisions
+        if ( wp_is_post_revision( $post_id ) )
+		return;
+
         // get ad object
         $ad = new Advads_Ad($post_id);
         if (!$ad instanceof Advads_Ad)
             return;
 
         $ad->type = $_POST['advanced_ad']['type'];
+        if(isset($_POST['advanced_ad']['visitor'])) {
+            $ad->set_option('visitor', $_POST['advanced_ad']['visitor']);
+        } else {
+            $ad->set_option('visitor', array());
+        }
+        if(isset($_POST['advanced_ad']['injection'])) {
+            $ad->set_option('injection', $_POST['advanced_ad']['injection']);
+        } else {
+            $ad->set_option('injection', array());
+        }
+
         if(!empty($_POST['advanced_ad']['content']))
             $ad->content = $_POST['advanced_ad']['content'];
         else $ad->content = '';
         $ad->conditions = $_POST['advanced_ad']['conditions'];
 
         $ad->save();
+
+        // update global ad information
+        $this->update_global_injection_array();
     }
 
     /**
@@ -414,6 +488,66 @@ class Advanced_Ads_Admin {
 
         // register settings
  	register_setting($this->plugin_screen_hook_suffix, 'advancedads');
+    }
+
+    /**
+     * save a global array with ad injection information
+     * runs every time for all ads a single ad is saved (but not on autosave)
+     *
+     * @since 1.1.0
+     */
+    public function update_global_injection_array(){
+        // get all public ads
+        $ad_posts = $this->get_ads();
+
+        // merge ad injection settings by type (place => ad id)
+        $all_injections = array();
+        if(is_array($ad_posts)) foreach($ad_posts as $_ad){
+            // load the ad
+            $ad = new Advads_Ad($_ad->ID);
+            // get injection post meta
+            $injection_options = $ad->options('injection');
+            // add injection settings to global array
+            if(isset($injection_options)) foreach($injection_options as $_iokey => $_io){
+                $all_injections[$_iokey][] = $_ad->ID;
+            }
+        }
+
+        // save global injection array to WP options table
+        update_option('advads-ads-injections', $all_injections);
+
+        // write documentation
+    }
+
+    /**
+     * load all ads based on WP_Query conditions
+     *
+     * @since 1.1.0
+     * @param arr $args WP_Query arguments that are more specific that default
+     * @return arr $ads array with post objects
+     */
+    public function get_ads($args = array()){
+        // add default WP_Query arguments
+        $args['post_type'] = $this->post_type;
+        $args['posts_per_page'] = -1;
+        if(empty($args['post_status'])) $args['post_status'] = 'publish';
+
+        $ads = new WP_Query($args);
+        return $ads->posts;
+    }
+
+    /**
+     * load all ad groups
+     *
+     * @since 1.1.0
+     * @return arr $groups array with ad groups
+     * @link http://codex.wordpress.org/Function_Reference/get_terms
+     */
+    public function get_ad_groups(){
+        $args = array(
+            'hide_empty' => false // also display groups without any ads
+        );
+        return get_terms(Advanced_Ads::AD_GROUP_TAXONOMY, $args);
     }
 
 
