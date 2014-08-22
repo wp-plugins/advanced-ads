@@ -1,42 +1,5 @@
 jQuery(document).ready(function($) {
     "use strict";
-    /*
-     function load_content_editor( ad_type ) {
-     $.ajax({
-     type: 'POST',
-     url: ajaxurl,
-     data: {
-     'action': 'load_content_editor',
-     'type'  : ad_type,
-     'ad_id' : $('#post_ID').val()
-     },
-     success:function(data, textStatus, XMLHttpRequest){
-     // toggle main content field
-     if(data == 'content') {
-     $('#advanced_ad_content_others').html(''); // clear other editors
-     $('#advanced_ad_content').show();
-     } else {
-     $('#advanced_ad_content').hide();
-     $('#advanced_ad_content_others').html(data);
-     }
-     },
-     error: function(MLHttpRequest, textStatus, errorThrown){
-     $('#advanced_ad_content_others').html(errorThrown);
-     }
-     });
-     };
-
-     // load content editor on page load
-     if($('#advanced_ad_type input').length > 0) {
-     var ad_type = $('#advanced_ad_type input').val();
-     load_content_editor(ad_type);
-     }
-
-     $(document).on('change', '#advanced_ad_type input', function(){
-     var ad_type = $(this).val()
-     load_content_editor( ad_type );
-     });
-     */
 
     function advads_load_ad_type_parameter_metabox(ad_type) {
         $('#advanced-ads-ad-parameters').html('<span class="spinner advads-ad-parameters-spinner"></span>');
@@ -72,6 +35,12 @@ jQuery(document).ready(function($) {
         $(this).closest('tr').find('input[type="text"]').val('');
     });
 
+    // toggle display conditions
+    $('#advanced-ad-conditions-enable input').click(function(){
+        advads_toggle_display_conditions(this.value);
+    })
+    // display on load
+    advads_toggle_display_conditions($('#advanced-ad-conditions-enable input:checked').val());
 })
 
 /**
@@ -81,4 +50,16 @@ jQuery(document).ready(function($) {
  */
 function advads_toggle(selector) {
     jQuery(selector).slideToggle();
+}
+
+/**
+ * toggle display conditions
+ * @param {bool} value
+ */
+function advads_toggle_display_conditions(value){
+    if(value == 1){
+        jQuery('#advanced-ad-conditions').fadeIn();
+    } else {
+        jQuery('#advanced-ad-conditions').fadeOut();
+    }
 }

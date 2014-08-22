@@ -9,21 +9,12 @@
     <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
     <form method="POST" action="options.php">
         <?php
-        /**
-         * only display setting field if any registered
-         * @TODO remove when base plugin has its own settings
-         */
-        global $wp_settings_fields;
 
-        if(isset($wp_settings_fields['advanced_ads_page_advanced-ads-settings'])){
-            settings_fields($this->plugin_screen_hook_suffix);
-            do_settings_sections( $this->plugin_screen_hook_suffix);
+        settings_fields($this->plugin_screen_hook_suffix);
+        do_settings_sections( $this->plugin_screen_hook_suffix);
 
-            do_action('advanced-ads-settings-form');
-            submit_button();
-        } else {
-            echo '<p>'.__('No settings available yet', $this->plugin_slug).'</p>';
-        }
+        do_action('advanced-ads-settings-form');
+        submit_button();
 
         ?>
     </form>

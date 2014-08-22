@@ -17,3 +17,4 @@
         <label for="advanced-ad-visitor-mobile-no"><?php _e('not on mobile devices', ADVADS_SLUG); ?></label>
     </li>
 </ul>
+<?php do_action('advanced-ads-visitor-conditions-after', $ad);
