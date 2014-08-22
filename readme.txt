@@ -31,6 +31,7 @@ Learn more on the [plugin homepage](http://wpadvancedads.com).
 = display conditions =
 
 deliver ads based on conditions like
+
 * post type
 * post id
 * category
@@ -40,6 +41,7 @@ deliver ads based on conditions like
 = visitor conditions =
 
 display ads by conditions based on the visitor
+
 * all devices, mobile only or exclude mobile users
 * hide all ads from logged in users based on their role
 
