@@ -1,6 +1,11 @@
 <?php $types = Advanced_Ads::get_instance()->ad_types; ?>
 <h4><?php _e('Display conditions', $this->plugin_slug); ?></h4>
 <p class="description"><?php _e('Display conditions that are based on the content type.', ADVADS_SLUG); ?></p>
+<div id="advanced-ad-conditions-enable">
+    <?php $conditions_enabled = (empty($ad->conditions['enabled'])) ? 0 : 1; ?>
+    <label><input type="radio" name="advanced_ad[conditions][enabled]" value="0" <?php checked($conditions_enabled, 0); ?>/><?php _e('Display ad everywhere', ADVADS_SLUG); ?></label>
+    <label><input type="radio" name="advanced_ad[conditions][enabled]" value="1" <?php checked($conditions_enabled, 1); ?>/><?php _e('Set display conditions', ADVADS_SLUG); ?></label>
+</div>
 <p class="advads-toggle-link" onclick="advads_toggle('#advads-how-it-works')">>>><?php _e('Click to see Help', $this->plugin_slug); ?><<<</p>
 <ul id="advads-how-it-works" style="display: none;">
     <li><?php _e('If you want to display the ad everywhere, don’t do anything here. ', $this->plugin_slug); ?></li>
@@ -10,6 +15,7 @@
     <li><?php _e('When using one of the two choices on checkbox conditions, the rule is binding. E.g. "Front Page: show here" will result on the ad being only visible on the front page.', $this->plugin_slug); ?></li>
     <li><?php _e('If there is nothing in the row, there won’t be any check. Meaning, if you leave everything empty, the ad will be displayed everywhere.', $this->plugin_slug); ?></li>
 </ul>
+
 <table id="advanced-ad-conditions">
     <thead>
         <tr>

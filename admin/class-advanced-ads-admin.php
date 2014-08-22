@@ -286,7 +286,7 @@ class Advanced_Ads_Admin {
             $forced_message = 2;
         }
 
-        // handly views
+        // handle views
         switch ($action) {
             case 'edit' :
                 $title = $tax->labels->edit_item;
@@ -363,8 +363,6 @@ class Advanced_Ads_Admin {
      * @since    1.0.0
      */
     public function add_meta_boxes() {
-        global $_wp_post_type_features;
-
         add_meta_box(
                 'ad-main-box', __('Ad Main', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
@@ -484,10 +482,63 @@ class Advanced_Ads_Admin {
      */
     public function settings_init(){
 
-        // no additional settings registered yet, but some addons might need this
+        // get settings page hook
+        $hook = $this->plugin_screen_hook_suffix;
 
         // register settings
- 	register_setting($this->plugin_screen_hook_suffix, 'advancedads');
+ 	register_setting($hook, 'advancedads');
+
+        // add new section
+ 	add_settings_section(
+		'advanced_ads_setting_section',
+		__('General', ADVADS_SLUG),
+		array($this, 'render_settings_section_callback'),
+		$hook
+	);
+
+ 	// add setting fields
+ 	add_settings_field(
+		'hide-for-user-role',
+		__('Hide ads for logged in users', ADVADS_SLUG),
+		array($this, 'render_settings_hide_for_users'),
+		$hook,
+		'advanced_ads_setting_section'
+	);
+    }
+
+    /**
+     * render settings section
+     *
+     * @since 1.1.1
+     */
+    public function render_settings_section_callback(){
+        // for whatever purpose there might come
+    }
+
+    /**
+     * render setting to hide ads from logged in users
+     *
+     * @since 1.1.1
+     */
+    public function render_settings_hide_for_users(){
+        $options = Advanced_Ads::get_instance()->options();
+        $current_capability_role = isset($options['hide-for-user-role']) ? $options['hide-for-user-role'] : 0;
+
+        $capability_roles = array(
+            '' => __('(display to all)', ADVADS_SLUG),
+            'read' => __('Subscriber', ADVADS_SLUG),
+            'delete_posts' => __('Contributor', ADVADS_SLUG),
+            'edit_posts' => __('Author', ADVADS_SLUG),
+            'edit_pages' => __('Editor', ADVADS_SLUG),
+            'activate_plugins' => __('Admin', ADVADS_SLUG),
+        );
+        echo '<select name="advancedads[hide-for-user-role]">';
+        foreach($capability_roles as $_capability => $_role) {
+            echo '<option value="'.$_capability.'" '.selected($_capability, $current_capability_role, false).'>'.$_role.'</option>';
+        }
+        echo '</select>';
+
+        echo '<p class="description">'. __('Choose the lowest role a user must have in order to not see any ads.', ADVADS_SLUG) .'</p>';
     }
 
     /**
