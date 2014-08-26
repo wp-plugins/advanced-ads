@@ -1,5 +1,4 @@
 <?php $types = Advanced_Ads::get_instance()->ad_types; ?>
-<h4><?php _e('Ad Parameters', Advanced_Ads::TD); ?></h4>
 <?php
 /**
  * when changing ad type ad parameter content is loaded via ajax

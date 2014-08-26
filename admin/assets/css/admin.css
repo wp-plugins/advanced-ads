@@ -2,8 +2,6 @@
 * AD EDIT PAGE
 */
 #ad-main-box { overflow: hidden; }
-.post-type-advanced_ads .meta-box-sortables .hndle { display: none; }
-.post-type-advanced_ads .meta-box-sortables .handlediv { display: none; }
 .post-type-advanced_ads #poststuff .meta-box-sortables .inside {
     margin: 0;
     padding: 0;

@@ -1,6 +1,5 @@
 <?php $types = Advanced_Ads::get_instance()->ad_types; ?>
-<h4><?php _e('Display conditions', $this->plugin_slug); ?></h4>
-<p class="description"><?php _e('Display conditions that are based on the content type.', ADVADS_SLUG); ?></p>
+<p class="description"><?php _e('Choose where to display the ad and where not.', ADVADS_SLUG); ?></p>
 <div id="advanced-ad-conditions-enable">
     <?php $conditions_enabled = (empty($ad->conditions['enabled'])) ? 0 : 1; ?>
     <label><input type="radio" name="advanced_ad[conditions][enabled]" value="0" <?php checked($conditions_enabled, 0); ?>/><?php _e('Display ad everywhere', ADVADS_SLUG); ?></label>

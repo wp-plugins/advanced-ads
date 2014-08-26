@@ -2,7 +2,6 @@
 <?php if (empty($types)) : ?>
     <p><?php _e('No ad types defined', $this->plugin_slug); ?></p>
 <?php else : ?>
-    <h4><?php _e('Ad Type and Content', $this->plugin_slug); ?></h4>
     <ul id="advanced-ad-type">
         <?php
             // choose first type if none set

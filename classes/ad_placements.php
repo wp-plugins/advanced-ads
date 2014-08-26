@@ -96,7 +96,7 @@ class Advads_Ad_Placements {
         // load all ad groups
         $groups = $advads_admin->get_ad_groups();
         foreach($groups as $_group){
-            $select['groups']['group_' . $_group->term_id] = $_group->slug;
+            $select['groups']['group_' . $_group->term_id] = $_group->name;
         }
 
         return $select;
@@ -117,8 +117,9 @@ class Advads_Ad_Placements {
         if(isset($placements[$id]['item'])) {
             $_item = explode('_', $placements[$id]['item']);
 
-            $_item_id = absint($_item[1]);
-            if(empty($_item_id)) return;
+            if(isset($_item[1]))
+                $_item_id = absint($_item[1]);
+            elseif(empty($_item_id)) return;
 
             // return either ad or group content
             if($_item[0] == 'ad'){
@@ -131,6 +132,5 @@ class Advads_Ad_Placements {
         }
 
         return;
-
     }
 }

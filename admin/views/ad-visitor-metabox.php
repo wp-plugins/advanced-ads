@@ -1,4 +1,3 @@
-<h4><?php _e('Visitor conditions', ADVADS_SLUG); ?></h4>
 <p class="description"><?php _e('Display conditions that are based on the user. Use with caution on cached websites.', ADVADS_SLUG); ?></p>
 <?php $options = $ad->options('visitor'); ?>
 <ul id="advanced-ad-visitor-mobile">

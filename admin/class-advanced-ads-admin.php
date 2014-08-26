@@ -199,7 +199,12 @@ class Advanced_Ads_Admin {
             $return = Advads_Ad_Placements::save_placements($_POST['advads']['placements']);
         }
         $error = false;
-        if(isset($return) && $return !== true) $error = $return;
+        $success = false;
+        if(isset($return) && $return !== true) {
+            $error = $return;
+        } elseif(isset($return) && $return === true){
+            $success = __('Placements updated', ADVADS_SLUG);
+        }
         $placements = Advanced_Ads::get_ad_placements_array();
         // load ads and groups for select field
 
@@ -364,19 +369,19 @@ class Advanced_Ads_Admin {
      */
     public function add_meta_boxes() {
         add_meta_box(
-                'ad-main-box', __('Ad Main', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+                'ad-main-box', __('Ad Type', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
         add_meta_box(
-                'ad-parameters-box', __('Fine tune your ad', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+                'ad-parameters-box', __('Ad Parameters', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
         add_meta_box(
-                'ad-display-box', __('Where to display this ads', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+                'ad-display-box', __('Display Conditions', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
         add_meta_box(
-                'ad-visitor-box', __('For whom to display this ads', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+                'ad-visitor-box', __('Visitor Conditions', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
         add_meta_box(
-                'ad-inject-box', __('Auto injection of ads', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+                'ad-inject-box', __('Auto injection', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
     }
 
