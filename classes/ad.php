@@ -176,6 +176,9 @@ class Advads_Ad {
 
     /**
      * return ad content for frontend output
+     *
+     * @since 1.0.0
+     * @return string $output ad output
      */
     public function output(){
         if(!$this->is_ad) return '';
@@ -187,14 +190,28 @@ class Advads_Ad {
     /**
      * check if the ad can be displayed in frontend due to its conditions
      *
+     * @since 1.0.0
      * @return bool $can_display true if can be displayed in frontend
      */
     public function can_display(){
 
-        if($this->can_display_by_conditions()
-                && $this->can_display_by_visitor())
-            return true;
-        else return false;
+        $can_display = false;
+        $options = Advanced_Ads::get_instance()->options();
+        $see_ads_capability = (!empty($options['hide-for-user-role'])) ? $options['hide-for-user-role'] : 0;
+
+        // check if user is logged in and if so if users with his rights can see ads
+        if(is_user_logged_in() && $see_ads_capability && current_user_can($see_ads_capability)) return false;
+
+        if($this->can_display_by_conditions() && $this->can_display_by_visitor()) {
+            $can_display = true;
+        } else {
+            return false;
+        }
+
+        // add own conditions to flag output as possible or not
+        $can_display = apply_filters('advanced-ads-can-display', $can_display, $this);
+
+        return $can_display;
     }
 
     /**
@@ -208,6 +225,9 @@ class Advads_Ad {
 
         if(empty($this->options['conditions']) ||
                 !is_array($this->options['conditions'])) return true;
+
+        // display ad if conditions are explicitely disabled
+        if(isset($this->options['conditions']['enabled']) && !$this->options['conditions']['enabled']) return true;
 
         $conditions = $this->options['conditions'];
         foreach($conditions as $_cond_key => $_cond_value) {
@@ -465,7 +485,7 @@ class Advads_Ad {
                 $conditions[$_key] = $_condition;
                 continue;
             }
-            $type = $advanced_ads_ad_conditions[$_key]['type'];
+            $type = !empty($advanced_ads_ad_conditions[$_key]['type']) ? $advanced_ads_ad_conditions[$_key]['type'] : 0;
             if(empty($type)) continue;
 
             // dynamically apply filters for each condition used

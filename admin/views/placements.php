@@ -8,6 +8,9 @@
     <?php if ($error) : ?>
 	<div id="message" class="error"><p><?php echo $error; ?></p></div>
     <?php endif; ?>
+    <?php if ($success) : ?>
+	<div id="message" class="updated"><p><?php echo $success; ?></p></div>
+    <?php endif; ?>
     <?php screen_icon(); ?>
     <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
     <p class="description"><?php _e('Placements are physically places in your theme and posts. You can use them if you plan to change ads and ad groups on the same place without the need to change your templates.', ADVADS_SLUG); ?></p>

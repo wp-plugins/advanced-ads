@@ -1,4 +1,3 @@
-<h4><?php _e('Auto Injection', ADVADS_SLUG); ?></h4>
 <p class="description"><?php _e('Include ads on specific places automatically without shortcodes or functions.', ADVADS_SLUG); ?></p>
 <?php $options = $ad->options('injection'); ?>
 <ul id="advanced-ad-injection">

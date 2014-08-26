@@ -3,7 +3,7 @@ Contributors: webzunft
 Tags: ads, ad, adsense
 Requires at least: 3.5
 Tested up to: 3.9.2
-Stable tag: 1.1.0
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -31,6 +31,7 @@ Learn more on the [plugin homepage](http://wpadvancedads.com).
 = display conditions =
 
 deliver ads based on conditions like
+
 * post type
 * post id
 * category
@@ -40,7 +41,9 @@ deliver ads based on conditions like
 = visitor conditions =
 
 display ads by conditions based on the visitor
+
 * all devices, mobile only or exclude mobile users
+* hide all ads from logged in users based on their role
 
 = based on WordPress standards =
 
@@ -114,6 +117,21 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 2. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.1.2 =
+
+* composer bugfix
+* changes some unclear descriptions
+* use group names instead of slug on placement page
+* reenabled handles for metaboxes on ad edit screen
+* added success message for placement updates
+
+= 1.1.1 =
+
+* added filter to be able to add own checks whether to display an ad or not
+* added action to add content to the visitor metabox
+* option to hide/disable ad conditions
+* option to hide all ads from logged in users based on user roles
 
 = 1.1.0 =
 
