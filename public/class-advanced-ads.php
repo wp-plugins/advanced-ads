@@ -25,7 +25,7 @@ class Advanced_Ads {
      * @var     string
      */
 
-    const VERSION = '1.1.2';
+    const VERSION = '1.1.3';
 
     /**
      * post type slug
@@ -115,6 +115,9 @@ class Advanced_Ads {
 
         // setup default ad types
         add_filter('advanced-ads-ad-types', array($this, 'setup_default_ad_types'));
+
+        // frontend output
+        add_action('wp_head', array($this, 'header_output'));
 
         // register hooks and filters for auto ad injection
         add_action('wp_head', array($this, 'inject_header'), 20);
@@ -653,6 +656,14 @@ class Advanced_Ads {
                 }
             }
         }
+    }
+
+    /**
+     * content output in the header
+     */
+    public function header_output(){
+        // inject js array for banner conditions
+        echo '<script>advads_item_conditions = {};</script>';
     }
 
     /**

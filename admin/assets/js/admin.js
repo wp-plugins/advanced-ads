@@ -53,6 +53,33 @@ function advads_toggle(selector) {
 }
 
 /**
+ * toggle content elements with a checkbox (hide/show)
+ *
+ * @param selector jquery selector
+ */
+function advads_toggle_box(e, selector) {
+    if(jQuery(e).is(':checked')){
+        jQuery(selector).slideDown();
+    } else {
+        jQuery(selector).slideUp();
+    }
+}
+
+/**
+ * disable content of one box when selecting another
+ *  only grey/disable it, don’t hide it
+ *
+ * @param selector jquery selector
+ */
+function advads_toggle_box_enable(e, selector) {
+    if(jQuery(e).is(':checked')){
+        jQuery(selector).find('input').removeAttr('disabled', '');
+    } else {
+        jQuery(selector).find('input').attr('disabled', 'disabled');
+    }
+}
+
+/**
  * toggle display conditions
  * @param {bool} value
  */
