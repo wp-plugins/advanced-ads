@@ -66,6 +66,12 @@ class Advads_Ad {
     static $options_meta_field = 'advanced_ads_ad_options';
 
     /**
+     * multidimensional array contains information about the wrapper
+     *  each possible html attribute is an array with possible multiple elements
+     */
+    public $wrapper = array();
+
+    /**
      * init ad object
      *
      * @param int $id id of the ad (= post id)
@@ -126,6 +132,14 @@ class Advads_Ad {
 
         // load content based on ad type
         $this->content = $this->type_obj->load_content($_data);
+
+        // set wrapper conditions
+        $this->wrapper = apply_filters('advanced-ads-set-wrapper', $this->wrapper, $this);
+        // add unique wrapper id, if options given
+        if(!empty($this->wrapper) && empty($wrapper_options['id'])){
+            // create unique id if not yet given
+            $this->wrapper['id'] = $this->create_wrapper_id();
+        }
     }
 
     /**
@@ -298,7 +312,7 @@ class Advads_Ad {
                         }
                     }
                     // check for excluded post types
-                    if(!empty($_cond_value['include'])){
+                    if(!empty($_cond_value['exclude'])){
                         $post_types = explode(',', $_cond_value['exclude']);
                         // check if currently in a post (not post page, but also posts in loops)
                         if(is_array($post_types) && in_array(get_post_type(), $post_types)) {
@@ -458,6 +472,9 @@ class Advads_Ad {
 
         // load ad type specific content filter
         $output = $this->type_obj->prepare_output($this);
+
+        // build wrapper around the ad
+        $output = $this->add_wrapper($output);
 
         // apply a custom filter by ad type
         $output = apply_filters('advanced-ads-ad-output', $output, $this);
@@ -641,6 +658,67 @@ class Advads_Ad {
         }
 
         return $conditions;
+    }
+
+    /**
+     * add a wrapper arount the ad content if wrapper information are given
+     *
+     * @since 1.1.4
+     * @param str $ad_content content of the ad
+     * @return str $wrapper ad within the wrapper
+     */
+    protected function add_wrapper($ad_content = ''){
+
+        $wrapper_options = apply_filters('advanced-ads-output-wrapper-options', $this->wrapper, $this);
+
+        if($wrapper_options == array() || !is_array($wrapper_options) || empty($wrapper_options)) return $ad_content;
+
+        $wrapper = $ad_content;
+
+        // create unique id if not yet given
+        if(empty($wrapper_options['id'])){
+            $wrapper_options['id'] = $this->create_wrapper_id();
+        }
+
+        // build the box
+        $wrapper = "<div";
+        foreach($wrapper_options as $_html_attr => $_values){
+            if($_html_attr == 'style'){
+                $_style_values_string = '';
+                foreach($_values as $_style_attr => $_style_values){
+                    if(is_array($_style_values))
+                        $_style_values_string .= $_style_attr . ': ' .implode(' ', $_style_values). '; ';
+                    else
+                        $_style_values_string .= $_style_attr . ': ' .$_style_values. '; ';
+                }
+                $wrapper .= " style=\"$_style_values_string\"";
+            } else {
+                if(is_array($_values))
+                    $_values_string = implode(' ', $_values);
+                else
+                    $_values_string = sanitize_title($_values);
+                $wrapper .= " $_html_attr=\"$_values_string\"";
+            }
+
+
+        }
+        $wrapper .= '>';
+        $wrapper .= apply_filters('advanced-ads-output-wrapper-before-content', '', $this);
+        $wrapper .= $ad_content;
+        $wrapper .= apply_filters('advanced-ads-output-wrapper-after-content', '', $this);
+        $wrapper .= '</div>';
+
+        return $wrapper;
+    }
+
+    /**
+     * create a random wrapper id
+     *
+     * @since 1.1.4
+     * @return string $id random id string
+     */
+    private function create_wrapper_id(){
+        return 'advads-' . mt_rand();
     }
 
 }

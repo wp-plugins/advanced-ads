@@ -25,7 +25,7 @@ class Advanced_Ads {
      * @var     string
      */
 
-    const VERSION = '1.1.3';
+    const VERSION = '1.2';
 
     /**
      * post type slug
@@ -663,7 +663,7 @@ class Advanced_Ads {
      */
     public function header_output(){
         // inject js array for banner conditions
-        echo '<script>advads_item_conditions = {};</script>';
+        echo '<script>advads_items = { conditions: {}, display_callbacks: {}, hide_callbacks: {}};</script>';
     }
 
     /**
@@ -675,7 +675,7 @@ class Advanced_Ads {
      */
     public function inject_content($content = ''){
         // run only on single pages
-        if(!is_single()) return $content;
+        if(!is_singular(array('post', 'page'))) return $content;
 
         // get information about injected ads
         $injections = get_option('advads-ads-injections', array());
@@ -713,5 +713,36 @@ class Advanced_Ads {
         }
 
         return $content;
+    }
+
+    /**
+     * load all ads based on WP_Query conditions
+     *
+     * @since 1.1.0
+     * @param arr $args WP_Query arguments that are more specific that default
+     * @return arr $ads array with post objects
+     */
+    static function get_ads($args = array()){
+        // add default WP_Query arguments
+        $args['post_type'] = self::POST_TYPE_SLUG;
+        $args['posts_per_page'] = -1;
+        if(empty($args['post_status'])) $args['post_status'] = 'publish';
+
+        $ads = new WP_Query($args);
+        return $ads->posts;
+    }
+
+    /**
+     * load all ad groups
+     *
+     * @since 1.1.0
+     * @return arr $groups array with ad groups
+     * @link http://codex.wordpress.org/Function_Reference/get_terms
+     */
+    static function get_ad_groups(){
+        $args = array(
+            'hide_empty' => false // also display groups without any ads
+        );
+        return get_terms(Advanced_Ads::AD_GROUP_TAXONOMY, $args);
     }
 }

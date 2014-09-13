@@ -359,7 +359,7 @@ class Advanced_Ads_Admin {
         if (!isset($post->post_type) || $post->post_type != $this->post_type) {
             return;
         }
-        echo "<p>Ad Id: <strong>$post->ID</strong></p>";
+        require_once('views/ad_info.php');
     }
 
     /**
@@ -554,7 +554,7 @@ class Advanced_Ads_Admin {
      */
     public function update_global_injection_array(){
         // get all public ads
-        $ad_posts = $this->get_ads();
+        $ad_posts = Advanced_Ads::get_ads();
 
         // merge ad injection settings by type (place => ad id)
         $all_injections = array();
@@ -574,37 +574,5 @@ class Advanced_Ads_Admin {
 
         // write documentation
     }
-
-    /**
-     * load all ads based on WP_Query conditions
-     *
-     * @since 1.1.0
-     * @param arr $args WP_Query arguments that are more specific that default
-     * @return arr $ads array with post objects
-     */
-    public function get_ads($args = array()){
-        // add default WP_Query arguments
-        $args['post_type'] = $this->post_type;
-        $args['posts_per_page'] = -1;
-        if(empty($args['post_status'])) $args['post_status'] = 'publish';
-
-        $ads = new WP_Query($args);
-        return $ads->posts;
-    }
-
-    /**
-     * load all ad groups
-     *
-     * @since 1.1.0
-     * @return arr $groups array with ad groups
-     * @link http://codex.wordpress.org/Function_Reference/get_terms
-     */
-    public function get_ad_groups(){
-        $args = array(
-            'hide_empty' => false // also display groups without any ads
-        );
-        return get_terms(Advanced_Ads::AD_GROUP_TAXONOMY, $args);
-    }
-
 
 }
