@@ -84,17 +84,16 @@ class Advads_Ad_Placements {
      * @return arr $select items for select field
      */
     static function items_for_select(){
-        $advads_admin = Advanced_Ads_Admin::get_instance();
         $select = array();
 
         // load all ads
-        $ads = $advads_admin->get_ads();
+        $ads = Advanced_Ads::get_ads();
         foreach($ads as $_ad){
             $select['ads']['ad_' . $_ad->ID] = $_ad->post_title;
         }
 
         // load all ad groups
-        $groups = $advads_admin->get_ad_groups();
+        $groups = Advanced_Ads::get_ad_groups();
         foreach($groups as $_group){
             $select['groups']['group_' . $_group->term_id] = $_group->name;
         }

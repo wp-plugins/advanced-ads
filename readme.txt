@@ -1,9 +1,9 @@
 === Advanced Ads ===
 Contributors: webzunft
-Tags: ads, ad, adsense
+Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: 3.5
-Tested up to: 3.9.2
-Stable tag: 1.1.3
+Tested up to: 4.0.0
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,6 +25,7 @@ Learn more on the [plugin homepage](http://wpadvancedads.com).
 * auto inject ads into header, footer and posts
 * display ad in template files (with functions)
 * display ad in post content (with shortcodes)
+* widget to display ads in widget areas (sidebars)
 * display grouped ads based on customizable ad weight
 * use placements in your theme to change ads and groups in template files without coding
 
@@ -117,6 +118,15 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 2. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.2 =
+
+* added widget for ads or ad groups
+* added information on how to display ads, ad groups and ad placements
+* tested with WordPress 4.0
+* added filters and function to dynamically create a wrapper around the ad
+* ! ad injection works on posts and pages now
+* fixed excluded post types for ads
 
 = 1.1.3 =
 
