@@ -53,37 +53,37 @@ display ads by conditions based on the visitor
 
 Learn more on the [plugin homepage](http://wpadvancedads.com).
 
-= AddOns =
+= Add-Ons =
 
-* increase click rates with fixed, sticky and anchor ads with Sticky Ads - [Demo](http://wpadvancedads.com/sticky-ads/demo/)
+* Responsive Ads – load and display ads only for specific browser sizes - [Demo](http://wpadvancedads.com/responsive-ads/)
+* PopUp and Layer Ads – display ads and any other content in layers and popups - [Demo](http://wpadvancedads.com/layer-ads/)
+* Sticky Ads – increase click rates with fixed, sticky and anchor ads - [Demo](http://wpadvancedads.com/sticky-ads/demo/)
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
-
-e.g.
+How to install the plugin and get it working?
 
 = Using The WordPress Dashboard =
 
 1. Navigate to the 'Add New' in the plugins dashboard
-2. Search for 'plugin-name'
+2. Search for 'advanced ads'
 3. Click 'Install Now'
-4. Activate the plugin on the Plugin dashboard
+4. Activate Advanced Ads on the Plugin dashboard
 
 = Uploading in WordPress Dashboard =
 
 1. Navigate to the 'Add New' in the plugins dashboard
 2. Navigate to the 'Upload' area
-3. Select `plugin-name.zip` from your computer
+3. Select `advanced-ads.zip` from your computer
 4. Click 'Install Now'
-5. Activate the plugin in the Plugin dashboard
+5. Activate Advanced Ads in the Plugin dashboard
 
 = Using FTP =
 
-1. Download `plugin-name.zip`
-2. Extract the `plugin-name` directory to your computer
-3. Upload the `plugin-name` directory to the `/wp-content/plugins/` directory
-4. Activate the plugin in the Plugin dashboard
+1. Download `advanced-ads.zip`
+2. Extract the `advanced-ads` directory to your computer
+3. Upload the `advanced-ads` directory to the `/wp-content/plugins/` directory
+4. Activate Advanced Ads in the Plugin dashboard
 
 == Displaying Ads ==
 
