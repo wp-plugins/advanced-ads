@@ -86,14 +86,16 @@ class Advads_Ad {
         // dynamically add sanitize filters for condition types
         $_types = array();
         foreach($advanced_ads_ad_conditions as $_condition) {
-            $_types[] = $_condition['type'];
+            // add unique
+            $_types[$_condition['type']] = false;
         }
-        $_types = array_unique($_types);
-        foreach($_types as $_type) {
+        // iterate types
+        foreach(array_keys($_types) as $_type) {
+            // -TODO might be faster to use __call() method or isset()-test class method array
             $method_name = 'sanitize_condition_'. $_type;
-            if(method_exists($this, $method_name)) {
+            if (method_exists($this, $method_name)) {
                 add_filter('advanced-ads-sanitize-condition-' . $_type, array($this, $method_name), 10, 1);
-            } elseif(function_exists('advads_sanitize_condition_' . $_type)) {
+            } elseif (function_exists('advads_sanitize_condition_' . $_type)) {
                 // check for public function to sanitize this
                 add_filter('advanced-ads-sanitize-condition-' . $_type, 'advads_sanitize_condition_' . $_type, 10, 1);
 
@@ -136,7 +138,7 @@ class Advads_Ad {
         // set wrapper conditions
         $this->wrapper = apply_filters('advanced-ads-set-wrapper', $this->wrapper, $this);
         // add unique wrapper id, if options given
-        if(!empty($this->wrapper) && empty($wrapper_options['id'])){
+        if(is_array($this->wrapper) && $this->wrapper !== array() && !isset($this->wrapper['id'])){
             // create unique id if not yet given
             $this->wrapper['id'] = $this->create_wrapper_id();
         }
@@ -152,13 +154,14 @@ class Advads_Ad {
      */
     public function options($field = ''){
         // retrieve options, if not given yet
-        if($this->options == array()) {
+        if ($this->options === array()) {
+            // get_post_meta() may return false
             $this->options = get_post_meta($this->id, self::$options_meta_field, true);
         }
 
         // return specific option
         if($field != '') {
-            if(!empty($this->options[$field]))
+            if(isset($this->options[$field]))
                 return $this->options[$field];
         } else { // return all options
             if(!empty($this->options))
@@ -209,21 +212,20 @@ class Advads_Ad {
      */
     public function can_display(){
 
-        $can_display = false;
         $options = Advanced_Ads::get_instance()->options();
         $see_ads_capability = (!empty($options['hide-for-user-role'])) ? $options['hide-for-user-role'] : 0;
 
         // check if user is logged in and if so if users with his rights can see ads
-        if(is_user_logged_in() && $see_ads_capability && current_user_can($see_ads_capability)) return false;
+        if (is_user_logged_in() && $see_ads_capability && current_user_can($see_ads_capability)) {
+            return false;
+        }
 
-        if($this->can_display_by_conditions() && $this->can_display_by_visitor()) {
-            $can_display = true;
-        } else {
+        if (!$this->can_display_by_conditions() || !$this->can_display_by_visitor()) {
             return false;
         }
 
         // add own conditions to flag output as possible or not
-        $can_display = apply_filters('advanced-ads-can-display', $can_display, $this);
+        $can_display = apply_filters('advanced-ads-can-display', true, $this);
 
         return $can_display;
     }

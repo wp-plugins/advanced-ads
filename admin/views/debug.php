@@ -10,10 +10,13 @@
     <?php screen_icon(); ?>
     <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 
+    <h2><?php _e('Settings', $this->plugin_slug); ?></h2>
+    <pre><?php print_r($plugin_options); ?></pre>
+
     <h2><?php _e('Ad Condition Overview', $this->plugin_slug); ?></h2>
     <pre><?php print_r($ads_by_conditions); ?></pre>
 
-    <h2><?php _e('Ad Injections', $this->plugin_slug); ?></h2>
-    <pre><?php print_r($ad_injections); ?></pre>
+    <h2><?php _e('Ad Placements', $this->plugin_slug); ?></h2>
+    <pre><?php print_r($ad_placements); ?></pre>
 
 </div>

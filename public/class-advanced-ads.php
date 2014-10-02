@@ -25,7 +25,7 @@ class Advanced_Ads {
      * @var     string
      */
 
-    const VERSION = '1.2';
+    const VERSION = '1.2.1';
 
     /**
      * post type slug
@@ -115,9 +115,6 @@ class Advanced_Ads {
 
         // setup default ad types
         add_filter('advanced-ads-ad-types', array($this, 'setup_default_ad_types'));
-
-        // frontend output
-        add_action('wp_head', array($this, 'header_output'));
 
         // register hooks and filters for auto ad injection
         add_action('wp_head', array($this, 'inject_header'), 20);
@@ -315,7 +312,7 @@ class Advanced_Ads {
      * @since    1.0.0
      */
     public function enqueue_scripts() {
-        wp_enqueue_script($this->plugin_slug . '-plugin-script', plugins_url('assets/js/public.js', __FILE__), array('jquery'), self::VERSION);
+        // wp_enqueue_script($this->plugin_slug . '-plugin-script', plugins_url('assets/js/public.js', __FILE__), array('jquery'), self::VERSION);
     }
 
     /**
@@ -506,7 +503,7 @@ class Advanced_Ads {
             'show_in_nav_menus' => false,
             'show_tagcloud'     => false,
             'show_admin_column' => false,
-            'query_var'         => true,
+            'query_var'         => false,
             'rewrite'           => false,
         );
 
@@ -616,6 +613,14 @@ class Advanced_Ads {
      * @since 1.1.0
      */
     public function inject_header(){
+        $placements = get_option('advads-ads-placements', array());
+        foreach($placements as $_placement_id => $_placement){
+            if(isset($_placement['type']) && $_placement['type'] == 'header'){
+                echo Advads_Ad_Placements::output($_placement_id);
+            }
+        }
+
+        /* FROM HERE, THE CODE IS DEPRECATED – MOVE AUTO INJECTED ADS TO PLACEMENTS */
         // get information about injected ads
         $injections = get_option('advads-ads-injections', array());
         if(isset($injections['header']) && is_array($injections['header'])){
@@ -640,6 +645,14 @@ class Advanced_Ads {
      * @since 1.1.0
      */
     public function inject_footer(){
+        $placements = get_option('advads-ads-placements', array());
+        foreach($placements as $_placement_id => $_placement){
+            if(isset($_placement['type']) && $_placement['type'] == 'footer'){
+                echo Advads_Ad_Placements::output($_placement_id);
+            }
+        }
+
+        /* FROM HERE, THE CODE IS DEPRECATED – MOVE AUTO INJECTED ADS TO PLACEMENTS */
         // get information about injected ads
         $injections = get_option('advads-ads-injections', array());
         if(isset($injections['footer']) && is_array($injections['footer'])){
@@ -659,14 +672,6 @@ class Advanced_Ads {
     }
 
     /**
-     * content output in the header
-     */
-    public function header_output(){
-        // inject js array for banner conditions
-        echo '<script>advads_items = { conditions: {}, display_callbacks: {}, hide_callbacks: {}};</script>';
-    }
-
-    /**
      * injected ad into content (before and after)
      * displays ALL ads
      *
@@ -677,6 +682,20 @@ class Advanced_Ads {
         // run only on single pages
         if(!is_singular(array('post', 'page'))) return $content;
 
+        $placements = get_option('advads-ads-placements', array());
+        foreach($placements as $_placement_id => $_placement){
+            if(isset($_placement['type']) && $_placement['type'] == 'post_top'){
+                $content = Advads_Ad_Placements::output($_placement_id) . $content;
+            }
+            if(isset($_placement['type']) && $_placement['type'] == 'post_bottom'){
+                $content .= Advads_Ad_Placements::output($_placement_id);
+            }
+            if(isset($_placement['type']) && $_placement['type'] == 'post_content'){
+                $content = Advads_Ad_Placements::inject_in_content($_placement_id, $_placement['options'], $content);
+            }
+        }
+
+        /* FROM HERE, THE CODE IS DEPRECATED – MOVE AUTO INJECTED ADS TO PLACEMENTS */
         // get information about injected ads
         $injections = get_option('advads-ads-injections', array());
 

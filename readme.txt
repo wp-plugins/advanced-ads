@@ -3,7 +3,7 @@ Contributors: webzunft
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: 3.5
 Tested up to: 4.0.0
-Stable tag: 1.2
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,7 +22,7 @@ Learn more on the [plugin homepage](http://wpadvancedads.com).
 
 = display ads =
 
-* auto inject ads into header, footer and posts
+* auto inject ads into header, footer and posts content
 * display ad in template files (with functions)
 * display ad in post content (with shortcodes)
 * widget to display ads in widget areas (sidebars)
@@ -53,37 +53,37 @@ display ads by conditions based on the visitor
 
 Learn more on the [plugin homepage](http://wpadvancedads.com).
 
-= AddOns =
+= Add-Ons =
 
-* increase click rates with fixed, sticky and anchor ads with Sticky Ads - [Demo](http://wpadvancedads.com/sticky-ads/demo/)
+* Responsive Ads – load and display ads only for specific browser sizes - [Demo](http://wpadvancedads.com/responsive-ads/)
+* PopUp and Layer Ads – display ads and any other content in layers and popups - [Demo](http://wpadvancedads.com/layer-ads/)
+* Sticky Ads – increase click rates with fixed, sticky and anchor ads - [Demo](http://wpadvancedads.com/sticky-ads/demo/)
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
-
-e.g.
+How to install the plugin and get it working?
 
 = Using The WordPress Dashboard =
 
 1. Navigate to the 'Add New' in the plugins dashboard
-2. Search for 'plugin-name'
+2. Search for 'advanced ads'
 3. Click 'Install Now'
-4. Activate the plugin on the Plugin dashboard
+4. Activate Advanced Ads on the Plugin dashboard
 
 = Uploading in WordPress Dashboard =
 
 1. Navigate to the 'Add New' in the plugins dashboard
 2. Navigate to the 'Upload' area
-3. Select `plugin-name.zip` from your computer
+3. Select `advanced-ads.zip` from your computer
 4. Click 'Install Now'
-5. Activate the plugin in the Plugin dashboard
+5. Activate Advanced Ads in the Plugin dashboard
 
 = Using FTP =
 
-1. Download `plugin-name.zip`
-2. Extract the `plugin-name` directory to your computer
-3. Upload the `plugin-name` directory to the `/wp-content/plugins/` directory
-4. Activate the plugin in the Plugin dashboard
+1. Download `advanced-ads.zip`
+2. Extract the `advanced-ads` directory to your computer
+3. Upload the `advanced-ads` directory to the `/wp-content/plugins/` directory
+4. Activate Advanced Ads in the Plugin dashboard
 
 == Displaying Ads ==
 
@@ -118,6 +118,22 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 2. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.2.1 ==
+
+major changes:
+
+* moved auto injections from ads to placements [PLEASE MOVE YOUR INJECTIONS THERE]
+* added post content injections
+* reading suggestion: [My test of AdSense Responsive Ads](http://webgilde.com/en/adsense-responsive-ad/)
+
+other fixes:
+
+* fix bugs with ad weights throwing issues when not set
+* removed public ad groups query
+* updated arrays displayed on debug page
+* ad groups are now displayed before ads in placements and ad widget
+* added title to widget
 
 = 1.2 =
 
