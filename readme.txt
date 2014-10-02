@@ -3,7 +3,7 @@ Contributors: webzunft
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: 3.5
 Tested up to: 4.0.0
-Stable tag: 1.2
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,7 +22,7 @@ Learn more on the [plugin homepage](http://wpadvancedads.com).
 
 = display ads =
 
-* auto inject ads into header, footer and posts
+* auto inject ads into header, footer and posts content
 * display ad in template files (with functions)
 * display ad in post content (with shortcodes)
 * widget to display ads in widget areas (sidebars)
@@ -118,6 +118,22 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 2. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.2.1 ==
+
+major changes:
+
+* moved auto injections from ads to placements [PLEASE MOVE YOUR INJECTIONS THERE]
+* added post content injections
+* reading suggestion: [My test of AdSense Responsive Ads](http://webgilde.com/en/adsense-responsive-ad/)
+
+other fixes:
+
+* fix bugs with ad weights throwing issues when not set
+* removed public ad groups query
+* updated arrays displayed on debug page
+* ad groups are now displayed before ads in placements and ad widget
+* added title to widget
 
 = 1.2 =
 
