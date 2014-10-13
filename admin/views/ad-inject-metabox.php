@@ -1,5 +1,7 @@
 <p class="description"><?php _e('Include ads on specific places automatically without shortcodes or functions.', ADVADS_SLUG); ?></p>
 <?php $options = $ad->options('injection'); ?>
+<?php if($options) : ?>
+<p style="color: red;"><?php _e('This feature is now provided through placements. Please convert the settings made here to placements.', ADVADS_SLUG); ?></p>
 <ul id="advanced-ad-injection">
     <li>
         <input type="checkbox" name="advanced_ad[injection][header]"
@@ -26,3 +28,6 @@
         <label for="advanced-ad-injection-post_end"><?php _e('Include after the post content', ADVADS_SLUG); ?></label>
     </li>
 </ul>
+<?php else : ?>
+<p><?php _e('This feature is now provided through placements. Please convert the settings made here to placements.', ADVADS_SLUG); ?></p>
+<?php endif; ?>

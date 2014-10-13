@@ -83,6 +83,7 @@ class Advanced_Ads_Admin {
         // Add menu items
         add_action('admin_menu', array($this, 'add_ad_group_menu'));
         add_action('admin_menu', array($this, 'add_plugin_admin_menu'));
+        add_action('admin_init', array($this, 'organize_admin_menu'));
 
         // on post/ad edit screen
         add_action('edit_form_after_title', array($this, 'edit_form_below_title'));
@@ -93,6 +94,9 @@ class Advanced_Ads_Admin {
 
         // settings handling
         add_action('admin_init', array($this, 'settings_init'));
+
+        // admin notices
+        add_action('admin_notices', array($this, 'admin_notices'));
 
         // Add an action link pointing to the options page.
         $plugin_basename = plugin_basename(plugin_dir_path('__DIR__') . $this->plugin_slug . '.php');
@@ -156,12 +160,43 @@ class Advanced_Ads_Admin {
     }
 
     /**
+    * display admin notices
+     *
+     * @since 1.2.1
+    */
+    public function admin_notices()
+    {
+
+        // display notice in case there are still old ad injections
+        $old_injections = get_option('advads-ads-injections', array());
+
+        // display ad before the content
+        if(isset($old_injections) && count($old_injections) > 0){
+            $_injection_ids = array();
+            foreach($old_injections as $_inj){
+                $_injection_ids = array_merge($_injection_ids, $_inj);
+            }
+            $ad_links = array();
+            foreach($_injection_ids as $_inj_id){
+                $ad_links[] = '<a href="' . get_edit_post_link($_inj_id) . '">'.$_inj_id.'</a>';
+            }
+        ?>
+            <div class="error"><p><?php printf(__('Advanced Ads Update: Auto injections are now managed through placements. Please convert these ads with auto injections: %s', ADVADS_SLUG), implode(', ', $ad_links));?></p></div>
+        <?php
+        }
+    }
+
+    /**
      * Register the administration menu for this plugin into the WordPress Dashboard menu.
      *
      * @since    1.0.0
      */
     public function add_plugin_admin_menu() {
 
+        // add overview page
+        add_submenu_page(
+            'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG, __('Overview', $this->plugin_slug), __('Overview', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-overview', array($this, 'display_overview_page')
+        );
         // add placements page
         add_submenu_page(
             'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG, __('Ad Placements', $this->plugin_slug), __('Placements', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-placements', array($this, 'display_placements_page')
@@ -173,6 +208,31 @@ class Advanced_Ads_Admin {
         add_submenu_page(
                 null, __('Advanced Ads Debugging', $this->plugin_slug), __('Debug', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-debug', array($this, 'display_plugin_debug_page')
         );
+    }
+
+    /**
+     * push the overview page to the top of the advanced ads menu
+     *
+     * @global array $submenu
+     * @since 1.2.2
+     */
+    public function organize_admin_menu(){
+        global $submenu;
+        $submenu['edit.php?post_type=advanced_ads'][1] = $submenu['edit.php?post_type=advanced_ads'][17];
+        unset($submenu['edit.php?post_type=advanced_ads'][17]);
+        ksort($submenu['edit.php?post_type=advanced_ads']);
+    }
+
+    /**
+     * Render the overview page
+     *
+     * @since    1.2.2
+     */
+    public function display_overview_page() {
+        $recent_ads = Advanced_Ads::get_ads();
+        $groups = Advanced_Ads::get_ad_groups();
+        $placements = Advanced_Ads::get_ad_placements_array();
+        include_once( 'views/overview.php' );
     }
 
     /**
@@ -205,6 +265,7 @@ class Advanced_Ads_Admin {
         } elseif(isset($return) && $return === true){
             $success = __('Placements updated', ADVADS_SLUG);
         }
+        $placement_types = Advads_Ad_Placements::get_placement_types();
         $placements = Advanced_Ads::get_ad_placements_array();
         // load ads and groups for select field
 
@@ -220,8 +281,9 @@ class Advanced_Ads_Admin {
     public function display_plugin_debug_page() {
         // load array with ads by condition
         $plugin = Advanced_Ads::get_instance();
+        $plugin_options = $plugin->options();
         $ads_by_conditions = $plugin->get_ads_by_conditions_array();
-        $ad_injections = $plugin->get_ad_injections_array();
+        $ad_placements = Advanced_Ads::get_ad_placements_array();
 
         include_once( 'views/debug.php' );
     }
@@ -234,7 +296,7 @@ class Advanced_Ads_Admin {
     public function add_ad_group_menu() {
 
         $this->ad_group_hook_suffix = add_submenu_page(
-                'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG, __('Ad Groups', $this->plugin_slug), __('Ad Groups', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-groups', array($this, 'ad_group_admin_page')
+                'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG, __('Ad Groups', $this->plugin_slug), __('Groups', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-groups', array($this, 'ad_group_admin_page')
         );
     }
 
@@ -456,6 +518,15 @@ class Advanced_Ads_Admin {
         } else {
             $ad->set_option('injection', array());
         }
+        // save size
+        $ad->width = 0;
+        if(isset($_POST['advanced_ad']['width'])) {
+            $ad->width = absint($_POST['advanced_ad']['width']);
+        }
+        $ad->height = 0;
+        if(isset($_POST['advanced_ad']['height'])) {
+            $ad->height = absint($_POST['advanced_ad']['height']);
+        }
 
         if(!empty($_POST['advanced_ad']['content']))
             $ad->content = $_POST['advanced_ad']['content'];
@@ -569,10 +640,11 @@ class Advanced_Ads_Admin {
             }
         }
 
-        // save global injection array to WP options table
-        update_option('advads-ads-injections', $all_injections);
-
-        // write documentation
+        // save global injection array to WP options table or remove it
+        if(is_array($all_injections) && count($all_injections) > 0)
+            update_option('advads-ads-injections', $all_injections);
+        else
+            delete_option ('advads-ads-injections');
     }
 
 }
