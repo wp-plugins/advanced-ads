@@ -22,6 +22,12 @@
 $advanced_ads_slug = Advanced_Ads::get_instance()->get_plugin_slug();
 
 $advanced_ads_ad_conditions = array(
+    'posttypes' => array(
+        'label' => __('Post Types', $advanced_ads_slug),
+        'description' => __('Choose the public post types on which to display the ad.', $advanced_ads_slug),
+        'type' => 'textvalues',
+        'callback' => array('AdvAds_Display_Condition_Callbacks', 'post_types')
+    ),
     'postids' => array(
         'label' => __('Single Pages/Posts', $advanced_ads_slug),
         'description' => __('comma seperated IDs of post, page or custom post type', $advanced_ads_slug),
@@ -36,11 +42,6 @@ $advanced_ads_ad_conditions = array(
         'label' => __('Category Archives', $advanced_ads_slug),
         'description' => __('comma seperated IDs of category archives', $advanced_ads_slug),
         'type' => 'idfield',
-    ),
-    'posttypes' => array(
-        'label' => __('Post Types', $advanced_ads_slug),
-        'description' => __('comma seperated list of post types', $advanced_ads_slug),
-        'type' => 'textvalues',
     ),
     'is_front_page' => array(
         'label' => __('Home Page', $advanced_ads_slug),

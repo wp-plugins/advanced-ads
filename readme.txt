@@ -3,26 +3,28 @@ Contributors: webzunft
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: 3.5
 Tested up to: 4.0.0
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Manage and optimize your ads in WordPress as easy as creating posts.
+Manage and optimize your ads in WordPress as easy as creating posts. + ad injection, ad planning and ad rotation.
 
 == Description ==
 
-Advanced Ads is made by publishers for publishers. Based on my experience delivering millions of ads per month I build this plugin as a powerful, but light weight solution to not only manage and serve ads in WordPress, but to test and optimize them as well.
+Advanced Ads is a simple ad manager made by publishers for publishers. Based on my experience delivering millions of ads per month I build this plugin as a powerful, but light weight solution to not only manage and serve ads in WordPress, but to test and optimize them as well.
 
 Learn more on the [plugin homepage](http://wpadvancedads.com).
 
 = create and manage ads =
 
 * create ads as easy as creating posts
-* group ads
+* group ads to create ad rotations
+* create drafts or ads only visible to logged in users
+* set a date for when to publish the ad
 
 = display ads =
 
-* auto inject ads into header, footer and posts content
+* auto inject ads (see _ad injection_ below)
 * display ad in template files (with functions)
 * display ad in post content (with shortcodes)
 * widget to display ads in widget areas (sidebars)
@@ -45,6 +47,18 @@ display ads by conditions based on the visitor
 
 * all devices, mobile only or exclude mobile users
 * hide all ads from logged in users based on their role
+
+= ad injection =
+
+Advanced Ads comes with many options for ad injection (= display ads without the need to alter content or code)
+
+* inject ads into header and footer
+* inject ads into posts content (top, bottom, by paragraph)
+
+= ad networks =
+
+Advanced Ads is compatible with all ad networks and banners from affiliate programs like Google AdSense, Chitika, Clickbank, Amazon, etc.
+You can also use it to add additional ad network tags into header or footer of your site without additional coding)
 
 = based on WordPress standards =
 
@@ -119,7 +133,19 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 
 == Changelog ==
 
-= 1.2.1 ==
+= 1.2.2 =
+
+major changes
+
+* added overview page
+* new layout for display condition check for post types
+* added ad width and height values
+
+fixes:
+
+* don’t display ads that are not published or visible to logged in users only
+
+= 1.2.1 =
 
 major changes:
 

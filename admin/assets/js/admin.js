@@ -38,10 +38,20 @@ jQuery(document).ready(function($) {
     // toggle display conditions
     $('#advanced-ad-conditions-enable input').click(function(){
         advads_toggle_display_conditions(this.value);
-    })
+    });
     // display on load
     advads_toggle_display_conditions($('#advanced-ad-conditions-enable input:checked').val());
-})
+
+    // display / hide options if all-option is checked for display condition
+    $('.advanced-ad-display-condition .advads-conditions-all input').click(function(){
+        advads_toggle_single_display_conditions(this);
+    });
+    // display / hide options if all-option is checked for display condition – on load
+    $('.advanced-ad-display-condition .advads-conditions-all input').each(function(){
+        advads_toggle_single_display_conditions(this);
+    });
+
+});
 
 /**
  * toggle content elements (hide/show)
@@ -88,5 +98,18 @@ function advads_toggle_display_conditions(value){
         jQuery('#advanced-ad-conditions').fadeIn();
     } else {
         jQuery('#advanced-ad-conditions').fadeOut();
+    }
+}
+
+/**
+ * disable new display conditions
+ * @param {string} checkbox element
+ */
+function advads_toggle_single_display_conditions(checkbox){
+    // console.log(jQuery(checkbox).parent('div').find('label:not(.advads-conditions-all) input').css('border', 'solid'));
+    if(jQuery(checkbox).is(':checked')){
+        jQuery(checkbox).parents('.advanced-ad-display-condition').find('.advads-conditions-single').addClass('disabled').find('input').attr('disabled', 'disabled');
+    } else {
+        jQuery(checkbox).parents('.advanced-ad-display-condition').find('.advads-conditions-single').removeClass('disabled').find('input').removeAttr('disabled');
     }
 }

@@ -25,7 +25,7 @@ class Advanced_Ads {
      * @var     string
      */
 
-    const VERSION = '1.2.1';
+    const VERSION = '1.2.2';
 
     /**
      * post type slug
@@ -492,7 +492,7 @@ class Advanced_Ads {
             'update_item'       => __('Update Ad Group', $this->plugin_slug),
             'add_new_item'      => __('Add New Ad Group', $this->plugin_slug),
             'new_item_name'     => __('New Ad Groups Name', $this->plugin_slug),
-            'menu_name'         => __('Ad Groups', $this->plugin_slug),
+            'menu_name'         => __('Groups', $this->plugin_slug),
             'not_found'         => __('No Ad Group found', $this->plugin_slug),
         );
 
@@ -520,7 +520,7 @@ class Advanced_Ads {
         $labels = array(
             'name' => __('Ads', $this->plugin_slug),
             'singular_name' => __('Ad', $this->plugin_slug),
-            'add_new' => 'Add New',
+            'add_new' => 'New Ad',
             'add_new_item' => __('Add New Ad', $this->plugin_slug),
             'edit' => __('Edit', $this->plugin_slug),
             'edit_item' => __('Edit Ad', $this->plugin_slug),

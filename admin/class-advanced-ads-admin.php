@@ -83,6 +83,7 @@ class Advanced_Ads_Admin {
         // Add menu items
         add_action('admin_menu', array($this, 'add_ad_group_menu'));
         add_action('admin_menu', array($this, 'add_plugin_admin_menu'));
+        add_action('admin_init', array($this, 'organize_admin_menu'));
 
         // on post/ad edit screen
         add_action('edit_form_after_title', array($this, 'edit_form_below_title'));
@@ -192,6 +193,10 @@ class Advanced_Ads_Admin {
      */
     public function add_plugin_admin_menu() {
 
+        // add overview page
+        add_submenu_page(
+            'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG, __('Overview', $this->plugin_slug), __('Overview', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-overview', array($this, 'display_overview_page')
+        );
         // add placements page
         add_submenu_page(
             'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG, __('Ad Placements', $this->plugin_slug), __('Placements', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-placements', array($this, 'display_placements_page')
@@ -203,6 +208,31 @@ class Advanced_Ads_Admin {
         add_submenu_page(
                 null, __('Advanced Ads Debugging', $this->plugin_slug), __('Debug', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-debug', array($this, 'display_plugin_debug_page')
         );
+    }
+
+    /**
+     * push the overview page to the top of the advanced ads menu
+     *
+     * @global array $submenu
+     * @since 1.2.2
+     */
+    public function organize_admin_menu(){
+        global $submenu;
+        $submenu['edit.php?post_type=advanced_ads'][1] = $submenu['edit.php?post_type=advanced_ads'][17];
+        unset($submenu['edit.php?post_type=advanced_ads'][17]);
+        ksort($submenu['edit.php?post_type=advanced_ads']);
+    }
+
+    /**
+     * Render the overview page
+     *
+     * @since    1.2.2
+     */
+    public function display_overview_page() {
+        $recent_ads = Advanced_Ads::get_ads();
+        $groups = Advanced_Ads::get_ad_groups();
+        $placements = Advanced_Ads::get_ad_placements_array();
+        include_once( 'views/overview.php' );
     }
 
     /**
@@ -266,7 +296,7 @@ class Advanced_Ads_Admin {
     public function add_ad_group_menu() {
 
         $this->ad_group_hook_suffix = add_submenu_page(
-                'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG, __('Ad Groups', $this->plugin_slug), __('Ad Groups', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-groups', array($this, 'ad_group_admin_page')
+                'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG, __('Ad Groups', $this->plugin_slug), __('Groups', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-groups', array($this, 'ad_group_admin_page')
         );
     }
 
@@ -487,6 +517,15 @@ class Advanced_Ads_Admin {
             $ad->set_option('injection', $_POST['advanced_ad']['injection']);
         } else {
             $ad->set_option('injection', array());
+        }
+        // save size
+        $ad->width = 0;
+        if(isset($_POST['advanced_ad']['width'])) {
+            $ad->width = absint($_POST['advanced_ad']['width']);
+        }
+        $ad->height = 0;
+        if(isset($_POST['advanced_ad']['height'])) {
+            $ad->height = absint($_POST['advanced_ad']['height']);
         }
 
         if(!empty($_POST['advanced_ad']['content']))

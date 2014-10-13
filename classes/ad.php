@@ -34,6 +34,16 @@ class Advads_Ad {
     public $type = 'content';
 
     /**
+     * ad width
+     */
+    public $width = 0;
+
+    /**
+     * ad height
+     */
+    public $height = 0;
+
+    /**
      * object of current ad type
      */
     protected $type_obj;
@@ -128,7 +138,8 @@ class Advads_Ad {
         } else {
             $this->type_obj = new Advads_Ad_Type_Abstract;
         }
-
+        $this->width = $this->options('width');
+        $this->height = $this->options('height');
         $this->conditions = $this->options('conditions');
         $this->status = $_data->post_status;
 
@@ -214,6 +225,11 @@ class Advads_Ad {
 
         $options = Advanced_Ads::get_instance()->options();
         $see_ads_capability = (!empty($options['hide-for-user-role'])) ? $options['hide-for-user-role'] : 0;
+
+        // don’t display ads that are not published or private for users not logged in
+        if($this->status !== 'publish' && ($this->status === 'private' && !is_user_logged_in())){
+            return false;
+        }
 
         // check if user is logged in and if so if users with his rights can see ads
         if (is_user_logged_in() && $see_ads_capability && current_user_can($see_ads_capability)) {
@@ -306,14 +322,21 @@ class Advads_Ad {
                 break;
                 // check for included post types
                 case 'posttypes' :
+                    // display everywhere, if include not set (= all is checked)
+                    // TODO remove condition check for string; deprecated since 1.2.2
                     if(!empty($_cond_value['include'])){
-                    $post_types = explode(',', $_cond_value['include']);
+                        if(is_string($_cond_value['include'])){
+                            $post_types = explode(',', $_cond_value['include']);
+                        } else {
+                            $post_types = $_cond_value['include'];
+                        }
                         // check if currently in a post (not post page, but also posts in loops)
                         if(is_array($post_types) && !in_array(get_post_type(), $post_types)) {
                             return false;
                         }
                     }
                     // check for excluded post types
+                    // TODO remove in a later version, deprecated since 1.2.2
                     if(!empty($_cond_value['exclude'])){
                         $post_types = explode(',', $_cond_value['exclude']);
                         // check if currently in a post (not post page, but also posts in loops)
@@ -419,6 +442,8 @@ class Advads_Ad {
         $options = $this->options();
 
         $options['type'] = $this->type;
+        $options['width'] = $this->width;
+        $options['height'] = $this->height;
         $options['conditions'] = $conditions;
 
         // filter to manipulate options or add more to be saved

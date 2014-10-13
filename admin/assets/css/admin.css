@@ -29,10 +29,17 @@
 .post-type-advanced_ads #advanced-ad-conditions {
     text-align: left;
 }
+.post-type-advanced_ads #ad-display-box label { margin-right: 1em; }
+.post-type-advanced_ads .advads-conditions-all { display: block; }
+.post-type-advanced_ads .advads-conditions-single.disabled { opacity: .5; }
 .post-type-advanced_ads #advads-ad-content-plain {
     width: 100%;
 }
 .post-type-advanced_ads #ad-parameters-box .advads-ad-parameters-spinner { display: block; float: none; }
+.post-type-advanced_ads #advanced-ads-ad-parameters-size { margin-top: 1em; }
+.post-type-advanced_ads #advanced-ads-ad-parameters-size p { float: left; margin: 0 1em 0 0; font-weight: bold; }
+.post-type-advanced_ads #advanced-ads-ad-parameters-size label + label { margin-left: 1em; }
+.post-type-advanced_ads #advanced-ads-ad-parameters-size input { width: 4em; margin-left: .5em; }
 
 /**
  AD GROUP LIST
@@ -58,3 +65,4 @@
  GENERAL ELEMENTS
 */
 .advads-toggle-link { cursor: pointer; }
+.advads-content-half { float: left; margin-right: 5%; width: 45%; min-width: 300px; }
