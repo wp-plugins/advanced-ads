@@ -25,7 +25,7 @@ class Advanced_Ads {
      * @var     string
      */
 
-    const VERSION = '1.2.2';
+    const VERSION = '1.2.3';
 
     /**
      * post type slug
@@ -313,6 +313,10 @@ class Advanced_Ads {
      */
     public function enqueue_scripts() {
         // wp_enqueue_script($this->plugin_slug . '-plugin-script', plugins_url('assets/js/public.js', __FILE__), array('jquery'), self::VERSION);
+        $options = $this->options();
+        if(!empty($options['advanced-js'])){
+            wp_enqueue_script($this->plugin_slug . '-advanced-js', plugins_url('assets/js/advanced.js', __FILE__), array('jquery'), self::VERSION);
+        }
     }
 
     /**
@@ -538,7 +542,7 @@ class Advanced_Ads {
             'singular_label' => __('Ad', $this->plugin_slug),
             'public' => false,
             'show_ui' => true,
-            'menu_position' => 50, // above first seperator
+            'show_in_menu' => false,
             'hierarchical' => false,
             'capability_type' => 'page',
             'has_archive' => false,

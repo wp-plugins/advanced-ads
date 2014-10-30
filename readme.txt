@@ -1,9 +1,10 @@
 === Advanced Ads ===
 Contributors: webzunft
+Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5RRRCEBGN3UT2
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: 3.5
 Tested up to: 4.0.0
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,9 +134,18 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 
 == Changelog ==
 
+= 1.2.3 =
+
+major changes:
+
+* added advanced js functions ([see some examples](http://wpadvancedads.com/javascript-functions/))
+* moved taxonomies display condition to new layout
+* rearranged the menu to fix its occasional disappearance
+* added donation link – donations are very welcome :)
+
 = 1.2.2 =
 
-major changes
+major changes:
 
 * added overview page
 * new layout for display condition check for post types
@@ -216,3 +226,9 @@ other fixes:
 
 = 1.0 =
 * first release
+
+== Upgrade Notice ==
+
+= 1.2.3 =
+
+Fixes a bug with the missing menu item

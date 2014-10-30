@@ -21,7 +21,7 @@ class Advads_Ad {
     /**
      * id of the post type for this ad
      */
-    protected $id = 0;
+    public $id = 0;
 
     /**
      * true, if this is an Advanced Ads Ad post type
@@ -287,7 +287,11 @@ class Advads_Ad {
                 case 'categoryids' :
                     // included
                     if(!empty($_cond_value['include'])){
-                        $category_ids = explode(',', $_cond_value['include']);
+                        if(is_string($_cond_value['include'])){
+                            $category_ids = explode(',', $_cond_value['include']);
+                        } else {
+                            $category_ids = $_cond_value['include'];
+                        }
                         // check if currently in a post (not post page, but also posts in loops)
                         if(is_array($category_ids) && isset($post->ID)
                             && !in_category($category_ids, $post)) {
@@ -296,7 +300,11 @@ class Advads_Ad {
                     }
                     // check for excluded category ids
                     if(!empty($_cond_value['exclude'])){
-                        $category_ids = explode(',', $_cond_value['exclude']);
+                        if(is_string($_cond_value['exclude'])){
+                            $category_ids = explode(',', $_cond_value['exclude']);
+                        } else {
+                            $category_ids = $_cond_value['exclude'];
+                        }
                         // check if currently in a post (not post page, but also posts in loops)
                         if(is_array($category_ids) && isset($post->ID)
                             && in_category($category_ids, $post) ) {

@@ -81,9 +81,7 @@ class Advanced_Ads_Admin {
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
 
         // Add menu items
-        add_action('admin_menu', array($this, 'add_ad_group_menu'));
         add_action('admin_menu', array($this, 'add_plugin_admin_menu'));
-        add_action('admin_init', array($this, 'organize_admin_menu'));
 
         // on post/ad edit screen
         add_action('edit_form_after_title', array($this, 'edit_form_below_title'));
@@ -193,34 +191,30 @@ class Advanced_Ads_Admin {
      */
     public function add_plugin_admin_menu() {
 
-        // add overview page
-        add_submenu_page(
-            'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG, __('Overview', $this->plugin_slug), __('Overview', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-overview', array($this, 'display_overview_page')
+        // add main menu item with overview page
+        add_menu_page(
+            __('Overview', $this->plugin_slug), __('Advanced Ads', $this->plugin_slug), 'manage_options', $this->plugin_slug, array($this, 'display_overview_page'), '', '58.74'
         );
+
+        add_submenu_page(
+            $this->plugin_slug, __('Ads', $this->plugin_slug), __('Ads', $this->plugin_slug), 'manage_options', 'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG
+        );
+
+        $this->ad_group_hook_suffix = add_submenu_page(
+            $this->plugin_slug, __('Ad Groups', $this->plugin_slug), __('Groups', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-groups', array($this, 'ad_group_admin_page')
+        );
+
         // add placements page
         add_submenu_page(
-            'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG, __('Ad Placements', $this->plugin_slug), __('Placements', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-placements', array($this, 'display_placements_page')
+            $this->plugin_slug, __('Ad Placements', $this->plugin_slug), __('Placements', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-placements', array($this, 'display_placements_page')
         );
         // add settings page
         $this->plugin_screen_hook_suffix = add_submenu_page(
-                'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG, __('Advanced Ads Settings', $this->plugin_slug), __('Settings', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-settings', array($this, 'display_plugin_settings_page')
+            $this->plugin_slug, __('Advanced Ads Settings', $this->plugin_slug), __('Settings', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-settings', array($this, 'display_plugin_settings_page')
         );
         add_submenu_page(
                 null, __('Advanced Ads Debugging', $this->plugin_slug), __('Debug', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-debug', array($this, 'display_plugin_debug_page')
         );
-    }
-
-    /**
-     * push the overview page to the top of the advanced ads menu
-     *
-     * @global array $submenu
-     * @since 1.2.2
-     */
-    public function organize_admin_menu(){
-        global $submenu;
-        $submenu['edit.php?post_type=advanced_ads'][1] = $submenu['edit.php?post_type=advanced_ads'][17];
-        unset($submenu['edit.php?post_type=advanced_ads'][17]);
-        ksort($submenu['edit.php?post_type=advanced_ads']);
     }
 
     /**
@@ -286,18 +280,6 @@ class Advanced_Ads_Admin {
         $ad_placements = Advanced_Ads::get_ad_placements_array();
 
         include_once( 'views/debug.php' );
-    }
-
-    /**
-     * Register ad group taxonomy page
-     *
-     * @since    1.0.0
-     */
-    public function add_ad_group_menu() {
-
-        $this->ad_group_hook_suffix = add_submenu_page(
-                'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG, __('Ad Groups', $this->plugin_slug), __('Groups', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-groups', array($this, 'ad_group_admin_page')
-        );
     }
 
     /**
@@ -572,11 +554,19 @@ class Advanced_Ads_Admin {
 		$hook
 	);
 
- 	// add setting fields
+ 	// add setting fields for user role
  	add_settings_field(
 		'hide-for-user-role',
 		__('Hide ads for logged in users', ADVADS_SLUG),
 		array($this, 'render_settings_hide_for_users'),
+		$hook,
+		'advanced_ads_setting_section'
+	);
+ 	// add setting fields for advanced ads
+ 	add_settings_field(
+		'activate-advanced-js',
+		__('Use advanced JavaScript', ADVADS_SLUG),
+		array($this, 'render_settings_advanced_js'),
 		$hook,
 		'advanced_ads_setting_section'
 	);
@@ -615,6 +605,19 @@ class Advanced_Ads_Admin {
         echo '</select>';
 
         echo '<p class="description">'. __('Choose the lowest role a user must have in order to not see any ads.', ADVADS_SLUG) .'</p>';
+    }
+
+    /**
+     * render setting to display advanced js file
+     *
+     * @since 1.2.3
+     */
+    public function render_settings_advanced_js(){
+        $options = Advanced_Ads::get_instance()->options();
+        $checked = (!empty($options['advanced-js'])) ? 1 : 0;
+
+        echo '<input id="advanced-ads-advanced-js" type="checkbox" value="1" name="advancedads[advanced-js]" '.checked($checked, 1, false).'>';
+        echo '<p class="description">'. sprintf(__('Only enable this if you can and want to use the advanced JavaScript functions described <a href="%s">here</a>.', ADVADS_SLUG), 'http://wpadvancedads.com/javascript-functions/') .'</p>';
     }
 
     /**

@@ -34,9 +34,10 @@ $advanced_ads_ad_conditions = array(
         'type' => 'idfield',
     ),
     'categoryids' => array(
-        'label' => __('Categories', $advanced_ads_slug),
-        'description' => __('comma seperated IDs of categories for posts or category archives', $advanced_ads_slug),
+        'label' => __('Categories, Tags and Taxonomies', $advanced_ads_slug),
+        'description' => __('Choose terms from public category, tag and other taxonomies a post must belong to in order to have ads.', $advanced_ads_slug),
         'type' => 'idfield',
+        'callback' => array('AdvAds_Display_Condition_Callbacks', 'terms')
     ),
     'categoryarchiveids' => array(
         'label' => __('Category Archives', $advanced_ads_slug),

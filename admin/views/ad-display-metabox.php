@@ -23,8 +23,6 @@ require_once(ADVADS_BASE_PATH . 'admin/includes/class-display-condition-callback
         foreach ($advanced_ads_ad_conditions as $_key => $_condition) :
             if(!isset($_condition['callback'])) continue;
             ?><div class="advanced-ad-display-condition">
-                <h4><?php echo $_condition['label']; ?></h4>
-                <p class="description"><?php echo $_condition['description']; ?></p>
                 <?php if(is_array($_condition['callback']) && method_exists($_condition['callback'][0], $_condition['callback'][1])) {
                     $_condition['callback'][0]::$_condition['callback'][1]($ad);
                 }
