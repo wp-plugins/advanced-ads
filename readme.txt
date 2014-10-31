@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: 3.5
 Tested up to: 4.0.0
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,6 +134,11 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 
 == Changelog ==
 
+= 1.2.4 =
+
+* fixed wrong links for ad groups and debug page
+* display ad groups in ad list
+
 = 1.2.3 =
 
 major changes:
@@ -228,6 +233,10 @@ other fixes:
 * first release
 
 == Upgrade Notice ==
+
+= 1.2.4 =
+
+Fixes bug that prevented to create and edit ad groups
 
 = 1.2.3 =
 

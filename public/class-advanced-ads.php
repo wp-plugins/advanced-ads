@@ -25,7 +25,7 @@ class Advanced_Ads {
      * @var     string
      */
 
-    const VERSION = '1.2.3';
+    const VERSION = '1.2.4';
 
     /**
      * post type slug
@@ -506,7 +506,7 @@ class Advanced_Ads {
             'show_ui'           => true,
             'show_in_nav_menus' => false,
             'show_tagcloud'     => false,
-            'show_admin_column' => false,
+            'show_admin_column' => true,
             'query_var'         => false,
             'rewrite'           => false,
         );

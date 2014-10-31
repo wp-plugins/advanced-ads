@@ -213,7 +213,7 @@ class Advanced_Ads_Admin {
             $this->plugin_slug, __('Advanced Ads Settings', $this->plugin_slug), __('Settings', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-settings', array($this, 'display_plugin_settings_page')
         );
         add_submenu_page(
-                null, __('Advanced Ads Debugging', $this->plugin_slug), __('Debug', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-debug', array($this, 'display_plugin_debug_page')
+            null, __('Advanced Ads Debugging', $this->plugin_slug), __('Debug', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-debug', array($this, 'display_plugin_debug_page')
         );
     }
 
@@ -371,12 +371,12 @@ class Advanced_Ads_Admin {
         $plugin = Advanced_Ads::get_instance();
 
         $defaultargs = array(
-            'post_type' => constant("Advanced_Ads::POST_TYPE_SLUG"),
+            // 'post_type' => constant("Advanced_Ads::POST_TYPE_SLUG"),
             'page' => 'advanced-ads-groups',
         );
         $args = $args + $defaultargs;
 
-        return add_query_arg($args, admin_url('edit.php'));
+        return add_query_arg($args, admin_url('admin.php'));
     }
 
     /**
