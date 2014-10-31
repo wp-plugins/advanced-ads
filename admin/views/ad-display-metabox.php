@@ -1,3 +1,6 @@
+<?php // include callback file
+require_once(ADVADS_BASE_PATH . 'admin/includes/class-display-condition-callbacks.php');
+?>
 <?php $types = Advanced_Ads::get_instance()->ad_types; ?>
 <p class="description"><?php _e('Choose where to display the ad and where not.', ADVADS_SLUG); ?></p>
 <div id="advanced-ad-conditions-enable">
@@ -14,18 +17,28 @@
     <li><?php _e('When using one of the two choices on checkbox conditions, the rule is binding. E.g. "Front Page: show here" will result on the ad being only visible on the front page.', $this->plugin_slug); ?></li>
     <li><?php _e('If there is nothing in the row, there won’t be any check. Meaning, if you leave everything empty, the ad will be displayed everywhere.', $this->plugin_slug); ?></li>
 </ul>
-
-<table id="advanced-ad-conditions">
+<div id="advanced-ad-conditions">
+<?php global $advanced_ads_ad_conditions;
+    if (is_array($advanced_ads_ad_conditions)) :
+        foreach ($advanced_ads_ad_conditions as $_key => $_condition) :
+            if(!isset($_condition['callback'])) continue;
+            ?><div class="advanced-ad-display-condition">
+                <?php if(is_array($_condition['callback']) && method_exists($_condition['callback'][0], $_condition['callback'][1])) {
+                    $_condition['callback'][0]::$_condition['callback'][1]($ad);
+                }
+            ?></div><?php
+        endforeach;
+        ?><p><?php _e('UPDATE NOTICE: I am currently moving the old settings from below to a new form (above). Don’t worry, the old settings will still work in the future.', ADVADS_SLUG); ?></p>
+    <table>
     <thead>
         <tr>
             <th></th>
             <th><?php _e('show here', $this->plugin_slug); ?></th>
             <th><?php _e('DON’T show', $this->plugin_slug); ?></th>
             <th></th>
-        </tr>
-        <?php global $advanced_ads_ad_conditions;
-        if (is_array($advanced_ads_ad_conditions))
+        </tr><?php
             foreach ($advanced_ads_ad_conditions as $_key => $_condition) :
+                if(isset($_condition['callback'])) continue;
             ?><tr>
                     <th><?php echo $_condition['label']; ?>
                     <?php if (!empty($_condition['description'])) : ?>
@@ -42,6 +55,8 @@
                 <?php endif; ?>
                     <td><button type="button" class="clear-radio"><?php _e('clear', $this->plugin_slug); ?></button></td>
                 </tr>
-    <?php endforeach; ?>
+    <?php endforeach;?>
 </thead>
 </table>
+    </div>
+<?php endif;
