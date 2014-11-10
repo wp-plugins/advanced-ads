@@ -24,7 +24,8 @@ require_once(ADVADS_BASE_PATH . 'admin/includes/class-display-condition-callback
             if(!isset($_condition['callback'])) continue;
             ?><div class="advanced-ad-display-condition">
                 <?php if(is_array($_condition['callback']) && method_exists($_condition['callback'][0], $_condition['callback'][1])) {
-                    $_condition['callback'][0]::$_condition['callback'][1]($ad);
+                    call_user_func(array($_condition['callback'][0], $_condition['callback'][1]), $ad); // works also in php below 5.3
+                    // $_condition['callback'][0]::$_condition['callback'][1]($ad); // works only in php 5.3 and above
                 }
             ?></div><?php
         endforeach;

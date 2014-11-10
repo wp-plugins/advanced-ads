@@ -51,6 +51,15 @@ jQuery(document).ready(function($) {
         advads_toggle_single_display_conditions(this);
     });
 
+    // toggle single display condition checkboxes that have a counterpart
+    $('.advads-conditions-single input[type="checkbox"]').click(function(){
+        advads_toggle_single_display_condition_checkbox(this);
+    });
+    // toggle single display condition checkboxes that have a counterpart on load
+    $('.advads-conditions-single input[type="checkbox"]').each(function(){
+        advads_toggle_single_display_condition_checkbox(this);
+    });
+
 });
 
 /**
@@ -111,5 +120,21 @@ function advads_toggle_single_display_conditions(checkbox){
         jQuery(checkbox).parents('.advanced-ad-display-condition').find('.advads-conditions-single').addClass('disabled').find('input').attr('disabled', 'disabled');
     } else {
         jQuery(checkbox).parents('.advanced-ad-display-condition').find('.advads-conditions-single').removeClass('disabled').find('input').removeAttr('disabled');
+    }
+}
+
+/**
+ * toggle display condition checkboxes
+ * @param {string} checkbox element
+ */
+function advads_toggle_single_display_condition_checkbox(checkbox){
+    // get the counterpart (same value, but not current element)
+    var counterpart = jQuery(checkbox).parents('.advads-conditions-single').find('input[type="checkbox"][value="'+ checkbox.value +'"]').not(checkbox);
+    // toggle counterpart
+    if(jQuery(checkbox).is(':checked')){
+        counterpart.attr('checked', false);
+        counterpart.attr('disabled', 'disabled');
+    } else {
+        counterpart.removeAttr('disabled');
     }
 }

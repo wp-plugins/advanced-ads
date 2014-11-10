@@ -43,6 +43,7 @@ $advanced_ads_ad_conditions = array(
         'label' => __('Category Archives', $advanced_ads_slug),
         'description' => __('comma seperated IDs of category archives', $advanced_ads_slug),
         'type' => 'idfield',
+        'callback' => array('AdvAds_Display_Condition_Callbacks', 'category_archives')
     ),
     'is_front_page' => array(
         'label' => __('Home Page', $advanced_ads_slug),

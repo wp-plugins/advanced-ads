@@ -7,7 +7,7 @@
  * @author    Thomas Maier <thomas.maier@webgilde.com>
  * @license   GPL-2.0+
  * @link      http://webgilde.com
- * @copyright 2013 Thomas Maier, webgilde GmbH
+ * @copyright 2013-2014 Thomas Maier, webgilde GmbH
  */
 
 /**
@@ -25,7 +25,7 @@ class Advanced_Ads {
      * @var     string
      */
 
-    const VERSION = '1.2.4';
+    const VERSION = '1.2.5';
 
     /**
      * post type slug

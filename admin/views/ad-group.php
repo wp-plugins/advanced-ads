@@ -58,6 +58,7 @@ if (isset($_REQUEST['message']) && ( $msg = (int) $_REQUEST['message'] ) || isse
         }
         ?>
     </h2>
+    <p><?php _e('Ad Groups are a very flexible method to bundle ads. You can use them to display random ads in the frontend or run split tests, but also just for informational purposes. Not only can an Ad Groups have multiple ads, but an ad can belong to multiple ad groups.', ADVADS_SLUG); ?></p>
     <?php if ($message) : ?>
         <div id="message" class="updated"><p><?php echo $message; ?></p></div>
         <?php

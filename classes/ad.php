@@ -253,7 +253,9 @@ class Advads_Ad {
      * @return bool $can_display true if can be displayed in frontend
      */
     public function can_display_by_conditions(){
-        global $post;
+        global $post, $wp_query;
+
+        $query = $wp_query->get_queried_object();
 
         if(empty($this->options['conditions']) ||
                 !is_array($this->options['conditions'])) return true;
@@ -286,70 +288,84 @@ class Advads_Ad {
                 // check for category ids
                 case 'categoryids' :
                     // included
-                    if(!empty($_cond_value['include'])){
-                        if(is_string($_cond_value['include'])){
-                            $category_ids = explode(',', $_cond_value['include']);
-                        } else {
-                            $category_ids = $_cond_value['include'];
+                    if(is_archive() && empty($_cond_value['all'])){
+                        if(!empty($_cond_value['include'])){
+                            if(is_string($_cond_value['include'])){
+                                $category_ids = explode(',', $_cond_value['include']);
+                            } else {
+                                $category_ids = $_cond_value['include'];
+                            }
+                            // check if currently in a post (not post page, but also posts in loops)
+                            if(is_array($category_ids) && isset($post->ID)
+                                && !in_category($category_ids, $post)) {
+                                    return false;
+                            }
                         }
-                        // check if currently in a post (not post page, but also posts in loops)
-                        if(is_array($category_ids) && isset($post->ID)
-                            && !in_category($category_ids, $post)) {
-                                return false;
-                        }
-                    }
-                    // check for excluded category ids
-                    if(!empty($_cond_value['exclude'])){
-                        if(is_string($_cond_value['exclude'])){
-                            $category_ids = explode(',', $_cond_value['exclude']);
-                        } else {
-                            $category_ids = $_cond_value['exclude'];
-                        }
-                        // check if currently in a post (not post page, but also posts in loops)
-                        if(is_array($category_ids) && isset($post->ID)
-                            && in_category($category_ids, $post) ) {
-                                // being only in one excluded category is enough to not display the ad
-                                return false;
+                        // check for excluded category ids
+                        if(!empty($_cond_value['exclude'])){
+                            if(is_string($_cond_value['exclude'])){
+                                $category_ids = explode(',', $_cond_value['exclude']);
+                            } else {
+                                $category_ids = $_cond_value['exclude'];
+                            }
+                            // check if currently in a post (not post page, but also posts in loops)
+                            if(is_array($category_ids) && isset($post->ID)
+                                && in_category($category_ids, $post) ) {
+                                    // being only in one excluded category is enough to not display the ad
+                                    return false;
+                            }
                         }
                     }
                 break;
                 // check for included category archive ids
                 // @link http://codex.wordpress.org/Conditional_Tags#A_Category_Page
                 case 'categoryarchiveids' :
-                    if(!empty($_cond_value['include'])){
-                        $category_ids = explode(',', $_cond_value['include']);
-                        if(is_array($category_ids) && !is_category($category_ids))
-                            return false;
-                    }
-                    // check for excluded category archive ids
-                    if(!empty($_cond_value['exclude'])){
-                        $category_ids = explode(',', $_cond_value['exclude']);
-                        if(is_array($category_ids) && is_category($category_ids))
-                            return false;
+                    if(isset($query->term_id) && empty($_cond_value['all'])){
+                        if(!empty($_cond_value['include'])){
+                            if(is_string($_cond_value['include'])){
+                                $category_ids = explode(',', $_cond_value['include']);
+                            } else {
+                                $category_ids = $_cond_value['include'];
+                            }
+                            if(is_array($category_ids) && !in_array($query->term_id, $category_ids))
+                                return false;
+                        }
+                        // check for excluded category archive ids
+                        if(!empty($_cond_value['exclude'])){
+                            if(is_string($_cond_value['exclude'])){
+                                $category_ids = explode(',', $_cond_value['exclude']);
+                            } else {
+                                $category_ids = $_cond_value['exclude'];
+                            }
+                            if(is_array($category_ids) && in_array($query->term_id, $category_ids))
+                                return false;
+                        }
                     }
                 break;
                 // check for included post types
                 case 'posttypes' :
                     // display everywhere, if include not set (= all is checked)
                     // TODO remove condition check for string; deprecated since 1.2.2
-                    if(!empty($_cond_value['include'])){
-                        if(is_string($_cond_value['include'])){
-                            $post_types = explode(',', $_cond_value['include']);
-                        } else {
-                            $post_types = $_cond_value['include'];
+                    if(empty($_cond_value['all'])){
+                        if(!empty($_cond_value['include'])){
+                            if(is_string($_cond_value['include'])){
+                                $post_types = explode(',', $_cond_value['include']);
+                            } else {
+                                $post_types = $_cond_value['include'];
+                            }
+                            // check if currently in a post (not post page, but also posts in loops)
+                            if(is_array($post_types) && !in_array(get_post_type(), $post_types)) {
+                                return false;
+                            }
                         }
-                        // check if currently in a post (not post page, but also posts in loops)
-                        if(is_array($post_types) && !in_array(get_post_type(), $post_types)) {
-                            return false;
-                        }
-                    }
-                    // check for excluded post types
-                    // TODO remove in a later version, deprecated since 1.2.2
-                    if(!empty($_cond_value['exclude'])){
-                        $post_types = explode(',', $_cond_value['exclude']);
-                        // check if currently in a post (not post page, but also posts in loops)
-                        if(is_array($post_types) && in_array(get_post_type(), $post_types)) {
-                            return false;
+                        // check for excluded post types
+                        // TODO remove in a later version, deprecated since 1.2.2
+                        if(!empty($_cond_value['exclude'])){
+                            $post_types = explode(',', $_cond_value['exclude']);
+                            // check if currently in a post (not post page, but also posts in loops)
+                            if(is_array($post_types) && in_array(get_post_type(), $post_types)) {
+                                return false;
+                            }
                         }
                     }
                 break;

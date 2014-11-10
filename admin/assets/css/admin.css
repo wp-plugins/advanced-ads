@@ -1,4 +1,12 @@
 /**
+* OVERVIEW PAGE
+*/
+
+.advads-content-wrapper { display: table; width: 100%; }
+.advads-content-left { display: table-cell; min-width: 500px; vertical-align: top; }
+.advads-content-right { display: table-cell; width: 250px; padding: 0 0 0 20px; vertical-align: top; }
+
+/**
 * AD EDIT PAGE
 */
 #ad-main-box { overflow: hidden; }
@@ -68,3 +76,4 @@
 */
 .advads-toggle-link { cursor: pointer; }
 .advads-content-half { float: left; margin-right: 5%; width: 45%; min-width: 300px; }
+.advads-box { margin-bottom: 20px; padding: 10px; background: #fff; border: solid 1px; }

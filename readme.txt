@@ -2,9 +2,9 @@
 Contributors: webzunft
 Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5RRRCEBGN3UT2
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
-Requires at least: 3.5
+Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.0.0
-Stable tag: 1.2.4
+Stable tag: 1.2.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,16 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 2. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.2.5 =
+
+* fixed wrong links on overview page
+* consider the "all" option for display conditions
+* moved category archive ids display condition to new layout
+* extended category archive ids to all category archive pages
+* prevent a display condition option to be included and excluded at the same time
+* optimized layout of overview page
+* fix for php prior to 5.3
 
 = 1.2.4 =
 
