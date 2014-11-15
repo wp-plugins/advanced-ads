@@ -163,8 +163,9 @@ class AdvAds_Display_Condition_Callbacks {
         ?><h4><label class="advads-conditions-all"><input type="checkbox" name="advanced_ad[conditions][categoryarchiveids][all]" value="1" <?php checked($_all, 1); ?>><?php
         _e('Display on all <strong>category archive pages</strong>.', ADVADS_SLUG); ?></label></h4><?php
         $taxonomies = get_taxonomies(array('public' => true, 'publicly_queryable' => true), 'objects', 'or');
-        ?><p class="description"><?php _e('Choose the terms from public categories, tags and other taxonomies on which’s archive page ads can appear', ADVADS_SLUG); ?></p>
-        <div class="advads-conditions-single"><table><?php
+        ?><div class="advads-conditions-single"><table>
+                <p class="description"><?php _e('Choose the terms from public categories, tags and other taxonomies on which’s archive page ads can appear', ADVADS_SLUG); ?></p>
+                <table><?php
         foreach($taxonomies as $_tax):
             if($_tax->name === 'advanced_ads_groups') continue; // exclude adv ads groups
             $terms = get_terms($_tax->name, array());
@@ -208,5 +209,106 @@ class AdvAds_Display_Condition_Callbacks {
             endif;
         endforeach;
         ?></table></div><?php
+    }
+
+        /**
+     * render display condition for single post types
+     *
+     * @param obj $ad ad object
+     * @since 1.2.6
+     */
+    public static function single_posts($ad = false){
+
+        if(is_object($ad)){
+            $_all = (isset($ad->conditions['postids']['all'])) ? 1 : 0;
+            if(!$_all && empty($ad->conditions['postids']['include']) && empty($ad->conditions['postids']['exclude'])){
+                $_all = 1;
+            }
+        }
+
+        ?><h4><label class="advads-conditions-all"><input type="checkbox" name="advanced_ad[conditions][postids][all]" value="1" <?php
+            checked($_all, 1); ?>><?php _e('Display an all <strong>individual posts, pages</strong> and public post type pages', ADVADS_SLUG); ?></label></h4><?php
+
+        ?><div class="advads-conditions-single">
+        <p class="description"><?php _e('Choose on which individual posts, pages and public post type pages you want to display or hide ads.', ADVADS_SLUG); ?></p><?php
+
+        // derrive method from previous setup
+        // set defaults
+        if(is_object($ad)){
+            $_method = (isset($ad->conditions['postids']['method'])) ? $ad->conditions['postids']['method'] : 0;
+            if($_method === 0){
+                if(empty($ad->conditions['postids']['include']) && !empty($ad->conditions['postids']['exclude'])){
+                    $_method = 'exclude';
+                } elseif(!empty($ad->conditions['postids']['include']) && empty($ad->conditions['postids']['exclude'])) {
+                    $_method = 'include';
+                } else {
+                    $_method = '';
+                }
+            }
+        }
+
+        ?><p><?php _e('What should happen with ads on the list of individual posts below?', ADVADS_SLUG); ?></p>
+        <label><input type="radio" name='advanced_ad[conditions][postids][method]' value='' <?php checked('', $_method); ?>><?php _e('ignore the list', ADVADS_SLUG); ?></label></li>
+        <label><input type="radio" name='advanced_ad[conditions][postids][method]' value='include' <?php checked('include', $_method); ?>><?php _e('display the ad only there', ADVADS_SLUG); ?></label></li>
+        <label><input type="radio" name='advanced_ad[conditions][postids][method]' value='exclude' <?php checked('exclude', $_method); ?>><?php _e('hide the ad here', ADVADS_SLUG); ?></label></li>
+        <?php
+
+        /**
+         * Update warning
+         * @todo remove on a later version, if no longer needed
+         */
+        if(!empty($ad->conditions['postids']['include']) && !empty($ad->conditions['postids']['exclude'])){
+            ?><div style="color: red;"><p><strong><?php _e('Update warning', ADVADS_SLUG); ?></strong></p>
+                <p><?php _e('Due to some conflicts before version 1.2.6, it is from now on only possible to choose either individual pages to include or exclude an ad, but not both with mixed settings. It seems you are still using mixed settings on this page. Please consider changing your setup for this ad.', ADVADS_SLUG); ?></p>
+                <p><?php _e('Your old values are:', ADVADS_SLUG); ?></p>
+                <p><?php _e('Post IDs the ad is displayed on:', ADVADS_SLUG); echo $ad->conditions['postids']['include']; ?></p>
+                <p><?php _e('Post IDs the ad is hidden from:', ADVADS_SLUG); echo $ad->conditions['postids']['exclude']; ?></p>
+                <p><?php _e('Below you find the pages the ad is displayed on. If this is ok, just save the ad. If not, please update your settings.', ADVADS_SLUG); ?></p>
+
+        </div><?php
+        }
+
+        if(!empty($ad->conditions['postids']['include'])){
+            // backward compatibility
+            // TODO: remove in a later version; this should already be an array
+            if(is_string($ad->conditions['postids']['include'])){
+                $_postids = explode(',', $ad->conditions['postids']['include']);
+            } else {
+                $_postids = $ad->conditions['postids']['include'];
+            }
+        } elseif(!empty($ad->conditions['postids']['exclude'])){
+            // backward compatibility
+            // TODO: remove in a later version; this should already be an array
+            if(is_string($ad->conditions['postids']['exclude'])){
+                $_postids = explode(',', $ad->conditions['postids']['exclude']);
+            } else {
+                $_postids = $ad->conditions['postids']['exclude'];
+            }
+        } else {
+            $_postids = array();
+        }
+
+        ?><ul class='advads-conditions-postids-list'><?php
+        if($_postids != array()){
+            $args = array(
+                'post_type' => 'any',
+                // 'post_status' => 'publish',
+                'post__in' => $_postids,
+                // 'ignore_sticky_posts' => 1,
+            );
+
+            $the_query = new WP_Query( $args );
+            while ( $the_query->have_posts() ) {
+                $the_query->next_post();
+                echo '<li><a class="remove" href="#">remove</a><a href="'.get_permalink($the_query->post->ID).'">' . get_the_title( $the_query->post->ID ) . '</a><input type="hidden" name="advanced_ad[conditions][postids][ids][]" value="'.$the_query->post->ID.'"></li>';
+            }
+        }
+        ?><li class="show-search"><a href="#"><?php _e('new', ADVADS_SLUG); ?></a>
+            <input type="text" style="display:none;" id="advads-display-conditions-individual-post" value="" placeholder="<?php
+            _e('type the title', ADVADS_SLUG); ?>"/>
+            <?php wp_nonce_field( 'internal-linking', '_ajax_linking_nonce', false ); ?>
+        </li>
+        </ul>
+        </div><?php
     }
 }

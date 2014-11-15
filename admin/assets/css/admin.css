@@ -42,6 +42,8 @@
 .post-type-advanced_ads .advads-conditions-all { display: block; }
 .post-type-advanced_ads .advads-conditions-single { margin-bottom: 10px; padding: 10px; }
 .post-type-advanced_ads .advads-conditions-single.disabled { display: none; opacity: .5; }
+.advads-conditions-postids-list li { background: #F1F1F1; padding: 3px; }
+.advads-conditions-postids-list .remove { margin-right: 1em; font-size: .9em; }
 .post-type-advanced_ads #advads-ad-content-plain {
     width: 100%;
 }
@@ -50,6 +52,8 @@
 .post-type-advanced_ads #advanced-ads-ad-parameters-size p { float: left; margin: 0 1em 0 0; font-weight: bold; }
 .post-type-advanced_ads #advanced-ads-ad-parameters-size label + label { margin-left: 1em; }
 .post-type-advanced_ads #advanced-ads-ad-parameters-size input { width: 4em; margin-left: .5em; }
+
+.advads-debug-output legend { text-decoration: underline; cursor: pointer; }
 
 /**
  AD GROUP LIST

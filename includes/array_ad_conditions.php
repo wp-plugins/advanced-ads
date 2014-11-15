@@ -14,6 +14,7 @@
  * type - information / markup type
  *      idfield - input field for comma separated lists of ids
  *      radio - radio button
+ *      others - added to not trigger internal sanitization
  *
  * note: ’idfield’ always has a {field}_not version that is created automatically and being its own condition
  *
@@ -28,11 +29,6 @@ $advanced_ads_ad_conditions = array(
         'type' => 'textvalues',
         'callback' => array('AdvAds_Display_Condition_Callbacks', 'post_types')
     ),
-    'postids' => array(
-        'label' => __('Single Pages/Posts', $advanced_ads_slug),
-        'description' => __('comma seperated IDs of post, page or custom post type', $advanced_ads_slug),
-        'type' => 'idfield',
-    ),
     'categoryids' => array(
         'label' => __('Categories, Tags and Taxonomies', $advanced_ads_slug),
         'description' => __('Choose terms from public category, tag and other taxonomies a post must belong to in order to have ads.', $advanced_ads_slug),
@@ -44,6 +40,12 @@ $advanced_ads_ad_conditions = array(
         'description' => __('comma seperated IDs of category archives', $advanced_ads_slug),
         'type' => 'idfield',
         'callback' => array('AdvAds_Display_Condition_Callbacks', 'category_archives')
+    ),
+    'postids' => array(
+        'label' => __('Individual Posts, Pages and Public Post Types', $advanced_ads_slug),
+        'description' => __('Choose on which individual posts, pages and public post type pages you want to display or hide ads.', $advanced_ads_slug),
+        'type' => 'other',
+        'callback' => array('AdvAds_Display_Condition_Callbacks', 'single_posts')
     ),
     'is_front_page' => array(
         'label' => __('Home Page', $advanced_ads_slug),

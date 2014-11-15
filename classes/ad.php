@@ -227,7 +227,7 @@ class Advads_Ad {
         $see_ads_capability = (!empty($options['hide-for-user-role'])) ? $options['hide-for-user-role'] : 0;
 
         // don’t display ads that are not published or private for users not logged in
-        if($this->status !== 'publish' && ($this->status === 'private' && !is_user_logged_in())){
+        if($this->status !== 'publish' && !($this->status === 'private' && !is_user_logged_in())){
             return false;
         }
 
@@ -268,27 +268,36 @@ class Advads_Ad {
             switch($_cond_key){
                 // check for post ids
                 case 'postids' :
-                    // included posts
-                    if(!empty($_cond_value['include'])){
-                        $post_ids = explode(',', $_cond_value['include']);
-                        if(is_array($post_ids)
-                                && isset($post->ID)
-                                && !in_array($post->ID, $post_ids))
+                    if(is_singular() && empty($_cond_value['all'])){
+                        // included posts
+                        if(!empty($_cond_value['include'])){
+                            if(is_string($_cond_value['include'])){
+                                $post_ids = explode(',', $_cond_value['include']);
+                            } else {
+                                $post_ids = $_cond_value['include'];
+                            }
+                            if(is_array($post_ids)
+                                    && isset($post->ID)
+                                    && !in_array($post->ID, $post_ids))
+                                    return false;
+                        }
+                        // excluded posts
+                        if(!empty($_cond_value['exclude'])){
+                            if(is_string($_cond_value['exclude'])){
+                                $post_ids = explode(',', $_cond_value['exclude']);
+                            } else {
+                                $post_ids = $_cond_value['exclude'];
+                            }
+                            if(is_array($post_ids) && isset($post->ID) && in_array($post->ID, $post_ids)){
                                 return false;
-                    }
-                    // excluded posts
-                    if(!empty($_cond_value['exclude'])){
-                        $post_ids = explode(',', $_cond_value['exclude']);
-                        if(is_array($post_ids)
-                                && isset($post->ID)
-                                && in_array($post->ID, $post_ids))
-                                return false;
+                            }
+                        }
                     }
                 break;
                 // check for category ids
                 case 'categoryids' :
                     // included
-                    if(is_archive() && empty($_cond_value['all'])){
+                    if(is_singular() && empty($_cond_value['all'])){
                         if(!empty($_cond_value['include'])){
                             if(is_string($_cond_value['include'])){
                                 $category_ids = explode(',', $_cond_value['include']);
@@ -320,7 +329,7 @@ class Advads_Ad {
                 // check for included category archive ids
                 // @link http://codex.wordpress.org/Conditional_Tags#A_Category_Page
                 case 'categoryarchiveids' :
-                    if(isset($query->term_id) && empty($_cond_value['all'])){
+                    if(isset($query->term_id) && is_archive() && empty($_cond_value['all'])){
                         if(!empty($_cond_value['include'])){
                             if(is_string($_cond_value['include'])){
                                 $category_ids = explode(',', $_cond_value['include']);
@@ -372,8 +381,8 @@ class Advads_Ad {
                 // check is_front_page
                 // @link https://codex.wordpress.org/Conditional_Tags#The_Front_Page
                 case 'is_front_page' :
-                    if(($_cond_value == 1 && !is_front_page())
-                            || ($_cond_value == 0 && is_front_page()))
+                    if(($_cond_value == 1 && (!is_front_page() && !is_home))
+                            || ($_cond_value == 0 && (is_front_page() || is_home())))
                         return false;
                 break;
                 // check is_singular
@@ -547,11 +556,30 @@ class Advads_Ad {
         if(!is_array($conditions) || $conditions == array()) return array();
 
         foreach($conditions as $_key => $_condition){
-            if(!is_array($_condition))
-                $_condition = trim($_condition);
-            if($_condition == '') {
-                $conditions[$_key] = $_condition;
-                continue;
+            if($_key == 'postids'){
+                // sanitize single post conditions
+                if(empty($_condition['ids'])){ // remove, if empty
+                    $_condition['include'] = array();
+                    $_condition['exclude'] = array();
+                } else {
+                    switch($_condition['method']){
+                        case  'include' :
+                            $_condition['include'] = $_condition['ids'];
+                            $_condition['exclude'] = array();
+                            break;
+                        case  'exclude' :
+                            $_condition['include'] = array();
+                            $_condition['exclude'] = $_condition['ids'];
+                            break;
+                    }
+                }
+            } else {
+                if(!is_array($_condition))
+                    $_condition = trim($_condition);
+                if($_condition == '') {
+                    $conditions[$_key] = $_condition;
+                    continue;
+                }
             }
             $type = !empty($advanced_ads_ad_conditions[$_key]['type']) ? $advanced_ads_ad_conditions[$_key]['type'] : 0;
             if(empty($type)) continue;
@@ -571,6 +599,7 @@ class Advads_Ad {
      */
     public static function sanitize_condition_idfield($cond = ''){
         // strip anything that is not comma or number
+
         if(is_array($cond)){
             foreach($cond as $_key => $_cond){
                 $cond[$_key] = preg_replace('#[^0-9,]#', '', $_cond);

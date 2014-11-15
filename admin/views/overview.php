@@ -4,7 +4,7 @@
  */
 ?><div class="wrap">
     <?php screen_icon(); ?>
-    <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+    <h2><?php echo esc_html(get_admin_page_title()); ?></h2>
     <div class="advads-content-wrapper">
         <div class="advads-content-left">
             <div class="advads-box">
@@ -28,6 +28,9 @@
                         ?>
                     <?php endforeach; ?>
                     </ul>
+                    <?php else : ?>
+                    <a class="button button-primary" href="<?php echo admin_url('post-new.php?post_type=' . $this->post_type);
+                        ?>"><?php _e('Create your first ad', ADVADS_SLUG); ?></a>
                     <?php endif; ?>
                 </div>
                 <br class="clear"/>
@@ -51,6 +54,9 @@
                         ?>
                     <?php endforeach; ?>
                     </ul>
+                    <?php else : ?>
+                    <a class="button button-primary" href="<?php echo admin_url('admin.php?action=edit&page=advanced-ads-groups');
+                        ?>"><?php _e('Create your first group', ADVADS_SLUG); ?></a>
                     <?php endif; ?>
                 </div>
             <br class="clear"/>
@@ -74,6 +80,9 @@
                         ?>
                     <?php endforeach; ?>
                     </ul>
+                    <?php else : ?>
+                    <a class="button button-primary" href="<?php echo admin_url('admin.php?page=advanced-ads-placements');
+                        ?>"><?php _e('Create your first placement', ADVADS_SLUG); ?></a>
                     <?php endif; ?>
                 </div>
             <br class="clear"/>
@@ -98,6 +107,8 @@
                     <li><a href="http://wpadvancedads.com/layer-ads/?utm_campaign=advads&utm_medium=plugin&utm_source=overview" target="_blank">PopUp and Layer Ads</a></li>
                     <li><a href="http://wpadvancedads.com/sticky-ads/?utm_campaign=advads&utm_medium=plugin&utm_source=overview" target="_blank">Sticky Ads</a></li>
                 </ul>
+                <a class="button button-primary" target="_blank" href="http://wpadvancedads.com"><?php
+                _e('See Add-Ons', ADVADS_SLUG); ?></a>
             </div>
         </div>
     </div>

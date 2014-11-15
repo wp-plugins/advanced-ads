@@ -14,7 +14,7 @@
  * Plugin class. This class should ideally be used to work with the
  * administrative side of the WordPress site.
  *
- * *
+ *
  * @package Advanced_Ads_Admin
  * @author  Thomas Maier <thomas.maier@webgilde.com>
  */
@@ -150,8 +150,8 @@ class Advanced_Ads_Admin {
             return;
         }
 
-        wp_enqueue_script($this->plugin_slug . '-admin-script', plugins_url('assets/js/admin.js', __FILE__), array('jquery'), Advanced_Ads::VERSION);
-
+        wp_enqueue_script($this->plugin_slug . '-admin-script', plugins_url('assets/js/admin.js', __FILE__), array('jquery', 'jquery-ui-autocomplete'), Advanced_Ads::VERSION);
+        
         // just register this script for later inclusion on ad group list page
         wp_register_script('inline-edit-group-ads', plugins_url('assets/js/inline-edit-group-ads.js', __FILE__), array('jquery'), Advanced_Ads::VERSION);
 

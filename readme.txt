@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.0.0
-Stable tag: 1.2.5
+Stable tag: 1.2.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -133,6 +133,19 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 2. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.2.6 =
+
+* layout updates to display condition box
+* moved single post display condition to new layout
+* individual post ids display condition is now only checked on singular pages
+* added quick action buttons to overview page
+* added debug output for display conditions (if WP_DEBUG is true)
+* fixed bug with trashed ads still showing
+* fixed admin notices appearing on overview page on the wrong place
+* fixed display conditions for category of post and category archives interfered with each other
+
+IMPORTANT: It is no longer possible to use the single post display condition to select individual posts where the ad is displayed and where it is hidden at the same time. This didn’t made sense before and is prevented now completely.
 
 = 1.2.5 =
 
