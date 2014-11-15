@@ -21,7 +21,7 @@ class Advads_Ad {
     /**
      * id of the post type for this ad
      */
-    protected $id = 0;
+    public $id = 0;
 
     /**
      * true, if this is an Advanced Ads Ad post type
@@ -32,6 +32,16 @@ class Advads_Ad {
      * ad type
      */
     public $type = 'content';
+
+    /**
+     * ad width
+     */
+    public $width = 0;
+
+    /**
+     * ad height
+     */
+    public $height = 0;
 
     /**
      * object of current ad type
@@ -86,14 +96,16 @@ class Advads_Ad {
         // dynamically add sanitize filters for condition types
         $_types = array();
         foreach($advanced_ads_ad_conditions as $_condition) {
-            $_types[] = $_condition['type'];
+            // add unique
+            $_types[$_condition['type']] = false;
         }
-        $_types = array_unique($_types);
-        foreach($_types as $_type) {
+        // iterate types
+        foreach(array_keys($_types) as $_type) {
+            // -TODO might be faster to use __call() method or isset()-test class method array
             $method_name = 'sanitize_condition_'. $_type;
-            if(method_exists($this, $method_name)) {
+            if (method_exists($this, $method_name)) {
                 add_filter('advanced-ads-sanitize-condition-' . $_type, array($this, $method_name), 10, 1);
-            } elseif(function_exists('advads_sanitize_condition_' . $_type)) {
+            } elseif (function_exists('advads_sanitize_condition_' . $_type)) {
                 // check for public function to sanitize this
                 add_filter('advanced-ads-sanitize-condition-' . $_type, 'advads_sanitize_condition_' . $_type, 10, 1);
 
@@ -126,7 +138,8 @@ class Advads_Ad {
         } else {
             $this->type_obj = new Advads_Ad_Type_Abstract;
         }
-
+        $this->width = $this->options('width');
+        $this->height = $this->options('height');
         $this->conditions = $this->options('conditions');
         $this->status = $_data->post_status;
 
@@ -136,7 +149,7 @@ class Advads_Ad {
         // set wrapper conditions
         $this->wrapper = apply_filters('advanced-ads-set-wrapper', $this->wrapper, $this);
         // add unique wrapper id, if options given
-        if(!empty($this->wrapper) && empty($wrapper_options['id'])){
+        if(is_array($this->wrapper) && $this->wrapper !== array() && !isset($this->wrapper['id'])){
             // create unique id if not yet given
             $this->wrapper['id'] = $this->create_wrapper_id();
         }
@@ -152,13 +165,14 @@ class Advads_Ad {
      */
     public function options($field = ''){
         // retrieve options, if not given yet
-        if($this->options == array()) {
+        if ($this->options === array()) {
+            // get_post_meta() may return false
             $this->options = get_post_meta($this->id, self::$options_meta_field, true);
         }
 
         // return specific option
         if($field != '') {
-            if(!empty($this->options[$field]))
+            if(isset($this->options[$field]))
                 return $this->options[$field];
         } else { // return all options
             if(!empty($this->options))
@@ -209,21 +223,25 @@ class Advads_Ad {
      */
     public function can_display(){
 
-        $can_display = false;
         $options = Advanced_Ads::get_instance()->options();
         $see_ads_capability = (!empty($options['hide-for-user-role'])) ? $options['hide-for-user-role'] : 0;
 
-        // check if user is logged in and if so if users with his rights can see ads
-        if(is_user_logged_in() && $see_ads_capability && current_user_can($see_ads_capability)) return false;
+        // don’t display ads that are not published or private for users not logged in
+        if($this->status !== 'publish' && !($this->status === 'private' && !is_user_logged_in())){
+            return false;
+        }
 
-        if($this->can_display_by_conditions() && $this->can_display_by_visitor()) {
-            $can_display = true;
-        } else {
+        // check if user is logged in and if so if users with his rights can see ads
+        if (is_user_logged_in() && $see_ads_capability && current_user_can($see_ads_capability)) {
+            return false;
+        }
+
+        if (!$this->can_display_by_conditions() || !$this->can_display_by_visitor()) {
             return false;
         }
 
         // add own conditions to flag output as possible or not
-        $can_display = apply_filters('advanced-ads-can-display', $can_display, $this);
+        $can_display = apply_filters('advanced-ads-can-display', true, $this);
 
         return $can_display;
     }
@@ -235,7 +253,9 @@ class Advads_Ad {
      * @return bool $can_display true if can be displayed in frontend
      */
     public function can_display_by_conditions(){
-        global $post;
+        global $post, $wp_query;
+
+        $query = $wp_query->get_queried_object();
 
         if(empty($this->options['conditions']) ||
                 !is_array($this->options['conditions'])) return true;
@@ -248,83 +268,121 @@ class Advads_Ad {
             switch($_cond_key){
                 // check for post ids
                 case 'postids' :
-                    // included posts
-                    if(!empty($_cond_value['include'])){
-                        $post_ids = explode(',', $_cond_value['include']);
-                        if(is_array($post_ids)
-                                && isset($post->ID)
-                                && !in_array($post->ID, $post_ids))
+                    if(is_singular() && empty($_cond_value['all'])){
+                        // included posts
+                        if(!empty($_cond_value['include'])){
+                            if(is_string($_cond_value['include'])){
+                                $post_ids = explode(',', $_cond_value['include']);
+                            } else {
+                                $post_ids = $_cond_value['include'];
+                            }
+                            if(is_array($post_ids)
+                                    && isset($post->ID)
+                                    && !in_array($post->ID, $post_ids))
+                                    return false;
+                        }
+                        // excluded posts
+                        if(!empty($_cond_value['exclude'])){
+                            if(is_string($_cond_value['exclude'])){
+                                $post_ids = explode(',', $_cond_value['exclude']);
+                            } else {
+                                $post_ids = $_cond_value['exclude'];
+                            }
+                            if(is_array($post_ids) && isset($post->ID) && in_array($post->ID, $post_ids)){
                                 return false;
-                    }
-                    // excluded posts
-                    if(!empty($_cond_value['exclude'])){
-                        $post_ids = explode(',', $_cond_value['exclude']);
-                        if(is_array($post_ids)
-                                && isset($post->ID)
-                                && in_array($post->ID, $post_ids))
-                                return false;
+                            }
+                        }
                     }
                 break;
                 // check for category ids
                 case 'categoryids' :
                     // included
-                    if(!empty($_cond_value['include'])){
-                        $category_ids = explode(',', $_cond_value['include']);
-                        // check if currently in a post (not post page, but also posts in loops)
-                        if(is_array($category_ids) && isset($post->ID)
-                            && !in_category($category_ids, $post)) {
-                                return false;
+                    if(is_singular() && empty($_cond_value['all'])){
+                        if(!empty($_cond_value['include'])){
+                            if(is_string($_cond_value['include'])){
+                                $category_ids = explode(',', $_cond_value['include']);
+                            } else {
+                                $category_ids = $_cond_value['include'];
+                            }
+                            // check if currently in a post (not post page, but also posts in loops)
+                            if(is_array($category_ids) && isset($post->ID)
+                                && !in_category($category_ids, $post)) {
+                                    return false;
+                            }
                         }
-                    }
-                    // check for excluded category ids
-                    if(!empty($_cond_value['exclude'])){
-                        $category_ids = explode(',', $_cond_value['exclude']);
-                        // check if currently in a post (not post page, but also posts in loops)
-                        if(is_array($category_ids) && isset($post->ID)
-                            && in_category($category_ids, $post) ) {
-                                // being only in one excluded category is enough to not display the ad
-                                return false;
+                        // check for excluded category ids
+                        if(!empty($_cond_value['exclude'])){
+                            if(is_string($_cond_value['exclude'])){
+                                $category_ids = explode(',', $_cond_value['exclude']);
+                            } else {
+                                $category_ids = $_cond_value['exclude'];
+                            }
+                            // check if currently in a post (not post page, but also posts in loops)
+                            if(is_array($category_ids) && isset($post->ID)
+                                && in_category($category_ids, $post) ) {
+                                    // being only in one excluded category is enough to not display the ad
+                                    return false;
+                            }
                         }
                     }
                 break;
                 // check for included category archive ids
                 // @link http://codex.wordpress.org/Conditional_Tags#A_Category_Page
                 case 'categoryarchiveids' :
-                    if(!empty($_cond_value['include'])){
-                        $category_ids = explode(',', $_cond_value['include']);
-                        if(is_array($category_ids) && !is_category($category_ids))
-                            return false;
-                    }
-                    // check for excluded category archive ids
-                    if(!empty($_cond_value['exclude'])){
-                        $category_ids = explode(',', $_cond_value['exclude']);
-                        if(is_array($category_ids) && is_category($category_ids))
-                            return false;
+                    if(isset($query->term_id) && is_archive() && empty($_cond_value['all'])){
+                        if(!empty($_cond_value['include'])){
+                            if(is_string($_cond_value['include'])){
+                                $category_ids = explode(',', $_cond_value['include']);
+                            } else {
+                                $category_ids = $_cond_value['include'];
+                            }
+                            if(is_array($category_ids) && !in_array($query->term_id, $category_ids))
+                                return false;
+                        }
+                        // check for excluded category archive ids
+                        if(!empty($_cond_value['exclude'])){
+                            if(is_string($_cond_value['exclude'])){
+                                $category_ids = explode(',', $_cond_value['exclude']);
+                            } else {
+                                $category_ids = $_cond_value['exclude'];
+                            }
+                            if(is_array($category_ids) && in_array($query->term_id, $category_ids))
+                                return false;
+                        }
                     }
                 break;
                 // check for included post types
                 case 'posttypes' :
-                    if(!empty($_cond_value['include'])){
-                    $post_types = explode(',', $_cond_value['include']);
-                        // check if currently in a post (not post page, but also posts in loops)
-                        if(is_array($post_types) && !in_array(get_post_type(), $post_types)) {
-                            return false;
+                    // display everywhere, if include not set (= all is checked)
+                    // TODO remove condition check for string; deprecated since 1.2.2
+                    if(empty($_cond_value['all'])){
+                        if(!empty($_cond_value['include'])){
+                            if(is_string($_cond_value['include'])){
+                                $post_types = explode(',', $_cond_value['include']);
+                            } else {
+                                $post_types = $_cond_value['include'];
+                            }
+                            // check if currently in a post (not post page, but also posts in loops)
+                            if(is_array($post_types) && !in_array(get_post_type(), $post_types)) {
+                                return false;
+                            }
                         }
-                    }
-                    // check for excluded post types
-                    if(!empty($_cond_value['exclude'])){
-                        $post_types = explode(',', $_cond_value['exclude']);
-                        // check if currently in a post (not post page, but also posts in loops)
-                        if(is_array($post_types) && in_array(get_post_type(), $post_types)) {
-                            return false;
+                        // check for excluded post types
+                        // TODO remove in a later version, deprecated since 1.2.2
+                        if(!empty($_cond_value['exclude'])){
+                            $post_types = explode(',', $_cond_value['exclude']);
+                            // check if currently in a post (not post page, but also posts in loops)
+                            if(is_array($post_types) && in_array(get_post_type(), $post_types)) {
+                                return false;
+                            }
                         }
                     }
                 break;
                 // check is_front_page
                 // @link https://codex.wordpress.org/Conditional_Tags#The_Front_Page
                 case 'is_front_page' :
-                    if(($_cond_value == 1 && !is_front_page())
-                            || ($_cond_value == 0 && is_front_page()))
+                    if(($_cond_value == 1 && (!is_front_page() && !is_home))
+                            || ($_cond_value == 0 && (is_front_page() || is_home())))
                         return false;
                 break;
                 // check is_singular
@@ -417,6 +475,8 @@ class Advads_Ad {
         $options = $this->options();
 
         $options['type'] = $this->type;
+        $options['width'] = $this->width;
+        $options['height'] = $this->height;
         $options['conditions'] = $conditions;
 
         // filter to manipulate options or add more to be saved
@@ -496,11 +556,30 @@ class Advads_Ad {
         if(!is_array($conditions) || $conditions == array()) return array();
 
         foreach($conditions as $_key => $_condition){
-            if(!is_array($_condition))
-                $_condition = trim($_condition);
-            if($_condition == '') {
-                $conditions[$_key] = $_condition;
-                continue;
+            if($_key == 'postids'){
+                // sanitize single post conditions
+                if(empty($_condition['ids'])){ // remove, if empty
+                    $_condition['include'] = array();
+                    $_condition['exclude'] = array();
+                } else {
+                    switch($_condition['method']){
+                        case  'include' :
+                            $_condition['include'] = $_condition['ids'];
+                            $_condition['exclude'] = array();
+                            break;
+                        case  'exclude' :
+                            $_condition['include'] = array();
+                            $_condition['exclude'] = $_condition['ids'];
+                            break;
+                    }
+                }
+            } else {
+                if(!is_array($_condition))
+                    $_condition = trim($_condition);
+                if($_condition == '') {
+                    $conditions[$_key] = $_condition;
+                    continue;
+                }
             }
             $type = !empty($advanced_ads_ad_conditions[$_key]['type']) ? $advanced_ads_ad_conditions[$_key]['type'] : 0;
             if(empty($type)) continue;
@@ -520,6 +599,7 @@ class Advads_Ad {
      */
     public static function sanitize_condition_idfield($cond = ''){
         // strip anything that is not comma or number
+
         if(is_array($cond)){
             foreach($cond as $_key => $_cond){
                 $cond[$_key] = preg_replace('#[^0-9,]#', '', $_cond);

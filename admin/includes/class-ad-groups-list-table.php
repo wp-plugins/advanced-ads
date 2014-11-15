@@ -142,7 +142,8 @@ class AdvAds_Groups_List_Table extends AdvAds_List_Table {
         $args = array(
             'post_type' => $this->post_type,
             'post_status' => 'publish',
-            $this->taxonomy => $tag->slug
+            'taxonomy' => $this->taxonomy,
+            'term' => $tag->slug
         );
         $ads = new WP_Query($args);
 

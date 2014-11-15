@@ -1,4 +1,12 @@
 /**
+* OVERVIEW PAGE
+*/
+
+.advads-content-wrapper { display: table; width: 100%; }
+.advads-content-left { display: table-cell; min-width: 500px; vertical-align: top; }
+.advads-content-right { display: table-cell; width: 250px; padding: 0 0 0 20px; vertical-align: top; }
+
+/**
 * AD EDIT PAGE
 */
 #ad-main-box { overflow: hidden; }
@@ -29,10 +37,23 @@
 .post-type-advanced_ads #advanced-ad-conditions {
     text-align: left;
 }
+.post-type-advanced_ads h5 { font-size: 1.2em; margin: 1em 0 .5em; }
+.post-type-advanced_ads #ad-display-box label { margin-right: 1em; }
+.post-type-advanced_ads .advads-conditions-all { display: block; }
+.post-type-advanced_ads .advads-conditions-single { margin-bottom: 10px; padding: 10px; }
+.post-type-advanced_ads .advads-conditions-single.disabled { display: none; opacity: .5; }
+.advads-conditions-postids-list li { background: #F1F1F1; padding: 3px; }
+.advads-conditions-postids-list .remove { margin-right: 1em; font-size: .9em; }
 .post-type-advanced_ads #advads-ad-content-plain {
     width: 100%;
 }
 .post-type-advanced_ads #ad-parameters-box .advads-ad-parameters-spinner { display: block; float: none; }
+.post-type-advanced_ads #advanced-ads-ad-parameters-size { margin-top: 1em; }
+.post-type-advanced_ads #advanced-ads-ad-parameters-size p { float: left; margin: 0 1em 0 0; font-weight: bold; }
+.post-type-advanced_ads #advanced-ads-ad-parameters-size label + label { margin-left: 1em; }
+.post-type-advanced_ads #advanced-ads-ad-parameters-size input { width: 4em; margin-left: .5em; }
+
+.advads-debug-output legend { text-decoration: underline; cursor: pointer; }
 
 /**
  AD GROUP LIST
@@ -45,14 +66,18 @@
 /**
  AD PLACEMENTS
 */
+.advads-placements-new-form select { display: inline-block; min-width: 10em; }
 .advads-placements-new-form label { display: inline-block; width: 10em; }
 .advads-placements-new-form input { display: inline-block; }
 .advads-placements-table { min-width: 80%; }
 .advads-placements-table thead tr { background: #fff; }
 .advads-placements-table tbody tr:nth-child(even) { background: #fff; }
-.advads-placements-table th { margin: 0; padding: 10px; text-align: left; }
-.advads-placements-table td { margin: 0; padding: 10px; text-align: left; }
+.advads-placements-table th { margin: 0; padding: 10px; text-align: left; vertical-align: top; }
+.advads-placements-table td { margin: 0; padding: 10px; text-align: left; vertical-align: top; }
+.advads-placements-table-options { text-align: right; }
 /**
  GENERAL ELEMENTS
 */
 .advads-toggle-link { cursor: pointer; }
+.advads-content-half { float: left; margin-right: 5%; width: 45%; min-width: 300px; }
+.advads-box { margin-bottom: 20px; padding: 10px; background: #fff; border: solid 1px; }

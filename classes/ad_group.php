@@ -178,12 +178,11 @@ class Advads_Ad_Group {
         $args = array(
             'post_type' => $this->post_type,
             'post_status' => 'publish',
-            $this->taxonomy => $this->slug,
+            'taxonomy' => $this->taxonomy,
+            'term' => $this->slug,
             'orderby' => 'id'
         );
         $ads = new WP_Query($args);
-        // not sure if reset of postdata is needed here
-        wp_reset_postdata();
 
         if ($ads->have_posts()) {
             return $this->ads = $this->add_post_ids($ads->posts);
@@ -223,20 +222,21 @@ class Advads_Ad_Group {
         $weights = $this->get_ad_weights();
 
         // if ads and weights don’t have the same keys, update weights array
-        if(count($weights) != count($ads) || array_diff_key($weights, $ads) != array()
+        if((count($weights) == 0 && count($ads) > 0) || count($weights) != count($ads) || array_diff_key($weights, $ads) != array()
                 || array_diff_key($ads, $weights) != array()) {
             $this->update_ad_weights();
         }
 
         // get a random ad for every ad there is
         $shuffled_ads = array();
-        $ad_count = count($ads);
-        for($i = 1; $i <= $ad_count; $i++){
-            $random_ad_id = $this->get_random_ad_by_weight($weights);
+        // order array by ad weight; lowest first
+        asort($weights);
+        // while non-zero weights are set select random next
+        while (null !== $random_ad_id = $this->get_random_ad_by_weight($weights)) {
             // remove chosen ad from weights array
             unset($weights[$random_ad_id]);
             // put random ad into shuffled array
-            if(isset($ads[$random_ad_id])) { $shuffled_ads[] = $ads[$random_ad_id]; }
+            $shuffled_ads[] = $ads[$random_ad_id];
         }
 
         return $shuffled_ads;
@@ -251,11 +251,13 @@ class Advads_Ad_Group {
      */
     private function get_random_ad_by_weight(array $ad_weights) {
 
-        // order array by ad weight; lowest first
-        asort($ad_weights);
-
         // use maximum ad weight for ads without this
-        $max = (int) array_sum($ad_weights);
+        // ads might have a weight of zero (0); to avoid mt_rand fail assume that at least 1 is set.
+        $max = array_sum($ad_weights);
+        if ($max < 1) {
+            return ;
+        }
+
         $rand = mt_rand(1, $max);
 
         foreach ($ad_weights as $key => $value) {
@@ -272,14 +274,18 @@ class Advads_Ad_Group {
      * @since 1.0.0
      */
     public function get_ad_weights() {
+        // load and save ad weights if not yet set
         if ($this->ad_weights == 0) {
             $weights = get_option('advads-ad-weights', array());
-        } else {
+            if (isset($weights[$this->id])) {
+                return $this->ad_weights = $weights[$this->id];
+            }
+        } elseif(is_array($this->ad_weights)) { // return ad weigths if not empty
             return $this->ad_weights;
         }
-        if (isset($weights[$this->id])) {
-            return $this->ad_weights = $weights[$this->id];
-        }
+
+        // return empty array
+        return array();
     }
 
     /**
@@ -299,7 +305,11 @@ class Advads_Ad_Group {
         $global_weights[$this->id] = $this->sanitize_ad_weights($weights);
 
         update_option('advads-ad-weights', $global_weights);
+
+        // refresh ad weights after update to avoid conflict
+        $this->ad_weights = $global_weights[$this->id];
     }
+
     /**
      * update ad weight based on current ads for the group and ad weight
      *

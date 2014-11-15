@@ -22,37 +22,49 @@ class Advads_Widget extends WP_Widget {
     }
 
     function widget($args, $instance) {
+        /** This filter is documented in wp-includes/default-widgets.php */
+        $title = apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'], $instance, $this->id_base );
+
         extract($args);
         $item_id = empty($instance['item_id']) ? '' : $instance['item_id'];
+        $title = empty($instance['title']) ? '' : $instance['title'];
         echo $before_widget;
+        if ( ! empty( $title ) ) {
+            echo $before_title . $title . $after_title;
+        }
         echo self::output($item_id);
         echo $after_widget;
     }
 
     function update($new_instance, $old_instance) {
         $instance = $old_instance;
+        $instance['title'] = $new_instance['title'];
         $instance['item_id'] = $new_instance['item_id'];
         return $instance;
     }
 
     function form($instance) {
         $instance = wp_parse_args((array) $instance, array('title' => '', 'item_id' => ''));
-        $elementid = sanitize_title($instance['item_id']);
+        $title = strip_tags($instance['title']);
+        $elementid = $instance['item_id'];
+
+        ?><p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
+            <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></p><?php
 
         $items = self::items_for_select();
         ?>
         <select id="<?php echo $this->get_field_id('item_id'); ?>" name="<?php echo $this->get_field_name('item_id'); ?>">
             <option value=""><?php _e('--empty--', ADVADS_SLUG);  ?></option>
-            <?php if(isset($items['ads'])) : ?>
-            <optgroup label="<?php _e('Ads', ADVADS_SLUG); ?>">
-            <?php foreach($items['ads'] as $_item_id => $_item_title) : ?>
+            <?php if(isset($items['groups'])) : ?>
+            <optgroup label="<?php _e('Ad Groups', ADVADS_SLUG); ?>">
+            <?php foreach($items['groups'] as $_item_id => $_item_title) : ?>
             <option value="<?php echo $_item_id; ?>" <?php selected($_item_id, $elementid); ?>><?php echo $_item_title; ?></option>
             <?php endforeach; ?>
             </optgroup>
             <?php endif; ?>
-            <?php if(isset($items['groups'])) : ?>
-            <optgroup label="<?php _e('Ad Groups', ADVADS_SLUG); ?>">
-            <?php foreach($items['groups'] as $_item_id => $_item_title) : ?>
+            <?php if(isset($items['ads'])) : ?>
+            <optgroup label="<?php _e('Ads', ADVADS_SLUG); ?>">
+            <?php foreach($items['ads'] as $_item_id => $_item_title) : ?>
             <option value="<?php echo $_item_id; ?>" <?php selected($_item_id, $elementid); ?>><?php echo $_item_title; ?></option>
             <?php endforeach; ?>
             </optgroup>

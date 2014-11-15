@@ -1,10 +1,5 @@
-(function ( $ ) {
-	"use strict";
+jQuery('document').ready(function($) {
 
-	$(function () {
+    "use strict";
 
-		// Place your public-facing JavaScript here
-
-	});
-
-}(jQuery));
+});
