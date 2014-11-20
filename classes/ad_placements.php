@@ -71,7 +71,7 @@ class Advads_Ad_Placements {
 
         // check if slug already exists
         if ($new_placement['slug'] == '')
-            return __('Slug can’t be empty.', ADVADS_SLUG);
+            return __('Slug can\'t be empty.', ADVADS_SLUG);
         if (isset($placements[$new_placement['slug']]))
             return __('Slug already exists.', ADVADS_SLUG);
 

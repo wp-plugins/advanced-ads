@@ -49,32 +49,32 @@ $advanced_ads_ad_conditions = array(
     ),
     'is_front_page' => array(
         'label' => __('Home Page', $advanced_ads_slug),
-        'description' => __('(don’t) show on Home page', $advanced_ads_slug),
+        'description' => __('(don\'t) show on Home page', $advanced_ads_slug),
         'type' => 'radio',
     ),
     'is_singular' => array(
         'label' => __('Singular Pages', $advanced_ads_slug),
-        'description' => __('(don’t) show on singular pages/posts', $advanced_ads_slug),
+        'description' => __('(don\'t) show on singular pages/posts', $advanced_ads_slug),
         'type' => 'radio',
     ),
     'is_archive' => array(
         'label' => __('Archive Pages', $advanced_ads_slug),
-        'description' => __('(don’t) show on any type of archive page (category, tag, author and date)', $advanced_ads_slug),
+        'description' => __('(don\'t) show on any type of archive page (category, tag, author and date)', $advanced_ads_slug),
         'type' => 'radio',
     ),
     'is_search' => array(
         'label' => __('Search Results', $advanced_ads_slug),
-        'description' => __('(don’t) show on search result pages', $advanced_ads_slug),
+        'description' => __('(don\'t) show on search result pages', $advanced_ads_slug),
         'type' => 'radio',
     ),
     'is_404' => array(
         'label' => __('404 Page', $advanced_ads_slug),
-        'description' => __('(don’t) show on 404 error page', $advanced_ads_slug),
+        'description' => __('(don\'t) show on 404 error page', $advanced_ads_slug),
         'type' => 'radio',
     ),
     'is_attachment' => array(
         'label' => __('Attachment Pages', $advanced_ads_slug),
-        'description' => __('(don’t) show on attachment pages', $advanced_ads_slug),
+        'description' => __('(don\'t) show on attachment pages', $advanced_ads_slug),
         'type' => 'radio',
     )
 );
