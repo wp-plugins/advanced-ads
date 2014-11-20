@@ -30,12 +30,12 @@ if (current_user_can($tax->cap->edit_terms)) {
 
 $messages[$taxonomy] = array(
     0 => '', // Unused. Messages start at index 1.
-    1 => __('Ad Group added.', $this->plugin_slug),
-    2 => __('Ad Group deleted.', $this->plugin_slug),
-    3 => __('Ad Group updated.', $this->plugin_slug),
-    4 => __('Ad Group not added.', $this->plugin_slug),
-    5 => __('Ad Group not updated.', $this->plugin_slug),
-    6 => __('Ad Group deleted.', $this->plugin_slug)
+    1 => __('Ad Group added.', ADVADS_SLUG),
+    2 => __('Ad Group deleted.', ADVADS_SLUG),
+    3 => __('Ad Group updated.', ADVADS_SLUG),
+    4 => __('Ad Group not added.', ADVADS_SLUG),
+    5 => __('Ad Group not updated.', ADVADS_SLUG),
+    6 => __('Ad Group deleted.', ADVADS_SLUG)
 );
 
 $message = false;

@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.0.0
-Stable tag: 1.2.6
+Stable tag: 1.2.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,10 +36,10 @@ Learn more on the [plugin homepage](http://wpadvancedads.com).
 
 deliver ads based on conditions like
 
+* individual posts, pages and other post type
 * post type
-* post id
-* category
-* single, category and archive pages
+* posts by category, tags, taxonomies
+* archive pages by category, tags, taxonomies
 * special page types like 404, attachment and front page
 
 = visitor conditions =
@@ -133,6 +133,12 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 2. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.2.7 =
+
+* fixed translation files (thanks to sangkavr)
+* fixed inconsistent text domains
+* started with German translation
 
 = 1.2.6 =
 

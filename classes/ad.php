@@ -651,7 +651,6 @@ class Advads_Ad {
 
         $plugin = Advanced_Ads::get_instance();
         $ads_by_conditions = $plugin->get_ads_by_conditions_array();
-        $plugin_slug = $plugin->get_plugin_slug();
 
         // remove current ad from general ad condition array
         $ads_by_conditions = $this->remove_ad_from_general_ad_conditions($this->id, $ads_by_conditions);
@@ -661,7 +660,7 @@ class Advads_Ad {
         // iterate through the ads display condition
         foreach($conditions as $_condition_key => $_condition){
             if(!isset($advanced_ads_ad_conditions[$_condition_key]['type'])) {
-                $plugin->log(sprintf(__('A "%s" display condition does not exist', $plugin_slug), $_condition_key));
+                $plugin->log(sprintf(__('A "%s" display condition does not exist', ADVADS_SLUG), $_condition_key));
                 return;
             }
             // add conditions based on type
