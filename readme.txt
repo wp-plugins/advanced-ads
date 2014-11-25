@@ -137,7 +137,7 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 
 == Changelog ==
 
-= untagged =
+= 1.3 =
 
 * COOL: layout options for ads, e.g. to set floating and margins (see the [manual](http://wpadvancedads.com/advancedads/manual/optimizing-the-ad-layout/))
 * list ad groups before ads when selecting them for a placement
