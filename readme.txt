@@ -3,8 +3,8 @@ Contributors: webzunft
 Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5RRRCEBGN3UT2
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
-Tested up to: 4.0.0
-Stable tag: 1.2.7
+Tested up to: 4.0.1
+Stable tag: 1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -68,6 +68,8 @@ You can also use it to add additional ad network tags into header or footer of y
 
 Learn more on the [plugin homepage](http://wpadvancedads.com).
 
+Localizations: English, German, Italien
+
 = Add-Ons =
 
 * Responsive Ads – load and display ads only for specific browser sizes - [Demo](http://wpadvancedads.com/responsive-ads/)
@@ -130,9 +132,19 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 == Screenshots ==
 
 1. Create an ad almost like you would create an article or page.
-2. Choose from various conditions where and where not to display your ad.
+2. Align the ad and set a margin to other elements
+3. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= untagged =
+
+* COOL: layout options for ads, e.g. to set floating and margins (see the [manual](http://wpadvancedads.com/advancedads/manual/optimizing-the-ad-layout/))
+* list ad groups before ads when selecting them for a placement
+* fixed error when removing an ad that is still in a group
+* fixed possible translation issue
+* added partial German translation
+* added Italien translation (thanky to sangkavr)
 
 = 1.2.7 =
 
@@ -214,54 +226,12 @@ other fixes:
 * ! ad injection works on posts and pages now
 * fixed excluded post types for ads
 
-= 1.1.3 =
-
-* minor changes for better extendability for the [sticky ads addon](http://wpadvancedads.com/sticky-ads/)
-
-= 1.1.2 =
-
-* composer bugfix
-* changes some unclear descriptions
-* use group names instead of slug on placement page
-* reenabled handles for metaboxes on ad edit screen
-* added success message for placement updates
-
-= 1.1.1 =
-
-* added filter to be able to add own checks whether to display an ad or not
-* added action to add content to the visitor metabox
-* option to hide/disable ad conditions
-* option to hide all ads from logged in users based on user roles
-
-= 1.1.0 =
-
-* allow displaying ads on mobile devices only or exclude from mobile devices
-* auto inject ad into header, footer and post content
-* display Ad id on Ad edit page
-* hide Ad for groups if the Ad is not made public
-* use Ad Placements to be more flexible when displaying ads or ad group in template files
-* bugfixes
-
-= 1.0.3 =
-
-* bugfix added missing file to repository
-
-= 1.0.2 =
-
-* bugfix for editing ad weights in ad groups
-* bugfix for autoloader
-
-= 1.0.1 =
-
-* several new hooks
-* seperated settings and debug page
-* few internal optimizations
-* few bugfixes for php < 5.3
-
-= 1.0 =
-* first release
-
 == Upgrade Notice ==
+
+= 1.3 =
+
+Don’t miss out on the new layout options to align ads and set margins
+Also fixed issues with languages and added Italien and German translation (partial)
 
 = 1.2.4 =
 

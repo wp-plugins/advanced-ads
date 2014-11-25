@@ -52,7 +52,7 @@ if (isset($_REQUEST['message']) && ( $msg = (int) $_REQUEST['message'] ) || isse
     <h2><?php
         echo esc_html($title);
         if (!empty($_REQUEST['s'])) {
-            printf('<span class="subtitle">' . __('Search results for &#8220;%s&#8221;', $this->plugin_slug) . '</span>', esc_html(wp_unslash($_REQUEST['s'])));
+            printf('<span class="subtitle">' . __('Search results for &#8220;%s&#8221;', ADVADS_SLUG) . '</span>', esc_html(wp_unslash($_REQUEST['s'])));
         } else {
             echo ' <a href="' . Advanced_Ads_Admin::group_page_url(array('action' => 'edit')) . '" class="add-new-h2">' . $tax->labels->add_new_item . '</a>';
         }

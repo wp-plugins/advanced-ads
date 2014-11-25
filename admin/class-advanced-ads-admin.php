@@ -419,6 +419,9 @@ class Advanced_Ads_Admin {
                 'ad-parameters-box', __('Ad Parameters', ADVADS_SLUG), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
         add_meta_box(
+                'ad-output-box', __('Layout / Output', ADVADS_SLUG), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+        );
+        add_meta_box(
                 'ad-display-box', __('Display Conditions', ADVADS_SLUG), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
         add_meta_box(
@@ -446,6 +449,9 @@ class Advanced_Ads_Admin {
                 break;
             case 'ad-parameters-box':
                 $view = 'ad-parameters-metabox.php';
+                break;
+            case 'ad-output-box':
+                $view = 'ad-output-metabox.php';
                 break;
             case 'ad-display-box':
                 $view = 'ad-display-metabox.php';
@@ -490,6 +496,11 @@ class Advanced_Ads_Admin {
             return;
 
         $ad->type = $_POST['advanced_ad']['type'];
+        if(isset($_POST['advanced_ad']['output'])) {
+            $ad->set_option('output', $_POST['advanced_ad']['output']);
+        } else {
+            $ad->set_option('output', array());
+        }
         if(isset($_POST['advanced_ad']['visitor'])) {
             $ad->set_option('visitor', $_POST['advanced_ad']['visitor']);
         } else {

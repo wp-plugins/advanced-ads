@@ -80,6 +80,12 @@
                                 <label for="adsads-placements-item-<?php echo $_placement_slug; ?>"><?php _e('Item', ADVADS_SLUG); ?></label>
                                 <select id="adsads-placements-item-<?php echo $_placement_slug; ?>" name="advads[placements][<?php echo $_placement_slug; ?>][item]">
                                     <option value=""><?php _e('--empty--', ADVADS_SLUG); ?></option>
+                                        <?php if (isset($items['groups'])) : ?>
+                                        <optgroup label="<?php _e('Ad Groups', ADVADS_SLUG); ?>">
+                                            <?php foreach ($items['groups'] as $_item_id => $_item_title) : ?>
+                                                <option value="<?php echo $_item_id; ?>" <?php if (isset($_placement['item'])) selected($_item_id, $_placement['item']); ?>><?php echo $_item_title; ?></option>
+                                        <?php endforeach; ?>
+                                        </optgroup>
                                         <?php if (isset($items['ads'])) : ?>
                                         <optgroup label="<?php _e('Ads', ADVADS_SLUG); ?>">
                                             <?php foreach ($items['ads'] as $_item_id => $_item_title) : ?>
@@ -87,12 +93,6 @@
                                         <?php endforeach; ?>
                                         </optgroup>
                                     <?php endif; ?>
-                                        <?php if (isset($items['groups'])) : ?>
-                                        <optgroup label="<?php _e('Ad Groups', ADVADS_SLUG); ?>">
-                                            <?php foreach ($items['groups'] as $_item_id => $_item_title) : ?>
-                                                <option value="<?php echo $_item_id; ?>" <?php if (isset($_placement['item'])) selected($_item_id, $_placement['item']); ?>><?php echo $_item_title; ?></option>
-                                        <?php endforeach; ?>
-                                        </optgroup>
                                 <?php endif; ?>
                                 </select><br/>
                                 <?php
