@@ -151,7 +151,7 @@ class Advanced_Ads_Admin {
         }
 
         wp_enqueue_script($this->plugin_slug . '-admin-script', plugins_url('assets/js/admin.js', __FILE__), array('jquery', 'jquery-ui-autocomplete'), Advanced_Ads::VERSION);
-        
+
         // just register this script for later inclusion on ad group list page
         wp_register_script('inline-edit-group-ads', plugins_url('assets/js/inline-edit-group-ads.js', __FILE__), array('jquery'), Advanced_Ads::VERSION);
 
@@ -193,27 +193,27 @@ class Advanced_Ads_Admin {
 
         // add main menu item with overview page
         add_menu_page(
-            __('Overview', $this->plugin_slug), __('Advanced Ads', $this->plugin_slug), 'manage_options', $this->plugin_slug, array($this, 'display_overview_page'), '', '58.74'
+            __('Overview', ADVADS_SLUG), __('Advanced Ads', ADVADS_SLUG), 'manage_options', $this->plugin_slug, array($this, 'display_overview_page'), '', '58.74'
         );
 
         add_submenu_page(
-            $this->plugin_slug, __('Ads', $this->plugin_slug), __('Ads', $this->plugin_slug), 'manage_options', 'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG
+            $this->plugin_slug, __('Ads', ADVADS_SLUG), __('Ads', ADVADS_SLUG), 'manage_options', 'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG
         );
 
         $this->ad_group_hook_suffix = add_submenu_page(
-            $this->plugin_slug, __('Ad Groups', $this->plugin_slug), __('Groups', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-groups', array($this, 'ad_group_admin_page')
+            $this->plugin_slug, __('Ad Groups', ADVADS_SLUG), __('Groups', ADVADS_SLUG), 'manage_options', $this->plugin_slug . '-groups', array($this, 'ad_group_admin_page')
         );
 
         // add placements page
         add_submenu_page(
-            $this->plugin_slug, __('Ad Placements', $this->plugin_slug), __('Placements', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-placements', array($this, 'display_placements_page')
+            $this->plugin_slug, __('Ad Placements', ADVADS_SLUG), __('Placements', ADVADS_SLUG), 'manage_options', $this->plugin_slug . '-placements', array($this, 'display_placements_page')
         );
         // add settings page
         $this->plugin_screen_hook_suffix = add_submenu_page(
-            $this->plugin_slug, __('Advanced Ads Settings', $this->plugin_slug), __('Settings', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-settings', array($this, 'display_plugin_settings_page')
+            $this->plugin_slug, __('Advanced Ads Settings', ADVADS_SLUG), __('Settings', ADVADS_SLUG), 'manage_options', $this->plugin_slug . '-settings', array($this, 'display_plugin_settings_page')
         );
         add_submenu_page(
-            null, __('Advanced Ads Debugging', $this->plugin_slug), __('Debug', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-debug', array($this, 'display_plugin_debug_page')
+            null, __('Advanced Ads Debugging', ADVADS_SLUG), __('Debug', ADVADS_SLUG), 'manage_options', $this->plugin_slug . '-debug', array($this, 'display_plugin_debug_page')
         );
     }
 
@@ -388,7 +388,7 @@ class Advanced_Ads_Admin {
 
         return array_merge(
                 array(
-            'settings' => '<a href="' . admin_url('edit.php?post_type=advanced_ads&page=advanced-ads-settings') . '">' . __('Settings', $this->plugin_slug) . '</a>'
+            'settings' => '<a href="' . admin_url('edit.php?post_type=advanced_ads&page=advanced-ads-settings') . '">' . __('Settings', ADVADS_SLUG) . '</a>'
                 ), $links
         );
     }
@@ -413,19 +413,22 @@ class Advanced_Ads_Admin {
      */
     public function add_meta_boxes() {
         add_meta_box(
-                'ad-main-box', __('Ad Type', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+                'ad-main-box', __('Ad Type', ADVADS_SLUG), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
         add_meta_box(
-                'ad-parameters-box', __('Ad Parameters', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+                'ad-parameters-box', __('Ad Parameters', ADVADS_SLUG), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
         add_meta_box(
-                'ad-display-box', __('Display Conditions', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+                'ad-output-box', __('Layout / Output', ADVADS_SLUG), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
         add_meta_box(
-                'ad-visitor-box', __('Visitor Conditions', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+                'ad-display-box', __('Display Conditions', ADVADS_SLUG), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
         add_meta_box(
-                'ad-inject-box', __('Auto injection', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+                'ad-visitor-box', __('Visitor Conditions', ADVADS_SLUG), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+        );
+        add_meta_box(
+                'ad-inject-box', __('Auto injection', ADVADS_SLUG), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
     }
 
@@ -446,6 +449,9 @@ class Advanced_Ads_Admin {
                 break;
             case 'ad-parameters-box':
                 $view = 'ad-parameters-metabox.php';
+                break;
+            case 'ad-output-box':
+                $view = 'ad-output-metabox.php';
                 break;
             case 'ad-display-box':
                 $view = 'ad-display-metabox.php';
@@ -490,6 +496,11 @@ class Advanced_Ads_Admin {
             return;
 
         $ad->type = $_POST['advanced_ad']['type'];
+        if(isset($_POST['advanced_ad']['output'])) {
+            $ad->set_option('output', $_POST['advanced_ad']['output']);
+        } else {
+            $ad->set_option('output', array());
+        }
         if(isset($_POST['advanced_ad']['visitor'])) {
             $ad->set_option('visitor', $_POST['advanced_ad']['visitor']);
         } else {

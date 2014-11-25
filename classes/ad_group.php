@@ -236,7 +236,8 @@ class Advads_Ad_Group {
             // remove chosen ad from weights array
             unset($weights[$random_ad_id]);
             // put random ad into shuffled array
-            $shuffled_ads[] = $ads[$random_ad_id];
+            if(!empty($ads[$random_ad_id]))
+                $shuffled_ads[] = $ads[$random_ad_id];
         }
 
         return $shuffled_ads;

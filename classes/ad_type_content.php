@@ -32,8 +32,8 @@ class Advads_Ad_Type_Content extends Advads_Ad_Type_Abstract{
      * @since 1.0.0
      */
     public function __construct() {
-        $this->title = __('Rich Content', Advanced_Ads::TD);
-        $this->description = __('The full content editor from WordPress with all features like image upload or styling, but also simple text/html mode for scripts and code.', Advanced_Ads::TD);
+        $this->title = __('Rich Content', ADVADS_SLUG);
+        $this->description = __('The full content editor from WordPress with all features like image upload or styling, but also simple text/html mode for scripts and code.', ADVADS_SLUG);
         $this->parameters = array(
             'content' => ''
         );
