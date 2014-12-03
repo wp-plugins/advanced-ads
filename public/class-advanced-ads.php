@@ -25,7 +25,7 @@ class Advanced_Ads {
      * @var     string
      */
 
-    const VERSION = '1.2.6';
+    const VERSION = '1.3.1';
 
     /**
      * post type slug
@@ -34,14 +34,6 @@ class Advanced_Ads {
      * @var     string
      */
     const POST_TYPE_SLUG = 'advanced_ads';
-
-    /**
-     * text domain
-     *
-     * @since   1.0.0
-     * @var     string
-     */
-    const TD = 'advanced-ads';
 
     /**
      * ad group slug
@@ -93,7 +85,7 @@ class Advanced_Ads {
     private function __construct() {
 
         // Load plugin text domain
-        add_action('init', array($this, 'load_plugin_textdomain'));
+        add_action('plugins_loaded', array($this, 'load_plugin_textdomain'));
 
         // activate plugin when new blog is added on multisites
         add_action('wpmu_new_blog', array($this, 'activate_new_site'));
@@ -119,7 +111,7 @@ class Advanced_Ads {
         // register hooks and filters for auto ad injection
         add_action('wp_head', array($this, 'inject_header'), 20);
         add_action('wp_footer', array($this, 'inject_footer'), 20);
-        add_filter('the_content', array($this, 'inject_content'), 20);
+        add_filter('the_content', array($this, 'inject_content'), 100);
     }
 
     /**
@@ -291,10 +283,9 @@ class Advanced_Ads {
      */
     public function load_plugin_textdomain() {
 
-        $domain = self::TD;
-        $locale = apply_filters('advanced-ads-plugin-locale', get_locale(), $domain);
+        // $locale = apply_filters('advanced-ads-plugin-locale', get_locale(), $domain);
 
-        load_textdomain($domain, trailingslashit(WP_LANG_DIR) . $domain . '/' . $domain . '-' . $locale . '.mo');
+        load_plugin_textdomain(ADVADS_SLUG, false, 'advanced-ads/languages');
     }
 
     /**
@@ -352,7 +343,7 @@ class Advanced_Ads {
      */
     function setup_default_ad_types($types){
         $types['plain'] = new Advads_Ad_Type_Plain(); /* plain text and php code */
-        // $types['content'] = new Advads_Ad_Type_Content(); /* rich content editor */
+        $types['content'] = new Advads_Ad_Type_Content(); /* rich content editor */
         return $types;
     }
 
@@ -486,18 +477,18 @@ class Advanced_Ads {
      */
     protected function get_group_taxonomy_params(){
         $labels = array(
-            'name'              => _x('Ad Groups', 'ad group general name', $this->plugin_slug),
-            'singular_name'     => _x('Ad Group', 'ad group singular name', $this->plugin_slug),
-            'search_items'      => __('Search Ad Groups', $this->plugin_slug),
-            'all_items'         => __('All Ad Groups', $this->plugin_slug),
-            'parent_item'       => __('Parent Ad Groups', $this->plugin_slug),
-            'parent_item_colon' => __('Parent Ad Groups:', $this->plugin_slug),
-            'edit_item'         => __('Edit Ad Group', $this->plugin_slug),
-            'update_item'       => __('Update Ad Group', $this->plugin_slug),
-            'add_new_item'      => __('Add New Ad Group', $this->plugin_slug),
-            'new_item_name'     => __('New Ad Groups Name', $this->plugin_slug),
-            'menu_name'         => __('Groups', $this->plugin_slug),
-            'not_found'         => __('No Ad Group found', $this->plugin_slug),
+            'name'              => _x('Ad Groups', 'ad group general name', ADVADS_SLUG),
+            'singular_name'     => _x('Ad Group', 'ad group singular name', ADVADS_SLUG),
+            'search_items'      => __('Search Ad Groups', ADVADS_SLUG),
+            'all_items'         => __('All Ad Groups', ADVADS_SLUG),
+            'parent_item'       => __('Parent Ad Groups', ADVADS_SLUG),
+            'parent_item_colon' => __('Parent Ad Groups:', ADVADS_SLUG),
+            'edit_item'         => __('Edit Ad Group', ADVADS_SLUG),
+            'update_item'       => __('Update Ad Group', ADVADS_SLUG),
+            'add_new_item'      => __('Add New Ad Group', ADVADS_SLUG),
+            'new_item_name'     => __('New Ad Groups Name', ADVADS_SLUG),
+            'menu_name'         => __('Groups', ADVADS_SLUG),
+            'not_found'         => __('No Ad Group found', ADVADS_SLUG),
         );
 
         $args = array(
@@ -522,31 +513,31 @@ class Advanced_Ads {
      */
     protected function get_post_type_params() {
         $labels = array(
-            'name' => __('Ads', $this->plugin_slug),
-            'singular_name' => __('Ad', $this->plugin_slug),
-            'add_new' => 'New Ad',
-            'add_new_item' => __('Add New Ad', $this->plugin_slug),
-            'edit' => __('Edit', $this->plugin_slug),
-            'edit_item' => __('Edit Ad', $this->plugin_slug),
-            'new_item' => __('New Ad', $this->plugin_slug),
-            'view' => __('View', $this->plugin_slug),
-            'view_item' => __('View the Ad', $this->plugin_slug),
-            'search_items' => __('Search Ads', $this->plugin_slug),
-            'not_found' => __('No Ads found', $this->plugin_slug),
-            'not_found_in_trash' => __('No Ads found in Trash', $this->plugin_slug),
-            'parent' => __('Parent Ad', $this->plugin_slug),
+            'name' => __('Ads', ADVADS_SLUG),
+            'singular_name' => __('Ad', ADVADS_SLUG),
+            'add_new' => __('New Ad', ADVADS_SLUG),
+            'add_new_item' => __('Add New Ad', ADVADS_SLUG),
+            'edit' => __('Edit', ADVADS_SLUG),
+            'edit_item' => __('Edit Ad', ADVADS_SLUG),
+            'new_item' => __('New Ad', ADVADS_SLUG),
+            'view' => __('View', ADVADS_SLUG),
+            'view_item' => __('View the Ad', ADVADS_SLUG),
+            'search_items' => __('Search Ads', ADVADS_SLUG),
+            'not_found' => __('No Ads found', ADVADS_SLUG),
+            'not_found_in_trash' => __('No Ads found in Trash', ADVADS_SLUG),
+            'parent' => __('Parent Ad', ADVADS_SLUG),
         );
 
         $post_type_params = array(
             'labels' => $labels,
-            'singular_label' => __('Ad', $this->plugin_slug),
+            'singular_label' => __('Ad', ADVADS_SLUG),
             'public' => false,
             'show_ui' => true,
             'show_in_menu' => false,
             'hierarchical' => false,
             'capability_type' => 'page',
             'has_archive' => false,
-            'rewrite' => array('slug' => $this->plugin_slug),
+            'rewrite' => array('slug' => ADVADS_SLUG),
             'query_var' => true,
             'supports' => array('title'),
             'taxonomies' => array(self::AD_GROUP_TAXONOMY)
@@ -587,10 +578,10 @@ class Advanced_Ads {
     public function log($message) {
         if (WP_DEBUG === true) {
             if (is_array($message) || is_object($message)) {
-                error_log('Advanced Ads Error following:', $this->plugin_slug);
+                error_log('Advanced Ads Error following:', ADVADS_SLUG);
                 error_log(print_r($message, true));
             } else {
-                $message = sprintf(__('Advanced Ads Error: %s', $this->plugin_slug), $message);
+                $message = sprintf(__('Advanced Ads Error: %s', ADVADS_SLUG), $message);
                 error_log($message);
             }
         }

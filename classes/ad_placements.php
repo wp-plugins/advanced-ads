@@ -71,7 +71,7 @@ class Advads_Ad_Placements {
 
         // check if slug already exists
         if ($new_placement['slug'] == '')
-            return __('Slug can’t be empty.', ADVADS_SLUG);
+            return __('Slug can\'t be empty.', ADVADS_SLUG);
         if (isset($placements[$new_placement['slug']]))
             return __('Slug already exists.', ADVADS_SLUG);
 
@@ -137,16 +137,16 @@ class Advads_Ad_Placements {
     static function items_for_select() {
         $select = array();
 
-        // load all ads
-        $ads = Advanced_Ads::get_ads();
-        foreach ($ads as $_ad) {
-            $select['ads']['ad_' . $_ad->ID] = $_ad->post_title;
-        }
-
         // load all ad groups
         $groups = Advanced_Ads::get_ad_groups();
         foreach ($groups as $_group) {
             $select['groups']['group_' . $_group->term_id] = $_group->name;
+        }
+
+        // load all ads
+        $ads = Advanced_Ads::get_ads();
+        foreach ($ads as $_ad) {
+            $select['ads']['ad_' . $_ad->ID] = $_ad->post_title;
         }
 
         return $select;
