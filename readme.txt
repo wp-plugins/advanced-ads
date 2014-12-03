@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.0.1
-Stable tag: 1.3
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,6 +22,15 @@ Learn more on the [plugin homepage](http://wpadvancedads.com).
 * group ads to create ad rotations
 * create drafts or ads only visible to logged in users
 * set a date for when to publish the ad
+
+= ad types =
+
+choose between different ad types that enable you to:
+
+* insert ad networks code (e.g. Google AdSense)
+* display images
+* use shortcodes (to also deliver ads from other ad plugins)
+* create content rich ad with the tinymc editor
 
 = display ads =
 
@@ -137,6 +146,13 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 
 == Changelog ==
 
+= 1.3.1 =
+
+* COOL: new ad type: rich media and formatable content – it’s like editing a normal post
+* parse ad content as post content; this allows the use of shortcodes
+* increased priority of content filter to reduce the risk of `wpautop` not being run yet
+* finished German translation
+
 = 1.3 =
 
 * COOL: layout options for ads, e.g. to set floating and margins (see the [manual](http://wpadvancedads.com/advancedads/manual/optimizing-the-ad-layout/))
@@ -144,7 +160,7 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 * fixed error when removing an ad that is still in a group
 * fixed possible translation issue
 * added partial German translation
-* added Italien translation (thanky to sangkavr)
+* added Italien translation (thanks to sangkavr)
 
 = 1.2.7 =
 

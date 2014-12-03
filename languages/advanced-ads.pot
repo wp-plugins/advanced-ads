@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Advanved Ads\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
-"POT-Creation-Date: 2014-11-24 17:53+0100\n"
-"PO-Revision-Date: 2014-11-24 17:53+0100\n"
+"POT-Creation-Date: 2014-12-02 20:07+0100\n"
+"PO-Revision-Date: 2014-12-02 20:08+0100\n"
 "Last-Translator: Thomas Maier <post@webzunft.de>\n"
 "Language-Team: webgilde <thomas.maier@webgilde.com>\n"
 "Language: en\n"
@@ -83,12 +83,12 @@ msgstr ""
 
 #: admin/class-advanced-ads-admin.php:304
 #: admin/class-advanced-ads-admin.php:331
-msgid "Cheatin&#8217; uh?"
+msgid "Sorry, you are not allowed to access this feature."
 msgstr ""
 
 #: admin/class-advanced-ads-admin.php:317
 msgid ""
-"You attempted to edit an item that doesn&#8217;t exist. Perhaps it was "
+"You attempted to edit an ad group that doesn&#8217;t exist. Perhaps it was "
 "deleted?"
 msgstr ""
 
@@ -117,47 +117,47 @@ msgstr "Anzeigebedingungen"
 msgid "Auto injection"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:563
+#: admin/class-advanced-ads-admin.php:567
 msgid "General"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:571
+#: admin/class-advanced-ads-admin.php:575
 msgid "Hide ads for logged in users"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:579
+#: admin/class-advanced-ads-admin.php:583
 msgid "Use advanced JavaScript"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:605
+#: admin/class-advanced-ads-admin.php:609
 msgid "(display to all)"
 msgstr "(für alle anzeigen)"
 
-#: admin/class-advanced-ads-admin.php:606
+#: admin/class-advanced-ads-admin.php:610
 msgid "Subscriber"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:607
+#: admin/class-advanced-ads-admin.php:611
 msgid "Contributor"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:608
+#: admin/class-advanced-ads-admin.php:612
 msgid "Author"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:609
+#: admin/class-advanced-ads-admin.php:613
 msgid "Editor"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:610
+#: admin/class-advanced-ads-admin.php:614
 msgid "Admin"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:618
+#: admin/class-advanced-ads-admin.php:622
 msgid "Choose the lowest role a user must have in order to not see any ads."
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:631
+#: admin/class-advanced-ads-admin.php:635
 #, php-format
 msgid ""
 "Only enable this if you can and want to use the advanced JavaScript "
@@ -479,7 +479,8 @@ msgid "Cancel"
 msgstr ""
 
 #: admin/views/ad-group-ads-inline-form.php:25
-#: admin/views/ad-group-edit.php:70
+#: admin/views/ad-group-edit.php:70 classes/ad_type_content.php:68
+#: classes/ad_type_content.php:69
 #, fuzzy
 msgid "Update"
 msgstr "Thema aktualisieren"
@@ -1046,8 +1047,17 @@ msgstr ""
 
 #: classes/ad_type_content.php:36
 msgid ""
-"The full content editor from WordPress with all features like image upload "
-"or styling, but also simple text/html mode for scripts and code."
+"The full content editor from WordPress with all features like shortcodes, "
+"image upload or styling, but also simple text/html mode for scripts and code."
+msgstr ""
+
+#: classes/ad_type_content.php:63
+msgid ""
+"Please <strong>save the ad</strong> before changing it to the content type."
+msgstr ""
+
+#: classes/ad_type_content.php:66
+msgid "Save Draft"
 msgstr ""
 
 #: classes/ad_type_plain.php:31

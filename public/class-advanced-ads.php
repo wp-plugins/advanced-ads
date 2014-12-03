@@ -25,7 +25,7 @@ class Advanced_Ads {
      * @var     string
      */
 
-    const VERSION = '1.3';
+    const VERSION = '1.3.1';
 
     /**
      * post type slug
@@ -111,7 +111,7 @@ class Advanced_Ads {
         // register hooks and filters for auto ad injection
         add_action('wp_head', array($this, 'inject_header'), 20);
         add_action('wp_footer', array($this, 'inject_footer'), 20);
-        add_filter('the_content', array($this, 'inject_content'), 20);
+        add_filter('the_content', array($this, 'inject_content'), 100);
     }
 
     /**
@@ -343,7 +343,7 @@ class Advanced_Ads {
      */
     function setup_default_ad_types($types){
         $types['plain'] = new Advads_Ad_Type_Plain(); /* plain text and php code */
-        // $types['content'] = new Advads_Ad_Type_Content(); /* rich content editor */
+        $types['content'] = new Advads_Ad_Type_Content(); /* rich content editor */
         return $types;
     }
 

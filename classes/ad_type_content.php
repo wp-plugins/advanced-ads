@@ -33,7 +33,7 @@ class Advads_Ad_Type_Content extends Advads_Ad_Type_Abstract{
      */
     public function __construct() {
         $this->title = __('Rich Content', ADVADS_SLUG);
-        $this->description = __('The full content editor from WordPress with all features like image upload or styling, but also simple text/html mode for scripts and code.', ADVADS_SLUG);
+        $this->description = __('The full content editor from WordPress with all features like shortcodes, image upload or styling, but also simple text/html mode for scripts and code.', ADVADS_SLUG);
         $this->parameters = array(
             'content' => ''
         );
@@ -52,16 +52,32 @@ class Advads_Ad_Type_Content extends Advads_Ad_Type_Abstract{
     public function render_parameters($ad){
         // load tinymc content exitor
         $content = (isset($ad->content)) ? $ad->content : '';
+
         /**
          * build the tinymc editor
          * @link http://codex.wordpress.org/Function_Reference/wp_editor
+         *
+         * don’t build it when ajax is used; display message and buttons instead
          */
-        $args = array(
-            'textarea_name' => 'advanced_ad[content]',
-            'textarea_rows' => 10,
-            'drag_drop_upload' => true
-        );
-        wp_editor($content, 'advanced-ad-parameters-content', $args);
+        if(defined('DOING_AJAX')){
+            ?><p><?php _e('Please <strong>save the ad</strong> before changing it to the content type.', ADVADS_SLUG); ?></p><?php
+            $status = get_post_status($ad->id);
+            if ( 'publish' != $status && 'future' != $status && 'pending' != $status ) { ?>
+                <input <?php if ( 'private' == $status ) { ?>style="display:none"<?php } ?> type="submit" name="save" id="save-post" value="<?php esc_attr_e('Save Draft'); ?>" class="button" />
+                <?php } else {
+		?><input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e('Update') ?>" />
+		<input name="save" type="submit" class="button button-primary button-large" id="publish" accesskey="p" value="<?php esc_attr_e('Update') ?>" /><?php
+                }
+                if(!empty($ad->content)) : ?><textarea id="advads-ad-content-plain" style="display:none;" cols="1" rows="1" name="advanced_ad[content]"><?php
+                echo $ad->content; ?></textarea><br class="clear"/><?php endif;
+        } else {
+            $args = array(
+                'textarea_name' => 'advanced_ad[content]',
+                'textarea_rows' => 10,
+                'drag_drop_upload' => true
+            );
+            wp_editor($content, 'advanced-ad-parameters-content', $args);
+        }
     }
 
     /**
@@ -78,6 +94,17 @@ class Advads_Ad_Type_Content extends Advads_Ad_Type_Abstract{
 
         // use WordPress core content filter
         return $content = apply_filters('content_save_pre', $content);
+    }
+
+    /**
+     * prepare the ads frontend output
+     *
+     * @param obj $ad ad object
+     * @return str $content ad content prepared for frontend output
+     * @since 1.0.0
+     */
+    public function prepare_output($ad){
+        return apply_filters('the_content', $ad->content);
     }
 
 }

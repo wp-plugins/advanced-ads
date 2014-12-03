@@ -301,7 +301,7 @@ class Advanced_Ads_Admin {
             check_admin_referer('update-group_' . $group_id);
 
             if (!current_user_can($tax->cap->edit_terms))
-                wp_die(__('Cheatin&#8217; uh?'));
+                wp_die(__('Sorry, you are not allowed to access this feature.', ADVADS_SLUG));
 
             // handle new groups
             if ($group_id == 0) {
@@ -314,7 +314,7 @@ class Advanced_Ads_Admin {
             } else {
                 $tag = get_term($group_id, $taxonomy);
                 if (!$tag)
-                    wp_die(__('You attempted to edit an item that doesn&#8217;t exist. Perhaps it was deleted?'));
+                    wp_die(__('You attempted to edit an ad group that doesn&#8217;t exist. Perhaps it was deleted?', ADVADS_SLUG));
 
                 $ret = wp_update_term($group_id, $taxonomy, $_POST);
                 if ($ret && !is_wp_error($ret))
@@ -328,7 +328,7 @@ class Advanced_Ads_Admin {
             check_admin_referer('delete-tag_' . $group_id);
 
             if (!current_user_can($tax->cap->delete_terms))
-                wp_die(__('Cheatin&#8217; uh?'));
+                wp_die(__('Sorry, you are not allowed to access this feature.', ADVADS_SLUG));
 
             wp_delete_term($group_id, $taxonomy);
 
@@ -524,7 +524,11 @@ class Advanced_Ads_Admin {
         if(!empty($_POST['advanced_ad']['content']))
             $ad->content = $_POST['advanced_ad']['content'];
         else $ad->content = '';
-        $ad->conditions = $_POST['advanced_ad']['conditions'];
+        if(!empty($_POST['advanced_ad']['conditions'])){
+            $ad->conditions = $_POST['advanced_ad']['conditions'];
+        } else {
+            $ad->conditions = array();
+        }
 
         $ad->save();
 

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Advanced Ads\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
-"POT-Creation-Date: 2014-11-24 17:53+0100\n"
-"PO-Revision-Date: 2014-11-24 17:54+0100\n"
+"POT-Creation-Date: 2014-12-02 20:07+0100\n"
+"PO-Revision-Date: 2014-12-02 20:10+0100\n"
 "Last-Translator: Thomas Maier <post@webzunft.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -21,7 +21,7 @@ msgid ""
 "Please convert these ads with auto injections: %s"
 msgstr ""
 "Advanced-Ads-Update: Auto-Injektionen werden jetzt durch Platzierungen "
-"verwaltet. Bitte konvertieren Sie diese Anzeigen mit Auto-Injektionen:%s"
+"verwaltet. Bitte konvertieren Sie diese Anzeigen mit Auto-Injektionen: %s"
 
 #: admin/class-advanced-ads-admin.php:196
 msgid "Overview"
@@ -68,7 +68,7 @@ msgstr "Einstellungen"
 
 #: admin/class-advanced-ads-admin.php:216
 msgid "Advanced Ads Debugging"
-msgstr "Advanced-Ads-Debugging"
+msgstr "Advanced-Ads-Fehleranalyse (Debugging)"
 
 #: admin/class-advanced-ads-admin.php:216
 msgid "Debug"
@@ -80,12 +80,12 @@ msgstr "Platzierungen aktualisiert"
 
 #: admin/class-advanced-ads-admin.php:304
 #: admin/class-advanced-ads-admin.php:331
-msgid "Cheatin&#8217; uh?"
-msgstr "Cheatin&#8217; uh?"
+msgid "Sorry, you are not allowed to access this feature."
+msgstr "Sie haben leider keinen Zugriff auf diese Funktion"
 
 #: admin/class-advanced-ads-admin.php:317
 msgid ""
-"You attempted to edit an item that doesn&#8217;t exist. Perhaps it was "
+"You attempted to edit an ad group that doesn&#8217;t exist. Perhaps it was "
 "deleted?"
 msgstr ""
 "Sie haben versucht, ein Element, das nicht existiert, zu bearbeiten. "
@@ -101,7 +101,7 @@ msgstr "Anzeigen-Parameter"
 
 #: admin/class-advanced-ads-admin.php:422
 msgid "Layout / Output"
-msgstr ""
+msgstr "Layout / Ausgabe"
 
 #: admin/class-advanced-ads-admin.php:425
 msgid "Display Conditions"
@@ -115,55 +115,55 @@ msgstr "Besucher-Bedingungen"
 msgid "Auto injection"
 msgstr "Auto-Injektion"
 
-#: admin/class-advanced-ads-admin.php:563
+#: admin/class-advanced-ads-admin.php:567
 msgid "General"
 msgstr "Allgemein"
 
-#: admin/class-advanced-ads-admin.php:571
+#: admin/class-advanced-ads-admin.php:575
 msgid "Hide ads for logged in users"
-msgstr "Verstecke Anzeigen wenn Benutzern eingeloggt ist"
+msgstr "Verstecke Anzeigen vor eingeloggten Benutzern"
 
-#: admin/class-advanced-ads-admin.php:579
+#: admin/class-advanced-ads-admin.php:583
 msgid "Use advanced JavaScript"
 msgstr "Advanced-JavaScript benutzen"
 
-#: admin/class-advanced-ads-admin.php:605
+#: admin/class-advanced-ads-admin.php:609
 msgid "(display to all)"
 msgstr "(für alle sichtbar)"
 
-#: admin/class-advanced-ads-admin.php:606
+#: admin/class-advanced-ads-admin.php:610
 msgid "Subscriber"
 msgstr "Abonnent"
 
-#: admin/class-advanced-ads-admin.php:607
+#: admin/class-advanced-ads-admin.php:611
 msgid "Contributor"
 msgstr "Mitarbeiter"
 
-#: admin/class-advanced-ads-admin.php:608
+#: admin/class-advanced-ads-admin.php:612
 msgid "Author"
 msgstr "Autor"
 
-#: admin/class-advanced-ads-admin.php:609
+#: admin/class-advanced-ads-admin.php:613
 msgid "Editor"
 msgstr "Redakteur"
 
-#: admin/class-advanced-ads-admin.php:610
+#: admin/class-advanced-ads-admin.php:614
 msgid "Admin"
 msgstr "Admin"
 
-#: admin/class-advanced-ads-admin.php:618
+#: admin/class-advanced-ads-admin.php:622
 msgid "Choose the lowest role a user must have in order to not see any ads."
 msgstr ""
 "Wählen Sie die niedrigste Rolle die ein Benutzer haben muss um keine "
 "Anzeigen zu sehen."
 
-#: admin/class-advanced-ads-admin.php:631
+#: admin/class-advanced-ads-admin.php:635
 #, php-format
 msgid ""
 "Only enable this if you can and want to use the advanced JavaScript "
 "functions described <a href=\"%s\">here</a>."
 msgstr ""
-"Aktivieren Sie dies nur, wenn Sie die erweiterten und <a href=\"%s\">hier </"
+"Aktivieren Sie dies nur, wenn Sie die erweiterten und <a href=\"%s\">hier</"
 "a> beschriebenen Advanced-JavaScript-Funktionen verwenden können und wollen."
 
 #: admin/includes/class-ad-groups-list-table.php:57
@@ -201,11 +201,11 @@ msgstr "Anzeigengruppe"
 
 #: admin/includes/class-ad-groups-list-table.php:190
 msgid "Slug"
-msgstr "slug"
+msgstr "Slug"
 
 #: admin/includes/class-display-condition-callbacks.php:28
 msgid "Display on all public <strong>post types</strong>."
-msgstr "Für alle öffentlichen <strong>Beitragstypen</strong> anzeigen."
+msgstr "In allen öffentlichen <strong>Beitragstypen</strong> anzeigen."
 
 #: admin/includes/class-display-condition-callbacks.php:31
 #: includes/array_ad_conditions.php:28
@@ -216,7 +216,7 @@ msgstr ""
 
 #: admin/includes/class-display-condition-callbacks.php:86
 msgid "Display for all <strong>categories, tags and taxonomies</strong>."
-msgstr "Für alle <strong>Kategorien, Tags und Taxonomien</strong> anzeigen."
+msgstr "In allen <strong>Kategorien, Tags und Taxonomien</strong> anzeigen."
 
 #: admin/includes/class-display-condition-callbacks.php:88
 msgid "Display here"
@@ -246,7 +246,7 @@ msgstr ""
 
 #: admin/includes/class-display-condition-callbacks.php:164
 msgid "Display on all <strong>category archive pages</strong>."
-msgstr "Auf allen <strong>Kategorie-Archiven</strong> anzeigen."
+msgstr "In allen <strong>Kategorie-Archiven</strong> anzeigen."
 
 #: admin/includes/class-display-condition-callbacks.php:167
 msgid ""
@@ -269,7 +269,7 @@ msgid ""
 "Display an all <strong>individual posts, pages</strong> and public post type "
 "pages"
 msgstr ""
-"Auf allen individuellen <strong>Beiträgen, Seiten und Beitragsarten</strong> "
+"In allen individuellen <strong>Beiträgen, Seiten und Beitragsarten</strong> "
 "anzeigen"
 
 #: admin/includes/class-display-condition-callbacks.php:233
@@ -299,7 +299,7 @@ msgstr "Die Anzeige hier ausblenden"
 
 #: admin/includes/class-display-condition-callbacks.php:261
 msgid "Update warning"
-msgstr ""
+msgstr "Update-Warnung"
 
 #: admin/includes/class-display-condition-callbacks.php:262
 msgid ""
@@ -308,34 +308,40 @@ msgid ""
 "with mixed settings. It seems you are still using mixed settings on this "
 "page. Please consider changing your setup for this ad."
 msgstr ""
+"Aufgrund einiger Konflikte vor Version 1.2.6 ist es von nun an nur möglich, "
+"entweder einzelne Seiten zu wählen zum Ein- oder Ausschließen von Anzeigen, "
+"aber nicht beides mit gemischten Einstellungen. Es scheint, dass Sie noch "
+"mit gemischten Einstellungen auf dieser Seite arbeiten. Bitte ändern Sie die "
+"Einstellung für diese Anzeige."
 
 #: admin/includes/class-display-condition-callbacks.php:263
-#, fuzzy
 msgid "Your old values are:"
-msgstr "gib deine Buchstaben ein"
+msgstr "Ihre alten Werte sind:"
 
 #: admin/includes/class-display-condition-callbacks.php:264
 msgid "Post IDs the ad is displayed on:"
-msgstr ""
+msgstr "Beitrag-IDs auf denen die Anzeige angezeigt wird:"
 
 #: admin/includes/class-display-condition-callbacks.php:265
 msgid "Post IDs the ad is hidden from:"
-msgstr ""
+msgstr "Beitrag-IDs auf denen die Anzeige nicht angezeigt wird:"
 
 #: admin/includes/class-display-condition-callbacks.php:266
 msgid ""
 "Below you find the pages the ad is displayed on. If this is ok, just save "
 "the ad. If not, please update your settings."
 msgstr ""
+"Unten finden Sie die Seiten der sichtbaren Anzeige. Wenn das in Ordnung ist, "
+"dann sichern Sie die Anzeige. Wenn nicht, dann aktualisieren Sie bitte Ihre "
+"Einstellungen."
 
 #: admin/includes/class-display-condition-callbacks.php:306
 msgid "new"
-msgstr ""
+msgstr "neu"
 
 #: admin/includes/class-display-condition-callbacks.php:308
-#, fuzzy
 msgid "type the title"
-msgstr "Titel:"
+msgstr "Geben Sie den Titel ein"
 
 #: admin/includes/class-list-table.php:186
 msgid "No items found."
@@ -343,100 +349,93 @@ msgstr "Keine Elemente gefunden."
 
 #: admin/includes/class-list-table.php:310
 msgid "Bulk Actions"
-msgstr ""
+msgstr "Stapelverarbeitung"
 
 #: admin/includes/class-list-table.php:320
 msgid "Apply"
-msgstr ""
+msgstr "Anwenden"
 
 #: admin/includes/class-list-table.php:404
-#, fuzzy
 msgid "Show all dates"
-msgstr "Alle Wörter einblenden"
+msgstr "Alle Termine anzeigen"
 
 #: admin/includes/class-list-table.php:417
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s %2$d"
-msgstr "%1$s am %2$s"
+msgstr "%1$s %2$d"
 
 #: admin/includes/class-list-table.php:433
-#, fuzzy
 msgid "List View"
-msgstr "Ansicht"
+msgstr "Listenansicht"
 
 #: admin/includes/class-list-table.php:434
-#, fuzzy
 msgid "Excerpt View"
-msgstr "Ansicht"
+msgstr "Teilansicht"
 
 #: admin/includes/class-list-table.php:460
-#, fuzzy, php-format
+#, php-format
 msgid "%s pending"
-msgstr "%s in %s"
+msgstr "%s anstehend"
 
 #: admin/includes/class-list-table.php:528
 #: admin/includes/class-list-table.php:943
 #, php-format
 msgid "1 item"
 msgid_plural "%s items"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "1 Artikel"
+msgstr[1] "%s Artikel"
 
 #: admin/includes/class-list-table.php:546
 msgid "Go to the first page"
-msgstr ""
+msgstr "Zur ersten Seite gehen"
 
 #: admin/includes/class-list-table.php:553
-#, fuzzy
 msgid "Go to the previous page"
-msgstr "&#171; Vorherige"
+msgstr "Zur vorherigen Seite"
 
 #: admin/includes/class-list-table.php:562
-#, fuzzy
 msgid "Current page"
-msgstr "Beitrag / Seite"
+msgstr "Aktuelle Seite"
 
 #: admin/includes/class-list-table.php:568
-#, fuzzy, php-format
+#, php-format
 msgctxt "paging"
 msgid "%1$s of %2$s"
-msgstr "Eingeloggt als <a href=\"%1$s\">%2$s</a>"
+msgstr "%1$s von %2$s"
 
 #: admin/includes/class-list-table.php:572
 msgid "Go to the next page"
-msgstr ""
+msgstr "Zur nächsten Seite gehen"
 
 #: admin/includes/class-list-table.php:579
 msgid "Go to the last page"
-msgstr ""
+msgstr "Zur letzten Seite gehen"
 
 #: admin/includes/class-list-table.php:715
-#, fuzzy
 msgid "Select All"
-msgstr "%s auswählen"
+msgstr "Alle wählen"
 
 #: admin/views/ad-display-metabox.php:6
-#, fuzzy
 msgid "Choose where to display the ad and where to hide it."
-msgstr "Wähle aus, wo Bildquellen auf Einzelseiten angezeigt werden"
+msgstr "Wählen Sie, wo die Anzeige sichtbar und wo sie versteckt ist."
 
 #: admin/views/ad-display-metabox.php:9
-#, fuzzy
 msgid "Display ad everywhere"
-msgstr "Die Anzeige nur hier einblenden"
+msgstr "Anzeige überall zeigen"
 
 #: admin/views/ad-display-metabox.php:10
-#, fuzzy
 msgid "Set display conditions"
-msgstr "Konditionen anzeigen"
+msgstr "Anzeige-Bedingungen festlegen"
 
 #: admin/views/ad-display-metabox.php:14
 msgid "If you want to display the ad everywhere, don't do anything here. "
 msgstr ""
+"Wenn Sie möchten, dass die Anzeige überall gezeigt wird, ist hier nichts zu "
+"tun."
 
 #: admin/views/ad-display-metabox.php:15
 msgid "The fewer conditions you enter, the better the performance will be."
-msgstr ""
+msgstr "Je weniger Bedingungen Sie eingeben, um so besser ist die Performance."
 
 #: admin/views/ad-display-metabox.php:16
 #, php-format
@@ -444,11 +443,12 @@ msgid ""
 "Learn more about display conditions from the <a href=\"%s\" target=\"_blank"
 "\">manual</a>."
 msgstr ""
+"Lernen Sie mehr über Anzeige-Bedingungen in der <a href=\"%s\" target="
+"\"_blank\">Anleitung</a> (engl.)."
 
 #: admin/views/ad-display-metabox.php:32
-#, fuzzy
 msgid "Other conditions"
-msgstr "Konditionen anzeigen"
+msgstr "Andere Bedingungen"
 
 #: admin/views/ad-display-metabox.php:33
 msgid ""
@@ -456,123 +456,112 @@ msgid ""
 "binding. E.g. \"Front Page: show\" will result on the ad being only visible "
 "on the front page."
 msgstr ""
+"Bei Verwendung einer der beiden Checkbox-Bedingungen wird die Regel bindend. "
+"Wenn Sie z.B. die Funktion \"Home Page: Zeigen\" aktivieren, wird die "
+"Anzeige  nur auf der ersten Seite zu sehen sein."
 
 #: admin/views/ad-display-metabox.php:38
-#, fuzzy
 msgid "show"
-msgstr "Bildquellen anzeigen"
+msgstr "Zeigen"
 
 #: admin/views/ad-display-metabox.php:39
-#, fuzzy
 msgid "hide"
-msgstr "Bildquellen verstecken"
+msgstr "Verstecken"
 
 #: admin/views/ad-display-metabox.php:59
 msgid "clear"
-msgstr ""
+msgstr "leeren"
 
 #: admin/views/ad-display-metabox.php:66
-#, fuzzy
 msgid "show debug output"
-msgstr "Fehlerbehebung"
+msgstr "Zeige Ergebnis der Fehlerbehebung"
 
 #: admin/views/ad-display-metabox.php:67
 msgid "Values saved for this ad in the database (post metas)"
 msgstr ""
+"Die Werte für diese Anzeige wurden in der Datenbank gespeichert (post metas)"
 
 #: admin/views/ad-group-ads-inline-form.php:10
-#, fuzzy
 msgctxt "ad group ads form"
 msgid "weight"
-msgstr "Anzeigengewichtung"
+msgstr "Gewicht"
 
 #: admin/views/ad-group-ads-inline-form.php:24
 msgid "Cancel"
-msgstr ""
+msgstr "Abbruch"
 
 #: admin/views/ad-group-ads-inline-form.php:25
-#: admin/views/ad-group-edit.php:70
-#, fuzzy
+#: admin/views/ad-group-edit.php:70 classes/ad_type_content.php:68
+#: classes/ad_type_content.php:69
 msgid "Update"
-msgstr ""
-"Advanced-Ads-Update: Auto-Injektionen werden jetzt durch Platzierungen "
-"verwaltet. Bitte konvertieren Sie diese Anzeigen mit Auto-Injektionen:%s"
+msgstr "Update"
 
 #: admin/views/ad-group-ads-inline-form.php:33
-#, fuzzy
 msgid "There are no ads in this group"
-msgstr "Anzeigengruppe"
+msgstr "Keine Anzeigen in dieser Gruppe"
 
 #: admin/views/ad-group-edit.php:14
 msgid "You did not select an item for editing."
-msgstr ""
+msgstr "Sie haben nichts zur Bearbeitung gewählt."
 
 #: admin/views/ad-group-edit.php:33
-#, fuzzy
 msgctxt "Taxonomy Name"
 msgid "Name"
 msgstr "Name"
 
 #: admin/views/ad-group-edit.php:38
-#, fuzzy
 msgctxt "Taxonomy Slug"
 msgid "Slug"
-msgstr "slug"
+msgstr "Slug"
 
 #: admin/views/ad-group-edit.php:40
 msgid ""
 "An id-like string with only letters in lower case, numbers, and hyphens."
 msgstr ""
+"Ein ID-ähnlicher String mit nur Kleinbuchstaben, Zahlen und Bindestrichen."
 
 #: admin/views/ad-group-edit.php:45
-#, fuzzy
 msgctxt "Taxonomy Parent"
 msgid "Parent"
-msgstr "Gehe zur Bearbeitungsansicht des zugeordneten Artikels"
+msgstr "Elternelement"
 
 #: admin/views/ad-group-edit.php:48 admin/views/ad-group-edit.php:50
 msgid "None"
-msgstr ""
+msgstr "Kein"
 
 #: admin/views/ad-group-edit.php:56
 msgctxt "Taxonomy Description"
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
 #: admin/views/ad-group-edit.php:68
-#, fuzzy
 msgid "Create new Ad Group"
-msgstr "Anzeigengruppe"
+msgstr "Neue Anzeigengruppe erstellen"
 
 #: admin/views/ad-group.php:33
-#, fuzzy
 msgid "Ad Group added."
-msgstr "Anzeigengruppe"
+msgstr "Anzeigengruppe hinzugefügt."
 
 #: admin/views/ad-group.php:34 admin/views/ad-group.php:38
-#, fuzzy
 msgid "Ad Group deleted."
-msgstr "Anzeigengruppe"
+msgstr "Anzeigengruppe gelöscht."
 
 #: admin/views/ad-group.php:35
-#, fuzzy
 msgid "Ad Group updated."
-msgstr "Anzeigengruppe"
+msgstr "Anzeigengruppe aktualisiert."
 
 #: admin/views/ad-group.php:36
-#, fuzzy
 msgid "Ad Group not added."
-msgstr "Anzeigengruppe"
+msgstr "Anzeigengruppe nicht hinzugefügt."
 
 #: admin/views/ad-group.php:37
-#, fuzzy
 msgid "Ad Group not updated."
-msgstr "Anzeigengruppe"
+msgstr "Anzeigengruppe nicht aktualisiert."
 
 #: admin/views/ad-group.php:55
-#, fuzzy, php-format
+#, php-format
 msgid "Search results for &#8220;%s&#8221;"
-msgstr "#8220;%s&#8221; bearbeiten"
+msgstr "Suchergebnisse für &#8220;%s&#8221;"
 
 #: admin/views/ad-group.php:61
 msgid ""
@@ -581,11 +570,15 @@ msgid ""
 "informational purposes. Not only can an Ad Groups have multiple ads, but an "
 "ad can belong to multiple ad groups."
 msgstr ""
+"Anzeigen-Gruppen sind eine sehr flexible Methode, um Anzeigen zu bündeln. "
+"Sie können sie verwenden um Zufallsanzeigen im Frontend anzuzeigen oder um A/"
+"B-Tests durchzuführen, aber auch einfach nur zu Informationszwecken. Eine "
+"Anzeigen-Gruppe kann mehrere Anzeigen enthalten, aber eine Anzeige kann auch "
+"zu mehreren Anzeigen-Gruppen gehören."
 
 #: admin/views/ad-group.php:69
-#, fuzzy
 msgid "How to display an Ad Group?"
-msgstr "Anzeigengruppe"
+msgstr "Wie kann eine Anzeigengruppe angezeigt werden?"
 
 #: admin/views/ad-group.php:71
 #, php-format
@@ -593,174 +586,167 @@ msgid ""
 "Examples on how to display an ad group? Find more help and examples in the "
 "<a href=\"%s\" target=\"_blank\">manual</a>"
 msgstr ""
+"Suchen Sie Beispiele, wie eine Anzeigen-Gruppe veröffentlicht wird? Sie "
+"finden Hilfe in der <a href=\"%s\" target=\"_blank\">Anleitung</a>"
 
 #: admin/views/ad-group.php:72 admin/views/ad_info.php:6
 #: admin/views/placements.php:51
-#, fuzzy
 msgid "shortcode"
-msgstr ""
-"Die Überschrift des Bilderverzeichnisses, das mit einem Shortcode oder einer "
-"Funktion in das Theme integriert wurde."
+msgstr "Shortcode"
 
 #: admin/views/ad-group.php:73
 msgid "To display an ad group with the ID 6 in content fields"
-msgstr ""
+msgstr "Zum Anzeigen einer Anzeigen-Gruppe mit der ID 6 im Beitrag."
 
 #: admin/views/ad-group.php:75 admin/views/ad_info.php:9
 #: admin/views/placements.php:54
 msgid "template"
-msgstr ""
+msgstr "Template"
 
 #: admin/views/ad-group.php:76
 msgid "To display an ad group with the ID 6 in template files"
-msgstr ""
+msgstr "Zum Anzeigen einer Anzeigen-Gruppe mit der ID 6 in Template-Dateien"
 
 #: admin/views/ad-inject-metabox.php:1
 msgid ""
 "Include ads on specific places automatically without shortcodes or functions."
 msgstr ""
+"Anzeigen an bestimmten Stellen automatisch ohne Shortcodes oder Funktionen "
+"einfügen."
 
 #: admin/views/ad-inject-metabox.php:4 admin/views/ad-inject-metabox.php:32
 msgid ""
 "This feature is now provided through placements. Please convert the settings "
 "made here to placements."
 msgstr ""
+"Diese Funktion wird nun durch Platzierungen bereitgestellt. Bitte "
+"konvertieren Sie die Einstellungen, um Platzierungen zu ermöglichen."
 
 #: admin/views/ad-inject-metabox.php:10
 msgid "Include in Header (before closing </head> Tag, probably not visible)"
 msgstr ""
+"Einfügen in den Header (vor dem schließenden </head>-Tag, häufig nicht "
+"sichtbar)"
 
 #: admin/views/ad-inject-metabox.php:16
 msgid "Include in Footer (before closing </body> Tag)"
-msgstr ""
+msgstr "Einfügen in den Footer (vor dem schließenden </body>-Tag)"
 
 #: admin/views/ad-inject-metabox.php:22
 msgid "Include before the post content"
-msgstr ""
+msgstr "Einfügen vor dem Beitrags-Inhalt"
 
 #: admin/views/ad-inject-metabox.php:28
 msgid "Include after the post content"
-msgstr ""
+msgstr "Einfügen nach dem Beitrags-Inhalt"
 
 #: admin/views/ad-main-metabox.php:3
 msgid "No ad types defined"
-msgstr ""
+msgstr "Keine Anzeigentypen definiert"
 
 #: admin/views/ad-output-metabox.php:1
 msgid "Everything connected to the ads layout and output."
-msgstr ""
+msgstr "Alles was mit dem Layout und der Ausgabe im Frontend zusammenhängt."
 
 #: admin/views/ad-output-metabox.php:5
-#, fuzzy
 msgid "Position"
-msgstr "Position der Beschriftung im Bild"
+msgstr "Position"
 
 #: admin/views/ad-output-metabox.php:6
-#, fuzzy
 msgid "- default -"
-msgstr ""
-"Du hast diese Seite wahrscheinlich direkt aufgerufen. Die Wortliste ist "
-"damit auf die Standardeinstellung \"%s\" zurückgefallen. Besuche die <a "
-"class=\"nomark\" href=\"/wortsuche\" title=\"Wortgenerator\">Hauptseite der "
-"Wortsuche</a>, um eine deutsche Wortliste auszuwählen."
+msgstr "- default -"
 
 #: admin/views/ad-output-metabox.php:7 admin/views/placements.php:75
 #: classes/ad_placements.php:31
-#, fuzzy
 msgid "default"
-msgstr ""
-"Du hast diese Seite wahrscheinlich direkt aufgerufen. Die Wortliste ist "
-"damit auf die Standardeinstellung \"%s\" zurückgefallen. Besuche die <a "
-"class=\"nomark\" href=\"/wortsuche\" title=\"Wortgenerator\">Hauptseite der "
-"Wortsuche</a>, um eine deutsche Wortliste auszuwählen."
+msgstr "Standard"
 
 #: admin/views/ad-output-metabox.php:8
-#, fuzzy
 msgid "left"
-msgstr "(keine Hinweise mehr verfügbar)"
+msgstr "links"
 
 #: admin/views/ad-output-metabox.php:11
 msgid "center"
-msgstr ""
+msgstr "mittig"
 
 #: admin/views/ad-output-metabox.php:14
 msgid "right"
-msgstr ""
+msgstr "rechts"
 
 #: admin/views/ad-output-metabox.php:19
 msgid ""
 "Check this if you don't want the following elements to float around the ad. "
 "(adds a clearfix)"
 msgstr ""
+"Aktivieren Sie diese Funktion, wenn sich nachfolgende Elemente nicht um die "
+"Anzeige legen sollen. (Fügt ein Clearfix hinzu)"
 
 #: admin/views/ad-output-metabox.php:22
 msgid "Margin"
-msgstr ""
+msgstr "Abstand"
 
 #: admin/views/ad-output-metabox.php:23
 msgid "top:"
-msgstr ""
+msgstr "oben:"
 
 #: admin/views/ad-output-metabox.php:25
 msgid "right:"
-msgstr ""
+msgstr "rechts:"
 
 #: admin/views/ad-output-metabox.php:27
 msgid "bottom:"
-msgstr ""
+msgstr "unten:"
 
 #: admin/views/ad-output-metabox.php:29
-#, fuzzy
 msgid "left:"
-msgstr "(keine Hinweise mehr verfügbar)"
+msgstr "links:"
 
 #: admin/views/ad-output-metabox.php:31
 msgid "tip: use this to add a margin around the ad"
 msgstr ""
+"Tipp: Verwenden Sie dies, um einen Abstand zwischen Anzeige und Inhalt "
+"einzufügen."
 
 #: admin/views/ad-parameters-metabox.php:15
 msgid "size:"
-msgstr ""
+msgstr "Größe:"
 
 #: admin/views/ad-parameters-metabox.php:16
-#, fuzzy
 msgid "width"
-msgstr "maximale Breite der Miniaturbilder"
+msgstr "Breite"
 
 #: admin/views/ad-parameters-metabox.php:17
-#, fuzzy
 msgid "height"
-msgstr "maximale Höhe der Miniaturbilder"
+msgstr "Höhe"
 
 #: admin/views/ad-visitor-metabox.php:1
 msgid ""
 "Display conditions that are based on the user. Use with caution on cached "
 "websites."
 msgstr ""
+"Anzeigebedingungen, die sich auf den Benutzer beziehen. Auf gecachten "
+"Webseiten bitte mit Vorsicht anwenden."
 
 #: admin/views/ad-visitor-metabox.php:8
-#, fuzzy
 msgid "Display on all devices"
-msgstr "(sichtbar für alle)"
+msgstr "Auf allen Geräten anzeigen"
 
 #: admin/views/ad-visitor-metabox.php:12
-#, fuzzy
 msgid "only on mobile devices"
-msgstr "Die Anzeige nur hier einblenden"
+msgstr "Nur auf mobilen Geräten"
 
 #: admin/views/ad-visitor-metabox.php:16
 msgid "not on mobile devices"
-msgstr ""
+msgstr "Nicht auf mobilen Endgeräten"
 
 #: admin/views/ad_info.php:1
-#, fuzzy, php-format
+#, php-format
 msgid "Ad Id: %s"
-msgstr "ID"
+msgstr "Anzeigen-ID: %s"
 
 #: admin/views/ad_info.php:2
-#, fuzzy
 msgid "How to use this Ad?"
-msgstr "Wie die Scrabble-Hilfe funktioniert"
+msgstr "Wie kann ich diese Anzeige verwenden?"
 
 #: admin/views/ad_info.php:5
 #, php-format
@@ -768,143 +754,145 @@ msgid ""
 "How to display the ad directly? Find more help and examples in the <a href="
 "\"%s\" target=\"_blank\">manual</a>"
 msgstr ""
+"Anzeige veröffentlichen? Hilfe und Beispiele finden Sie in der <a href=\"%s"
+"\" target=\"_blank\">Anleitung</a>"
 
 #: admin/views/ad_info.php:7
-#, fuzzy
 msgid "To display an ad in content fields"
-msgstr "Die Anzeige nur hier einblenden"
+msgstr "Anzeige im Text-Editor einbinden"
 
 #: admin/views/ad_info.php:10
-#, fuzzy
 msgid "To display an ad in template files"
-msgstr "Die Anzeige nur hier einblenden"
+msgstr "Anzeige in Template-Dateien nutzen"
 
 #: admin/views/debug.php:8
 msgid "Work in progress"
-msgstr ""
+msgstr "In Arbeit"
 
 #: admin/views/debug.php:9
 msgid ""
 "This screen is work in progress. You can use the information if you "
 "understand them, but there is nothing to do here yet."
 msgstr ""
+"Dieser Bildschirm ist in Arbeit. Sie können die Informationen verwenden, "
+"wenn Sie sie verstehen, aber es gibt hier für Sie nichts zu tun."
 
 #: admin/views/debug.php:16
-#, fuzzy
 msgid "Ad Condition Overview"
-msgstr "Übersicht"
+msgstr "Übersicht der Anzeigen-Bedingungen"
 
 #: admin/views/overview.php:13
 msgid ""
 "Ads are the smallest unit, containing the content or a single ad to be "
 "displayed."
-msgstr ""
+msgstr "Anzeigen sind die kleinste Einheit und enthalten Inhalte und Layout."
 
 #: admin/views/overview.php:14
 #, php-format
 msgid "You have published %d ads."
-msgstr ""
+msgstr "Sie haben %d Anzeigen veröffentlicht."
 
 #: admin/views/overview.php:15
 #, php-format
 msgid "<a href=\"%s\">Manage</a> them or <a href=\"%s\">create</a> a new one"
 msgstr ""
+"Anzeigen <a href=\"%s\">verwalten</a> oder neue <a href=\"%s\">erstellen</a>"
 
 #: admin/views/overview.php:23
-#, fuzzy
 msgid "recent ads"
-msgstr "Neueste Artikel."
+msgstr "Neueste Anzeigen"
 
 #: admin/views/overview.php:33
 msgid "Create your first ad"
-msgstr ""
+msgstr "Erstellen Sie Ihre erste Anzeige"
 
 #: admin/views/overview.php:41
 msgid ""
 "Ad Groups contain ads and are currently used to rotate multiple ads on a "
 "single spot."
 msgstr ""
+"Anzeigengruppen enthalten Anzeigen und werden verwendet, um mehrere Anzeigen "
+"an einer Stelle zu rotieren."
 
 #: admin/views/overview.php:42
 #, php-format
 msgid "You have %d groups."
-msgstr ""
+msgstr "Sie haben %d Gruppen."
 
 #: admin/views/overview.php:43 admin/views/overview.php:69
 #, php-format
 msgid "<a href=\"%s\">Manage</a> them."
-msgstr ""
+msgstr "<a href=\"%s\">Verwalten</a>"
 
 #: admin/views/overview.php:49
-#, fuzzy
 msgid "recent groups"
-msgstr "Neueste Artikel."
+msgstr "Neueste Gruppen"
 
 #: admin/views/overview.php:59
 msgid "Create your first group"
-msgstr ""
+msgstr "Erstellen Sie Ihre erste Gruppe"
 
 #: admin/views/overview.php:67
 msgid ""
 "Ad Placements are the best way to manage where to display ads and groups."
 msgstr ""
+"Anzeigen-Platzierungen sind am besten geeignet um zu bestimmen, wo Anzeigen "
+"und Gruppen veröffentlicht werden."
 
 #: admin/views/overview.php:68
 #, php-format
 msgid "You have %d placements."
-msgstr ""
+msgstr "Sie haben %d Platzierungen."
 
 #: admin/views/overview.php:75
-#, fuzzy
 msgid "recent placements"
-msgstr "Neueste Artikel."
+msgstr "Neueste Platzierungen"
 
 #: admin/views/overview.php:85
 msgid "Create your first placement"
-msgstr ""
+msgstr "Erstellen Sie Ihre erste Platzierung"
 
 #: admin/views/overview.php:93
 msgid "Manual and Support"
-msgstr ""
+msgstr "Anleitung und Support"
 
 #: admin/views/overview.php:94
 msgid "Need some help? These are your options"
-msgstr ""
+msgstr "Benötigen Sie weitere Hilfe? Dies sind Ihre Optionen:"
 
 #: admin/views/overview.php:96
 #, php-format
 msgid "Visit the <a href=\"%s\">plugin homepage</a>"
-msgstr ""
+msgstr "Besuchen Sie die <a href=\"%s\">Plugin-Homepage</a>."
 
 #: admin/views/overview.php:97
 #, php-format
 msgid "Have a look into the <a href=\"%s\">manual</a>"
-msgstr ""
+msgstr "Werfen Sie einen Blick in die <a href=\"%s\">Anleitung</a>."
 
 #: admin/views/overview.php:98
 #, php-format
 msgid ""
 "Ask a question to other users in the <a href=\"%s\">wordpress.org forum</a>"
-msgstr ""
+msgstr "Fragen Sie andere Nutzer im <a href=\"%s\">wordpress.org forum</a>."
 
 #: admin/views/overview.php:99
-#, fuzzy, php-format
+#, php-format
 msgid "<a href=\"%s\">Hire the developer</a>"
-msgstr "Eingeloggt als <a href=\"%1$s\">%2$s</a>"
+msgstr "<a href=\"%s\">Engagieren Sie den Entwickler</a>."
 
 #: admin/views/overview.php:103
-#, fuzzy
 msgid "Add-ons"
-msgstr "gegebene Buchstaben und Länge eingeben"
+msgstr "Add-ons"
 
 #: admin/views/overview.php:104
 msgid "Want to boost your ad income? Try these add-ons"
 msgstr ""
+"Möchten Sie Ihr Anzeigen-Einkommen steigern? Probieren Sie diese Add-ons"
 
 #: admin/views/overview.php:111
-#, fuzzy
 msgid "See Add-Ons"
-msgstr "gegebene Buchstaben und Länge eingeben"
+msgstr "Add-Ons sehen"
 
 #: admin/views/placements.php:14
 msgid ""
@@ -912,8 +900,8 @@ msgid ""
 "if you plan to change ads and ad groups on the same place without the need "
 "to change your templates."
 msgstr ""
-"Platzierungen sind physikalische Stellen in Ihrem Theme und den Beiträgen. "
-"Sie können sie verwenden, wenn Sie Anzeigen und Anzeigengruppen an einer "
+"Platzierungen sind Stellen in Ihrem Theme und in den Beiträgen. Sie können "
+"sie verwenden, wenn Sie Anzeigen und Anzeigengruppen später an einer "
 "Position austauschen möchten, ohne eine Änderung der Templates oder Seiten-"
 "Inhalte vorzunehmen."
 
@@ -923,31 +911,30 @@ msgid ""
 "See also the manual for more information on <a href=\"%s\">placements</a> "
 "and <a href=\"%s\">auto injection</a>."
 msgstr ""
-"Weitere Informationen finden Sie im Handbuch (engl.) unter <a href=\"%s"
-"\">Platzierungen</a> und <a href=\"%s\">Auto-Injektion</a>."
+"Weitere Informationen finden Sie in der Anleitung (engl.) unter <a href=\"%s"
+"\">Placements</a> und <a href=\"%s\">Auto Injection</a>."
 
 #: admin/views/placements.php:16
 msgid "Create a new placement"
-msgstr ""
+msgstr "Neue Platzierung erstellen"
 
 #: admin/views/placements.php:18 admin/views/placements.php:63
-#, fuzzy
 msgid "Type"
-msgstr "Anzeigen-Typ"
+msgstr "Typ"
 
 #: admin/views/placements.php:27
-#, fuzzy
 msgid "What is this?"
-msgstr "Und jetzt?"
+msgstr "Was ist das?"
 
 #: admin/views/placements.php:29
 msgid ""
 "Placement types define how the placements works and where it is going to be "
 "displayed."
 msgstr ""
+"Platzierungstypen definieren, wie die Platzierungen arbeiten und wo sie "
+"angezeigt werden."
 
 #: admin/views/placements.php:38 admin/views/placements.php:62
-#, fuzzy
 msgid "Name"
 msgstr "Name"
 
@@ -956,18 +943,22 @@ msgid ""
 "Individual identifier. Allowed are alphanumeric signs (lower case) and "
 "hyphen."
 msgstr ""
+"Individuelle Kennung. Erlaubt sind alphanumerische Zeichen (Kleinbuchstaben) "
+"und Bindestriche."
 
 #: admin/views/placements.php:43
 msgid "You can assign Ads and Groups after you created the placement."
 msgstr ""
+"Sie können Anzeigen und Gruppen zuweisen, nachdem Sie die Platzierung "
+"erstellt haben."
 
 #: admin/views/placements.php:44
 msgid "Save New Placement"
-msgstr ""
+msgstr "Neue Platzierung sichern"
 
 #: admin/views/placements.php:48
 msgid "How to use the <i>default</i> Ad Placement?"
-msgstr ""
+msgstr "Wie wird die <i>Standard</i>-Anzeigenplatzierung angewendet?"
 
 #: admin/views/placements.php:50
 #, php-format
@@ -975,152 +966,158 @@ msgid ""
 "Examples on how to use the <i>default</i> ad placement? Find more help and "
 "examples in the <a href=\"%s\" target=\"_blank\">manual</a>"
 msgstr ""
+"Suchen Sie Beispiele, wie die <i>Standard</i>-Anzeigenplatzierung zu nutzen "
+"ist? Sie finden Hilfe in der <a href=\"%s\" target=\"_blank\">Anleitung</a>"
 
 #: admin/views/placements.php:52
 msgid "To use an ad placement with the ID skyscraper_left in content fields"
 msgstr ""
+"Zum Benutzen einer Anzeigen-Platzierung mit der ID skyscraper_left in "
+"Content-Feldern"
 
 #: admin/views/placements.php:55
 msgid "To use an ad placement with the ID skyscraper_left in template files"
 msgstr ""
+"Zum Benutzen einer Anzeigen-Platzierung mit der ID Skyscraper_left in "
+"Template-Dateien"
 
 #: admin/views/placements.php:65
 msgid "Options"
-msgstr ""
+msgstr "Optionen"
 
 #: admin/views/placements.php:80
-#, fuzzy
 msgid "Item"
-msgstr ""
-"Sie haben versucht, ein Element, das nicht existiert, zu bearbeiten. "
-"Vielleicht wurde es gelöscht?"
+msgstr "Artikel"
 
 #: admin/views/placements.php:82 classes/widget.php:57
-#, fuzzy
 msgid "--empty--"
-msgstr "Das Suchfeld ist leer"
+msgstr "--leer--"
 
 #: admin/views/placements.php:101
 msgid "Index"
-msgstr ""
+msgstr "Index"
 
 #: admin/views/placements.php:109
 msgid "After which paragraph to insert the placement content."
-msgstr ""
+msgstr "Nach welchem Absatz soll der Inhalt eingefügt werden?"
 
 #: admin/views/placements.php:118
-#, fuzzy
 msgid "remove placement"
-msgstr "Filter entfernen"
+msgstr "Platzierung entfernen"
 
 #: admin/views/placements.php:124
-#, fuzzy
 msgid "Save Placements"
-msgstr "Platzierungen"
+msgstr "Platzierungen sichern"
 
 #: admin/views/settings.php:23
-#, fuzzy
 msgid "Debug Page"
-msgstr "Fehlerbehebung"
+msgstr "Debug-Seite"
 
 #: admin/views/settings.php:24
-#, fuzzy
 msgid "Advanced Ads on WordPress.org"
-msgstr "Advanced-Anzeigen"
+msgstr "Advanced Ads auf WordPress.org"
 
 #: admin/views/settings.php:24
-#, fuzzy
 msgid "Advanced Ads on wp.org"
-msgstr "Advanced-Anzeigen"
+msgstr "Advanced Ads auf wp.org"
 
 #: admin/views/settings.php:25
-#, fuzzy
 msgid "the company behind Advanced Ads"
-msgstr "Advanced-Anzeigen"
+msgstr "das Unternehmen hinter Advanced Ads"
 
 #: admin/views/settings.php:25
-#, fuzzy
 msgid "webgilde GmbH"
-msgstr "Link zur Webseite des Autors"
+msgstr "webgilde GmbH"
 
 #: classes/ad.php:670
 #, php-format
 msgid "A \"%s\" display condition does not exist"
-msgstr ""
+msgstr "Eine \"%s\"- Anzeigebedingung existiert nicht"
 
 #: classes/ad_placements.php:32
 msgid "Manual placement."
-msgstr ""
+msgstr "Manuelle Platzierung."
 
 #: classes/ad_placements.php:35
 msgid "header"
-msgstr ""
+msgstr "Header"
 
 #: classes/ad_placements.php:36
 msgid "Injected in Header (before closing </head> Tag, often not visible)."
 msgstr ""
+"Injiziert in den Header, und zwar vor das schließende </head>-Tag (oft nicht "
+"sichtbar)."
 
 #: classes/ad_placements.php:39
 msgid "footer"
-msgstr ""
+msgstr "Footer"
 
 #: classes/ad_placements.php:40
 msgid "Injected in Footer (before closing </body> Tag)."
-msgstr ""
+msgstr "Injiziert in den Footer, und zwar vor das schließende </body>-Tag)."
 
 #: classes/ad_placements.php:43
-#, fuzzy
 msgid "before post"
-msgstr "Beitrag / Seite"
+msgstr "Vor dem Beitrag"
 
 #: classes/ad_placements.php:44
 msgid "Injected before the post content."
-msgstr ""
+msgstr "Injiziert vor den Beitrags-Inhalt."
 
 #: classes/ad_placements.php:47
-#, fuzzy
 msgid "after post"
-msgstr "Beitrag / Seite"
+msgstr "Nach dem Beitrag"
 
 #: classes/ad_placements.php:48
 msgid "Injected after the post content."
-msgstr ""
+msgstr "Injiziert hinter den Beitrags-Inhalt."
 
 #: classes/ad_placements.php:51
 msgid "post content"
-msgstr ""
+msgstr "Im Beitrag"
 
 #: classes/ad_placements.php:52
 msgid ""
 "Injected into the post content. You can choose the paragraph after which the "
 "ad content is displayed."
 msgstr ""
+"Injiziert in den Beitrags-Inhalt. Sie können den Absatz wählen, nach dem der "
+"Inhalt angezeigt wird."
 
 #: classes/ad_placements.php:74
-#, fuzzy
 msgid "Slug can't be empty."
-msgstr "slug"
+msgstr "Der Slug darf nicht leer sein."
 
 #: classes/ad_placements.php:76
-#, fuzzy
 msgid "Slug already exists."
-msgstr "slug"
+msgstr "Slug bereits vorhanden."
 
 #: classes/ad_type_content.php:35
-#, fuzzy
 msgid "Rich Content"
-msgstr "Bildquellen unter dem Inhalt"
+msgstr "Rich Content"
 
 #: classes/ad_type_content.php:36
 msgid ""
-"The full content editor from WordPress with all features like image upload "
-"or styling, but also simple text/html mode for scripts and code."
+"The full content editor from WordPress with all features like shortcodes, "
+"image upload or styling, but also simple text/html mode for scripts and code."
 msgstr ""
+"Der vollständige Content-Editor von Wordpress mit allen Funktionen wie "
+"Textbearbeitung, Sportcodes, Bild-Upload oder -Styling."
+
+#: classes/ad_type_content.php:63
+msgid ""
+"Please <strong>save the ad</strong> before changing it to the content type."
+msgstr ""
+"Bitte <strong>speichern Sie die Anzeige</strong>, bevor Sie den Anzeigentyp "
+"wechseln."
+
+#: classes/ad_type_content.php:66
+msgid "Save Draft"
+msgstr "Entwurf speichern"
 
 #: classes/ad_type_plain.php:31
-#, fuzzy
 msgid "Plain Text and Code"
-msgstr "Menütext"
+msgstr "Nur Text und Code"
 
 #: classes/ad_type_plain.php:32
 msgid ""
@@ -1128,33 +1125,31 @@ msgid ""
 "unfiltered content, php code or javascript. Shortcodes and other WordPress "
 "content field magic does not work here."
 msgstr ""
+"Einfacher Text-Editor ohne Filter. Sie können ihn zur Anzeige von "
+"ungefiltertem Inhalt, PHP-Code oder JavaScript benutzen. Sportcodes und "
+"ähnliche WordPress-Funktionen funktionieren hier nicht."
 
 #: classes/ad_type_plain.php:55
 msgid "Insert plain text or code into this field."
-msgstr ""
+msgstr "Fügen Sie Text oder Code in dieses Feld ein."
 
 #: classes/widget.php:19
-#, fuzzy
 msgid "Display Ads and Ad Groups."
-msgstr "Anzeigen-Gruppen"
+msgstr "Anzeigen und Anzeigen-Gruppen zeigen."
 
 #: classes/widget.php:51
-#, fuzzy
 msgid "Title:"
 msgstr "Titel:"
 
 #: includes/array_ad_conditions.php:27
-#, fuzzy
 msgid "Post Types"
-msgstr "Für alle öffentlichen <strong>Beitragstypen</strong> anzeigen."
+msgstr "Beitrags-Typen"
 
 #: includes/array_ad_conditions.php:33
-#, fuzzy
 msgid "Categories, Tags and Taxonomies"
-msgstr "Für alle <strong>Kategorien, Tags und Taxonomien</strong> anzeigen."
+msgstr "Kategorien, Schlagworte und Taxonomien"
 
 #: includes/array_ad_conditions.php:34
-#, fuzzy
 msgid ""
 "Choose terms from public category, tag and other taxonomies a post must "
 "belong to in order to have ads."
@@ -1164,143 +1159,124 @@ msgstr ""
 
 #: includes/array_ad_conditions.php:39
 msgid "Category Archives"
-msgstr ""
+msgstr "Kategorie-Archive"
 
 #: includes/array_ad_conditions.php:40
 msgid "comma seperated IDs of category archives"
-msgstr ""
+msgstr "Komma-getrennte IDs der Kategorie Archive"
 
 #: includes/array_ad_conditions.php:45
 msgid "Individual Posts, Pages and Public Post Types"
-msgstr ""
+msgstr "Einzelne Beiträge, Seiten und öffentliche Beitrag-Typen"
 
 #: includes/array_ad_conditions.php:51
-#, fuzzy
 msgid "Home Page"
-msgstr "Beitrag / Seite"
+msgstr "Homepage"
 
 #: includes/array_ad_conditions.php:52
-#, fuzzy
 msgid "(don't) show on Home page"
-msgstr "Gehe zur Bearbeitungsansicht des zugeordneten Artikels"
+msgstr "(nicht) auf Homepage zeigen"
 
 #: includes/array_ad_conditions.php:56
-#, fuzzy
 msgid "Singular Pages"
-msgstr "Wähle aus, wo Bildquellen auf Einzelseiten angezeigt werden"
+msgstr "Einzelseiten"
 
 #: includes/array_ad_conditions.php:57
 msgid "(don't) show on singular pages/posts"
-msgstr ""
+msgstr "(Wird nicht) angezeigt auf singulären Seiten und Beiträgen"
 
 #: includes/array_ad_conditions.php:61
-#, fuzzy
 msgid "Archive Pages"
-msgstr "Auf allen <strong>Kategorie-Archiven</strong> anzeigen."
+msgstr "Archiv-Seiten"
 
 #: includes/array_ad_conditions.php:62
 msgid ""
 "(don't) show on any type of archive page (category, tag, author and date)"
 msgstr ""
+"(Wird nicht) angezeigt auf jeder Art von Archiv-Seite (Kategorie, Tag, Autor "
+"und Datum)"
 
 #: includes/array_ad_conditions.php:66
-#, fuzzy
 msgid "Search Results"
-msgstr "Surchergebnisse für \"%s\""
+msgstr "Ergebnisse suchen"
 
 #: includes/array_ad_conditions.php:67
 msgid "(don't) show on search result pages"
-msgstr ""
+msgstr "(Wird nicht) angezeigt auf Suchergebnis-Seiten"
 
 #: includes/array_ad_conditions.php:71
 msgid "404 Page"
-msgstr ""
+msgstr "404-Seite"
 
 #: includes/array_ad_conditions.php:72
-#, fuzzy
 msgid "(don't) show on 404 error page"
-msgstr "Leider konnten wir keine passende Seite finden... (Fehler 404)"
+msgstr "(nicht) auf 404-Fehlerseite zeigen"
 
 #: includes/array_ad_conditions.php:76
-#, fuzzy
 msgid "Attachment Pages"
-msgstr "ID des Anhangs"
+msgstr "Anhang-Seiten"
 
 #: includes/array_ad_conditions.php:77
 msgid "(don't) show on attachment pages"
-msgstr ""
+msgstr "(Wird nicht) auf Anhang-Seiten angezeigt"
 
 #: public/class-advanced-ads.php:480
-#, fuzzy
 msgctxt "ad group general name"
 msgid "Ad Groups"
 msgstr "Anzeigen-Gruppen"
 
 #: public/class-advanced-ads.php:481
-#, fuzzy
 msgctxt "ad group singular name"
 msgid "Ad Group"
-msgstr "Anzeigengruppe"
+msgstr "Anzeigen-Gruppe"
 
 #: public/class-advanced-ads.php:482
-#, fuzzy
 msgid "Search Ad Groups"
-msgstr "Anzeigen-Gruppen"
+msgstr "Anzeigen-Gruppen suchen"
 
 #: public/class-advanced-ads.php:483
-#, fuzzy
 msgid "All Ad Groups"
-msgstr "Anzeigen-Gruppen"
+msgstr "Alle Anzeigen-Gruppen"
 
 #: public/class-advanced-ads.php:484
-#, fuzzy
 msgid "Parent Ad Groups"
-msgstr "Anzeigen-Gruppen"
+msgstr "Parent-Anzeigen-Gruppen"
 
 #: public/class-advanced-ads.php:485
-#, fuzzy
 msgid "Parent Ad Groups:"
-msgstr "Anzeigen-Gruppen"
+msgstr "Parent-Anzeigen-Gruppen"
 
 #: public/class-advanced-ads.php:486
-#, fuzzy
 msgid "Edit Ad Group"
-msgstr "Anzeigengruppe"
+msgstr "Bearbeite Anzeigen-Gruppe"
 
 #: public/class-advanced-ads.php:487
-#, fuzzy
 msgid "Update Ad Group"
-msgstr "Anzeigengruppe"
+msgstr "Aktualisiere Anzeigen-Gruppe"
 
 #: public/class-advanced-ads.php:488
-#, fuzzy
 msgid "Add New Ad Group"
-msgstr "Anzeigengruppe"
+msgstr "Neue Anzeigengruppe hinzufügen"
 
 #: public/class-advanced-ads.php:489
-#, fuzzy
 msgid "New Ad Groups Name"
-msgstr "Anzeigen-Gruppen"
+msgstr "Neuer Anzeigen-Gruppen-Name"
 
 #: public/class-advanced-ads.php:491
-#, fuzzy
 msgid "No Ad Group found"
-msgstr "Anzeigengruppe"
+msgstr "Keine Anzeigen-Gruppe gefunden"
 
 #: public/class-advanced-ads.php:517 public/class-advanced-ads.php:533
-#, fuzzy
 msgid "Ad"
-msgstr "Anzeigen bearbeiten"
+msgstr "Anzeige"
 
 #: public/class-advanced-ads.php:518 public/class-advanced-ads.php:522
-#, fuzzy
 msgid "New Ad"
-msgstr "Anzeigen bearbeiten"
+msgstr "Neue Anzeige"
 
 #: public/class-advanced-ads.php:519
-#, fuzzy
 msgid "Add New Ad"
-msgstr "gegebene Buchstaben und Länge eingeben"
+msgstr "Neue Anzeige hinzufügen"
 
 #: public/class-advanced-ads.php:521
 msgid "Edit Ad"
@@ -1323,18 +1299,20 @@ msgid "No Ads found"
 msgstr "Keine Anzeigen gefunden"
 
 #: public/class-advanced-ads.php:527
-#, fuzzy
 msgid "No Ads found in Trash"
-msgstr "Keine Anzeigen gefunden"
+msgstr "Keine Anzeigen im Papierkorb gefunden"
 
 #: public/class-advanced-ads.php:528
 msgid "Parent Ad"
-msgstr ""
+msgstr "Übergeordnete Anzeige"
 
 #: public/class-advanced-ads.php:584
-#, fuzzy, php-format
+#, php-format
 msgid "Advanced Ads Error: %s"
-msgstr "Advanced-Anzeigen"
+msgstr "Advanced-Ads-Fehler: %s"
+
+#~ msgid "Cheatin&#8217; uh?"
+#~ msgstr "Cheatin&#8217; uh?"
 
 #~ msgid "Menu Text"
 #~ msgstr "Menütext"
