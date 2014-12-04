@@ -131,6 +131,7 @@ class Advads_Ad {
         }
 
         $this->type = $this->options('type');
+        $this->title = $_data->post_title;
         /* load ad type object */
         $types = Advanced_Ads::get_instance()->ad_types;
         if(isset($types[$this->type])){
@@ -141,7 +142,9 @@ class Advads_Ad {
         $this->width = $this->options('width');
         $this->height = $this->options('height');
         $this->conditions = $this->options('conditions');
+        $this->output = $this->options('output');
         $this->status = $_data->post_status;
+        $this->wrapper = $this->load_wrapper_options();
 
         // load content based on ad type
         $this->content = $this->type_obj->load_content($_data);
@@ -212,6 +215,11 @@ class Advads_Ad {
         if(!$this->is_ad) return '';
 
         $output = $this->prepare_frontend_output();
+
+        // add the ad to the global output array
+        $advads = Advanced_Ads::get_instance();
+        $advads->current_ads[] = array('type' => 'ad', 'id' => $this->id, 'title' => $this->title);
+
         return $output;
     }
 
@@ -536,6 +544,11 @@ class Advads_Ad {
         // build wrapper around the ad
         $output = $this->add_wrapper($output);
 
+        // add a clearfix, if set
+        if(isset($this->output['clearfix']) && $this->output['clearfix']){
+            $output .= '<br style="clear: both; display: block; float: none;"/>';
+        }
+
         // apply a custom filter by ad type
         $output = apply_filters('advanced-ads-ad-output', $output, $this);
 
@@ -651,7 +664,6 @@ class Advads_Ad {
 
         $plugin = Advanced_Ads::get_instance();
         $ads_by_conditions = $plugin->get_ads_by_conditions_array();
-        $plugin_slug = $plugin->get_plugin_slug();
 
         // remove current ad from general ad condition array
         $ads_by_conditions = $this->remove_ad_from_general_ad_conditions($this->id, $ads_by_conditions);
@@ -661,7 +673,7 @@ class Advads_Ad {
         // iterate through the ads display condition
         foreach($conditions as $_condition_key => $_condition){
             if(!isset($advanced_ads_ad_conditions[$_condition_key]['type'])) {
-                $plugin->log(sprintf(__('A "%s" display condition does not exist', $plugin_slug), $_condition_key));
+                $plugin->log(sprintf(__('A "%s" display condition does not exist', ADVADS_SLUG), $_condition_key));
                 return;
             }
             // add conditions based on type
@@ -738,6 +750,52 @@ class Advads_Ad {
         }
 
         return $conditions;
+    }
+
+    /**
+     * load wrapper options set with the ad
+     *
+     * @since 1.3
+     * @return arr $wrapper options array ready to be use in add_wrapper() function
+     */
+    protected function load_wrapper_options(){
+        $wrapper = array();
+
+      //  print_r($this->output);
+
+        if(!empty($this->output['position'])) {
+            switch($this->output['position']) {
+                case 'left' :
+                    $wrapper['style']['float'] = 'left';
+                    break;
+                case 'right' :
+                    $wrapper['style']['float'] = 'right';
+                    break;
+                case 'center' :
+                    $wrapper['style']['text-align'] = 'center';
+                    break;
+                case 'clearfix' :
+                    $wrapper['style']['clear'] = 'both';
+                    break;
+            }
+        }
+
+        if(!empty($this->output['margin']['top'])) {
+            $wrapper['style']['margin-top'] = intval($this->output['margin']['top']) . 'px';
+        }
+        if(!empty($this->output['margin']['right'])) {
+            $wrapper['style']['margin-right'] = intval($this->output['margin']['right']) . 'px';
+        }
+        if(!empty($this->output['margin']['bottom'])) {
+            $wrapper['style']['margin-bottom'] = intval($this->output['margin']['bottom']) . 'px';
+        }
+        if(!empty($this->output['margin']['left'])) {
+            $wrapper['style']['margin-left'] = intval($this->output['margin']['left']) . 'px';
+        }
+
+      //  print_r($wrapper);
+
+        return $wrapper;
     }
 
     /**
