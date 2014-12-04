@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.0.1
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -146,6 +146,10 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 
 == Changelog ==
 
+= 1.3.2 =
+
+* hotfix: prevent infinite loops (ads within ads…) for rich content ads
+
 = 1.3.1 =
 
 * COOL: new ad type: rich media and formatable content – it’s like editing a normal post
@@ -243,6 +247,10 @@ other fixes:
 * fixed excluded post types for ads
 
 == Upgrade Notice ==
+
+= 1.3.2 =
+
+Hotfix: prevent infinite loops (ads within ads) for rich content ads
 
 = 1.3 =
 

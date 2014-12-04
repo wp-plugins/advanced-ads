@@ -131,6 +131,7 @@ class Advads_Ad {
         }
 
         $this->type = $this->options('type');
+        $this->title = $_data->post_title;
         /* load ad type object */
         $types = Advanced_Ads::get_instance()->ad_types;
         if(isset($types[$this->type])){
@@ -214,6 +215,11 @@ class Advads_Ad {
         if(!$this->is_ad) return '';
 
         $output = $this->prepare_frontend_output();
+
+        // add the ad to the global output array
+        $advads = Advanced_Ads::get_instance();
+        $advads->current_ads[] = array('type' => 'ad', 'id' => $this->id, 'title' => $this->title);
+
         return $output;
     }
 

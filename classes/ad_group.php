@@ -115,6 +115,10 @@ class Advads_Ad_Group {
         if (!is_object($ad))
             return '';
 
+        // add the group to the global output array
+        $advads = Advanced_Ads::get_instance();
+        $advads->current_ads[] = array('type' => 'group', 'id' => $this->id, 'title' => $this->name);
+
         // makes sure the ad filters can also run here
         $adcontent = $ad->output();
 

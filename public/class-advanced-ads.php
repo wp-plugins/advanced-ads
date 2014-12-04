@@ -64,6 +64,11 @@ class Advanced_Ads {
     protected static $instance = null;
 
     /**
+     * array with ads currently delivered in the frontend
+     */
+    public $current_ads = array();
+
+    /**
      * ad types
      */
     public $ad_types = array();

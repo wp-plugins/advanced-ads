@@ -104,7 +104,18 @@ class Advads_Ad_Type_Content extends Advads_Ad_Type_Abstract{
      * @since 1.0.0
      */
     public function prepare_output($ad){
-        return apply_filters('the_content', $ad->content);
+
+        // apply functions normally running through the_content filter
+        // the_content filter not used here because it created an infinite loop (ads within ads)
+
+        $output = wptexturize($ad->content);
+        $output = convert_smilies($output);
+        $output = convert_chars($output);
+        $output = wpautop($output);
+        $output = shortcode_unautop($output);
+        $output = prepend_attachment($output);
+
+        return $output;
     }
 
 }

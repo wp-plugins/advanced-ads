@@ -175,8 +175,16 @@ class Advads_Ad_Placements {
 
             // return either ad or group content
             if ($_item[0] == 'ad') {
+                // add the placement to the global output array
+                $advads = Advanced_Ads::get_instance();
+                $advads->current_ads[] = array('type' => 'placement', 'id' => $id, 'title' => $placements[$id]['name']);
+
                 return get_ad($_item_id);
             } elseif ($_item[0] == 'group') {
+                // add the placement to the global output array
+                $advads = Advanced_Ads::get_instance();
+                $advads->current_ads[] = array('type' => 'placement', 'id' => $id, 'title' => $placements[$id]['name']);
+
                 return get_ad_group($_item_id);
             }
         } else {
