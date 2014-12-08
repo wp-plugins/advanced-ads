@@ -7,13 +7,13 @@
             ?>" <?php if(empty($options['position'])) checked(1, 1); ?>/><?php _e('default', ADVADS_SLUG); ?></label>
         <label title="<?php _e('left', ADVADS_SLUG); ?>"><input type="radio" name="advanced_ad[output][position]" value="left"
             <?php if(isset($options['position'])) checked($options['position'], 'left'); ?>/>
-            <img src="<?php echo ADVADS_BASE_URL; ?>admin/assets/img/ad-output-left.png" width="60" height="45"/></label>
+            <img src="<?php echo ADVADS_BASE_URL; ?>admin/assets/img/output-left.png" width="60" height="45"/></label>
         <label title="<?php _e('center', ADVADS_SLUG); ?>"><input type="radio" name="advanced_ad[output][position]" value="center"
             <?php if(isset($options['position'])) checked($options['position'], 'center'); ?>/>
-            <img src="<?php echo ADVADS_BASE_URL; ?>admin/assets/img/ad-output-center.png" width="60" height="45"/></label>
+            <img src="<?php echo ADVADS_BASE_URL; ?>admin/assets/img/output-center.png" width="60" height="45"/></label>
         <label title="<?php _e('right', ADVADS_SLUG); ?>"><input type="radio" name="advanced_ad[output][position]" value="right"
             <?php if(isset($options['position'])) checked($options['position'], 'right'); ?>/>
-            <img src="<?php echo ADVADS_BASE_URL; ?>admin/assets/img/ad-output-right.png" width="60" height="45"/></label>
+            <img src="<?php echo ADVADS_BASE_URL; ?>admin/assets/img/output-right.png" width="60" height="45"/></label>
     </div>
     <p><label><input type="checkbox" name="advanced_ad[output][clearfix]" value="1"<?php if(isset($options['clearfix'])) checked($options['clearfix'], 1); ?>/><?php
         _e('Check this if you don\'t want the following elements to float around the ad. (adds a clearfix)', ADVADS_SLUG);

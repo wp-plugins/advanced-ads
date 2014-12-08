@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.0.1
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -145,6 +145,16 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 3. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.3.3 =
+
+* added column with ad details
+* removed the date column from ad list
+* fixed saving and retrieving of settings
+* changed the dashboard icon
+* renamed admin images so they won’t get blocked by ad blockers
+
+* ACTION REQUIRED: please check and resave settings (_Advanced Ads > Settings_)
 
 = 1.3.2 =
 

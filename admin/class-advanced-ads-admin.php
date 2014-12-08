@@ -90,6 +90,10 @@ class Advanced_Ads_Admin {
         // save ads post type
         add_action('save_post', array($this, 'save_ad'));
 
+        // handling extra columns on ad lists
+        add_filter('manage_advanced_ads_posts_columns', array($this, 'ad_list_columns_head'));
+        add_filter('manage_advanced_ads_posts_custom_column', array($this, 'ad_list_columns_content'), 10, 2);
+
         // settings handling
         add_action('admin_init', array($this, 'settings_init'));
 
@@ -193,7 +197,7 @@ class Advanced_Ads_Admin {
 
         // add main menu item with overview page
         add_menu_page(
-            __('Overview', ADVADS_SLUG), __('Advanced Ads', ADVADS_SLUG), 'manage_options', $this->plugin_slug, array($this, 'display_overview_page'), '', '58.74'
+            __('Overview', ADVADS_SLUG), __('Advanced Ads', ADVADS_SLUG), 'manage_options', $this->plugin_slug, array($this, 'display_overview_page'), 'dashicons-chart-line', '58.74'
         );
 
         add_submenu_page(
@@ -559,7 +563,7 @@ class Advanced_Ads_Admin {
         $hook = $this->plugin_screen_hook_suffix;
 
         // register settings
- 	register_setting($hook, 'advancedads');
+ 	register_setting($hook, ADVADS_SLUG);
 
         // add new section
  	add_settings_section(
@@ -605,6 +609,7 @@ class Advanced_Ads_Admin {
         $options = Advanced_Ads::get_instance()->options();
         $current_capability_role = isset($options['hide-for-user-role']) ? $options['hide-for-user-role'] : 0;
 
+
         $capability_roles = array(
             '' => __('(display to all)', ADVADS_SLUG),
             'read' => __('Subscriber', ADVADS_SLUG),
@@ -613,7 +618,7 @@ class Advanced_Ads_Admin {
             'edit_pages' => __('Editor', ADVADS_SLUG),
             'activate_plugins' => __('Admin', ADVADS_SLUG),
         );
-        echo '<select name="advancedads[hide-for-user-role]">';
+        echo '<select name="'.ADVADS_SLUG.'[hide-for-user-role]">';
         foreach($capability_roles as $_capability => $_role) {
             echo '<option value="'.$_capability.'" '.selected($_capability, $current_capability_role, false).'>'.$_role.'</option>';
         }
@@ -631,7 +636,7 @@ class Advanced_Ads_Admin {
         $options = Advanced_Ads::get_instance()->options();
         $checked = (!empty($options['advanced-js'])) ? 1 : 0;
 
-        echo '<input id="advanced-ads-advanced-js" type="checkbox" value="1" name="advancedads[advanced-js]" '.checked($checked, 1, false).'>';
+        echo '<input id="advanced-ads-advanced-js" type="checkbox" value="1" name="'.ADVADS_SLUG.'[advanced-js]" '.checked($checked, 1, false).'>';
         echo '<p class="description">'. sprintf(__('Only enable this if you can and want to use the advanced JavaScript functions described <a href="%s">here</a>.', ADVADS_SLUG), 'http://wpadvancedads.com/javascript-functions/') .'</p>';
     }
 
@@ -664,5 +669,59 @@ class Advanced_Ads_Admin {
         else
             delete_option ('advads-ads-injections');
     }
+
+    /**
+     * add heading for extra column of ads list
+     * remove the date column
+     *
+     * @since 1.3.3
+     * @param arr $defaults
+     */
+    public function ad_list_columns_head($defaults){
+
+        $offset = array_search('title', array_keys($defaults)) + 1;
+
+        $defaults = array_merge
+        (
+            array_slice($defaults, 0, $offset),
+            array('ad_details' => __('Ad Details', ADVADS_SLUG)),
+            array_slice($defaults, $offset, null)
+        );
+
+        // remove the date
+        unset($defaults['date']);
+
+        return $defaults;
+    }
+
+    /**
+     * display ad details in ads list
+     *
+     * @since 1.3.3
+     * @param string $column_name name of the column
+     * @param int $ad_id id of the ad
+     */
+    public function  ad_list_columns_content($column_name, $ad_id) {
+        if ($column_name == 'ad_details') {
+            $ad = new Advads_Ad($ad_id);
+
+            // load ad type title
+            $types = Advanced_Ads::get_instance()->ad_types;
+            $type = (!empty($types[$ad->type]->title)) ? $types[$ad->type]->title : 0;
+
+            // load ad size
+            $size = 0;
+            if(!empty($ad->width) || !empty($ad->height)){
+                $size = sprintf('%d x %d', $ad->width, $ad->height);
+            }
+
+            $view = plugin_dir_path(__FILE__) . 'views/ad_list_details_column.php';
+            if (is_file($view)) {
+                require( $view );
+            }
+
+        }
+    }
+
 
 }
