@@ -113,6 +113,7 @@ class Advads_Ad_Type_Content extends Advads_Ad_Type_Abstract{
         $output = convert_chars($output);
         $output = wpautop($output);
         $output = shortcode_unautop($output);
+        $output = do_shortcode($output);
         $output = prepend_attachment($output);
 
         return $output;
