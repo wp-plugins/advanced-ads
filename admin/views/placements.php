@@ -86,14 +86,14 @@
                                                 <option value="<?php echo $_item_id; ?>" <?php if (isset($_placement['item'])) selected($_item_id, $_placement['item']); ?>><?php echo $_item_title; ?></option>
                                         <?php endforeach; ?>
                                         </optgroup>
+                                        <?php endif; ?>
                                         <?php if (isset($items['ads'])) : ?>
                                         <optgroup label="<?php _e('Ads', ADVADS_SLUG); ?>">
-                                            <?php foreach ($items['ads'] as $_item_id => $_item_title) : ?>
+                                        <?php foreach ($items['ads'] as $_item_id => $_item_title) : ?>
                                                 <option value="<?php echo $_item_id; ?>" <?php if (isset($_placement['item'])) selected($_item_id, $_placement['item']); ?>><?php echo $_item_title; ?></option>
                                         <?php endforeach; ?>
                                         </optgroup>
-                                    <?php endif; ?>
-                                <?php endif; ?>
+                                        <?php endif; ?>
                                 </select><br/>
                                 <?php
                                 switch ($_placement['type']) :
