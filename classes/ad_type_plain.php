@@ -28,8 +28,8 @@ class Advads_Ad_Type_Plain extends Advads_Ad_Type_Abstract{
      * @since 1.0.0
      */
     public function __construct() {
-        $this->title = __('Plain Text and Code', Advanced_Ads::TD);
-        $this->description = __('Simple text editor without any filters. You might use it to display unfiltered content, php code or javascript. Shortcodes and other WordPress content field magic does not work here.', Advanced_Ads::TD);
+        $this->title = __('Plain Text and Code', ADVADS_SLUG);
+        $this->description = __('Simple text editor without any filters. You might use it to display unfiltered content, php code or javascript. Shortcodes and other WordPress content field magic does not work here.', ADVADS_SLUG);
         $this->parameters = array(
             'content' => ''
         );
@@ -52,7 +52,7 @@ class Advads_Ad_Type_Plain extends Advads_Ad_Type_Abstract{
          * build the tinymc editor
          * @link http://codex.wordpress.org/Function_Reference/wp_editor
          */
-        ?><p class="description"><?php _e('Insert plain text or code into this field.', Advanced_Ads::TD); ?></p>
+        ?><p class="description"><?php _e('Insert plain text or code into this field.', ADVADS_SLUG); ?></p>
         <textarea id="advads-ad-content-plain" cols="40" rows="10" name="advanced_ad[content]"><?php echo $content; ?></textarea>
         <?php
     }
