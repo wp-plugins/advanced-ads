@@ -11,7 +11,7 @@ require_once(ADVADS_BASE_PATH . 'admin/includes/class-display-condition-callback
 </div>
 <div id="advanced-ad-conditions">
     <ul id="advads-how-it-works">
-        <li><?php _e('If you want to display the ad everywhere, don’t do anything here. ', ADVADS_SLUG); ?></li>
+        <li><?php _e('If you want to display the ad everywhere, don\'t do anything here. ', ADVADS_SLUG); ?></li>
         <li><?php _e('The fewer conditions you enter, the better the performance will be.', ADVADS_SLUG); ?></li>
         <li><?php printf(__('Learn more about display conditions from the <a href="%s" target="_blank">manual</a>.', ADVADS_SLUG), 'http://wpadvancedads.com/advancedads/manual/display-conditions/'); ?></li>
     </ul>

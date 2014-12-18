@@ -164,7 +164,7 @@ class AdvAds_Display_Condition_Callbacks {
         _e('Display on all <strong>category archive pages</strong>.', ADVADS_SLUG); ?></label></h4><?php
         $taxonomies = get_taxonomies(array('public' => true, 'publicly_queryable' => true), 'objects', 'or');
         ?><div class="advads-conditions-single"><table>
-                <p class="description"><?php _e('Choose the terms from public categories, tags and other taxonomies on which’s archive page ads can appear', ADVADS_SLUG); ?></p>
+                <p class="description"><?php _e('Choose the terms from public categories, tags and other taxonomies on which\'s archive page ads can appear', ADVADS_SLUG); ?></p>
                 <table><?php
         foreach($taxonomies as $_tax):
             if($_tax->name === 'advanced_ads_groups') continue; // exclude adv ads groups
@@ -193,7 +193,7 @@ class AdvAds_Display_Condition_Callbacks {
             $_excludes = array();
         }
 
-        ?><h5 class="header"><?php _e('Hide from here', ADVADS_SLUG); ?></h5><p class="description"><?php _e('Choose the terms from public categories, tags and other taxonomies on which’s archive pages ads are hidden.', ADVADS_SLUG); ?></p>
+        ?><h5 class="header"><?php _e('Hide from here', ADVADS_SLUG); ?></h5><p class="description"><?php _e('Choose the terms from public categories, tags and other taxonomies on which\'s archive pages ads are hidden.', ADVADS_SLUG); ?></p>
         <table><?php
         foreach($taxonomies as $_tax):
             if($_tax->name === 'advanced_ads_groups') continue; // exclude adv ads groups
