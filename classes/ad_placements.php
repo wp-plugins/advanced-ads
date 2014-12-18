@@ -153,6 +153,23 @@ class Advads_Ad_Placements {
     }
 
     /**
+     * get html tags for content injection
+     *
+     * @since 1.3.5
+     * @return arr $tags array with tags that can be used for content injection
+     */
+    static function tags_for_content_injection(){
+        $tags = array(
+            'p' => sprintf(__('paragraph (%s)', ADVADS_SLUG), '&lt;p&gt;'),
+            'h2' => sprintf(__('headline 2 (%s)', ADVADS_SLUG), '&lt;h2&gt;'),
+            'h3' => sprintf(__('headline 3 (%s)', ADVADS_SLUG), '&lt;h3&gt;'),
+            'h4' => sprintf(__('headline 4 (%s)', ADVADS_SLUG), '&lt;h4&gt;'),
+        );
+
+        return $tags;
+    }
+
+    /**
      * return content of a placement
      *
      * @since 1.1.0
@@ -205,11 +222,19 @@ class Advads_Ad_Placements {
      * @link inspired by http://www.wpbeginner.com/wp-tutorials/how-to-insert-ads-within-your-post-content-in-wordpress/
      */
     static function inject_in_content($placement_id, $options, $content) {
-        $closing_p = '</p>';
+        $tag = (isset($options['tag'])) ? $options['tag'] : 'p';
+        $position = (isset($options['position'])) ? $options['position'] : 'after';
+
+        if($position == 'before'){
+            $tag = '<' . $tag . '>';
+        } else {
+            $tag = '</' . $tag . '>';
+        }
+
         $paragraph_id = isset($options['index']) ? $options['index'] : 1;
         $ad_content = Advads_Ad_Placements::output($placement_id);
 
-        $paragraphs = explode($closing_p, $content);
+        $paragraphs = explode($tag, $content);
         $offset = 0;
         $running = true;
         foreach ($paragraphs as $index => $paragraph) {
@@ -219,7 +244,7 @@ class Advads_Ad_Placements {
                     $offset++;
 
             if (trim($paragraph)) {
-                $paragraphs[$index] .= $closing_p;
+                $paragraphs[$index] .= $tag;
             }
 
             if ($paragraph_id + $offset == $index + 1) {

@@ -98,16 +98,26 @@
                                 <?php
                                 switch ($_placement['type']) :
                                     case 'post_content' :
-                                        ?><label for="adsads-placements-options-index-<?php echo $_placement_slug; ?>"><?php _e('Index', ADVADS_SLUG); ?></label>
-                                        <input type="number" id="adsads-placements-options-index-<?php echo
-                               $_placement_slug;
-                                        ?>" name="advads[placements][<?php echo
-                               $_placement_slug;
-                               ?>][options][index]" value="<?php
+                                        ?><div class="advads-placement-options"><?php
+                                        _e('Inject', ADVADS_SLUG);
+                                        $_positions = array('after' => __('after', ADVADS_SLUG), 'before' => __('before', ADVADS_SLUG)); ?>
+                                        <select name="advads[placements][<?php echo $_placement_slug; ?>][options][position]">
+                                            <?php foreach($_positions as $_pos_key => $_pos) : ?>
+                                            <option value="<?php echo $_pos_key; ?>" <?php if(isset($_placement['options']['position'])) selected($_placement['options']['position'], $_pos_key); ?>><?php echo $_pos; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+
+                                        <input type="number" name="advads[placements][<?php echo $_placement_slug; ?>][options][index]" value="<?php
                                         echo (isset($_placement['options']['index'])) ? $_placement['options']['index'] : 1;
-                                        ?>"/>
-                                        <span class="description"><?php _e('After which paragraph to insert the placement content.', ADVADS_SLUG); ?></span>
-                                        <?php
+                                        ?>"/>.
+
+                                        <?php $tags = Advads_Ad_Placements::tags_for_content_injection(); ?>
+                                        <select name="advads[placements][<?php echo $_placement_slug; ?>][options][tag]">
+                                            <?php foreach($tags as $_tag_key => $_tag) : ?>
+                                            <option value="<?php echo $_tag_key; ?>" <?php if(isset($_placement['options']['tag'])) selected($_placement['options']['tag'], $_tag_key); ?>><?php echo $_tag; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        </div><?php
                                         break;
                                 endswitch;
                                 do_action('advads-placement-options-after', $_placement_slug, $_placement);

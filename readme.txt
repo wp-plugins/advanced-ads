@@ -3,8 +3,8 @@ Contributors: webzunft
 Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5RRRCEBGN3UT2
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
-Tested up to: 4.0.1
-Stable tag: 1.3.5
+Tested up to: 4.1.
+Stable tag: 1.3.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,6 +64,7 @@ Advanced Ads comes with many options for ad injection (= display ads without the
 
 * inject ads into header and footer
 * inject ads into posts content (top, bottom, by paragraph)
+* inject ads into content before or after a specific paragraph or headline
 
 = ad networks =
 
@@ -145,6 +146,11 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 3. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.3.6 =
+
+* COOL: inject ads into content before or after specific paragraphs or headlines
+* Updated translation files, German translation
 
 = 1.3.5 =
 

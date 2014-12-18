@@ -82,6 +82,9 @@
 .advads-placements-table th { margin: 0; padding: 10px; text-align: left; vertical-align: top; }
 .advads-placements-table td { margin: 0; padding: 10px; text-align: left; vertical-align: top; }
 .advads-placements-table-options { text-align: right; }
+.advads-placement-options input, .advads-placement-options select { background: transparent; }
+.advads-placements-table-options input[type="number"] { width: 3em; }
+
 /**
  GENERAL ELEMENTS
 */
