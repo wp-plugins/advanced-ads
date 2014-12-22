@@ -306,15 +306,19 @@ class Advads_Ad {
                 case 'categoryids' :
                     // included
                     if(is_singular() && empty($_cond_value['all'])){
+                        // get all taxonomies of the post
+                        $term_ids = $this->get_object_terms($post->ID);
+
                         if(!empty($_cond_value['include'])){
                             if(is_string($_cond_value['include'])){
                                 $category_ids = explode(',', $_cond_value['include']);
                             } else {
                                 $category_ids = $_cond_value['include'];
                             }
+
                             // check if currently in a post (not post page, but also posts in loops)
                             if(is_array($category_ids) && isset($post->ID)
-                                && !in_category($category_ids, $post)) {
+                                && !count(array_intersect($category_ids, $term_ids))) { // is there any taxonomy the same?
                                     return false;
                             }
                         }
@@ -327,7 +331,7 @@ class Advads_Ad {
                             }
                             // check if currently in a post (not post page, but also posts in loops)
                             if(is_array($category_ids) && isset($post->ID)
-                                && in_category($category_ids, $post) ) {
+                                && count(array_intersect($category_ids, $term_ids))) { // is there any taxonomy the same
                                     // being only in one excluded category is enough to not display the ad
                                     return false;
                             }
@@ -432,6 +436,42 @@ class Advads_Ad {
         }
 
         return true;
+    }
+
+    /**
+     * get all terms of a specific post or post type
+     *
+     * @param int $post_id id of the post
+     * @return arr $out ids of terms this post belongs to
+     */
+    private function get_object_terms($post_id = 0){
+
+        $post_id = absint($post_id);
+        if(!$post_id) return array();
+
+        // get post by post id
+        $post = get_post( $post_id );
+
+        // get post type by post
+        $post_type = $post->post_type;
+
+        // get post type taxonomies
+        $taxonomies = get_object_taxonomies( $post_type, 'objects' );
+
+        $term_ids = array();
+        foreach ( $taxonomies as $taxonomy_slug => $taxonomy ){
+
+            // get the terms related to post
+            $terms = get_the_terms( $post->ID, $taxonomy_slug );
+
+            if ( !empty( $terms ) ) {
+                foreach ( $terms as $term ) {
+                    $term_ids[] = $term->term_id;
+                }
+            }
+        }
+
+        return $term_ids;
     }
 
     /**

@@ -239,8 +239,8 @@ class Advads_Ad_Placements {
         $running = true;
         foreach ($paragraphs as $index => $paragraph) {
 
-            // check if current paragraph is empty and if so, increate offset
-            if($running && $index > 0 && trim(str_replace(array('<p>', '&nbsp;'), '', $paragraph)) == '')
+            // check if current paragraph is empty and if so, create offset
+            if($running && $index > 0 && trim(str_replace(array($tag, '&nbsp;'), '', $paragraph)) == '')
                     $offset++;
 
             if (trim($paragraph)) {
