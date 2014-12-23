@@ -222,6 +222,7 @@ class Advads_Ad_Placements {
      * @link inspired by http://www.wpbeginner.com/wp-tutorials/how-to-insert-ads-within-your-post-content-in-wordpress/
      */
     static function inject_in_content($placement_id, $options, $content) {
+
         $tag = (isset($options['tag'])) ? $options['tag'] : 'p';
         $position = (isset($options['position'])) ? $options['position'] : 'after';
 
@@ -233,23 +234,39 @@ class Advads_Ad_Placements {
 
         $paragraph_id = isset($options['index']) ? $options['index'] : 1;
         $ad_content = Advads_Ad_Placements::output($placement_id);
-
         $paragraphs = explode($tag, $content);
+
         $offset = 0;
         $running = true;
         foreach ($paragraphs as $index => $paragraph) {
 
             // check if current paragraph is empty and if so, create offset
-            if($running && $index > 0 && trim(str_replace(array($tag, '&nbsp;'), '', $paragraph)) == '')
+            if($running && $index > 0 && trim(str_replace(array($tag, '&nbsp;'), '', $paragraph)) == ''){
                     $offset++;
-
-            if (trim($paragraph)) {
-                $paragraphs[$index] .= $tag;
+            } elseif($index == 0 && trim(str_replace(array($tag, '&nbsp;'), '', $paragraph)) == ''){
+                // if the current paragraph is empty (because the tag was the first one in the content) attach the tag
+                $paragraphs[$index] = $tag;
             }
 
+
+            // insert tag in case the ads position is after it
+            if (trim($paragraph) && $position == 'after'){
+                // not on the last paragraph
+                if($index+1 != count($paragraphs))
+                    $paragraphs[$index] .= $tag;
+            }
+
+            // insert ad content
             if ($paragraph_id + $offset == $index + 1) {
                 $paragraphs[$index] .= $ad_content;
                 $running = false;
+            }
+
+            // insert tag in case the ads position is before it
+            if (trim($paragraph) && $position == 'before'){
+                // not on the last paragraph
+                if($index+1 != count($paragraphs))
+                    $paragraphs[$index] = $paragraphs[$index] . $tag;
             }
         }
         return implode('', $paragraphs);

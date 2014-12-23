@@ -684,6 +684,8 @@ class Advanced_Ads {
 
         $placements = get_option('advads-ads-placements', array());
         foreach($placements as $_placement_id => $_placement){
+            if(empty($_placement['item'])) continue;
+            
             if(isset($_placement['type']) && $_placement['type'] == 'post_top'){
                 $content = Advads_Ad_Placements::output($_placement_id) . $content;
             }
