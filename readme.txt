@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.1.
-Stable tag: 1.3.8
+Stable tag: 1.3.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -147,6 +147,12 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 
 == Changelog ==
 
+= 1.3.9 =
+
+* disabled empty css file in frontend
+* removed older changelog from readme
+* fixed saving new ad conditions type "other" into global array
+
 = 1.3.8 =
 
 * fixed empty content placements still being parsed
@@ -199,86 +205,6 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 * fixed possible translation issue
 * added partial German translation
 * added Italien translation (thanks to sangkavr)
-
-= 1.2.7 =
-
-* fixed translation files (thanks to sangkavr)
-* fixed inconsistent text domains
-* started with German translation
-
-= 1.2.6 =
-
-* layout updates to display condition box
-* moved single post display condition to new layout
-* individual post ids display condition is now only checked on singular pages
-* added quick action buttons to overview page
-* added debug output for display conditions (if WP_DEBUG is true)
-* fixed bug with trashed ads still showing
-* fixed admin notices appearing on overview page on the wrong place
-* fixed display conditions for category of post and category archives interfered with each other
-
-IMPORTANT: It is no longer possible to use the single post display condition to select individual posts where the ad is displayed and where it is hidden at the same time. This didn’t made sense before and is prevented now completely.
-
-= 1.2.5 =
-
-* fixed wrong links on overview page
-* consider the "all" option for display conditions
-* moved category archive ids display condition to new layout
-* extended category archive ids to all category archive pages
-* prevent a display condition option to be included and excluded at the same time
-* optimized layout of overview page
-* fix for php prior to 5.3
-
-= 1.2.4 =
-
-* fixed wrong links for ad groups and debug page
-* display ad groups in ad list
-
-= 1.2.3 =
-
-major changes:
-
-* added advanced js functions ([see some examples](http://wpadvancedads.com/javascript-functions/))
-* moved taxonomies display condition to new layout
-* rearranged the menu to fix its occasional disappearance
-* added donation link – donations are very welcome :)
-
-= 1.2.2 =
-
-major changes:
-
-* added overview page
-* new layout for display condition check for post types
-* added ad width and height values
-
-fixes:
-
-* don’t display ads that are not published or visible to logged in users only
-
-= 1.2.1 =
-
-major changes:
-
-* moved auto injections from ads to placements [PLEASE MOVE YOUR INJECTIONS THERE]
-* added post content injections
-* reading suggestion: [My test of AdSense Responsive Ads](http://webgilde.com/en/adsense-responsive-ad/)
-
-other fixes:
-
-* fix bugs with ad weights throwing issues when not set
-* removed public ad groups query
-* updated arrays displayed on debug page
-* ad groups are now displayed before ads in placements and ad widget
-* added title to widget
-
-= 1.2 =
-
-* added widget for ads or ad groups
-* added information on how to display ads, ad groups and ad placements
-* tested with WordPress 4.0
-* added filters and function to dynamically create a wrapper around the ad
-* ! ad injection works on posts and pages now
-* fixed excluded post types for ads
 
 == Upgrade Notice ==
 

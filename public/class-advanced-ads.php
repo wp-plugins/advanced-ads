@@ -299,7 +299,7 @@ class Advanced_Ads {
      * @since    1.0.0
      */
     public function enqueue_styles() {
-        wp_enqueue_style($this->plugin_slug . '-plugin-styles', plugins_url('assets/css/public.css', __FILE__), array(), self::VERSION);
+        // wp_enqueue_style($this->plugin_slug . '-plugin-styles', plugins_url('assets/css/public.css', __FILE__), array(), self::VERSION);
     }
 
     /**
@@ -685,7 +685,7 @@ class Advanced_Ads {
         $placements = get_option('advads-ads-placements', array());
         foreach($placements as $_placement_id => $_placement){
             if(empty($_placement['item'])) continue;
-            
+
             if(isset($_placement['type']) && $_placement['type'] == 'post_top'){
                 $content = Advads_Ad_Placements::output($_placement_id) . $content;
             }

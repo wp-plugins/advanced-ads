@@ -23,6 +23,12 @@
 $advanced_ads_slug = Advanced_Ads::get_instance()->get_plugin_slug();
 
 $advanced_ads_ad_conditions = array(
+    'enabled' => array( // dummy, to let the validation of the general ad conditions past
+        // 'label' => __('Post Types', $advanced_ads_slug),
+        // 'description' => __('Choose the public post types on which to display the ad.', $advanced_ads_slug),
+        'type' => 'other',
+        // 'callback' => array('AdvAds_Display_Condition_Callbacks', 'post_types')
+    ),
     'posttypes' => array(
         'label' => __('Post Types', $advanced_ads_slug),
         'description' => __('Choose the public post types on which to display the ad.', $advanced_ads_slug),

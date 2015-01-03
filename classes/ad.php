@@ -752,6 +752,8 @@ class Advads_Ad {
                     elseif($_condition == 0)
                         $ads_by_conditions[$_condition_key]['exclude'][] = $this->id;
                     break;
+                case 'other' :
+                    $ads_by_conditions[$_condition_key][$this->id] = $_condition;
             } // switch
         } // forearch
 
