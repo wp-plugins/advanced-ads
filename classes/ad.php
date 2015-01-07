@@ -234,6 +234,9 @@ class Advads_Ad {
         $options = Advanced_Ads::get_instance()->options();
         $see_ads_capability = (!empty($options['hide-for-user-role'])) ? $options['hide-for-user-role'] : 0;
 
+        // check global constant if ads are enabled or disabled
+        if(defined('ADVADS_ADS_DISABLED')) { return false; }
+
         // don’t display ads that are not published or private for users not logged in
         if($this->status !== 'publish' && !($this->status === 'private' && !is_user_logged_in())){
             return false;
@@ -720,13 +723,21 @@ class Advads_Ad {
             switch($advanced_ads_ad_conditions[$_condition_key]['type']){
                 case 'idfield' :
                     if(isset($_condition['include']) && $_condition['include'] != ''){
-                        $_ids = explode(',', $_condition['include']);
+                        if(is_array($_condition['include'])){
+                            $_ids = $_condition['include'];
+                        } else {
+                            $_ids = explode(',', $_condition['include']);
+                        }
                         if(is_array($_ids)) foreach($_ids as $_id){
                             $ads_by_conditions[$_condition_key][$_id]['include'][] = $this->id;
                         }
                     }
                     if(isset($_condition['exclude']) && $_condition['exclude'] != ''){
-                        $_ids = explode(',', $_condition['exclude']);
+                        if(is_array($_condition['exclude'])){
+                            $_ids = $_condition['exclude'];
+                        } else {
+                            $_ids = explode(',', $_condition['exclude']);
+                        }
                         if(is_array($_ids)) foreach($_ids as $_id){
                             $ads_by_conditions[$_condition_key][$_id]['exclude'][] = $this->id;
                         }
@@ -734,13 +745,21 @@ class Advads_Ad {
                     break;
                 case 'textvalues' :
                     if(isset($_condition['include']) && $_condition['include'] != ''){
-                        $_ids = explode(',', $_condition['include']);
+                        if(is_array($_condition['include'])){
+                            $_ids = $_condition['include'];
+                        } else {
+                            $_ids = explode(',', $_condition['include']);
+                        }
                         if(is_array($_ids)) foreach($_ids as $_id){
                             $ads_by_conditions[$_condition_key][$_id]['include'][] = $this->id;
                         }
                     }
                     if(isset($_condition['exclude']) && $_condition['exclude'] != ''){
-                        $_ids = explode(',', $_condition['exclude']);
+                        if(is_array($_condition['exclude'])){
+                            $_ids = $_condition['exclude'];
+                        } else {
+                            $_ids = explode(',', $_condition['exclude']);
+                        }
                         if(is_array($_ids)) foreach($_ids as $_id){
                             $ads_by_conditions[$_condition_key][$_id]['exclude'][] = $this->id;
                         }

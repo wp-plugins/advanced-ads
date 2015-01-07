@@ -40,7 +40,7 @@ require_once(ADVADS_BASE_PATH . 'admin/includes/class-display-condition-callback
                     <th></th>
                 </tr><?php
                         foreach ($advanced_ads_ad_conditions as $_key => $_condition) :
-                            if (isset($_condition['callback']))
+                            if (isset($_condition['callback']) || empty($_condition['label']))
                                 continue;
                             ?><tr>
                         <th><?php echo $_condition['label']; ?>

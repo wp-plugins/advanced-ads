@@ -103,6 +103,9 @@ class Advanced_Ads {
         add_action( 'init', array( $this, 'init' ) );
         register_activation_hook(__FILE__, array($this,'post_types_rewrite_flush'));
 
+        // register hook for global constants
+        add_action('wp', array($this, 'set_global_constants'));
+
         // add short codes
         add_shortcode('the_ad', array($this, 'shortcode_display_ad'));
         add_shortcode('the_ad_group', array($this, 'shortcode_display_ad_group'));
@@ -129,6 +132,24 @@ class Advanced_Ads {
         $this->create_post_types();
         // set ad types array
         $this->set_ad_types();
+    }
+
+    /**
+     * set global constants for the current page view
+     *
+     * @since 1.3.10
+     */
+    public function set_global_constants(){
+
+        global $post;
+        // check if ads are disabled on the current page
+        if(is_singular() && isset($post->ID) && !defined('ADVADS_ADS_DISABLED')){
+            $options = get_post_meta( $post->ID, '_advads_ad_settings', true );
+
+            if(!empty($options['disable_ads'])){
+                define('ADVADS_ADS_DISABLED', true);
+            }
+        };
     }
 
     /**

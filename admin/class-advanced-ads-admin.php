@@ -104,6 +104,10 @@ class Advanced_Ads_Admin {
         $plugin_basename = plugin_basename(plugin_dir_path('__DIR__') . $this->plugin_slug . '.php');
         add_filter('plugin_action_links_' . $plugin_basename, array($this, 'add_action_links'));
 
+        // add meta box for post types edit pages
+        add_action( 'add_meta_boxes', array( $this, 'add_post_meta_box' ) );
+        add_action( 'save_post', array( $this, 'save_post_meta_box' ) );
+
     }
 
     /**
@@ -721,6 +725,88 @@ class Advanced_Ads_Admin {
             }
 
         }
+    }
+
+    /**
+     * add a meta box to post type edit screens with ad settings
+     *
+     * @since 1.3.10
+     * @param string $post_type current post type
+     */
+    public function add_post_meta_box($post_type = ""){
+        // get public post types
+        $public_post_types = get_post_types(array('public' => true, 'publicly_queryable' => true), 'names', 'or');
+
+        //limit meta box to public post types
+        if ( in_array( $post_type, $public_post_types )) {
+            add_meta_box(
+                'advads-ad-settings',
+                __( 'Ad Settings', ADVADS_SLUG),
+                array( $this, 'render_post_meta_box' ),
+                $post_type,
+                'advanced',
+                'low'
+            );
+        }
+    }
+
+    /**
+     * render meta box for ad settings on a per post basis
+     *
+     * @since 1.3.10
+     * @param WP_Post $post The post object.
+    */
+    public function render_post_meta_box( $post ) {
+
+        // nonce field to check when we save the values
+        wp_nonce_field( 'advads_post_meta_box', 'advads_post_meta_box_nonce' );
+
+        // retrieve an existing value from the database.
+        $values = get_post_meta( $post->ID, '_advads_ad_settings', true );
+
+        // load the view
+        $view = plugin_dir_path(__FILE__) . 'views/post_ad_settings_metabox.php';
+        if (is_file($view)) {
+            require( $view );
+        }
+    }
+
+    /**
+     * save the ad meta when the post is saved.
+     *
+     * @since 1.3.10
+     * @param int $post_id The ID of the post being saved.
+    */
+    public function save_post_meta_box( $post_id ) {
+
+        // check nonce
+        if ( ! isset( $_POST['advads_post_meta_box_nonce'] ) )
+            return $post_id;
+
+        $nonce = $_POST['advads_post_meta_box_nonce'];
+
+        // Verify that the nonce is valid.
+        if ( ! wp_verify_nonce( $nonce, 'advads_post_meta_box' ) )
+            return $post_id;
+
+        // don’t save on autosave
+        if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+            return $post_id;
+
+        // check the user's permissions.
+        if ( 'page' == $_POST['post_type'] ) {
+            if ( ! current_user_can( 'edit_page', $post_id ) )
+                return $post_id;
+        } else {
+            if ( ! current_user_can( 'edit_post', $post_id ) )
+                return $post_id;
+        }
+
+        // Sanitize the user input.
+        $_data['disable_ads'] = isset($_POST['advanced_ads']['disable_ads']) ? absint($_POST['advanced_ads']['disable_ads']) : 0;
+
+        // Update the meta field.
+        update_post_meta( $post_id, '_advads_ad_settings', $_data );
     }
 
 

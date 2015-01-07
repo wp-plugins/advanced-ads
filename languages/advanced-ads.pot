@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Advanved Ads\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
-"POT-Creation-Date: 2014-12-17 11:17+0100\n"
-"PO-Revision-Date: 2014-12-17 11:17+0100\n"
+"POT-Creation-Date: 2015-01-06 17:11+0100\n"
+"PO-Revision-Date: 2015-01-06 17:11+0100\n"
 "Last-Translator: Thomas Maier <post@webzunft.de>\n"
 "Language-Team: webgilde <thomas.maier@webgilde.com>\n"
 "Language: en\n"
@@ -19,153 +19,157 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: admin/class-advanced-ads-admin.php:186
+#: admin/class-advanced-ads-admin.php:190
 #, php-format
 msgid ""
 "Advanced Ads Update: Auto injections are now managed through placements. "
 "Please convert these ads with auto injections: %s"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:200
+#: admin/class-advanced-ads-admin.php:204
 msgid "Overview"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:200 classes/widget.php:21
+#: admin/class-advanced-ads-admin.php:204 classes/widget.php:21
 msgid "Advanced Ads"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:204
+#: admin/class-advanced-ads-admin.php:208
 #: admin/includes/class-ad-groups-list-table.php:191
 #: admin/views/overview.php:12 admin/views/placements.php:91
-#: classes/widget.php:66 public/class-advanced-ads.php:521
+#: classes/widget.php:66 public/class-advanced-ads.php:542
 msgid "Ads"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:208 admin/views/placements.php:84
+#: admin/class-advanced-ads-admin.php:212 admin/views/placements.php:84
 #: classes/widget.php:59
 msgid "Ad Groups"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:208 admin/views/overview.php:40
-#: public/class-advanced-ads.php:495
+#: admin/class-advanced-ads-admin.php:212 admin/views/overview.php:40
+#: public/class-advanced-ads.php:516
 msgid "Groups"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:213 admin/views/debug.php:19
+#: admin/class-advanced-ads-admin.php:217 admin/views/debug.php:19
 msgid "Ad Placements"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:213 admin/views/overview.php:66
+#: admin/class-advanced-ads-admin.php:217 admin/views/overview.php:66
 #: admin/views/placements.php:47
 msgid "Placements"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:217
+#: admin/class-advanced-ads-admin.php:221
 msgid "Advanced Ads Settings"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:217
-#: admin/class-advanced-ads-admin.php:395 admin/views/debug.php:13
+#: admin/class-advanced-ads-admin.php:221
+#: admin/class-advanced-ads-admin.php:399 admin/views/debug.php:13
 msgid "Settings"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:220
+#: admin/class-advanced-ads-admin.php:224
 msgid "Advanced Ads Debugging"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:220
+#: admin/class-advanced-ads-admin.php:224
 msgid "Debug"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:264
+#: admin/class-advanced-ads-admin.php:268
 msgid "Placements updated"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:308
-#: admin/class-advanced-ads-admin.php:335
+#: admin/class-advanced-ads-admin.php:312
+#: admin/class-advanced-ads-admin.php:339
 msgid "Sorry, you are not allowed to access this feature."
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:321
+#: admin/class-advanced-ads-admin.php:325
 msgid ""
 "You attempted to edit an ad group that doesn&#8217;t exist. Perhaps it was "
 "deleted?"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:420
+#: admin/class-advanced-ads-admin.php:424
 msgid "Ad Type"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:423
+#: admin/class-advanced-ads-admin.php:427
 msgid "Ad Parameters"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:426
+#: admin/class-advanced-ads-admin.php:430
 msgid "Layout / Output"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:429
+#: admin/class-advanced-ads-admin.php:433
 msgid "Display Conditions"
 msgstr "Anzeigebedingungen"
 
-#: admin/class-advanced-ads-admin.php:432
+#: admin/class-advanced-ads-admin.php:436
 #, fuzzy
 msgid "Visitor Conditions"
 msgstr "Anzeigebedingungen"
 
-#: admin/class-advanced-ads-admin.php:435
+#: admin/class-advanced-ads-admin.php:439
 msgid "Auto injection"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:571
+#: admin/class-advanced-ads-admin.php:575
 msgid "General"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:579
+#: admin/class-advanced-ads-admin.php:583
 msgid "Hide ads for logged in users"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:587
+#: admin/class-advanced-ads-admin.php:591
 msgid "Use advanced JavaScript"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:614
+#: admin/class-advanced-ads-admin.php:618
 msgid "(display to all)"
 msgstr "(für alle anzeigen)"
 
-#: admin/class-advanced-ads-admin.php:615
+#: admin/class-advanced-ads-admin.php:619
 msgid "Subscriber"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:616
+#: admin/class-advanced-ads-admin.php:620
 msgid "Contributor"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:617
+#: admin/class-advanced-ads-admin.php:621
 msgid "Author"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:618
+#: admin/class-advanced-ads-admin.php:622
 msgid "Editor"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:619
+#: admin/class-advanced-ads-admin.php:623
 msgid "Admin"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:627
+#: admin/class-advanced-ads-admin.php:631
 msgid "Choose the lowest role a user must have in order to not see any ads."
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:640
+#: admin/class-advanced-ads-admin.php:644
 #, php-format
 msgid ""
 "Only enable this if you can and want to use the advanced JavaScript "
 "functions described <a href=\"%s\">here</a>."
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:687
+#: admin/class-advanced-ads-admin.php:691
 msgid "Ad Details"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:744
+msgid "Ad Settings"
 msgstr ""
 
 #: admin/includes/class-ad-groups-list-table.php:57
@@ -180,7 +184,7 @@ msgstr ""
 
 #: admin/includes/class-ad-groups-list-table.php:99
 #: admin/includes/class-ad-groups-list-table.php:167
-#: public/class-advanced-ads.php:525
+#: public/class-advanced-ads.php:546
 #, fuzzy
 msgid "Edit"
 msgstr "Kreuzworträtsel bearbeiten"
@@ -211,7 +215,7 @@ msgid "Display on all public <strong>post types</strong>."
 msgstr ""
 
 #: admin/includes/class-display-condition-callbacks.php:31
-#: includes/array_ad_conditions.php:28
+#: includes/array_ad_conditions.php:34
 msgid "Choose the public post types on which to display the ad."
 msgstr ""
 
@@ -264,7 +268,7 @@ msgid ""
 msgstr ""
 
 #: admin/includes/class-display-condition-callbacks.php:233
-#: includes/array_ad_conditions.php:46
+#: includes/array_ad_conditions.php:52
 msgid ""
 "Choose on which individual posts, pages and public post type pages you want "
 "to display or hide ads."
@@ -969,6 +973,10 @@ msgstr "Filter entfernen"
 msgid "Save Placements"
 msgstr ""
 
+#: admin/views/post_ad_settings_metabox.php:3
+msgid "Disable ads on this page"
+msgstr ""
+
 #: admin/views/settings.php:23
 msgid "Debug Page"
 msgstr ""
@@ -989,7 +997,7 @@ msgstr ""
 msgid "webgilde GmbH"
 msgstr ""
 
-#: classes/ad.php:676
+#: classes/ad.php:719
 #, php-format
 msgid "A \"%s\" display condition does not exist"
 msgstr ""
@@ -1112,188 +1120,188 @@ msgstr ""
 msgid "Title:"
 msgstr ""
 
-#: includes/array_ad_conditions.php:27
+#: includes/array_ad_conditions.php:33
 msgid "Post Types"
 msgstr ""
 
-#: includes/array_ad_conditions.php:33
+#: includes/array_ad_conditions.php:39
 #, fuzzy
 msgid "Categories, Tags and Taxonomies"
 msgstr "Kreuzworträtsel-Tags"
 
-#: includes/array_ad_conditions.php:34
+#: includes/array_ad_conditions.php:40
 msgid ""
 "Choose terms from public category, tag and other taxonomies a post must "
 "belong to in order to have ads."
 msgstr ""
 
-#: includes/array_ad_conditions.php:39
+#: includes/array_ad_conditions.php:45
 msgid "Category Archives"
 msgstr ""
 
-#: includes/array_ad_conditions.php:40
+#: includes/array_ad_conditions.php:46
 msgid "comma seperated IDs of category archives"
 msgstr ""
 
-#: includes/array_ad_conditions.php:45
+#: includes/array_ad_conditions.php:51
 msgid "Individual Posts, Pages and Public Post Types"
 msgstr ""
 
-#: includes/array_ad_conditions.php:51
+#: includes/array_ad_conditions.php:57
 msgid "Home Page"
 msgstr ""
 
-#: includes/array_ad_conditions.php:52
+#: includes/array_ad_conditions.php:58
 msgid "(don't) show on Home page"
 msgstr ""
 
-#: includes/array_ad_conditions.php:56
+#: includes/array_ad_conditions.php:62
 msgid "Singular Pages"
 msgstr ""
 
-#: includes/array_ad_conditions.php:57
+#: includes/array_ad_conditions.php:63
 msgid "(don't) show on singular pages/posts"
 msgstr ""
 
-#: includes/array_ad_conditions.php:61
+#: includes/array_ad_conditions.php:67
 msgid "Archive Pages"
 msgstr ""
 
-#: includes/array_ad_conditions.php:62
+#: includes/array_ad_conditions.php:68
 msgid ""
 "(don't) show on any type of archive page (category, tag, author and date)"
 msgstr ""
 
-#: includes/array_ad_conditions.php:66
+#: includes/array_ad_conditions.php:72
 #, fuzzy
 msgid "Search Results"
 msgstr "suchen"
 
-#: includes/array_ad_conditions.php:67
+#: includes/array_ad_conditions.php:73
 msgid "(don't) show on search result pages"
 msgstr ""
 
-#: includes/array_ad_conditions.php:71
+#: includes/array_ad_conditions.php:77
 msgid "404 Page"
 msgstr ""
 
-#: includes/array_ad_conditions.php:72
+#: includes/array_ad_conditions.php:78
 msgid "(don't) show on 404 error page"
 msgstr ""
 
-#: includes/array_ad_conditions.php:76
+#: includes/array_ad_conditions.php:82
 msgid "Attachment Pages"
 msgstr ""
 
-#: includes/array_ad_conditions.php:77
+#: includes/array_ad_conditions.php:83
 msgid "(don't) show on attachment pages"
 msgstr ""
 
-#: public/class-advanced-ads.php:485
+#: public/class-advanced-ads.php:506
 msgctxt "ad group general name"
 msgid "Ad Groups"
 msgstr ""
 
-#: public/class-advanced-ads.php:486
+#: public/class-advanced-ads.php:507
 msgctxt "ad group singular name"
 msgid "Ad Group"
 msgstr ""
 
-#: public/class-advanced-ads.php:487
+#: public/class-advanced-ads.php:508
 #, fuzzy
 msgid "Search Ad Groups"
 msgstr "suchen"
 
-#: public/class-advanced-ads.php:488
+#: public/class-advanced-ads.php:509
 #, fuzzy
 msgid "All Ad Groups"
 msgstr "(für alle anzeigen)"
 
-#: public/class-advanced-ads.php:489
+#: public/class-advanced-ads.php:510
 #, fuzzy
 msgid "Parent Ad Groups"
 msgstr "Übergeordnetes Thema"
 
-#: public/class-advanced-ads.php:490
+#: public/class-advanced-ads.php:511
 #, fuzzy
 msgid "Parent Ad Groups:"
 msgstr "Übergeordnetes Thema"
 
-#: public/class-advanced-ads.php:491
+#: public/class-advanced-ads.php:512
 #, fuzzy
 msgid "Edit Ad Group"
 msgstr "Kreuzworträtsel bearbeiten"
 
-#: public/class-advanced-ads.php:492
+#: public/class-advanced-ads.php:513
 #, fuzzy
 msgid "Update Ad Group"
 msgstr "Thema aktualisieren"
 
-#: public/class-advanced-ads.php:493
+#: public/class-advanced-ads.php:514
 #, fuzzy
 msgid "Add New Ad Group"
 msgstr "Neues Kreuzworträtsel hinzufügen"
 
-#: public/class-advanced-ads.php:494
+#: public/class-advanced-ads.php:515
 #, fuzzy
 msgid "New Ad Groups Name"
 msgstr "Neuer Kreuzworträtsel-Tag"
 
-#: public/class-advanced-ads.php:496
+#: public/class-advanced-ads.php:517
 #, fuzzy
 msgid "No Ad Group found"
 msgstr "Keine Kreuzworträtsel gefunden"
 
-#: public/class-advanced-ads.php:522 public/class-advanced-ads.php:538
+#: public/class-advanced-ads.php:543 public/class-advanced-ads.php:559
 msgid "Ad"
 msgstr ""
 
-#: public/class-advanced-ads.php:523 public/class-advanced-ads.php:527
+#: public/class-advanced-ads.php:544 public/class-advanced-ads.php:548
 #, fuzzy
 msgid "New Ad"
 msgstr "Neues Kreuzworträtsel"
 
-#: public/class-advanced-ads.php:524
+#: public/class-advanced-ads.php:545
 #, fuzzy
 msgid "Add New Ad"
 msgstr "Neues Kreuzworträtsel hinzufügen"
 
-#: public/class-advanced-ads.php:526
+#: public/class-advanced-ads.php:547
 #, fuzzy
 msgid "Edit Ad"
 msgstr "Kreuzworträtsel bearbeiten"
 
-#: public/class-advanced-ads.php:528
+#: public/class-advanced-ads.php:549
 #, fuzzy
 msgid "View"
 msgstr "Ansicht"
 
-#: public/class-advanced-ads.php:529
+#: public/class-advanced-ads.php:550
 #, fuzzy
 msgid "View the Ad"
 msgstr "Ansicht"
 
-#: public/class-advanced-ads.php:530
+#: public/class-advanced-ads.php:551
 #, fuzzy
 msgid "Search Ads"
 msgstr "suchen"
 
-#: public/class-advanced-ads.php:531
+#: public/class-advanced-ads.php:552
 #, fuzzy
 msgid "No Ads found"
 msgstr "Keine Kreuzworträtsel gefunden"
 
-#: public/class-advanced-ads.php:532
+#: public/class-advanced-ads.php:553
 #, fuzzy
 msgid "No Ads found in Trash"
 msgstr "Keine Kreuzworträtsel im Papierkorb"
 
-#: public/class-advanced-ads.php:533
+#: public/class-advanced-ads.php:554
 #, fuzzy
 msgid "Parent Ad"
 msgstr "Übergeordnetes Thema"
 
-#: public/class-advanced-ads.php:589
+#: public/class-advanced-ads.php:610
 #, php-format
 msgid "Advanced Ads Error: %s"
 msgstr ""
