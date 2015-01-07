@@ -45,9 +45,9 @@
     </form>
 <?php if (isset($placements) && is_array($placements)) : ?>
         <h2><?php _e('Placements', ADVADS_SLUG); ?></h2>
-        <a onclick="advads_toggle('#advads-ad-place-display-info')"><?php _e('How to use the ’default’ Ad Placement?', ADVADS_SLUG); ?></a>
+        <a onclick="advads_toggle('#advads-ad-place-display-info')"><?php _e('How to use the <i>default</i> Ad Placement?', ADVADS_SLUG); ?></a>
         <div id="advads-ad-place-display-info" style="display: none;">
-            <p><?php printf(__('Examples on how to use the ’default’ ad placement? Find more help and examples in the <a href="%s" target="_blank">manual</a>', ADVADS_SLUG), 'http://wpadvancedads.com/advanced-ads/manual/placements/'); ?></p>
+            <p><?php printf(__('Examples on how to use the <i>default</i> ad placement? Find more help and examples in the <a href="%s" target="_blank">manual</a>', ADVADS_SLUG), 'http://wpadvancedads.com/advanced-ads/manual/placements/'); ?></p>
             <h4><?php _e('shortcode', ADVADS_SLUG); ?></h4>
             <p class="description"><?php _e('To use an ad placement with the ID skyscraper_left in content fields', ADVADS_SLUG); ?></p>
             <pre><input type="text" onclick="this.select();" style="width: 400px;" value='[the_ad_placement id="skyscraper_left"]'/></pre>
@@ -80,34 +80,44 @@
                                 <label for="adsads-placements-item-<?php echo $_placement_slug; ?>"><?php _e('Item', ADVADS_SLUG); ?></label>
                                 <select id="adsads-placements-item-<?php echo $_placement_slug; ?>" name="advads[placements][<?php echo $_placement_slug; ?>][item]">
                                     <option value=""><?php _e('--empty--', ADVADS_SLUG); ?></option>
-                                        <?php if (isset($items['ads'])) : ?>
-                                        <optgroup label="<?php _e('Ads', ADVADS_SLUG); ?>">
-                                            <?php foreach ($items['ads'] as $_item_id => $_item_title) : ?>
-                                                <option value="<?php echo $_item_id; ?>" <?php if (isset($_placement['item'])) selected($_item_id, $_placement['item']); ?>><?php echo $_item_title; ?></option>
-                                        <?php endforeach; ?>
-                                        </optgroup>
-                                    <?php endif; ?>
                                         <?php if (isset($items['groups'])) : ?>
                                         <optgroup label="<?php _e('Ad Groups', ADVADS_SLUG); ?>">
                                             <?php foreach ($items['groups'] as $_item_id => $_item_title) : ?>
                                                 <option value="<?php echo $_item_id; ?>" <?php if (isset($_placement['item'])) selected($_item_id, $_placement['item']); ?>><?php echo $_item_title; ?></option>
                                         <?php endforeach; ?>
                                         </optgroup>
-                                <?php endif; ?>
+                                        <?php endif; ?>
+                                        <?php if (isset($items['ads'])) : ?>
+                                        <optgroup label="<?php _e('Ads', ADVADS_SLUG); ?>">
+                                        <?php foreach ($items['ads'] as $_item_id => $_item_title) : ?>
+                                                <option value="<?php echo $_item_id; ?>" <?php if (isset($_placement['item'])) selected($_item_id, $_placement['item']); ?>><?php echo $_item_title; ?></option>
+                                        <?php endforeach; ?>
+                                        </optgroup>
+                                        <?php endif; ?>
                                 </select><br/>
                                 <?php
                                 switch ($_placement['type']) :
                                     case 'post_content' :
-                                        ?><label for="adsads-placements-options-index-<?php echo $_placement_slug; ?>"><?php _e('Index', ADVADS_SLUG); ?></label>
-                                        <input type="number" id="adsads-placements-options-index-<?php echo
-                               $_placement_slug;
-                                        ?>" name="advads[placements][<?php echo
-                               $_placement_slug;
-                               ?>][options][index]" value="<?php
+                                        ?><div class="advads-placement-options"><?php
+                                        _e('Inject', ADVADS_SLUG);
+                                        $_positions = array('after' => __('after', ADVADS_SLUG), 'before' => __('before', ADVADS_SLUG)); ?>
+                                        <select name="advads[placements][<?php echo $_placement_slug; ?>][options][position]">
+                                            <?php foreach($_positions as $_pos_key => $_pos) : ?>
+                                            <option value="<?php echo $_pos_key; ?>" <?php if(isset($_placement['options']['position'])) selected($_placement['options']['position'], $_pos_key); ?>><?php echo $_pos; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+
+                                        <input type="number" name="advads[placements][<?php echo $_placement_slug; ?>][options][index]" value="<?php
                                         echo (isset($_placement['options']['index'])) ? $_placement['options']['index'] : 1;
-                                        ?>"/>
-                                        <span class="description"><?php _e('After which paragraph to insert the placement content.', ADVADS_SLUG); ?></span>
-                                        <?php
+                                        ?>"/>.
+
+                                        <?php $tags = Advads_Ad_Placements::tags_for_content_injection(); ?>
+                                        <select name="advads[placements][<?php echo $_placement_slug; ?>][options][tag]">
+                                            <?php foreach($tags as $_tag_key => $_tag) : ?>
+                                            <option value="<?php echo $_tag_key; ?>" <?php if(isset($_placement['options']['tag'])) selected($_placement['options']['tag'], $_tag_key); ?>><?php echo $_tag; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        </div><?php
                                         break;
                                 endswitch;
                                 do_action('advads-placement-options-after', $_placement_slug, $_placement);
