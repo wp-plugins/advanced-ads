@@ -52,6 +52,13 @@
 .post-type-advanced_ads #advanced-ads-ad-parameters-size p { float: left; margin: 0 1em 0 0; font-weight: bold; }
 .post-type-advanced_ads #advanced-ads-ad-parameters-size label + label { margin-left: 1em; }
 .post-type-advanced_ads #advanced-ads-ad-parameters-size input { width: 4em; margin-left: .5em; }
+.post-type-advanced_ads #advanced-ad-output .label { display: inline-block; width: 5em; font-weight: bold; }
+.post-type-advanced_ads #advanced-ad-output-position { line-height: 60px; }
+.post-type-advanced_ads #advanced-ad-output-position:after { content: ' '; clear: both; float: none; display: block;}
+.post-type-advanced_ads #advanced-ad-output-position label + label { margin-left: 1em; }
+.post-type-advanced_ads #advanced-ad-output-position img { border: 1px solid #ddd; padding: 2px; }
+.post-type-advanced_ads #advanced-ad-output-margin input[type="number"] { width: 4em; }
+.post-type-advanced_ads #advanced-ad-output-margin label + label { margin-left: 1em; }
 
 .advads-debug-output legend { text-decoration: underline; cursor: pointer; }
 
@@ -75,6 +82,9 @@
 .advads-placements-table th { margin: 0; padding: 10px; text-align: left; vertical-align: top; }
 .advads-placements-table td { margin: 0; padding: 10px; text-align: left; vertical-align: top; }
 .advads-placements-table-options { text-align: right; }
+.advads-placement-options input, .advads-placement-options select { background: transparent; }
+.advads-placements-table-options input[type="number"] { width: 3em; }
+
 /**
  GENERAL ELEMENTS
 */
