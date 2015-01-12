@@ -12,7 +12,7 @@
  * Plugin Name:       Advanced Ads
  * Plugin URI:        http://wpadvancedads.com
  * Description:       Manage and optimize your ads in WordPress
- * Version:           1.3.10
+ * Version:           1.3.11
  * Author:            Thomas Maier
  * Author URI:        http://webgilde.com
  * Text Domain:       advanced-ads

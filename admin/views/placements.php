@@ -75,7 +75,7 @@
                             <td><?php echo (isset($_placement['type']) && !empty($placement_types[$_placement['type']]['title'])) ? $placement_types[$_placement['type']]['title'] : __('default', ADVADS_SLUG); ?></td>
                             <th><?php echo $_placement_slug; ?></th>
                             <td class="advads-placements-table-options">
-                                <?php do_action('advads-placement-options-before', $_placement_slug, $_placement);
+                                <?php do_action('advanced-ads-placement-options-before', $_placement_slug, $_placement);
                                 $items = Advads_Ad_Placements::items_for_select(); ?>
                                 <label for="adsads-placements-item-<?php echo $_placement_slug; ?>"><?php _e('Item', ADVADS_SLUG); ?></label>
                                 <select id="adsads-placements-item-<?php echo $_placement_slug; ?>" name="advads[placements][<?php echo $_placement_slug; ?>][item]">
@@ -120,7 +120,7 @@
                                         </div><?php
                                         break;
                                 endswitch;
-                                do_action('advads-placement-options-after', $_placement_slug, $_placement);
+                                do_action('advanced-ads-placement-options-after', $_placement_slug, $_placement);
                                 ?>
                             </td>
                             <td>

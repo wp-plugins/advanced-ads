@@ -52,7 +52,7 @@ class Advads_Ad_Placements {
                 'description' => __('Injected into the post content. You can choose the paragraph after which the ad content is displayed.', ADVADS_SLUG),
                 ),
         );
-        return apply_filters('advads-placement-types', $types);
+        return apply_filters('advanced-ads-placement-types', $types);
     }
 
     /**
@@ -144,7 +144,7 @@ class Advads_Ad_Placements {
         }
 
         // load all ads
-        $ads = Advanced_Ads::get_ads();
+        $ads = Advanced_Ads::get_ads(array('orderby' => 'name', 'order' => 'ASC'));
         foreach ($ads as $_ad) {
             $select['ads']['ad_' . $_ad->ID] = $_ad->post_title;
         }

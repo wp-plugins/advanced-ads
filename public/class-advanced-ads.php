@@ -104,7 +104,7 @@ class Advanced_Ads {
         register_activation_hook(__FILE__, array($this,'post_types_rewrite_flush'));
 
         // register hook for global constants
-        add_action('wp', array($this, 'set_global_constants'));
+        add_action('wp', array($this, 'set_disabled_constant'));
 
         // add short codes
         add_shortcode('the_ad', array($this, 'shortcode_display_ad'));
@@ -135,18 +135,42 @@ class Advanced_Ads {
     }
 
     /**
-     * set global constants for the current page view
+     * set global constant that prevents ads from being displayed on the current page view
      *
      * @since 1.3.10
      */
-    public function set_global_constants(){
+    public function set_disabled_constant(){
 
         global $post;
-        // check if ads are disabled on the current page
-        if(is_singular() && isset($post->ID) && !defined('ADVADS_ADS_DISABLED')){
-            $options = get_post_meta( $post->ID, '_advads_ad_settings', true );
 
-            if(!empty($options['disable_ads'])){
+        // don't set the constant if already defined
+        if(defined('ADVADS_ADS_DISABLED')) return;
+
+        $options = $this->options();
+
+        // check if ads are disabled completely
+        if(!empty($options['disabled-ads']['all'])){
+            define('ADVADS_ADS_DISABLED', true);
+            return;
+        }
+
+        // check if ads are disabled from 404 pages
+        if(is_404() && !empty($options['disabled-ads']['404'])){
+            define('ADVADS_ADS_DISABLED', true);
+            return;
+        }
+
+        // check if ads are disabled from non singular pages (often = archives)
+        if(!is_singular() && !empty($options['disabled-ads']['archives'])){
+            define('ADVADS_ADS_DISABLED', true);
+            return;
+        }
+
+        // check if ads are disabled on the current page
+        if(is_singular() && isset($post->ID)){
+            $post_ad_options = get_post_meta( $post->ID, '_advads_ad_settings', true );
+
+            if(!empty($post_ad_options['disable_ads'])){
                 define('ADVADS_ADS_DISABLED', true);
             }
         };

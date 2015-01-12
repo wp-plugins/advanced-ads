@@ -577,6 +577,14 @@ class Advanced_Ads_Admin {
 		$hook
 	);
 
+ 	// add setting fields to disable ads
+ 	add_settings_field(
+		'disable-ads',
+		__('Disable ads', ADVADS_SLUG),
+		array($this, 'render_settings_disable_ads'),
+		$hook,
+		'advanced_ads_setting_section'
+	);
  	// add setting fields for user role
  	add_settings_field(
 		'hide-for-user-role',
@@ -602,6 +610,26 @@ class Advanced_Ads_Admin {
      */
     public function render_settings_section_callback(){
         // for whatever purpose there might come
+    }
+
+    /**
+     * options to disable ads
+     *
+     * @since 1.3.11
+     */
+    public function render_settings_disable_ads(){
+        $options = Advanced_Ads::get_instance()->options();
+
+        // set the variables
+        $disable_all = isset($options['disabled-ads']['all']) ? 1 : 0;
+        $disable_404 = isset($options['disabled-ads']['404']) ? 1 : 0;
+        $disable_archives = isset($options['disabled-ads']['archives']) ? 1 : 0;
+
+        // load the template
+        $view = plugin_dir_path(__FILE__) . 'views/settings_disable_ads.php';
+        if (is_file($view)) {
+            require( $view );
+        }
     }
 
     /**
