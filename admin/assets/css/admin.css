@@ -1,4 +1,10 @@
 /**
+* DASHBOARD WIDGET
+*/
+#advads_dashboard_widget a.rsswidget { font-weight: 400; }
+#advads_dashboard_widget .rss-widget ul li { margin-bottom: 6px; }
+
+/**
 * OVERVIEW PAGE
 */
 
@@ -42,6 +48,7 @@
 .post-type-advanced_ads .advads-conditions-all { display: block; }
 .post-type-advanced_ads .advads-conditions-single { margin-bottom: 10px; padding: 10px; }
 .post-type-advanced_ads .advads-conditions-single.disabled { display: none; opacity: .5; }
+.post-type-advanced_ads .advads-conditions-single th { vertical-align: top; }
 .advads-conditions-postids-list li { background: #F1F1F1; padding: 3px; }
 .advads-conditions-postids-list .remove { margin-right: 1em; font-size: .9em; }
 .post-type-advanced_ads #advads-ad-content-plain {
@@ -52,6 +59,13 @@
 .post-type-advanced_ads #advanced-ads-ad-parameters-size p { float: left; margin: 0 1em 0 0; font-weight: bold; }
 .post-type-advanced_ads #advanced-ads-ad-parameters-size label + label { margin-left: 1em; }
 .post-type-advanced_ads #advanced-ads-ad-parameters-size input { width: 4em; margin-left: .5em; }
+.post-type-advanced_ads #advanced-ad-output .label { display: inline-block; width: 5em; font-weight: bold; }
+.post-type-advanced_ads #advanced-ad-output-position { line-height: 60px; }
+.post-type-advanced_ads #advanced-ad-output-position:after { content: ' '; clear: both; float: none; display: block;}
+.post-type-advanced_ads #advanced-ad-output-position label + label { margin-left: 1em; }
+.post-type-advanced_ads #advanced-ad-output-position img { border: 1px solid #ddd; padding: 2px; }
+.post-type-advanced_ads #advanced-ad-output-margin input[type="number"] { width: 4em; }
+.post-type-advanced_ads #advanced-ad-output-margin label + label { margin-left: 1em; }
 
 .advads-debug-output legend { text-decoration: underline; cursor: pointer; }
 
@@ -75,6 +89,9 @@
 .advads-placements-table th { margin: 0; padding: 10px; text-align: left; vertical-align: top; }
 .advads-placements-table td { margin: 0; padding: 10px; text-align: left; vertical-align: top; }
 .advads-placements-table-options { text-align: right; }
+.advads-placement-options input, .advads-placement-options select { background: transparent; }
+.advads-placements-table-options input[type="number"] { width: 3em; }
+
 /**
  GENERAL ELEMENTS
 */
