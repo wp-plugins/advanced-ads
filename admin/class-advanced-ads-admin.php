@@ -108,6 +108,9 @@ class Advanced_Ads_Admin {
         add_action( 'add_meta_boxes', array( $this, 'add_post_meta_box' ) );
         add_action( 'save_post', array( $this, 'save_post_meta_box' ) );
 
+        // register dashboard widget
+        add_action('wp_dashboard_setup', array($this, 'add_dashboard_widget'));
+
     }
 
     /**
@@ -837,5 +840,95 @@ class Advanced_Ads_Admin {
         update_post_meta( $post_id, '_advads_ad_settings', $_data );
     }
 
+    /**
+     * add dashboard widget with ad stats and additional information
+     *
+     * @since 1.3.12
+     */
+    public function add_dashboard_widget(){
+        // wp_add_dashboard_widget('advads_dashboard_widget', __('Ads Dashboard', ADVADS_SLUG), array($this, 'dashboard_widget_function'));
+        add_meta_box('advads_dashboard_widget', __('Ads Dashboard', ADVADS_SLUG), array($this, 'dashboard_widget_function'), 'dashboard', 'side', 'high');
+    }
+
+    /**
+     * display widget functions
+     */
+    public function dashboard_widget_function($post, $callback_args){
+        // load ad optimization feed
+        $feed = array(
+            'link'         => 'http://webgilde.com/en/ad-optimization/',
+            'url'          => 'http://webgilde.com/en/ad-optimization/feed/',
+            'title'        => __('Tutorials and News'),
+            'items'        => 3,
+            'show_summary' => 0,
+            'show_author'  => 0,
+            'show_date'    => 0,
+        );
+
+        // get number of ads
+        $recent_ads = Advanced_Ads::get_ads();
+        echo '<p>';
+        printf(__('%d ads – <a href="%s">manage</a> – <a href="%s">new</a>', ADVADS_SLUG),
+            count($recent_ads),
+            'edit.php?post_type='. Advanced_Ads::POST_TYPE_SLUG,
+            'post-new.php?post_type='. Advanced_Ads::POST_TYPE_SLUG);
+        echo '</p>';
+
+        // get and display plugin version
+        $advads_plugin_data = get_plugin_data(ADVADS_BASE_PATH . 'advanced-ads.php');
+        if(isset($advads_plugin_data['Version'])){
+            $version = $advads_plugin_data['Version'];
+            echo '<p><a href="http://wpadvancedads.com" target="_blank" title="'.
+                    __('plugin manual and homepage', ADVADS_SLUG).'">Advanced Ads</a> '. $version .'</p>';
+        }
+
+        // rss feed
+	echo '<h4>' . __('From the ad optimization universe', ADVADS_SLUG) . '</h4>';
+        // $this->dashboard_widget_function_output('advads_dashboard_widget', $feed);
+        $this->dashboard_cached_rss_widget( 'advads_dashboard_widget', array($this, 'dashboard_widget_function_output'), array('advads' => $feed) );
+    }
+
+    /**
+     * checks to see if there are feed urls in transient cache; if not, load them
+     * built using a lot of https://developer.wordpress.org/reference/functions/wp_dashboard_cached_rss_widget/
+     *
+     * @since 1.3.12
+     * @param string $widget_id
+     * @param callback $callback
+     * @param array $check_urls RSS feeds
+     * @return bool False on failure. True on success.
+     */
+    function dashboard_cached_rss_widget( $widget_id, $callback, $feed = array() ) {
+        if ( empty($feed) ) {
+            return;
+        }
+
+        $cache_key = 'dash_' . md5( $widget_id );
+        if ( false !== ( $output = get_transient( $cache_key ) ) ) {
+            echo $output;
+            return true;
+        }
+
+        if ( $callback && is_callable( $callback ) ) {
+            ob_start();
+            call_user_func_array( $callback, $feed );
+            set_transient( $cache_key, ob_get_flush(), 12 * HOUR_IN_SECONDS ); // Default lifetime in cache of 12 hours (same as the feeds)
+        }
+
+        return true;
+    }
+
+    /**
+     * create the rss output of the widget
+     *
+     * @param string $widget_id Widget ID.
+     * @param array  $feeds     Array of RSS feeds.
+     */
+    function dashboard_widget_function_output( $feed ) {
+
+	echo '<div class="rss-widget">';
+        wp_widget_rss_output( $feed['url'], $feed );
+        echo "</div>";
+    }
 
 }

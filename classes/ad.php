@@ -76,6 +76,11 @@ class Advads_Ad {
     static $options_meta_field = 'advanced_ads_ad_options';
 
     /**
+     * additional arguments set when ad is loaded, overwrites or extends options
+     */
+    public $args = array();
+
+    /**
      * multidimensional array contains information about the wrapper
      *  each possible html attribute is an array with possible multiple elements
      */
@@ -85,11 +90,13 @@ class Advads_Ad {
      * init ad object
      *
      * @param int $id id of the ad (= post id)
+     * @param arr $args additional arguments
      */
-    public function __construct($id) {
+    public function __construct($id, $args = array()) {
         global $advanced_ads_ad_conditions;
         $id = absint($id);
         $this->id = $id;
+        $this->args = is_array($args) ? $args : array();
 
         if(!empty($id)) $this->load($id);
 
@@ -169,8 +176,13 @@ class Advads_Ad {
     public function options($field = ''){
         // retrieve options, if not given yet
         if ($this->options === array()) {
+            // load arguments given on ad load
+            $this->options = $this->args;
             // get_post_meta() may return false
-            $this->options = get_post_meta($this->id, self::$options_meta_field, true);
+            $meta = get_post_meta($this->id, self::$options_meta_field, true);
+            if($meta){
+                $this->options = $this->options + $meta;
+            }
         }
 
         // return specific option
@@ -841,6 +853,10 @@ class Advads_Ad {
             }
         }
 
+        if(!empty($this->output['class']) && is_string($this->output['class']) && '' != trim($this->output['class'])) {
+            $wrapper['class'] = sanitize_key($this->output['class']);
+        }
+
         if(!empty($this->output['margin']['top'])) {
             $wrapper['style']['margin-top'] = intval($this->output['margin']['top']) . 'px';
         }
@@ -853,8 +869,6 @@ class Advads_Ad {
         if(!empty($this->output['margin']['left'])) {
             $wrapper['style']['margin-left'] = intval($this->output['margin']['left']) . 'px';
         }
-
-      //  print_r($wrapper);
 
         return $wrapper;
     }

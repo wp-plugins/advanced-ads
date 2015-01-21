@@ -196,13 +196,17 @@ class Advads_Ad_Placements {
                 $advads = Advanced_Ads::get_instance();
                 $advads->current_ads[] = array('type' => 'placement', 'id' => $id, 'title' => $placements[$id]['name']);
 
-                return get_ad($_item_id);
+                // create class from placement id
+                $class = 'advads-' . $id;
+                return get_ad($_item_id, array('output' => array('class' => $class)));
+
             } elseif ($_item[0] == 'group') {
                 // add the placement to the global output array
                 $advads = Advanced_Ads::get_instance();
                 $advads->current_ads[] = array('type' => 'placement', 'id' => $id, 'title' => $placements[$id]['name']);
 
                 return get_ad_group($_item_id);
+
             }
         } else {
             return;

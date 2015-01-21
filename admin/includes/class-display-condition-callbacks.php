@@ -89,7 +89,11 @@ class AdvAds_Display_Condition_Callbacks {
         <table><?php
         foreach($taxonomies as $_tax):
             if($_tax->name === 'advanced_ads_groups') continue; // exclude adv ads groups
-            $terms = get_terms($_tax->name, array());
+
+            // limit the number of terms so many terms don’t break the admin page
+            $max_terms = absint(apply_filters('advanced-ads-admin-max-terms', 200));
+            $terms = get_terms($_tax->name, array('number' => $max_terms));
+
             if ( !empty( $terms ) && !is_wp_error( $terms ) ):
             ?><tr><th><?php echo $_tax->label; ?></th><?php
             ?><td><?php
@@ -118,7 +122,11 @@ class AdvAds_Display_Condition_Callbacks {
         <table><?php
         foreach($taxonomies as $_tax):
             if($_tax->name === 'advanced_ads_groups') continue; // exclude adv ads groups
-            $terms = get_terms($_tax->name, array());
+
+            // limit the number of terms so many terms don’t break the admin page
+            $max_terms = absint(apply_filters('advanced-ads-admin-max-terms', 200));
+            $terms = get_terms($_tax->name, array('number' => $max_terms));
+
             if ( !empty( $terms ) && !is_wp_error( $terms ) ):
             ?><tr><th><?php echo $_tax->label; ?></th><?php
             ?><td><?php
@@ -168,7 +176,11 @@ class AdvAds_Display_Condition_Callbacks {
                 <table><?php
         foreach($taxonomies as $_tax):
             if($_tax->name === 'advanced_ads_groups') continue; // exclude adv ads groups
-            $terms = get_terms($_tax->name, array());
+
+            // limit the number of terms so many terms don’t break the admin page
+            $max_terms = absint(apply_filters('advanced-ads-admin-max-terms', 200));
+            $terms = get_terms($_tax->name, array('number' => $max_terms));
+
             if ( !empty( $terms ) && !is_wp_error( $terms ) ):
             ?><tr><th><?php echo $_tax->label; ?></th><?php
             ?><td><?php
@@ -197,7 +209,11 @@ class AdvAds_Display_Condition_Callbacks {
         <table><?php
         foreach($taxonomies as $_tax):
             if($_tax->name === 'advanced_ads_groups') continue; // exclude adv ads groups
-            $terms = get_terms($_tax->name, array());
+
+            // limit the number of terms so many terms don’t break the admin page
+            $max_terms = absint(apply_filters('advanced-ads-admin-max-terms', 200));
+            $terms = get_terms($_tax->name, array('number' => $max_terms));
+
             if ( !empty( $terms ) && !is_wp_error( $terms ) ):
             ?><tr><th><?php echo $_tax->label; ?></th><?php
             ?><td><?php

@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.1.
-Stable tag: 1.3.11
+Stable tag: 1.3.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,6 +51,12 @@ deliver ads based on conditions like
 * posts by category, tags, taxonomies
 * archive pages by category, tags, taxonomies
 * special page types like 404, attachment and front page
+
+global conditions
+
+* disable all ads in the frontend (e.g. when your ad network breaks down)
+* disable all ads on 404 pages (e.g. AdSense doesn’t allow that)
+* disable all ads on non-singular pages with a single click
 
 = visitor conditions =
 
@@ -147,6 +153,14 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 3. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.3.12 =
+
+* limited number of terms on ad edit screen to 200, introduced _advanced-ads-admin-max-terms_ filter
+* wrapped placement ads in a container with a unique id and a class to target them with css and js
+* added dashboard widget with plugin version and news about ad optimization
+
+Good to know: [What you didn’t know about the AdSense Program Policies](http://webgilde.com/en/adsense-program-policies/).
 
 = 1.3.11 =
 

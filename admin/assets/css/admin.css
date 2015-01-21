@@ -1,4 +1,10 @@
 /**
+* DASHBOARD WIDGET
+*/
+#advads_dashboard_widget a.rsswidget { font-weight: 400; }
+#advads_dashboard_widget .rss-widget ul li { margin-bottom: 6px; }
+
+/**
 * OVERVIEW PAGE
 */
 
@@ -42,6 +48,7 @@
 .post-type-advanced_ads .advads-conditions-all { display: block; }
 .post-type-advanced_ads .advads-conditions-single { margin-bottom: 10px; padding: 10px; }
 .post-type-advanced_ads .advads-conditions-single.disabled { display: none; opacity: .5; }
+.post-type-advanced_ads .advads-conditions-single th { vertical-align: top; }
 .advads-conditions-postids-list li { background: #F1F1F1; padding: 3px; }
 .advads-conditions-postids-list .remove { margin-right: 1em; font-size: .9em; }
 .post-type-advanced_ads #advads-ad-content-plain {
