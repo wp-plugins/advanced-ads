@@ -181,7 +181,7 @@ class Advads_Ad {
             // get_post_meta() may return false
             $meta = get_post_meta($this->id, self::$options_meta_field, true);
             if($meta){
-                $this->options = $this->options + $meta;
+                $this->options = array_merge_recursive($this->options, $meta);
             }
         }
 
