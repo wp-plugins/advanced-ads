@@ -76,6 +76,11 @@ class Advads_Ad {
     static $options_meta_field = 'advanced_ads_ad_options';
 
     /**
+     * additional arguments set when ad is loaded, overwrites or extends options
+     */
+    public $args = array();
+
+    /**
      * multidimensional array contains information about the wrapper
      *  each possible html attribute is an array with possible multiple elements
      */
@@ -85,11 +90,13 @@ class Advads_Ad {
      * init ad object
      *
      * @param int $id id of the ad (= post id)
+     * @param arr $args additional arguments
      */
-    public function __construct($id) {
+    public function __construct($id, $args = array()) {
         global $advanced_ads_ad_conditions;
         $id = absint($id);
         $this->id = $id;
+        $this->args = is_array($args) ? $args : array();
 
         if(!empty($id)) $this->load($id);
 
@@ -131,6 +138,7 @@ class Advads_Ad {
         }
 
         $this->type = $this->options('type');
+        $this->title = $_data->post_title;
         /* load ad type object */
         $types = Advanced_Ads::get_instance()->ad_types;
         if(isset($types[$this->type])){
@@ -141,7 +149,9 @@ class Advads_Ad {
         $this->width = $this->options('width');
         $this->height = $this->options('height');
         $this->conditions = $this->options('conditions');
+        $this->output = $this->options('output');
         $this->status = $_data->post_status;
+        $this->wrapper = $this->load_wrapper_options();
 
         // load content based on ad type
         $this->content = $this->type_obj->load_content($_data);
@@ -166,8 +176,13 @@ class Advads_Ad {
     public function options($field = ''){
         // retrieve options, if not given yet
         if ($this->options === array()) {
+            // load arguments given on ad load
+            $this->options = $this->args;
             // get_post_meta() may return false
-            $this->options = get_post_meta($this->id, self::$options_meta_field, true);
+            $meta = get_post_meta($this->id, self::$options_meta_field, true);
+            if($meta){
+                $this->options = array_merge_recursive($this->options, $meta);
+            }
         }
 
         // return specific option
@@ -212,6 +227,11 @@ class Advads_Ad {
         if(!$this->is_ad) return '';
 
         $output = $this->prepare_frontend_output();
+
+        // add the ad to the global output array
+        $advads = Advanced_Ads::get_instance();
+        $advads->current_ads[] = array('type' => 'ad', 'id' => $this->id, 'title' => $this->title);
+
         return $output;
     }
 
@@ -225,6 +245,9 @@ class Advads_Ad {
 
         $options = Advanced_Ads::get_instance()->options();
         $see_ads_capability = (!empty($options['hide-for-user-role'])) ? $options['hide-for-user-role'] : 0;
+
+        // check global constant if ads are enabled or disabled
+        if(defined('ADVADS_ADS_DISABLED')) { return false; }
 
         // don’t display ads that are not published or private for users not logged in
         if($this->status !== 'publish' && !($this->status === 'private' && !is_user_logged_in())){
@@ -298,15 +321,19 @@ class Advads_Ad {
                 case 'categoryids' :
                     // included
                     if(is_singular() && empty($_cond_value['all'])){
+                        // get all taxonomies of the post
+                        $term_ids = $this->get_object_terms($post->ID);
+
                         if(!empty($_cond_value['include'])){
                             if(is_string($_cond_value['include'])){
                                 $category_ids = explode(',', $_cond_value['include']);
                             } else {
                                 $category_ids = $_cond_value['include'];
                             }
+
                             // check if currently in a post (not post page, but also posts in loops)
                             if(is_array($category_ids) && isset($post->ID)
-                                && !in_category($category_ids, $post)) {
+                                && !count(array_intersect($category_ids, $term_ids))) { // is there any taxonomy the same?
                                     return false;
                             }
                         }
@@ -319,7 +346,7 @@ class Advads_Ad {
                             }
                             // check if currently in a post (not post page, but also posts in loops)
                             if(is_array($category_ids) && isset($post->ID)
-                                && in_category($category_ids, $post) ) {
+                                && count(array_intersect($category_ids, $term_ids))) { // is there any taxonomy the same
                                     // being only in one excluded category is enough to not display the ad
                                     return false;
                             }
@@ -424,6 +451,42 @@ class Advads_Ad {
         }
 
         return true;
+    }
+
+    /**
+     * get all terms of a specific post or post type
+     *
+     * @param int $post_id id of the post
+     * @return arr $out ids of terms this post belongs to
+     */
+    private function get_object_terms($post_id = 0){
+
+        $post_id = absint($post_id);
+        if(!$post_id) return array();
+
+        // get post by post id
+        $post = get_post( $post_id );
+
+        // get post type by post
+        $post_type = $post->post_type;
+
+        // get post type taxonomies
+        $taxonomies = get_object_taxonomies( $post_type, 'objects' );
+
+        $term_ids = array();
+        foreach ( $taxonomies as $taxonomy_slug => $taxonomy ){
+
+            // get the terms related to post
+            $terms = get_the_terms( $post->ID, $taxonomy_slug );
+
+            if ( !empty( $terms ) ) {
+                foreach ( $terms as $term ) {
+                    $term_ids[] = $term->term_id;
+                }
+            }
+        }
+
+        return $term_ids;
     }
 
     /**
@@ -535,6 +598,11 @@ class Advads_Ad {
 
         // build wrapper around the ad
         $output = $this->add_wrapper($output);
+
+        // add a clearfix, if set
+        if(isset($this->output['clearfix']) && $this->output['clearfix']){
+            $output .= '<br style="clear: both; display: block; float: none;"/>';
+        }
 
         // apply a custom filter by ad type
         $output = apply_filters('advanced-ads-ad-output', $output, $this);
@@ -651,7 +719,6 @@ class Advads_Ad {
 
         $plugin = Advanced_Ads::get_instance();
         $ads_by_conditions = $plugin->get_ads_by_conditions_array();
-        $plugin_slug = $plugin->get_plugin_slug();
 
         // remove current ad from general ad condition array
         $ads_by_conditions = $this->remove_ad_from_general_ad_conditions($this->id, $ads_by_conditions);
@@ -661,20 +728,28 @@ class Advads_Ad {
         // iterate through the ads display condition
         foreach($conditions as $_condition_key => $_condition){
             if(!isset($advanced_ads_ad_conditions[$_condition_key]['type'])) {
-                $plugin->log(sprintf(__('A "%s" display condition does not exist', $plugin_slug), $_condition_key));
+                $plugin->log(sprintf(__('A "%s" display condition does not exist', ADVADS_SLUG), $_condition_key));
                 return;
             }
             // add conditions based on type
             switch($advanced_ads_ad_conditions[$_condition_key]['type']){
                 case 'idfield' :
                     if(isset($_condition['include']) && $_condition['include'] != ''){
-                        $_ids = explode(',', $_condition['include']);
+                        if(is_array($_condition['include'])){
+                            $_ids = $_condition['include'];
+                        } else {
+                            $_ids = explode(',', $_condition['include']);
+                        }
                         if(is_array($_ids)) foreach($_ids as $_id){
                             $ads_by_conditions[$_condition_key][$_id]['include'][] = $this->id;
                         }
                     }
                     if(isset($_condition['exclude']) && $_condition['exclude'] != ''){
-                        $_ids = explode(',', $_condition['exclude']);
+                        if(is_array($_condition['exclude'])){
+                            $_ids = $_condition['exclude'];
+                        } else {
+                            $_ids = explode(',', $_condition['exclude']);
+                        }
                         if(is_array($_ids)) foreach($_ids as $_id){
                             $ads_by_conditions[$_condition_key][$_id]['exclude'][] = $this->id;
                         }
@@ -682,13 +757,21 @@ class Advads_Ad {
                     break;
                 case 'textvalues' :
                     if(isset($_condition['include']) && $_condition['include'] != ''){
-                        $_ids = explode(',', $_condition['include']);
+                        if(is_array($_condition['include'])){
+                            $_ids = $_condition['include'];
+                        } else {
+                            $_ids = explode(',', $_condition['include']);
+                        }
                         if(is_array($_ids)) foreach($_ids as $_id){
                             $ads_by_conditions[$_condition_key][$_id]['include'][] = $this->id;
                         }
                     }
                     if(isset($_condition['exclude']) && $_condition['exclude'] != ''){
-                        $_ids = explode(',', $_condition['exclude']);
+                        if(is_array($_condition['exclude'])){
+                            $_ids = $_condition['exclude'];
+                        } else {
+                            $_ids = explode(',', $_condition['exclude']);
+                        }
                         if(is_array($_ids)) foreach($_ids as $_id){
                             $ads_by_conditions[$_condition_key][$_id]['exclude'][] = $this->id;
                         }
@@ -700,6 +783,8 @@ class Advads_Ad {
                     elseif($_condition == 0)
                         $ads_by_conditions[$_condition_key]['exclude'][] = $this->id;
                     break;
+                case 'other' :
+                    $ads_by_conditions[$_condition_key][$this->id] = $_condition;
             } // switch
         } // forearch
 
@@ -738,6 +823,54 @@ class Advads_Ad {
         }
 
         return $conditions;
+    }
+
+    /**
+     * load wrapper options set with the ad
+     *
+     * @since 1.3
+     * @return arr $wrapper options array ready to be use in add_wrapper() function
+     */
+    protected function load_wrapper_options(){
+        $wrapper = array();
+
+      //  print_r($this->output);
+
+        if(!empty($this->output['position'])) {
+            switch($this->output['position']) {
+                case 'left' :
+                    $wrapper['style']['float'] = 'left';
+                    break;
+                case 'right' :
+                    $wrapper['style']['float'] = 'right';
+                    break;
+                case 'center' :
+                    $wrapper['style']['text-align'] = 'center';
+                    break;
+                case 'clearfix' :
+                    $wrapper['style']['clear'] = 'both';
+                    break;
+            }
+        }
+
+        if(!empty($this->output['class']) && is_string($this->output['class']) && '' != trim($this->output['class'])) {
+            $wrapper['class'] = sanitize_key($this->output['class']);
+        }
+
+        if(!empty($this->output['margin']['top'])) {
+            $wrapper['style']['margin-top'] = intval($this->output['margin']['top']) . 'px';
+        }
+        if(!empty($this->output['margin']['right'])) {
+            $wrapper['style']['margin-right'] = intval($this->output['margin']['right']) . 'px';
+        }
+        if(!empty($this->output['margin']['bottom'])) {
+            $wrapper['style']['margin-bottom'] = intval($this->output['margin']['bottom']) . 'px';
+        }
+        if(!empty($this->output['margin']['left'])) {
+            $wrapper['style']['margin-left'] = intval($this->output['margin']['left']) . 'px';
+        }
+
+        return $wrapper;
     }
 
     /**
