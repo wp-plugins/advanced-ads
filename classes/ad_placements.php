@@ -198,7 +198,7 @@ class Advads_Ad_Placements {
 
                 // create class from placement id
                 $class = 'advads-' . $id;
-                return get_ad($_item_id, array('output' => array('class' => $class)));
+                return get_ad($_item_id, array('output' => array('class' => array($class))));
 
             } elseif ($_item[0] == 'group') {
                 // add the placement to the global output array

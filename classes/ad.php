@@ -853,8 +853,8 @@ class Advads_Ad {
             }
         }
 
-        if(!empty($this->output['class']) && is_string($this->output['class']) && '' != trim($this->output['class'])) {
-            $wrapper['class'] = sanitize_key($this->output['class']);
+        if(!empty($this->output['class']) && is_array($this->output['class'])) {
+            $wrapper['class'] = $this->output['class'];
         }
 
         if(!empty($this->output['margin']['top'])) {
