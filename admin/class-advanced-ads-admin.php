@@ -86,6 +86,7 @@ class Advanced_Ads_Admin {
         // on post/ad edit screen
         add_action('edit_form_after_title', array($this, 'edit_form_below_title'));
         add_action('admin_init', array($this, 'add_meta_boxes'));
+        add_action('post_submitbox_misc_actions', array($this, 'add_submit_box_meta'));
 
         // save ads post type
         add_action('save_post', array($this, 'save_ad'));
@@ -444,6 +445,27 @@ class Advanced_Ads_Admin {
     }
 
     /**
+     * add meta values below submit box
+     *
+     * @since 1.3.15
+     */
+    public function add_submit_box_meta(){
+        global $post, $wp_locale;
+
+        $ad = new Advads_Ad($post->ID);
+
+	$time_adj = current_time('timestamp');
+
+        $curr_day    = (!empty($ad->expiry_date)) ? date('d', $ad->expiry_date) : gmdate( 'd', $time_adj );
+        $curr_month  = (!empty($ad->expiry_date)) ? date('m', $ad->expiry_date) : gmdate( 'm', $time_adj );
+        $curr_year   = (!empty($ad->expiry_date)) ? date('Y', $ad->expiry_date) : gmdate( 'Y', $time_adj );
+
+        $enabled = (!empty($ad->expiry_date)) ? 1 : 0;
+
+        require_once(plugin_dir_path(__FILE__) . 'views/ad-submitbox-meta.php');
+    }
+
+    /**
      * load templates for all meta boxes
      *
      * @since 1.0.0
@@ -539,6 +561,15 @@ class Advanced_Ads_Admin {
             $ad->conditions = $_POST['advanced_ad']['conditions'];
         } else {
             $ad->conditions = array();
+        }
+        // prepare expiry date
+        if(isset($_POST['advanced_ad']['expiry_date']['enabled'])) {
+            $year   = absint($_POST['advanced_ad']['expiry_date']['year']);
+            $month  = absint($_POST['advanced_ad']['expiry_date']['month']);
+            $day    = absint($_POST['advanced_ad']['expiry_date']['day']);
+            $ad->expiry_date = mktime(0, 0, 0, $month, $day, $year);
+        } else {
+            $ad->expiry_date = 0;
         }
 
         $ad->save();

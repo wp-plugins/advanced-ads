@@ -152,6 +152,7 @@ class Advads_Ad {
         $this->output = $this->options('output');
         $this->status = $_data->post_status;
         $this->wrapper = $this->load_wrapper_options();
+        $this->expiry_date = $this->options('expiry_date');
 
         // load content based on ad type
         $this->content = $this->type_obj->load_content($_data);
@@ -259,7 +260,9 @@ class Advads_Ad {
             return false;
         }
 
-        if (!$this->can_display_by_conditions() || !$this->can_display_by_visitor()) {
+        if (!$this->can_display_by_conditions()
+                || !$this->can_display_by_visitor()
+                || !$this->can_display_by_expiry_date()) {
             return false;
         }
 
@@ -518,6 +521,29 @@ class Advads_Ad {
     }
 
     /**
+     * check expiry date
+     *
+     * @since 1.3.15
+     * @return bool $can_display true if can be displayed in frontend based on expiry date
+     */
+    public function can_display_by_expiry_date(){
+
+        if(empty($this->options['expiry_date'])) return true;
+
+        $expiry_date = absint($this->options('expiry_date'));
+
+        if($expiry_date == 0) return true;
+
+        // create blog specific timestamp
+        $blog_expiry_date = $expiry_date + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS );
+
+        // check blog time against current time
+        if($blog_expiry_date <= time()) return false;
+
+        return true;
+    }
+
+    /**
      * save an ad to the database
      * takes values from the current state
      */
@@ -541,6 +567,7 @@ class Advads_Ad {
         $options['width'] = $this->width;
         $options['height'] = $this->height;
         $options['conditions'] = $conditions;
+        $options['expiry_date'] = $this->expiry_date;
 
         // filter to manipulate options or add more to be saved
         $options = apply_filters('advanced-ads-save-options', $options, $this);

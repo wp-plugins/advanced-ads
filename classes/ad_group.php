@@ -182,6 +182,7 @@ class Advads_Ad_Group {
         $args = array(
             'post_type' => $this->post_type,
             'post_status' => 'publish',
+            'posts_per_page' => -1,
             'taxonomy' => $this->taxonomy,
             'term' => $this->slug,
             'orderby' => 'id'
