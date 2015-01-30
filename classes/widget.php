@@ -82,7 +82,7 @@ class Advads_Widget extends WP_Widget {
         $select = array();
 
         // load all ads
-        $ads = Advanced_Ads::get_ads();
+        $ads = Advanced_Ads::get_ads(array('orderby' => 'name', 'order' => 'ASC'));
         foreach($ads as $_ad){
             $select['ads']['ad_' . $_ad->ID] = $_ad->post_title;
         }
