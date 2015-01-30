@@ -452,6 +452,8 @@ class Advanced_Ads_Admin {
     public function add_submit_box_meta(){
         global $post, $wp_locale;
 
+        if($post->post_type !== Advanced_Ads::POST_TYPE_SLUG) return;
+
         $ad = new Advads_Ad($post->ID);
 
 	$time_adj = current_time('timestamp');
