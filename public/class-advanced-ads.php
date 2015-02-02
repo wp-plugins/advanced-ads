@@ -724,8 +724,10 @@ class Advanced_Ads {
      * @param str $content post content
      */
     public function inject_content($content = ''){
-        // run only on single pages
-        if(!is_singular(array('post', 'page'))) return $content;
+        // run only on single pages of public post types
+        $public_post_types = get_post_types(array('public' => true, 'publicly_queryable' => true), 'names', 'or');
+
+        if(!is_singular($public_post_types)) return $content;
 
         $placements = get_option('advads-ads-placements', array());
         foreach($placements as $_placement_id => $_placement){
