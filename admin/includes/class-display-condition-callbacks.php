@@ -89,7 +89,11 @@ class AdvAds_Display_Condition_Callbacks {
         <table><?php
         foreach($taxonomies as $_tax):
             if($_tax->name === 'advanced_ads_groups') continue; // exclude adv ads groups
-            $terms = get_terms($_tax->name, array());
+
+            // limit the number of terms so many terms don’t break the admin page
+            $max_terms = absint(apply_filters('advanced-ads-admin-max-terms', 200));
+            $terms = get_terms($_tax->name, array('number' => $max_terms));
+
             if ( !empty( $terms ) && !is_wp_error( $terms ) ):
             ?><tr><th><?php echo $_tax->label; ?></th><?php
             ?><td><?php
@@ -118,7 +122,11 @@ class AdvAds_Display_Condition_Callbacks {
         <table><?php
         foreach($taxonomies as $_tax):
             if($_tax->name === 'advanced_ads_groups') continue; // exclude adv ads groups
-            $terms = get_terms($_tax->name, array());
+
+            // limit the number of terms so many terms don’t break the admin page
+            $max_terms = absint(apply_filters('advanced-ads-admin-max-terms', 200));
+            $terms = get_terms($_tax->name, array('number' => $max_terms));
+
             if ( !empty( $terms ) && !is_wp_error( $terms ) ):
             ?><tr><th><?php echo $_tax->label; ?></th><?php
             ?><td><?php
@@ -164,11 +172,15 @@ class AdvAds_Display_Condition_Callbacks {
         _e('Display on all <strong>category archive pages</strong>.', ADVADS_SLUG); ?></label></h4><?php
         $taxonomies = get_taxonomies(array('public' => true, 'publicly_queryable' => true), 'objects', 'or');
         ?><div class="advads-conditions-single"><table>
-                <p class="description"><?php _e('Choose the terms from public categories, tags and other taxonomies on which’s archive page ads can appear', ADVADS_SLUG); ?></p>
+                <p class="description"><?php _e('Choose the terms from public categories, tags and other taxonomies on which\'s archive page ads can appear', ADVADS_SLUG); ?></p>
                 <table><?php
         foreach($taxonomies as $_tax):
             if($_tax->name === 'advanced_ads_groups') continue; // exclude adv ads groups
-            $terms = get_terms($_tax->name, array());
+
+            // limit the number of terms so many terms don’t break the admin page
+            $max_terms = absint(apply_filters('advanced-ads-admin-max-terms', 200));
+            $terms = get_terms($_tax->name, array('number' => $max_terms));
+
             if ( !empty( $terms ) && !is_wp_error( $terms ) ):
             ?><tr><th><?php echo $_tax->label; ?></th><?php
             ?><td><?php
@@ -193,11 +205,15 @@ class AdvAds_Display_Condition_Callbacks {
             $_excludes = array();
         }
 
-        ?><h5 class="header"><?php _e('Hide from here', ADVADS_SLUG); ?></h5><p class="description"><?php _e('Choose the terms from public categories, tags and other taxonomies on which’s archive pages ads are hidden.', ADVADS_SLUG); ?></p>
+        ?><h5 class="header"><?php _e('Hide from here', ADVADS_SLUG); ?></h5><p class="description"><?php _e('Choose the terms from public categories, tags and other taxonomies on which\'s archive pages ads are hidden.', ADVADS_SLUG); ?></p>
         <table><?php
         foreach($taxonomies as $_tax):
             if($_tax->name === 'advanced_ads_groups') continue; // exclude adv ads groups
-            $terms = get_terms($_tax->name, array());
+
+            // limit the number of terms so many terms don’t break the admin page
+            $max_terms = absint(apply_filters('advanced-ads-admin-max-terms', 200));
+            $terms = get_terms($_tax->name, array('number' => $max_terms));
+
             if ( !empty( $terms ) && !is_wp_error( $terms ) ):
             ?><tr><th><?php echo $_tax->label; ?></th><?php
             ?><td><?php
