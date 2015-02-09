@@ -86,9 +86,15 @@ class Advanced_Ads_Admin {
         // on post/ad edit screen
         add_action('edit_form_after_title', array($this, 'edit_form_below_title'));
         add_action('admin_init', array($this, 'add_meta_boxes'));
+        add_action('post_submitbox_misc_actions', array($this, 'add_submit_box_meta'));
 
         // save ads post type
         add_action('save_post', array($this, 'save_ad'));
+
+        // handling (ad) lists
+        add_filter('request', array($this, 'ad_list_request')); // order ads by title, not ID
+        add_filter('manage_advanced_ads_posts_columns', array($this, 'ad_list_columns_head')); // extra column
+        add_filter('manage_advanced_ads_posts_custom_column', array($this, 'ad_list_columns_content'), 10, 2); // extra column
 
         // settings handling
         add_action('admin_init', array($this, 'settings_init'));
@@ -99,6 +105,13 @@ class Advanced_Ads_Admin {
         // Add an action link pointing to the options page.
         $plugin_basename = plugin_basename(plugin_dir_path('__DIR__') . $this->plugin_slug . '.php');
         add_filter('plugin_action_links_' . $plugin_basename, array($this, 'add_action_links'));
+
+        // add meta box for post types edit pages
+        add_action( 'add_meta_boxes', array( $this, 'add_post_meta_box' ) );
+        add_action( 'save_post', array( $this, 'save_post_meta_box' ) );
+
+        // register dashboard widget
+        add_action('wp_dashboard_setup', array($this, 'add_dashboard_widget'));
 
     }
 
@@ -151,7 +164,7 @@ class Advanced_Ads_Admin {
         }
 
         wp_enqueue_script($this->plugin_slug . '-admin-script', plugins_url('assets/js/admin.js', __FILE__), array('jquery', 'jquery-ui-autocomplete'), Advanced_Ads::VERSION);
-        
+
         // just register this script for later inclusion on ad group list page
         wp_register_script('inline-edit-group-ads', plugins_url('assets/js/inline-edit-group-ads.js', __FILE__), array('jquery'), Advanced_Ads::VERSION);
 
@@ -164,24 +177,7 @@ class Advanced_Ads_Admin {
     */
     public function admin_notices()
     {
-
-        // display notice in case there are still old ad injections
-        $old_injections = get_option('advads-ads-injections', array());
-
-        // display ad before the content
-        if(isset($old_injections) && count($old_injections) > 0){
-            $_injection_ids = array();
-            foreach($old_injections as $_inj){
-                $_injection_ids = array_merge($_injection_ids, $_inj);
-            }
-            $ad_links = array();
-            foreach($_injection_ids as $_inj_id){
-                $ad_links[] = '<a href="' . get_edit_post_link($_inj_id) . '">'.$_inj_id.'</a>';
-            }
-        ?>
-            <div class="error"><p><?php printf(__('Advanced Ads Update: Auto injections are now managed through placements. Please convert these ads with auto injections: %s', ADVADS_SLUG), implode(', ', $ad_links));?></p></div>
-        <?php
-        }
+        // removed ad injection notice in version 1.3.18
     }
 
     /**
@@ -193,27 +189,27 @@ class Advanced_Ads_Admin {
 
         // add main menu item with overview page
         add_menu_page(
-            __('Overview', $this->plugin_slug), __('Advanced Ads', $this->plugin_slug), 'manage_options', $this->plugin_slug, array($this, 'display_overview_page'), '', '58.74'
+            __('Overview', ADVADS_SLUG), __('Advanced Ads', ADVADS_SLUG), 'manage_options', $this->plugin_slug, array($this, 'display_overview_page'), 'dashicons-chart-line', '58.74'
         );
 
         add_submenu_page(
-            $this->plugin_slug, __('Ads', $this->plugin_slug), __('Ads', $this->plugin_slug), 'manage_options', 'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG
+            $this->plugin_slug, __('Ads', ADVADS_SLUG), __('Ads', ADVADS_SLUG), 'manage_options', 'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG
         );
 
         $this->ad_group_hook_suffix = add_submenu_page(
-            $this->plugin_slug, __('Ad Groups', $this->plugin_slug), __('Groups', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-groups', array($this, 'ad_group_admin_page')
+            $this->plugin_slug, __('Ad Groups', ADVADS_SLUG), __('Groups', ADVADS_SLUG), 'manage_options', $this->plugin_slug . '-groups', array($this, 'ad_group_admin_page')
         );
 
         // add placements page
         add_submenu_page(
-            $this->plugin_slug, __('Ad Placements', $this->plugin_slug), __('Placements', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-placements', array($this, 'display_placements_page')
+            $this->plugin_slug, __('Ad Placements', ADVADS_SLUG), __('Placements', ADVADS_SLUG), 'manage_options', $this->plugin_slug . '-placements', array($this, 'display_placements_page')
         );
         // add settings page
         $this->plugin_screen_hook_suffix = add_submenu_page(
-            $this->plugin_slug, __('Advanced Ads Settings', $this->plugin_slug), __('Settings', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-settings', array($this, 'display_plugin_settings_page')
+            $this->plugin_slug, __('Advanced Ads Settings', ADVADS_SLUG), __('Settings', ADVADS_SLUG), 'manage_options', $this->plugin_slug . '-settings', array($this, 'display_plugin_settings_page')
         );
         add_submenu_page(
-            null, __('Advanced Ads Debugging', $this->plugin_slug), __('Debug', $this->plugin_slug), 'manage_options', $this->plugin_slug . '-debug', array($this, 'display_plugin_debug_page')
+            null, __('Advanced Ads Debugging', ADVADS_SLUG), __('Debug', ADVADS_SLUG), 'manage_options', $this->plugin_slug . '-debug', array($this, 'display_plugin_debug_page')
         );
     }
 
@@ -301,7 +297,7 @@ class Advanced_Ads_Admin {
             check_admin_referer('update-group_' . $group_id);
 
             if (!current_user_can($tax->cap->edit_terms))
-                wp_die(__('Cheatin&#8217; uh?'));
+                wp_die(__('Sorry, you are not allowed to access this feature.', ADVADS_SLUG));
 
             // handle new groups
             if ($group_id == 0) {
@@ -314,7 +310,7 @@ class Advanced_Ads_Admin {
             } else {
                 $tag = get_term($group_id, $taxonomy);
                 if (!$tag)
-                    wp_die(__('You attempted to edit an item that doesn&#8217;t exist. Perhaps it was deleted?'));
+                    wp_die(__('You attempted to edit an ad group that doesn&#8217;t exist. Perhaps it was deleted?', ADVADS_SLUG));
 
                 $ret = wp_update_term($group_id, $taxonomy, $_POST);
                 if ($ret && !is_wp_error($ret))
@@ -328,7 +324,7 @@ class Advanced_Ads_Admin {
             check_admin_referer('delete-tag_' . $group_id);
 
             if (!current_user_can($tax->cap->delete_terms))
-                wp_die(__('Cheatin&#8217; uh?'));
+                wp_die(__('Sorry, you are not allowed to access this feature.', ADVADS_SLUG));
 
             wp_delete_term($group_id, $taxonomy);
 
@@ -388,7 +384,7 @@ class Advanced_Ads_Admin {
 
         return array_merge(
                 array(
-            'settings' => '<a href="' . admin_url('edit.php?post_type=advanced_ads&page=advanced-ads-settings') . '">' . __('Settings', $this->plugin_slug) . '</a>'
+            'settings' => '<a href="' . admin_url('edit.php?post_type=advanced_ads&page=advanced-ads-settings') . '">' . __('Settings', ADVADS_SLUG) . '</a>'
                 ), $links
         );
     }
@@ -403,6 +399,8 @@ class Advanced_Ads_Admin {
         if (!isset($post->post_type) || $post->post_type != $this->post_type) {
             return;
         }
+        $ad = new Advads_Ad($post->ID);
+        
         require_once('views/ad_info.php');
     }
 
@@ -413,20 +411,43 @@ class Advanced_Ads_Admin {
      */
     public function add_meta_boxes() {
         add_meta_box(
-                'ad-main-box', __('Ad Type', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+                'ad-main-box', __('Ad Type', ADVADS_SLUG), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
         add_meta_box(
-                'ad-parameters-box', __('Ad Parameters', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+                'ad-parameters-box', __('Ad Parameters', ADVADS_SLUG), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
         add_meta_box(
-                'ad-display-box', __('Display Conditions', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+                'ad-output-box', __('Layout / Output', ADVADS_SLUG), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
         add_meta_box(
-                'ad-visitor-box', __('Visitor Conditions', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+                'ad-display-box', __('Display Conditions', ADVADS_SLUG), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
         add_meta_box(
-                'ad-inject-box', __('Auto injection', $this->plugin_slug), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+                'ad-visitor-box', __('Visitor Conditions', ADVADS_SLUG), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
+    }
+
+    /**
+     * add meta values below submit box
+     *
+     * @since 1.3.15
+     */
+    public function add_submit_box_meta(){
+        global $post, $wp_locale;
+
+        if($post->post_type !== Advanced_Ads::POST_TYPE_SLUG) return;
+
+        $ad = new Advads_Ad($post->ID);
+
+	$time_adj = current_time('timestamp');
+
+        $curr_day    = (!empty($ad->expiry_date)) ? date('d', $ad->expiry_date) : gmdate( 'd', $time_adj );
+        $curr_month  = (!empty($ad->expiry_date)) ? date('m', $ad->expiry_date) : gmdate( 'm', $time_adj );
+        $curr_year   = (!empty($ad->expiry_date)) ? date('Y', $ad->expiry_date) : gmdate( 'Y', $time_adj );
+
+        $enabled = (!empty($ad->expiry_date)) ? 1 : 0;
+
+        require_once(plugin_dir_path(__FILE__) . 'views/ad-submitbox-meta.php');
     }
 
     /**
@@ -447,14 +468,14 @@ class Advanced_Ads_Admin {
             case 'ad-parameters-box':
                 $view = 'ad-parameters-metabox.php';
                 break;
+            case 'ad-output-box':
+                $view = 'ad-output-metabox.php';
+                break;
             case 'ad-display-box':
                 $view = 'ad-display-metabox.php';
                 break;
             case 'ad-visitor-box':
                 $view = 'ad-visitor-metabox.php';
-                break;
-            case 'ad-inject-box':
-                $view = 'ad-inject-metabox.php';
                 break;
         }
 
@@ -490,15 +511,15 @@ class Advanced_Ads_Admin {
             return;
 
         $ad->type = $_POST['advanced_ad']['type'];
+        if(isset($_POST['advanced_ad']['output'])) {
+            $ad->set_option('output', $_POST['advanced_ad']['output']);
+        } else {
+            $ad->set_option('output', array());
+        }
         if(isset($_POST['advanced_ad']['visitor'])) {
             $ad->set_option('visitor', $_POST['advanced_ad']['visitor']);
         } else {
             $ad->set_option('visitor', array());
-        }
-        if(isset($_POST['advanced_ad']['injection'])) {
-            $ad->set_option('injection', $_POST['advanced_ad']['injection']);
-        } else {
-            $ad->set_option('injection', array());
         }
         // save size
         $ad->width = 0;
@@ -510,15 +531,30 @@ class Advanced_Ads_Admin {
             $ad->height = absint($_POST['advanced_ad']['height']);
         }
 
+        if(!empty($_POST['advanced_ad']['description']))
+            $ad->description = esc_textarea($_POST['advanced_ad']['description']);
+        else $ad->description = '';
+
         if(!empty($_POST['advanced_ad']['content']))
             $ad->content = $_POST['advanced_ad']['content'];
         else $ad->content = '';
-        $ad->conditions = $_POST['advanced_ad']['conditions'];
+
+        if(!empty($_POST['advanced_ad']['conditions'])){
+            $ad->conditions = $_POST['advanced_ad']['conditions'];
+        } else {
+            $ad->conditions = array();
+        }
+        // prepare expiry date
+        if(isset($_POST['advanced_ad']['expiry_date']['enabled'])) {
+            $year   = absint($_POST['advanced_ad']['expiry_date']['year']);
+            $month  = absint($_POST['advanced_ad']['expiry_date']['month']);
+            $day    = absint($_POST['advanced_ad']['expiry_date']['day']);
+            $ad->expiry_date = mktime(0, 0, 0, $month, $day, $year);
+        } else {
+            $ad->expiry_date = 0;
+        }
 
         $ad->save();
-
-        // update global ad information
-        $this->update_global_injection_array();
     }
 
     /**
@@ -544,7 +580,7 @@ class Advanced_Ads_Admin {
         $hook = $this->plugin_screen_hook_suffix;
 
         // register settings
- 	register_setting($hook, 'advancedads');
+ 	register_setting($hook, ADVADS_SLUG);
 
         // add new section
  	add_settings_section(
@@ -554,6 +590,14 @@ class Advanced_Ads_Admin {
 		$hook
 	);
 
+ 	// add setting fields to disable ads
+ 	add_settings_field(
+		'disable-ads',
+		__('Disable ads', ADVADS_SLUG),
+		array($this, 'render_settings_disable_ads'),
+		$hook,
+		'advanced_ads_setting_section'
+	);
  	// add setting fields for user role
  	add_settings_field(
 		'hide-for-user-role',
@@ -582,6 +626,26 @@ class Advanced_Ads_Admin {
     }
 
     /**
+     * options to disable ads
+     *
+     * @since 1.3.11
+     */
+    public function render_settings_disable_ads(){
+        $options = Advanced_Ads::get_instance()->options();
+
+        // set the variables
+        $disable_all = isset($options['disabled-ads']['all']) ? 1 : 0;
+        $disable_404 = isset($options['disabled-ads']['404']) ? 1 : 0;
+        $disable_archives = isset($options['disabled-ads']['archives']) ? 1 : 0;
+
+        // load the template
+        $view = plugin_dir_path(__FILE__) . 'views/settings_disable_ads.php';
+        if (is_file($view)) {
+            require( $view );
+        }
+    }
+
+    /**
      * render setting to hide ads from logged in users
      *
      * @since 1.1.1
@@ -589,6 +653,7 @@ class Advanced_Ads_Admin {
     public function render_settings_hide_for_users(){
         $options = Advanced_Ads::get_instance()->options();
         $current_capability_role = isset($options['hide-for-user-role']) ? $options['hide-for-user-role'] : 0;
+
 
         $capability_roles = array(
             '' => __('(display to all)', ADVADS_SLUG),
@@ -598,7 +663,7 @@ class Advanced_Ads_Admin {
             'edit_pages' => __('Editor', ADVADS_SLUG),
             'activate_plugins' => __('Admin', ADVADS_SLUG),
         );
-        echo '<select name="advancedads[hide-for-user-role]">';
+        echo '<select name="'.ADVADS_SLUG.'[hide-for-user-role]">';
         foreach($capability_roles as $_capability => $_role) {
             echo '<option value="'.$_capability.'" '.selected($_capability, $current_capability_role, false).'>'.$_role.'</option>';
         }
@@ -616,38 +681,253 @@ class Advanced_Ads_Admin {
         $options = Advanced_Ads::get_instance()->options();
         $checked = (!empty($options['advanced-js'])) ? 1 : 0;
 
-        echo '<input id="advanced-ads-advanced-js" type="checkbox" value="1" name="advancedads[advanced-js]" '.checked($checked, 1, false).'>';
+        echo '<input id="advanced-ads-advanced-js" type="checkbox" value="1" name="'.ADVADS_SLUG.'[advanced-js]" '.checked($checked, 1, false).'>';
         echo '<p class="description">'. sprintf(__('Only enable this if you can and want to use the advanced JavaScript functions described <a href="%s">here</a>.', ADVADS_SLUG), 'http://wpadvancedads.com/javascript-functions/') .'</p>';
     }
 
     /**
-     * save a global array with ad injection information
-     * runs every time for all ads a single ad is saved (but not on autosave)
+     * add heading for extra column of ads list
+     * remove the date column
      *
-     * @since 1.1.0
+     * @since 1.3.3
+     * @param arr $defaults
      */
-    public function update_global_injection_array(){
-        // get all public ads
-        $ad_posts = Advanced_Ads::get_ads();
+    public function ad_list_columns_head($defaults){
 
-        // merge ad injection settings by type (place => ad id)
-        $all_injections = array();
-        if(is_array($ad_posts)) foreach($ad_posts as $_ad){
-            // load the ad
-            $ad = new Advads_Ad($_ad->ID);
-            // get injection post meta
-            $injection_options = $ad->options('injection');
-            // add injection settings to global array
-            if(isset($injection_options)) foreach($injection_options as $_iokey => $_io){
-                $all_injections[$_iokey][] = $_ad->ID;
-            }
+        $offset = array_search('title', array_keys($defaults)) + 1;
+
+        $defaults = array_merge
+        (
+            array_slice($defaults, 0, $offset),
+            array('ad_details' => __('Ad Details', ADVADS_SLUG)),
+            array_slice($defaults, $offset, null)
+        );
+
+        // remove the date
+        unset($defaults['date']);
+
+        return $defaults;
+    }
+
+    /**
+     * order ads by title on ads list
+     *
+     * @since 1.3.18
+     * @param arr $vars array with request vars
+     */
+    public function ad_list_request($vars){
+
+        // order ads by title on ads list
+        if ( is_admin() && empty( $vars['orderby'] ) && $this->post_type == $vars['post_type'] ) {
+            $vars = array_merge( $vars, array(
+                'orderby' => 'title',
+                'order' => 'ASC'
+            ) );
         }
 
-        // save global injection array to WP options table or remove it
-        if(is_array($all_injections) && count($all_injections) > 0)
-            update_option('advads-ads-injections', $all_injections);
-        else
-            delete_option ('advads-ads-injections');
+        return $vars;
+    }
+
+    /**
+     * display ad details in ads list
+     *
+     * @since 1.3.3
+     * @param string $column_name name of the column
+     * @param int $ad_id id of the ad
+     */
+    public function  ad_list_columns_content($column_name, $ad_id) {
+        if ($column_name == 'ad_details') {
+            $ad = new Advads_Ad($ad_id);
+
+            // load ad type title
+            $types = Advanced_Ads::get_instance()->ad_types;
+            $type = (!empty($types[$ad->type]->title)) ? $types[$ad->type]->title : 0;
+
+            // load ad size
+            $size = 0;
+            if(!empty($ad->width) || !empty($ad->height)){
+                $size = sprintf('%d x %d', $ad->width, $ad->height);
+            }
+
+            $view = plugin_dir_path(__FILE__) . 'views/ad_list_details_column.php';
+            if (is_file($view)) {
+                require( $view );
+            }
+
+        }
+    }
+
+    /**
+     * add a meta box to post type edit screens with ad settings
+     *
+     * @since 1.3.10
+     * @param string $post_type current post type
+     */
+    public function add_post_meta_box($post_type = ""){
+        // get public post types
+        $public_post_types = get_post_types(array('public' => true, 'publicly_queryable' => true), 'names', 'or');
+
+        //limit meta box to public post types
+        if ( in_array( $post_type, $public_post_types )) {
+            add_meta_box(
+                'advads-ad-settings',
+                __( 'Ad Settings', ADVADS_SLUG),
+                array( $this, 'render_post_meta_box' ),
+                $post_type,
+                'advanced',
+                'low'
+            );
+        }
+    }
+
+    /**
+     * render meta box for ad settings on a per post basis
+     *
+     * @since 1.3.10
+     * @param WP_Post $post The post object.
+    */
+    public function render_post_meta_box( $post ) {
+
+        // nonce field to check when we save the values
+        wp_nonce_field( 'advads_post_meta_box', 'advads_post_meta_box_nonce' );
+
+        // retrieve an existing value from the database.
+        $values = get_post_meta( $post->ID, '_advads_ad_settings', true );
+
+        // load the view
+        $view = plugin_dir_path(__FILE__) . 'views/post_ad_settings_metabox.php';
+        if (is_file($view)) {
+            require( $view );
+        }
+    }
+
+    /**
+     * save the ad meta when the post is saved.
+     *
+     * @since 1.3.10
+     * @param int $post_id The ID of the post being saved.
+    */
+    public function save_post_meta_box( $post_id ) {
+
+        // check nonce
+        if ( ! isset( $_POST['advads_post_meta_box_nonce'] ) )
+            return $post_id;
+
+        $nonce = $_POST['advads_post_meta_box_nonce'];
+
+        // Verify that the nonce is valid.
+        if ( ! wp_verify_nonce( $nonce, 'advads_post_meta_box' ) )
+            return $post_id;
+
+        // don’t save on autosave
+        if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+            return $post_id;
+
+        // check the user's permissions.
+        if ( 'page' == $_POST['post_type'] ) {
+            if ( ! current_user_can( 'edit_page', $post_id ) )
+                return $post_id;
+        } else {
+            if ( ! current_user_can( 'edit_post', $post_id ) )
+                return $post_id;
+        }
+
+        // Sanitize the user input.
+        $_data['disable_ads'] = isset($_POST['advanced_ads']['disable_ads']) ? absint($_POST['advanced_ads']['disable_ads']) : 0;
+
+        // Update the meta field.
+        update_post_meta( $post_id, '_advads_ad_settings', $_data );
+    }
+
+    /**
+     * add dashboard widget with ad stats and additional information
+     *
+     * @since 1.3.12
+     */
+    public function add_dashboard_widget(){
+        // wp_add_dashboard_widget('advads_dashboard_widget', __('Ads Dashboard', ADVADS_SLUG), array($this, 'dashboard_widget_function'));
+        add_meta_box('advads_dashboard_widget', __('Ads Dashboard', ADVADS_SLUG), array($this, 'dashboard_widget_function'), 'dashboard', 'side', 'high');
+    }
+
+    /**
+     * display widget functions
+     */
+    public function dashboard_widget_function($post, $callback_args){
+        // load ad optimization feed
+        $feed = array(
+            'link'         => 'http://webgilde.com/en/ad-optimization/',
+            'url'          => 'http://webgilde.com/en/ad-optimization/feed/',
+            'title'        => __('Tutorials and News'),
+            'items'        => 3,
+            'show_summary' => 0,
+            'show_author'  => 0,
+            'show_date'    => 0,
+        );
+
+        // get number of ads
+        $recent_ads = Advanced_Ads::get_ads();
+        echo '<p>';
+        printf(__('%d ads – <a href="%s">manage</a> – <a href="%s">new</a>', ADVADS_SLUG),
+            count($recent_ads),
+            'edit.php?post_type='. Advanced_Ads::POST_TYPE_SLUG,
+            'post-new.php?post_type='. Advanced_Ads::POST_TYPE_SLUG);
+        echo '</p>';
+
+        // get and display plugin version
+        $advads_plugin_data = get_plugin_data(ADVADS_BASE_PATH . 'advanced-ads.php');
+        if(isset($advads_plugin_data['Version'])){
+            $version = $advads_plugin_data['Version'];
+            echo '<p><a href="http://wpadvancedads.com" target="_blank" title="'.
+                    __('plugin manual and homepage', ADVADS_SLUG).'">Advanced Ads</a> '. $version .'</p>';
+        }
+
+        // rss feed
+	echo '<h4>' . __('From the ad optimization universe', ADVADS_SLUG) . '</h4>';
+        // $this->dashboard_widget_function_output('advads_dashboard_widget', $feed);
+        $this->dashboard_cached_rss_widget( 'advads_dashboard_widget', array($this, 'dashboard_widget_function_output'), array('advads' => $feed) );
+    }
+
+    /**
+     * checks to see if there are feed urls in transient cache; if not, load them
+     * built using a lot of https://developer.wordpress.org/reference/functions/wp_dashboard_cached_rss_widget/
+     *
+     * @since 1.3.12
+     * @param string $widget_id
+     * @param callback $callback
+     * @param array $check_urls RSS feeds
+     * @return bool False on failure. True on success.
+     */
+    function dashboard_cached_rss_widget( $widget_id, $callback, $feed = array() ) {
+        if ( empty($feed) ) {
+            return;
+        }
+
+        $cache_key = 'dash_' . md5( $widget_id );
+        if ( false !== ( $output = get_transient( $cache_key ) ) ) {
+            echo $output;
+            return true;
+        }
+
+        if ( $callback && is_callable( $callback ) ) {
+            ob_start();
+            call_user_func_array( $callback, $feed );
+            set_transient( $cache_key, ob_get_flush(), 12 * HOUR_IN_SECONDS ); // Default lifetime in cache of 12 hours (same as the feeds)
+        }
+
+        return true;
+    }
+
+    /**
+     * create the rss output of the widget
+     *
+     * @param string $widget_id Widget ID.
+     * @param array  $feeds     Array of RSS feeds.
+     */
+    function dashboard_widget_function_output( $feed ) {
+
+	echo '<div class="rss-widget">';
+        wp_widget_rss_output( $feed['url'], $feed );
+        echo "</div>";
     }
 
 }

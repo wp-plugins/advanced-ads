@@ -54,7 +54,7 @@ class AdvAds_Groups_List_Table extends AdvAds_List_Table {
     function column_cb($tag) {
         $default_term = get_option('default_' . $this->screen->taxonomy);
 
-        return '<label class="screen-reader-text" for="cb-select-' . $tag->term_id . '">' . sprintf(__('Select %s', Advanced_Ads::TD), $tag->name) . '</label>'
+        return '<label class="screen-reader-text" for="cb-select-' . $tag->term_id . '">' . sprintf(__('Select %s', ADVADS_SLUG), $tag->name) . '</label>'
                 . '<input type="checkbox" name="delete_tags[]" value="' . $tag->term_id . '" id="cb-select-' . $tag->term_id . '" />';
 
         return '&nbsp;';
@@ -91,12 +91,12 @@ class AdvAds_Groups_List_Table extends AdvAds_List_Table {
         );
         $edit_link = Advanced_Ads_Admin::group_page_url($args);
 
-        $out = '<strong><a class="row-title" href="' . $edit_link . '" title="' . esc_attr(sprintf(__('Edit &#8220;%s&#8221;', Advanced_Ads::TD), $name)) . '">' . $name . '</a></strong><br />';
+        $out = '<strong><a class="row-title" href="' . $edit_link . '" title="' . esc_attr(sprintf(__('Edit &#8220;%s&#8221;', ADVADS_SLUG), $name)) . '">' . $name . '</a></strong><br />';
         $out .= '<p class="description">' . $tag->description . '</p>';
 
         $actions = array();
         if (current_user_can($tax->cap->edit_terms)) {
-            $actions['edit'] = '<a href="' . $edit_link . '">' . __('Edit', Advanced_Ads::TD) . '</a>';
+            $actions['edit'] = '<a href="' . $edit_link . '">' . __('Edit', ADVADS_SLUG) . '</a>';
 //            $actions['inline hide-if-no-js'] = '<a href="#" class="editinline">' . __('Quick&nbsp;Edit') . '</a>';
         }
         if (current_user_can($tax->cap->delete_terms) && $tag->term_id != $default_term){
@@ -159,12 +159,12 @@ class AdvAds_Groups_List_Table extends AdvAds_List_Table {
                 $ads->the_post();
                 $out .= '<tr><td><a href="' . get_edit_post_link(get_the_ID()) . '">' . get_the_title() . '</a>';
                 $_weight = (isset($weights[get_the_ID()])) ? $weights[get_the_ID()] : Advads_Ad_Group::MAX_AD_GROUP_WEIGHT;
-                $out .= '<td class="ad-weight ad-weight-' . get_the_ID() . '" title="'.__('Ad weight', Advanced_Ads::TD).'">' . $_weight . '</td></tr>';
+                $out .= '<td class="ad-weight ad-weight-' . get_the_ID() . '" title="'.__('Ad weight', ADVADS_SLUG).'">' . $_weight . '</td></tr>';
                 $out .= '</tr>';
             }
             $out .= '</table>';
             // include actions
-            $actions['edit'] = '<a href="#" class="edit-ad-group-ads">' . __('Edit', Advanced_Ads::TD) . '</a>';
+            $actions['edit'] = '<a href="#" class="edit-ad-group-ads">' . __('Edit', ADVADS_SLUG) . '</a>';
             $out .= $this->row_actions($actions);
             // row with the group id
             $out .= '<input type="hidden" class="ad-group-id" value="'. $tag->term_id .'"/>';
@@ -242,10 +242,6 @@ class AdvAds_Groups_List_Table extends AdvAds_List_Table {
      * @since 1.0.0
      */
     function prepare_items() {
-        // how many items per page
-        // get_items_per_page basically uses a filter
-        $per_page = $this->get_items_per_page('edit_' . $this->taxonomy . '_per_page');
-
         // set columns
         $columns = $this->get_columns();
         $hidden = array();
@@ -263,10 +259,7 @@ class AdvAds_Groups_List_Table extends AdvAds_List_Table {
         $args = array(
             'taxonomy' => $this->taxonomy,
             'search' => $search,
-            'page' => $this->get_pagenum(),
-            'number' => $per_page,
             'hide_empty' => 0,
-            'orderby' => 'id'
         );
 
         if (!empty($_REQUEST['orderby']))
@@ -283,8 +276,7 @@ class AdvAds_Groups_List_Table extends AdvAds_List_Table {
         $total_items = count($this->items);
         $this->set_pagination_args(array(
             'total_items' => $total_items,
-            'per_page' => $per_page,
-            'total_pages' => ceil($total_items / $per_page)
+            'total_pages' => 1
         ));
     }
 

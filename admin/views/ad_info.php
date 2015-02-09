@@ -10,4 +10,14 @@
         <p class="description"><?php _e('To display an ad in template files', ADVADS_SLUG); ?></p>
         <pre><input type="text" onclick="this.select();" value="the_ad(<?php echo $post->ID; ?>);"/></pre>
 </div>
-
+<div id="advads-ad-description">
+    <?php if(!empty($ad->description)) : ?>
+    <p title="<?php _e('click to change', ADVADS_SLUG); ?>"
+       onclick="advads_toggle('#advads-ad-description textarea'); advads_toggle('#advads-ad-description p')"><?php
+       echo nl2br($ad->description); ?></p>
+    <?php else : ?>
+    <button type="button" onclick="advads_toggle('#advads-ad-description textarea'); advads_toggle('#advads-ad-description button')"><?php _e('Add a description', ADVADS_SLUG); ?></button>
+    <?php endif; ?>
+    <textarea name="advanced_ad[description]" placeholder="<?php
+        _e('Internal description or your own notes about this ad.', ADVADS_SLUG); ?>"><?php echo $ad->description; ?></textarea>
+</div>
