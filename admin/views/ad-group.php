@@ -82,7 +82,6 @@ if (isset($_REQUEST['message']) && ( $msg = (int) $_REQUEST['message'] ) || isse
             <form class="search-form" action="" method="get">
                 <!--input type="hidden" name="taxonomy" value="<?php echo esc_attr($taxonomy); ?>" /-->
                 <input type="hidden" name="page" value="advanced-ads-groups" />
-                <input type="hidden" name="post_type" value="<?php echo esc_attr($post_type); ?>" />
                 <?php $ad_group_table->search_box($tax->labels->search_items, 'tag'); ?>
 
             </form>

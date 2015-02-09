@@ -91,9 +91,10 @@ class Advanced_Ads_Admin {
         // save ads post type
         add_action('save_post', array($this, 'save_ad'));
 
-        // handling extra columns on ad lists
-        add_filter('manage_advanced_ads_posts_columns', array($this, 'ad_list_columns_head'));
-        add_filter('manage_advanced_ads_posts_custom_column', array($this, 'ad_list_columns_content'), 10, 2);
+        // handling (ad) lists
+        add_filter('request', array($this, 'ad_list_request')); // order ads by title, not ID
+        add_filter('manage_advanced_ads_posts_columns', array($this, 'ad_list_columns_head')); // extra column
+        add_filter('manage_advanced_ads_posts_custom_column', array($this, 'ad_list_columns_content'), 10, 2); // extra column
 
         // settings handling
         add_action('admin_init', array($this, 'settings_init'));
@@ -176,24 +177,7 @@ class Advanced_Ads_Admin {
     */
     public function admin_notices()
     {
-
-        // display notice in case there are still old ad injections
-        $old_injections = get_option('advads-ads-injections', array());
-
-        // display ad before the content
-        if(isset($old_injections) && count($old_injections) > 0){
-            $_injection_ids = array();
-            foreach($old_injections as $_inj){
-                $_injection_ids = array_merge($_injection_ids, $_inj);
-            }
-            $ad_links = array();
-            foreach($_injection_ids as $_inj_id){
-                $ad_links[] = '<a href="' . get_edit_post_link($_inj_id) . '">'.$_inj_id.'</a>';
-            }
-        ?>
-            <div class="error"><p><?php printf(__('Advanced Ads Update: Auto injections are now managed through placements. Please convert these ads with auto injections: %s', ADVADS_SLUG), implode(', ', $ad_links));?></p></div>
-        <?php
-        }
+        // removed ad injection notice in version 1.3.18
     }
 
     /**
@@ -415,6 +399,8 @@ class Advanced_Ads_Admin {
         if (!isset($post->post_type) || $post->post_type != $this->post_type) {
             return;
         }
+        $ad = new Advads_Ad($post->ID);
+        
         require_once('views/ad_info.php');
     }
 
@@ -438,9 +424,6 @@ class Advanced_Ads_Admin {
         );
         add_meta_box(
                 'ad-visitor-box', __('Visitor Conditions', ADVADS_SLUG), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
-        );
-        add_meta_box(
-                'ad-inject-box', __('Auto injection', ADVADS_SLUG), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
         );
     }
 
@@ -494,9 +477,6 @@ class Advanced_Ads_Admin {
             case 'ad-visitor-box':
                 $view = 'ad-visitor-metabox.php';
                 break;
-            case 'ad-inject-box':
-                $view = 'ad-inject-metabox.php';
-                break;
         }
 
         if (empty($view))
@@ -541,11 +521,6 @@ class Advanced_Ads_Admin {
         } else {
             $ad->set_option('visitor', array());
         }
-        if(isset($_POST['advanced_ad']['injection'])) {
-            $ad->set_option('injection', $_POST['advanced_ad']['injection']);
-        } else {
-            $ad->set_option('injection', array());
-        }
         // save size
         $ad->width = 0;
         if(isset($_POST['advanced_ad']['width'])) {
@@ -556,9 +531,14 @@ class Advanced_Ads_Admin {
             $ad->height = absint($_POST['advanced_ad']['height']);
         }
 
+        if(!empty($_POST['advanced_ad']['description']))
+            $ad->description = esc_textarea($_POST['advanced_ad']['description']);
+        else $ad->description = '';
+
         if(!empty($_POST['advanced_ad']['content']))
             $ad->content = $_POST['advanced_ad']['content'];
         else $ad->content = '';
+
         if(!empty($_POST['advanced_ad']['conditions'])){
             $ad->conditions = $_POST['advanced_ad']['conditions'];
         } else {
@@ -575,9 +555,6 @@ class Advanced_Ads_Admin {
         }
 
         $ad->save();
-
-        // update global ad information
-        $this->update_global_injection_array();
     }
 
     /**
@@ -709,36 +686,6 @@ class Advanced_Ads_Admin {
     }
 
     /**
-     * save a global array with ad injection information
-     * runs every time for all ads a single ad is saved (but not on autosave)
-     *
-     * @since 1.1.0
-     */
-    public function update_global_injection_array(){
-        // get all public ads
-        $ad_posts = Advanced_Ads::get_ads();
-
-        // merge ad injection settings by type (place => ad id)
-        $all_injections = array();
-        if(is_array($ad_posts)) foreach($ad_posts as $_ad){
-            // load the ad
-            $ad = new Advads_Ad($_ad->ID);
-            // get injection post meta
-            $injection_options = $ad->options('injection');
-            // add injection settings to global array
-            if(isset($injection_options)) foreach($injection_options as $_iokey => $_io){
-                $all_injections[$_iokey][] = $_ad->ID;
-            }
-        }
-
-        // save global injection array to WP options table or remove it
-        if(is_array($all_injections) && count($all_injections) > 0)
-            update_option('advads-ads-injections', $all_injections);
-        else
-            delete_option ('advads-ads-injections');
-    }
-
-    /**
      * add heading for extra column of ads list
      * remove the date column
      *
@@ -760,6 +707,25 @@ class Advanced_Ads_Admin {
         unset($defaults['date']);
 
         return $defaults;
+    }
+
+    /**
+     * order ads by title on ads list
+     *
+     * @since 1.3.18
+     * @param arr $vars array with request vars
+     */
+    public function ad_list_request($vars){
+
+        // order ads by title on ads list
+        if ( is_admin() && empty( $vars['orderby'] ) && $this->post_type == $vars['post_type'] ) {
+            $vars = array_merge( $vars, array(
+                'orderby' => 'title',
+                'order' => 'ASC'
+            ) );
+        }
+
+        return $vars;
     }
 
     /**

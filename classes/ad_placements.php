@@ -196,9 +196,14 @@ class Advads_Ad_Placements {
                 $advads = Advanced_Ads::get_instance();
                 $advads->current_ads[] = array('type' => 'placement', 'id' => $id, 'title' => $placements[$id]['name']);
 
-                // create class from placement id
-                $class = 'advads-' . $id;
-                return get_ad($_item_id, array('output' => array('class' => array($class))));
+                // create class from placement id, but not, if header injection
+                if($placements[$id]['type'] == 'header'){
+                    $ad_args = array();
+                } else {
+                    $class = 'advads-' . $id;
+                    $ad_args = array('output' => array('class' => array($class)));
+                }
+                return get_ad($_item_id, $ad_args);
 
             } elseif ($_item[0] == 'group') {
                 // add the placement to the global output array

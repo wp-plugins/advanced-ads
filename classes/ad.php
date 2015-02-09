@@ -149,6 +149,7 @@ class Advads_Ad {
         $this->width = $this->options('width');
         $this->height = $this->options('height');
         $this->conditions = $this->options('conditions');
+        $this->description = $this->options('description');
         $this->output = $this->options('output');
         $this->status = $_data->post_status;
         $this->wrapper = $this->load_wrapper_options();
@@ -568,6 +569,7 @@ class Advads_Ad {
         $options['height'] = $this->height;
         $options['conditions'] = $conditions;
         $options['expiry_date'] = $this->expiry_date;
+        $options['description'] = $this->description;
 
         // filter to manipulate options or add more to be saved
         $options = apply_filters('advanced-ads-save-options', $options, $this);

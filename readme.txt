@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.1.
-Stable tag: 1.3.17
+Stable tag: 1.3.18
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,6 +22,7 @@ Learn more on the [plugin homepage](http://wpadvancedads.com).
 * group ads to create ad rotations
 * create drafts or ads only visible to logged in users
 * set a date for when to publish the ad
+* make internal notes about each ad
 
 = ad types =
 
@@ -86,7 +87,7 @@ You can also use it to add additional ad network tags into header or footer of y
 
 Learn more on the [plugin homepage](http://wpadvancedads.com).
 
-Localizations: English, German, Italien
+Localizations: English, German, Italien, Portuguese
 
 = Add-Ons =
 
@@ -154,6 +155,17 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 3. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.3.18 =
+
+* removed wrapper for header injection placement
+* removed deprecated code used for ad based content injections
+* ordered ads by title in ads list
+* removed broken pagination from ad groups list. now, all ad groups are displayed
+* order ad groups by name when no other order is specified
+* fixed search for ad groups in ad groups list
+* PHP is not automatically allowed for new plain text ad codes anymore
+* add an internal description and notes to your ads
 
 = 1.3.17 =
 

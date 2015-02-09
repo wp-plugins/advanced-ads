@@ -242,10 +242,6 @@ class AdvAds_Groups_List_Table extends AdvAds_List_Table {
      * @since 1.0.0
      */
     function prepare_items() {
-        // how many items per page
-        // get_items_per_page basically uses a filter
-        $per_page = $this->get_items_per_page('edit_' . $this->taxonomy . '_per_page');
-
         // set columns
         $columns = $this->get_columns();
         $hidden = array();
@@ -263,10 +259,7 @@ class AdvAds_Groups_List_Table extends AdvAds_List_Table {
         $args = array(
             'taxonomy' => $this->taxonomy,
             'search' => $search,
-            'page' => $this->get_pagenum(),
-            'number' => $per_page,
             'hide_empty' => 0,
-            'orderby' => 'id'
         );
 
         if (!empty($_REQUEST['orderby']))
@@ -283,8 +276,7 @@ class AdvAds_Groups_List_Table extends AdvAds_List_Table {
         $total_items = count($this->items);
         $this->set_pagination_args(array(
             'total_items' => $total_items,
-            'per_page' => $per_page,
-            'total_pages' => ceil($total_items / $per_page)
+            'total_pages' => 1
         ));
     }
 

@@ -417,24 +417,6 @@ class Advanced_Ads {
     }
 
     /**
-     * get the array with global ad injections
-     *
-     * @since 1.1.0
-     * @return arr $ad_injections
-     * @todo make static
-     */
-    public function get_ad_injections_array(){
-
-        $ad_injections = get_option('advads-ads-injections', array());
-        // load default array if not saved yet
-        if(!is_array($ad_injections)){
-            $ad_injections = array();
-        }
-
-        return $ad_injections;
-    }
-
-    /**
      * get the array with ad placements
      *
      * @since 1.1.0
@@ -664,24 +646,6 @@ class Advanced_Ads {
                 echo Advads_Ad_Placements::output($_placement_id);
             }
         }
-
-        /* FROM HERE, THE CODE IS DEPRECATED – MOVE AUTO INJECTED ADS TO PLACEMENTS */
-        // get information about injected ads
-        $injections = get_option('advads-ads-injections', array());
-        if(isset($injections['header']) && is_array($injections['header'])){
-            $ads = $injections['header'];
-            // randomize ads
-            shuffle($ads);
-            // check ads one by one for being able to be displayed on this spot
-            foreach ($ads as $_ad_id) {
-                // load the ad object
-                $ad = new Advads_Ad($_ad_id);
-                if ($ad->can_display()) {
-                    // display the ad
-                    echo $ad->output();
-                }
-            }
-        }
     }
 
     /**
@@ -694,24 +658,6 @@ class Advanced_Ads {
         foreach($placements as $_placement_id => $_placement){
             if(isset($_placement['type']) && $_placement['type'] == 'footer'){
                 echo Advads_Ad_Placements::output($_placement_id);
-            }
-        }
-
-        /* FROM HERE, THE CODE IS DEPRECATED – MOVE AUTO INJECTED ADS TO PLACEMENTS */
-        // get information about injected ads
-        $injections = get_option('advads-ads-injections', array());
-        if(isset($injections['footer']) && is_array($injections['footer'])){
-            $ads = $injections['footer'];
-            // randomize ads
-            shuffle($ads);
-            // check ads one by one for being able to be displayed on this spot
-            foreach ($ads as $_ad_id) {
-                // load the ad object
-                $ad = new Advads_Ad($_ad_id);
-                if ($ad->can_display()) {
-                    // display the ad
-                    echo $ad->output();
-                }
             }
         }
     }
@@ -741,42 +687,6 @@ class Advanced_Ads {
             }
             if(isset($_placement['type']) && $_placement['type'] == 'post_content'){
                 $content = Advads_Ad_Placements::inject_in_content($_placement_id, $_placement['options'], $content);
-            }
-        }
-
-        /* FROM HERE, THE CODE IS DEPRECATED – MOVE AUTO INJECTED ADS TO PLACEMENTS */
-        // get information about injected ads
-        $injections = get_option('advads-ads-injections', array());
-
-        // display ad before the content
-        if(isset($injections['post_start']) && is_array($injections['post_start'])){
-            $ads = $injections['post_start'];
-            // randomize ads
-            shuffle($ads);
-            // check ads one by one for being able to be displayed on this spot
-            foreach ($ads as $_ad_id) {
-                // load the ad object
-                $ad = new Advads_Ad($_ad_id);
-                if ($ad->can_display()) {
-                    // display the ad
-                    $content = $ad->output() . $content;
-                }
-            }
-        }
-
-        // display ad after the content
-        if(isset($injections['post_end']) && is_array($injections['post_end'])){
-            $ads = $injections['post_end'];
-            // randomize ads
-            shuffle($ads);
-            // check ads one by one for being able to be displayed on this spot
-            foreach ($ads as $_ad_id) {
-                // load the ad object
-                $ad = new Advads_Ad($_ad_id);
-                if ($ad->can_display()) {
-                    // display the ad
-                    $content .= $ad->output();
-                }
             }
         }
 
