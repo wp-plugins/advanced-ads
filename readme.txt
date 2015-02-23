@@ -3,16 +3,16 @@ Contributors: webzunft
 Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5RRRCEBGN3UT2
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
-Tested up to: 4.1.
-Stable tag: 1.3.18
+Tested up to: 4.1.1
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Manage and optimize your ads in WordPress as easy as creating posts. + ad injection, ad planning and ad rotation.
+Manage and optimize your ads in WordPress as easy as creating posts. Including support for AdSense, ad injection, ad planning and ad rotation.
 
 == Description ==
 
-Advanced Ads is a simple ad manager made by publishers for publishers. Based on my experience delivering millions of ads per month I build this plugin as a powerful, but light weight solution to not only manage and serve ads in WordPress, but to test and optimize them as well.
+Advanced Ads is a simple ad manager made by a publisher for publishers. Based on my experience delivering millions of ads per month I built this plugin as a powerful, but light weight solution to not only manage and serve ads in WordPress, but to test and optimize them as well.
 
 Learn more on the [plugin homepage](http://wpadvancedads.com).
 
@@ -28,8 +28,9 @@ Learn more on the [plugin homepage](http://wpadvancedads.com).
 
 choose between different ad types that enable you to:
 
-* insert ad networks code (e.g. Google AdSense)
-* display images
+* insert code for ad and affiliate networks (e.g., Chitika, Amazon)
+* dedicated support for Google AdSense
+* display images and image banners
 * use shortcodes (to also deliver ads from other ad plugins)
 * create content rich ad with the tinymc editor
 
@@ -79,6 +80,14 @@ Advanced Ads comes with many options for ad injection (= display ads without the
 
 Advanced Ads is compatible with all ad networks and banners from affiliate programs like Google AdSense, Chitika, Clickbank, Amazon, etc.
 You can also use it to add additional ad network tags into header or footer of your site without additional coding)
+
+= Google AdSense =
+
+There is an ad type dedicated to Google AdSense that supports:
+
+* switch ad sizes
+* switch between normal and responsive
+* (more coming soon)
 
 = based on WordPress standards =
 
@@ -155,6 +164,14 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 3. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.4.0 =
+
+* COOL: AdSense ad type, [manual](http://wpadvancedads.com/advancedads/manual/ad-types/adsense-ads/)
+* added multiple action hooks
+* fix translation of textdomain if the plugin folder is renamed
+* load pro module, if exists
+* updated German translation
 
 = 1.3.18 =
 
@@ -277,6 +294,8 @@ Developers might want to take a look at the [Codex](http://wpadvancedads.com/adv
 * added partial German translation
 * added Italien translation (thanks to sangkavr)
 
+[Changelog Archive](http://wpadvancedads.com/advancedads/codex/changelog-archive/)
+
 == Upgrade Notice ==
 
 = 1.3.2 =
@@ -287,11 +306,3 @@ Hotfix: prevent infinite loops (ads within ads) for rich content ads
 
 Don’t miss out on the new layout options to align ads and set margins
 Also fixed issues with languages and added Italien and German translation (partial)
-
-= 1.2.4 =
-
-Fixes bug that prevented to create and edit ad groups
-
-= 1.2.3 =
-
-Fixes a bug with the missing menu item

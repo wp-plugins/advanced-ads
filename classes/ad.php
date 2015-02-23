@@ -234,6 +234,9 @@ class Advads_Ad {
         $advads = Advanced_Ads::get_instance();
         $advads->current_ads[] = array('type' => 'ad', 'id' => $this->id, 'title' => $this->title);
 
+        // action when output is created
+        do_action('advanced-ads-output', $this, $output);
+
         return $output;
     }
 

@@ -211,6 +211,9 @@ class Advanced_Ads_Admin {
         add_submenu_page(
             null, __('Advanced Ads Debugging', ADVADS_SLUG), __('Debug', ADVADS_SLUG), 'manage_options', $this->plugin_slug . '-debug', array($this, 'display_plugin_debug_page')
         );
+
+		// allows extensions to insert sub menu pages
+		do_action('advanced-ads-submenu-pages', $this->plugin_slug);
     }
 
     /**
@@ -745,10 +748,12 @@ class Advanced_Ads_Admin {
 
             // load ad size
             $size = 0;
-            if(!empty($ad->width) || !empty($ad->height)){
+            if (!empty($ad->width) || !empty($ad->height)) {
                 $size = sprintf('%d x %d', $ad->width, $ad->height);
             }
-
+			
+			$size = apply_filters('advanced-ads-ad-size', $size, $ad);
+				
             $view = plugin_dir_path(__FILE__) . 'views/ad_list_details_column.php';
             if (is_file($view)) {
                 require( $view );
@@ -867,7 +872,7 @@ class Advanced_Ads_Admin {
         // get number of ads
         $recent_ads = Advanced_Ads::get_ads();
         echo '<p>';
-        printf(__('%d ads – <a href="%s">manage</a> – <a href="%s">new</a>', ADVADS_SLUG),
+        printf(__('%d ads – <a href="%s">manage</a> - <a href="%s">new</a>', ADVADS_SLUG),
             count($recent_ads),
             'edit.php?post_type='. Advanced_Ads::POST_TYPE_SLUG,
             'post-new.php?post_type='. Advanced_Ads::POST_TYPE_SLUG);

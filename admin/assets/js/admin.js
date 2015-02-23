@@ -14,7 +14,7 @@ jQuery(document).ready(function ($) {
             success: function (data, textStatus, XMLHttpRequest) {
                 // toggle main content field
                 if (data) {
-                    $('#advanced-ads-ad-parameters').html(data);
+                    $('#advanced-ads-ad-parameters').html(data).trigger('paramloaded');
                 }
             },
             error: function (MLHttpRequest, textStatus, errorThrown) {

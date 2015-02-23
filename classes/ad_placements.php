@@ -197,7 +197,7 @@ class Advads_Ad_Placements {
                 $advads->current_ads[] = array('type' => 'placement', 'id' => $id, 'title' => $placements[$id]['name']);
 
                 // create class from placement id, but not, if header injection
-                if($placements[$id]['type'] == 'header'){
+                if(isset($placements[$id]['type']) && $placements[$id]['type'] == 'header'){
                     $ad_args = array();
                 } else {
                     $class = 'advads-' . $id;

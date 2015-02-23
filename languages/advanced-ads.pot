@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Advanved Ads\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
-"POT-Creation-Date: 2015-01-28 20:07+0100\n"
-"PO-Revision-Date: 2015-01-28 20:07+0100\n"
+"POT-Creation-Date: 2015-01-27 16:47+0100\n"
+"PO-Revision-Date: 2015-01-27 16:47+0100\n"
 "Last-Translator: Thomas Maier <post@webzunft.de>\n"
 "Language-Team: webgilde <thomas.maier@webgilde.com>\n"
 "Language: en\n"
@@ -42,14 +42,23 @@ msgstr ""
 msgid "Ads"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:216 admin/views/placements.php:84
 #: classes/widget.php:59
 msgid "Ad Groups"
 msgstr ""
 
-#: admin/class-advanced-ads-admin.php:216 admin/views/overview.php:40
 #: public/class-advanced-ads.php:540
 msgid "Groups"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:216 admin/views/placements.php:84
+#: admin/views/placements.php:47
+msgid "Placements"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:216 admin/views/overview.php:40
+msgid ""
+"You attempted to edit an ad group that doesn&#8217;t exist. Perhaps it was "
+"deleted?"
 msgstr ""
 
 #: admin/class-advanced-ads-admin.php:221 admin/views/debug.php:19
@@ -57,8 +66,14 @@ msgid "Ad Placements"
 msgstr ""
 
 #: admin/class-advanced-ads-admin.php:221 admin/views/overview.php:66
-#: admin/views/placements.php:47
-msgid "Placements"
+#, fuzzy
+msgid "Visitor Conditions"
+msgstr "Anzeigebedingungen"
+
+#, php-format
+msgid ""
+"Only enable this if you can and want to use the advanced JavaScript "
+"functions described <a href=\"%s\">here</a>."
 msgstr ""
 
 #: admin/class-advanced-ads-admin.php:225
@@ -88,113 +103,6 @@ msgid "Sorry, you are not allowed to access this feature."
 msgstr ""
 
 #: admin/class-advanced-ads-admin.php:329
-msgid ""
-"You attempted to edit an ad group that doesn&#8217;t exist. Perhaps it was "
-"deleted?"
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:428
-msgid "Ad Type"
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:431
-msgid "Ad Parameters"
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:434
-msgid "Layout / Output"
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:437
-msgid "Display Conditions"
-msgstr "Anzeigebedingungen"
-
-#: admin/class-advanced-ads-admin.php:440
-#, fuzzy
-msgid "Visitor Conditions"
-msgstr "Anzeigebedingungen"
-
-#: admin/class-advanced-ads-admin.php:443
-msgid "Auto injection"
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:609
-msgid "General"
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:617
-msgid "Disable ads"
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:625
-msgid "Hide ads for logged in users"
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:633
-msgid "Use advanced JavaScript"
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:680
-msgid "(display to all)"
-msgstr "(für alle anzeigen)"
-
-#: admin/class-advanced-ads-admin.php:681
-msgid "Subscriber"
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:682
-msgid "Contributor"
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:683
-msgid "Author"
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:684
-msgid "Editor"
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:685
-msgid "Admin"
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:693
-msgid "Choose the lowest role a user must have in order to not see any ads."
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:706
-#, php-format
-msgid ""
-"Only enable this if you can and want to use the advanced JavaScript "
-"functions described <a href=\"%s\">here</a>."
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:753
-msgid "Ad Details"
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:806
-msgid "Ad Settings"
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:881
-msgid "Ads Dashboard"
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:892
-msgid "Tutorials and News"
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:902
-#, php-format
-msgid "%d ads – <a href=\"%s\">manage</a> – <a href=\"%s\">new</a>"
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:913
-msgid "plugin manual and homepage"
-msgstr ""
-
-#: admin/class-advanced-ads-admin.php:917
 msgid "From the ad optimization universe"
 msgstr ""
 
@@ -714,15 +622,15 @@ msgstr ""
 msgid "tip: use this to add a margin around the ad"
 msgstr ""
 
-#: admin/views/ad-parameters-metabox.php:15
+#: admin/views/ad-parameters-metabox.php:15 classes/ad_ajax_callbacks.php:48
 msgid "size:"
 msgstr ""
 
-#: admin/views/ad-parameters-metabox.php:16
+#: admin/views/ad-parameters-metabox.php:16 classes/ad_ajax_callbacks.php:49
 msgid "width"
 msgstr ""
 
-#: admin/views/ad-parameters-metabox.php:17
+#: admin/views/ad-parameters-metabox.php:17 classes/ad_ajax_callbacks.php:50
 msgid "height"
 msgstr ""
 
@@ -928,6 +836,7 @@ msgid "Create a new placement"
 msgstr "Wörter generieren"
 
 #: admin/views/placements.php:18 admin/views/placements.php:63
+#: modules/gadsense/admin/views/adsense-ad-parameters.php:16
 msgid "Type"
 msgstr ""
 
@@ -1019,23 +928,23 @@ msgstr ""
 msgid "Disable ads on this page"
 msgstr ""
 
-#: admin/views/settings.php:23
+#: admin/views/settings.php:26
 msgid "Debug Page"
 msgstr ""
 
-#: admin/views/settings.php:24
+#: admin/views/settings.php:27
 msgid "Advanced Ads on WordPress.org"
 msgstr ""
 
-#: admin/views/settings.php:24
+#: admin/views/settings.php:27
 msgid "Advanced Ads on wp.org"
 msgstr ""
 
-#: admin/views/settings.php:25
+#: admin/views/settings.php:28
 msgid "the company behind Advanced Ads"
 msgstr ""
 
-#: admin/views/settings.php:25
+#: admin/views/settings.php:28
 msgid "webgilde GmbH"
 msgstr ""
 
@@ -1062,7 +971,23 @@ msgid ""
 "e.g. archive pages like categories, tags, authors, front page (if a list)"
 msgstr ""
 
-#: classes/ad.php:758
+#: admin/class-advanced-ads-admin.php:428
+msgid "Ad Type"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:431
+msgid "Ad Parameters"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:434
+msgid "Layout / Output"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:437
+msgid "Display Conditions"
+msgstr "Anzeigebedingungen"
+
+#: admin/class-advanced-ads-admin.php:440
 #, php-format
 msgid "A \"%s\" display condition does not exist"
 msgstr ""
@@ -1262,6 +1187,55 @@ msgstr ""
 msgid "(don't) show on attachment pages"
 msgstr ""
 
+#: admin/class-advanced-ads-admin.php:443
+msgid "Auto injection"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:609
+msgid "General"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:617
+msgid "Disable ads"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:625
+msgid "Hide ads for logged in users"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:633
+msgid "Use advanced JavaScript"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:680
+msgid "(display to all)"
+msgstr "(für alle anzeigen)"
+
+#: admin/class-advanced-ads-admin.php:681
+msgid "Subscriber"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:682
+msgid "Contributor"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:683
+msgid "Author"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:684
+msgid "Editor"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:685
+msgid "Admin"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:693
+msgid "Choose the lowest role a user must have in order to not see any ads."
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:706
 #: public/class-advanced-ads.php:530
 msgctxt "ad group general name"
 msgid "Ad Groups"
@@ -1370,3 +1344,29 @@ msgstr "Übergeordnetes Thema"
 #, php-format
 msgid "Advanced Ads Error: %s"
 msgstr ""
+#: admin/class-advanced-ads-admin.php:753
+msgid "Ad Details"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:806
+msgid "Ad Settings"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:881
+msgid "Ads Dashboard"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:892
+msgid "Tutorials and News"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:902
+#, php-format
+msgid "%d ads – <a href=\"%s\">manage</a> – <a href=\"%s\">new</a>"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:913
+msgid "plugin manual and homepage"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:917

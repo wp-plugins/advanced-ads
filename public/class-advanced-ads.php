@@ -25,7 +25,7 @@ class Advanced_Ads {
      * @var     string
      */
 
-    const VERSION = '1.3.1';
+    const VERSION = '1.4.0';
 
     /**
      * post type slug
@@ -334,8 +334,7 @@ class Advanced_Ads {
     public function load_plugin_textdomain() {
 
         // $locale = apply_filters('advanced-ads-plugin-locale', get_locale(), $domain);
-
-        load_plugin_textdomain(ADVADS_SLUG, false, 'advanced-ads/languages');
+        load_plugin_textdomain(ADVADS_SLUG, false, ADVADS_BASE_DIR . '/languages');
     }
 
     /**

@@ -19,6 +19,9 @@
         ?>
     </form>
     <hr/>
+	<?php
+		do_action('advanced-ads-additional-settings-form');
+	?>
     <ul>
         <li><a href="/wp-admin/admin.php?page=advanced-ads-debug"><?php _e('Debug Page', ADVADS_SLUG); ?></a></li>
         <li><a href="http://wordpress.org/plugins/advanced-ads/" title="<?php _e('Advanced Ads on WordPress.org', ADVADS_SLUG); ?>"><?php _e('Advanced Ads on wp.org', ADVADS_SLUG); ?></a></li>
