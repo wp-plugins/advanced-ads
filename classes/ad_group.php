@@ -115,6 +115,10 @@ class Advads_Ad_Group {
         if (!is_object($ad))
             return '';
 
+        // add the group to the global output array
+        $advads = Advanced_Ads::get_instance();
+        $advads->current_ads[] = array('type' => 'group', 'id' => $this->id, 'title' => $this->name);
+
         // makes sure the ad filters can also run here
         $adcontent = $ad->output();
 
@@ -178,6 +182,7 @@ class Advads_Ad_Group {
         $args = array(
             'post_type' => $this->post_type,
             'post_status' => 'publish',
+            'posts_per_page' => -1,
             'taxonomy' => $this->taxonomy,
             'term' => $this->slug,
             'orderby' => 'id'
@@ -236,7 +241,8 @@ class Advads_Ad_Group {
             // remove chosen ad from weights array
             unset($weights[$random_ad_id]);
             // put random ad into shuffled array
-            $shuffled_ads[] = $ads[$random_ad_id];
+            if(!empty($ads[$random_ad_id]))
+                $shuffled_ads[] = $ads[$random_ad_id];
         }
 
         return $shuffled_ads;
