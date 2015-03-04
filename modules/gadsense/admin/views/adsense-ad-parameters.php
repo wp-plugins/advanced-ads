@@ -48,7 +48,7 @@ if ($is_responsive) {
 			</select>
 		</label>
     </p>
-	<?php do_action('gadsense_ad_param_extra_template', $extra_params, $content); ?>
+	<?php do_action('advanced-ads-gadsense-extra-ad-param', $extra_params, $content); ?>
 </div><!-- #adsense-new-add-div-default -->
 <div id="pastecode-div" style="display: none;">
 	<div id="pastecode-container">

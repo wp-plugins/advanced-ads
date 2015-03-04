@@ -23,6 +23,11 @@ if (!class_exists('Gadsense_Data')) {
                 $options['adsense_id'] = '';
                 $update = true;
             }
+			// Limit of 3 ads per page
+			if (!isset($options['limit_ads_per_page'])) {
+				$options['limit_ads_per_page'] = true;
+                $update = true;
+			}
 
             if ($update) {
                 update_option(GADSENSE_OPT_NAME, $options);
@@ -42,8 +47,13 @@ if (!class_exists('Gadsense_Data')) {
             $old_id = $this->options['adsense_id'];
             $this->options['adsense_id'] = $id;
             update_option(GADSENSE_OPT_NAME, $this->options);
-            do_action('gadsense_after_id_changed', $id, $old_id);
+            do_action('advanced-ads-gadsense-after-id-changed', $id, $old_id);
         }
+		
+		public function set_limit_per_page($value = true) {
+			$this->options['limit_ads_per_page'] = $value;
+            update_option(GADSENSE_OPT_NAME, $this->options);
+		}
 
         /**
          * GETTERS
@@ -52,9 +62,13 @@ if (!class_exists('Gadsense_Data')) {
             return $this->options['adsense_id'];
         }
 		
+		public function get_limit_per_page() {
+			return $this->options['limit_ads_per_page'];
+		}
+		
 		public function get_responsive_sizing() {
 			$resizing = $this->resizing;
-			$this->resizing = apply_filters('gadsense_responsive_sizing', $resizing);
+			$this->resizing = apply_filters('advanced-ads-gadsense-responsive-sizing', $resizing);
 			return $this->resizing;
 		}
 

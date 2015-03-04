@@ -82,7 +82,7 @@ class Advads_Ad_Type_Adsense extends Advads_Ad_Type_Abstract {
 					// Responsive
 					$unit_resize = (isset($content->resize)) ? $content->resize : 'auto';
 					if ('auto' != $unit_resize) {
-						$extra_params = apply_filters('gadsense_ad_param_data', $extra_params, $content, $ad);
+						$extra_params = apply_filters('advanced-ads-gadsense-ad-param-data', $extra_params, $content, $ad);
 					}
 				}
                 if (!empty($pub_id)) {
@@ -97,9 +97,9 @@ class Advads_Ad_Type_Adsense extends Advads_Ad_Type_Abstract {
          * variable (which is the case for a new ad).
          *
          * Inclusion of .js and .css files for the ad creation/editon page are done by another hook. See
-         * 'gadsense_ad_param_script' and 'gadsense_ad_param_style' in "../admin/class-gadsense-admin.php".
+         * 'advanced-ads-gadsense-ad-param-script' and 'advanced-ads-gadsense-ad-param-style' in "../admin/class-gadsense-admin.php".
          */
-        $template = apply_filters('gadsense_ad_param_template', $default_template, $content);
+        $template = apply_filters('advanced-ads-gadsense-ad-param-template', $default_template, $content);
         require($template);
     }
 
@@ -129,7 +129,8 @@ class Advads_Ad_Type_Adsense extends Advads_Ad_Type_Abstract {
         $output = '';
         $db = Gadsense_Data::get_instance();
         $pub_id = $db->get_adsense_id();
-
+		$limit_per_page = $db->get_limit_per_page();
+		
         if (!isset($content->unitType) || empty($pub_id))
             return $output;
         if (!isset($gadsense['google_loaded']) || !$gadsense['google_loaded']) {
@@ -142,10 +143,11 @@ class Advads_Ad_Type_Adsense extends Advads_Ad_Type_Abstract {
         } else {
             $gadsense['adsense_count'] = 1;
         }
-        /*if (3 < $gadsense['adsense_count']) {
+		
+        if ($limit_per_page && 3 < $gadsense['adsense_count']) {
             // The maximum allowed adSense ad per page count is 3 (according to the current Google AdSense TOS).
-            return $output;
-        }*/
+            return '';
+        }
 
         if ('responsive' != $content->unitType) {
 			$output .= '<ins class="adsbygoogle" ';
@@ -157,14 +159,7 @@ class Advads_Ad_Type_Adsense extends Advads_Ad_Type_Abstract {
             $output .= '</script>' . "\n";
         } else {
 			if (!isset($content->resize) || 'auto' == $content->resize) {
-				$output .= '<ins class="adsbygoogle" ';
-				$output .= 'style="display:block;"';
-				$output .= 'data-ad-client="ca-' . $pub_id . '" ' . "\n";
-				$output .= 'data-ad-slot="' . $content->slotId . '" ' . "\n";
-				$output .= 'data-ad-format="auto"></ins>' . "\n";
-				$output .= '<script> ' . "\n";
-				$output .= '(adsbygoogle = window.adsbygoogle || []).push({}); ' . "\n";
-				$output .= '</script>' . "\n";
+				$this->append_defaut_responsive_content($output, $pub_id, $content->slotId);
 			} else {
 				/**
 				 * At this point, the ad is responsive ($ad->content->unitType == responsive)
@@ -172,11 +167,30 @@ class Advads_Ad_Type_Adsense extends Advads_Ad_Type_Abstract {
 				 * The $output variable already contains the first line which includes "adsbygoogle.js",
 				 * The rest of the output should be appended to it.
 				 */
-				 $output = apply_filters('gadsense_responsive_output', $output, $ad, $pub_id);
+				$unmodified = $output;
+				$output = apply_filters('advanced-ads-gadsense-responsive-output', $output, $ad, $pub_id);
+				if ($unmodified == $output) {
+					/**
+					 * If the output has not been modified, perform a default responsive output.
+					 * A simple did_action check isn't sufficient, some hooks may be attached and fired but didn't touch the output
+					 */
+					$this->append_defaut_responsive_content($output, $pub_id, $content->slotId);
+				}
 			}
         }
         return $output;
     }
+	
+	private function append_defaut_responsive_content(&$output, $pub_id, $slot_id) {
+		$output .= '<ins class="adsbygoogle" ';
+		$output .= 'style="display:block;"';
+		$output .= 'data-ad-client="ca-' . $pub_id . '" ' . "\n";
+		$output .= 'data-ad-slot="' . $slot_id . '" ' . "\n";
+		$output .= 'data-ad-format="auto"></ins>' . "\n";
+		$output .= '<script> ' . "\n";
+		$output .= '(adsbygoogle = window.adsbygoogle || []).push({}); ' . "\n";
+		$output .= '</script>' . "\n";
+	}
 
 }
 

@@ -18,7 +18,7 @@ if (!class_exists('Gadsense_Admin')) {
             add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
 			add_action('admin_print_scripts', array($this, 'print_scripts'));
             add_action('admin_init', array($this, 'init'));
-			add_filter('advanced-ads-ad-size', array($this, 'ad_details_column'), 10, 2);
+			add_filter('advanced-ads-list-ad-size', array($this, 'ad_details_column'), 10, 2);
         }
 
 		public function ad_details_column($size, $the_ad) {
@@ -83,18 +83,20 @@ if (!class_exists('Gadsense_Admin')) {
                 switch ($_POST['gadsense-form-name']) {
                     case 'cred-form' :
                         $id = strtolower(trim(wp_unslash($_POST['adsense-id'])));
+						$limit = (isset($_POST['limit-per-page']))? true : false;
+						$msg = __('Data updated', ADVADS_SLUG);
+						$css = 'updated';
                         if (0 === strpos($id, 'pub-')) {
                             $this->data->set_adsense_id($id);
-                            $_SESSION['gadsense']['admin_notice'] = array(
-                                'msg' => __('Data updated', ADVADS_SLUG),
-                                'class' => 'updated',
-                            );
+                            $this->data->set_limit_per_page($limit);
                         } else {
-                            $_SESSION['gadsense']['admin_notice'] = array(
-                                'msg' => __('The Publisher ID has an incorrect format. (must start with "pub-")', ADVADS_SLUG),
-                                'class' => 'error',
-                            );
+							$msg = __('The Publisher ID has an incorrect format. (must start with "pub-")', ADVADS_SLUG);
+							$css = 'error';
                         }
+						$_SESSION['gadsense']['admin_notice'] = array(
+							'msg' => $msg,
+							'class' => $css,
+						);
                         break;
                     default :
                 }
@@ -120,7 +122,7 @@ if (!class_exists('Gadsense_Admin')) {
 				);
 
                 // Allow modifications of script files to enqueue
-                $scripts = apply_filters('gadsense_ad_param_script', $scripts);
+                $scripts = apply_filters('advanced-ads-gadsense-ad-param-script', $scripts);
 
                 foreach ($scripts as $handle => $value) {
                     if (empty($handle)) {
@@ -138,7 +140,7 @@ if (!class_exists('Gadsense_Admin')) {
                 $styles = array();
 
                 // Allow modifications of default style files to enqueue
-                $styles = apply_filters('gadsense_ad_param_style', $styles);
+                $styles = apply_filters('advanced-ads-gadsense-ad-param-style', $styles);
 
                 foreach ($styles as $handle => $value) {
                     if (!isset($value['path']) ||

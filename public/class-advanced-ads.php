@@ -89,6 +89,8 @@ class Advanced_Ads {
      */
     private function __construct() {
 
+        $options = $this->options();
+
         // Load plugin text domain
         add_action('plugins_loaded', array($this, 'load_plugin_textdomain'));
 
@@ -119,7 +121,8 @@ class Advanced_Ads {
         // register hooks and filters for auto ad injection
         add_action('wp_head', array($this, 'inject_header'), 20);
         add_action('wp_footer', array($this, 'inject_footer'), 20);
-        add_filter('the_content', array($this, 'inject_content'), 100);
+        $content_injection_priority = (isset($options['content-injection-priority'])) ? absint($options['content-injection-priority']) : 100;
+        add_filter('the_content', array($this, 'inject_content'), $content_injection_priority);
     }
 
     /**

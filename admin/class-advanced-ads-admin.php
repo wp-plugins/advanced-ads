@@ -403,7 +403,7 @@ class Advanced_Ads_Admin {
             return;
         }
         $ad = new Advads_Ad($post->ID);
-        
+
         require_once('views/ad_info.php');
     }
 
@@ -609,7 +609,7 @@ class Advanced_Ads_Admin {
 		$hook,
 		'advanced_ads_setting_section'
 	);
- 	// add setting fields for advanced ads
+ 	// add setting fields for advanced js
  	add_settings_field(
 		'activate-advanced-js',
 		__('Use advanced JavaScript', ADVADS_SLUG),
@@ -617,6 +617,17 @@ class Advanced_Ads_Admin {
 		$hook,
 		'advanced_ads_setting_section'
 	);
+ 	// add setting fields for content injection priority
+ 	add_settings_field(
+		'content-injection-priority',
+		__('Priority of content injection filter', ADVADS_SLUG),
+		array($this, 'render_settings_content_injection_priority'),
+		$hook,
+		'advanced_ads_setting_section'
+	);
+
+        // hook for additional settings from add-ons
+        do_action('advanced-ads-settings-init', $hook);
     }
 
     /**
@@ -689,6 +700,19 @@ class Advanced_Ads_Admin {
     }
 
     /**
+     * render setting for content injection priority
+     *
+     * @since 1.4.1
+     */
+    public function render_settings_content_injection_priority(){
+        $options = Advanced_Ads::get_instance()->options();
+        $priority = (!empty($options['content-injection-priority'])) ? absint($options['content-injection-priority']) : 100;
+
+        echo '<input id="advanced-ads-content-injection-priority" type="number" value="'.$priority.'" name="'.ADVADS_SLUG.'[content-injection-priority]" size="3"/>';
+        echo '<p class="description">'. __('Play with this value in order to change the priority of the injected ads compared to other auto injected elements in the post content.', ADVADS_SLUG) .'</p>';
+    }
+
+    /**
      * add heading for extra column of ads list
      * remove the date column
      *
@@ -751,9 +775,9 @@ class Advanced_Ads_Admin {
             if (!empty($ad->width) || !empty($ad->height)) {
                 $size = sprintf('%d x %d', $ad->width, $ad->height);
             }
-			
-			$size = apply_filters('advanced-ads-ad-size', $size, $ad);
-				
+
+			$size = apply_filters('advanced-ads-list-ad-size', $size, $ad);
+
             $view = plugin_dir_path(__FILE__) . 'views/ad_list_details_column.php';
             if (is_file($view)) {
                 require( $view );

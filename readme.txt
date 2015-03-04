@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.1.1
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,7 +65,7 @@ global conditions
 
 display ads by conditions based on the visitor
 
-* all devices, mobile only or exclude mobile users
+* display ads on all devices, mobile only or exclude mobile users
 * hide all ads from logged in users based on their role
 
 = ad injection =
@@ -87,6 +87,7 @@ There is an ad type dedicated to Google AdSense that supports:
 
 * switch ad sizes
 * switch between normal and responsive
+* automatic limit 3 AdSense ads according to AdSense terms of service (can be disabled)
 * (more coming soon)
 
 = based on WordPress standards =
@@ -164,6 +165,15 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 3. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.4.1 =
+
+* COOL: limitation of AdSense ads prevents you from breaking the AdSense terms of service (can be disabled)
+* added option to change the content injection priority
+* load ad output for content injection only, if injection is possible
+* added hook `advanced-ads-settings-init` to add new settings
+* renamed multiple hooks in the AdSense module
+* updated German translation
 
 = 1.4.0 =
 
