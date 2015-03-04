@@ -25,7 +25,7 @@ class Advanced_Ads {
      * @var     string
      */
 
-    const VERSION = '1.2.6';
+    const VERSION = '1.4.0';
 
     /**
      * post type slug
@@ -34,14 +34,6 @@ class Advanced_Ads {
      * @var     string
      */
     const POST_TYPE_SLUG = 'advanced_ads';
-
-    /**
-     * text domain
-     *
-     * @since   1.0.0
-     * @var     string
-     */
-    const TD = 'advanced-ads';
 
     /**
      * ad group slug
@@ -72,6 +64,11 @@ class Advanced_Ads {
     protected static $instance = null;
 
     /**
+     * array with ads currently delivered in the frontend
+     */
+    public $current_ads = array();
+
+    /**
      * ad types
      */
     public $ad_types = array();
@@ -92,8 +89,10 @@ class Advanced_Ads {
      */
     private function __construct() {
 
+        $options = $this->options();
+
         // Load plugin text domain
-        add_action('init', array($this, 'load_plugin_textdomain'));
+        add_action('plugins_loaded', array($this, 'load_plugin_textdomain'));
 
         // activate plugin when new blog is added on multisites
         add_action('wpmu_new_blog', array($this, 'activate_new_site'));
@@ -105,6 +104,9 @@ class Advanced_Ads {
         // initialize plugin specific functions
         add_action( 'init', array( $this, 'init' ) );
         register_activation_hook(__FILE__, array($this,'post_types_rewrite_flush'));
+
+        // register hook for global constants
+        add_action('wp', array($this, 'set_disabled_constant'));
 
         // add short codes
         add_shortcode('the_ad', array($this, 'shortcode_display_ad'));
@@ -119,7 +121,8 @@ class Advanced_Ads {
         // register hooks and filters for auto ad injection
         add_action('wp_head', array($this, 'inject_header'), 20);
         add_action('wp_footer', array($this, 'inject_footer'), 20);
-        add_filter('the_content', array($this, 'inject_content'), 20);
+        $content_injection_priority = (isset($options['content-injection-priority'])) ? absint($options['content-injection-priority']) : 100;
+        add_filter('the_content', array($this, 'inject_content'), $content_injection_priority);
     }
 
     /**
@@ -132,6 +135,48 @@ class Advanced_Ads {
         $this->create_post_types();
         // set ad types array
         $this->set_ad_types();
+    }
+
+    /**
+     * set global constant that prevents ads from being displayed on the current page view
+     *
+     * @since 1.3.10
+     */
+    public function set_disabled_constant(){
+
+        global $post;
+
+        // don't set the constant if already defined
+        if(defined('ADVADS_ADS_DISABLED')) return;
+
+        $options = $this->options();
+
+        // check if ads are disabled completely
+        if(!empty($options['disabled-ads']['all'])){
+            define('ADVADS_ADS_DISABLED', true);
+            return;
+        }
+
+        // check if ads are disabled from 404 pages
+        if(is_404() && !empty($options['disabled-ads']['404'])){
+            define('ADVADS_ADS_DISABLED', true);
+            return;
+        }
+
+        // check if ads are disabled from non singular pages (often = archives)
+        if(!is_singular() && !empty($options['disabled-ads']['archives'])){
+            define('ADVADS_ADS_DISABLED', true);
+            return;
+        }
+
+        // check if ads are disabled on the current page
+        if(is_singular() && isset($post->ID)){
+            $post_ad_options = get_post_meta( $post->ID, '_advads_ad_settings', true );
+
+            if(!empty($post_ad_options['disable_ads'])){
+                define('ADVADS_ADS_DISABLED', true);
+            }
+        };
     }
 
     /**
@@ -291,10 +336,8 @@ class Advanced_Ads {
      */
     public function load_plugin_textdomain() {
 
-        $domain = self::TD;
-        $locale = apply_filters('advanced-ads-plugin-locale', get_locale(), $domain);
-
-        load_textdomain($domain, trailingslashit(WP_LANG_DIR) . $domain . '/' . $domain . '-' . $locale . '.mo');
+        // $locale = apply_filters('advanced-ads-plugin-locale', get_locale(), $domain);
+        load_plugin_textdomain(ADVADS_SLUG, false, ADVADS_BASE_DIR . '/languages');
     }
 
     /**
@@ -303,7 +346,7 @@ class Advanced_Ads {
      * @since    1.0.0
      */
     public function enqueue_styles() {
-        wp_enqueue_style($this->plugin_slug . '-plugin-styles', plugins_url('assets/css/public.css', __FILE__), array(), self::VERSION);
+        // wp_enqueue_style($this->plugin_slug . '-plugin-styles', plugins_url('assets/css/public.css', __FILE__), array(), self::VERSION);
     }
 
     /**
@@ -352,7 +395,7 @@ class Advanced_Ads {
      */
     function setup_default_ad_types($types){
         $types['plain'] = new Advads_Ad_Type_Plain(); /* plain text and php code */
-        // $types['content'] = new Advads_Ad_Type_Content(); /* rich content editor */
+        $types['content'] = new Advads_Ad_Type_Content(); /* rich content editor */
         return $types;
     }
 
@@ -373,24 +416,6 @@ class Advanced_Ads {
         }
 
         return $ads_by_conditions;
-    }
-
-    /**
-     * get the array with global ad injections
-     *
-     * @since 1.1.0
-     * @return arr $ad_injections
-     * @todo make static
-     */
-    public function get_ad_injections_array(){
-
-        $ad_injections = get_option('advads-ads-injections', array());
-        // load default array if not saved yet
-        if(!is_array($ad_injections)){
-            $ad_injections = array();
-        }
-
-        return $ad_injections;
     }
 
     /**
@@ -486,18 +511,18 @@ class Advanced_Ads {
      */
     protected function get_group_taxonomy_params(){
         $labels = array(
-            'name'              => _x('Ad Groups', 'ad group general name', $this->plugin_slug),
-            'singular_name'     => _x('Ad Group', 'ad group singular name', $this->plugin_slug),
-            'search_items'      => __('Search Ad Groups', $this->plugin_slug),
-            'all_items'         => __('All Ad Groups', $this->plugin_slug),
-            'parent_item'       => __('Parent Ad Groups', $this->plugin_slug),
-            'parent_item_colon' => __('Parent Ad Groups:', $this->plugin_slug),
-            'edit_item'         => __('Edit Ad Group', $this->plugin_slug),
-            'update_item'       => __('Update Ad Group', $this->plugin_slug),
-            'add_new_item'      => __('Add New Ad Group', $this->plugin_slug),
-            'new_item_name'     => __('New Ad Groups Name', $this->plugin_slug),
-            'menu_name'         => __('Groups', $this->plugin_slug),
-            'not_found'         => __('No Ad Group found', $this->plugin_slug),
+            'name'              => _x('Ad Groups', 'ad group general name', ADVADS_SLUG),
+            'singular_name'     => _x('Ad Group', 'ad group singular name', ADVADS_SLUG),
+            'search_items'      => __('Search Ad Groups', ADVADS_SLUG),
+            'all_items'         => __('All Ad Groups', ADVADS_SLUG),
+            'parent_item'       => __('Parent Ad Groups', ADVADS_SLUG),
+            'parent_item_colon' => __('Parent Ad Groups:', ADVADS_SLUG),
+            'edit_item'         => __('Edit Ad Group', ADVADS_SLUG),
+            'update_item'       => __('Update Ad Group', ADVADS_SLUG),
+            'add_new_item'      => __('Add New Ad Group', ADVADS_SLUG),
+            'new_item_name'     => __('New Ad Groups Name', ADVADS_SLUG),
+            'menu_name'         => __('Groups', ADVADS_SLUG),
+            'not_found'         => __('No Ad Group found', ADVADS_SLUG),
         );
 
         $args = array(
@@ -522,31 +547,31 @@ class Advanced_Ads {
      */
     protected function get_post_type_params() {
         $labels = array(
-            'name' => __('Ads', $this->plugin_slug),
-            'singular_name' => __('Ad', $this->plugin_slug),
-            'add_new' => 'New Ad',
-            'add_new_item' => __('Add New Ad', $this->plugin_slug),
-            'edit' => __('Edit', $this->plugin_slug),
-            'edit_item' => __('Edit Ad', $this->plugin_slug),
-            'new_item' => __('New Ad', $this->plugin_slug),
-            'view' => __('View', $this->plugin_slug),
-            'view_item' => __('View the Ad', $this->plugin_slug),
-            'search_items' => __('Search Ads', $this->plugin_slug),
-            'not_found' => __('No Ads found', $this->plugin_slug),
-            'not_found_in_trash' => __('No Ads found in Trash', $this->plugin_slug),
-            'parent' => __('Parent Ad', $this->plugin_slug),
+            'name' => __('Ads', ADVADS_SLUG),
+            'singular_name' => __('Ad', ADVADS_SLUG),
+            'add_new' => __('New Ad', ADVADS_SLUG),
+            'add_new_item' => __('Add New Ad', ADVADS_SLUG),
+            'edit' => __('Edit', ADVADS_SLUG),
+            'edit_item' => __('Edit Ad', ADVADS_SLUG),
+            'new_item' => __('New Ad', ADVADS_SLUG),
+            'view' => __('View', ADVADS_SLUG),
+            'view_item' => __('View the Ad', ADVADS_SLUG),
+            'search_items' => __('Search Ads', ADVADS_SLUG),
+            'not_found' => __('No Ads found', ADVADS_SLUG),
+            'not_found_in_trash' => __('No Ads found in Trash', ADVADS_SLUG),
+            'parent' => __('Parent Ad', ADVADS_SLUG),
         );
 
         $post_type_params = array(
             'labels' => $labels,
-            'singular_label' => __('Ad', $this->plugin_slug),
+            'singular_label' => __('Ad', ADVADS_SLUG),
             'public' => false,
             'show_ui' => true,
             'show_in_menu' => false,
             'hierarchical' => false,
             'capability_type' => 'page',
             'has_archive' => false,
-            'rewrite' => array('slug' => $this->plugin_slug),
+            'rewrite' => array('slug' => ADVADS_SLUG),
             'query_var' => true,
             'supports' => array('title'),
             'taxonomies' => array(self::AD_GROUP_TAXONOMY)
@@ -587,10 +612,10 @@ class Advanced_Ads {
     public function log($message) {
         if (WP_DEBUG === true) {
             if (is_array($message) || is_object($message)) {
-                error_log('Advanced Ads Error following:', $this->plugin_slug);
+                error_log('Advanced Ads Error following:', ADVADS_SLUG);
                 error_log(print_r($message, true));
             } else {
-                $message = sprintf(__('Advanced Ads Error: %s', $this->plugin_slug), $message);
+                $message = sprintf(__('Advanced Ads Error: %s', ADVADS_SLUG), $message);
                 error_log($message);
             }
         }
@@ -623,24 +648,6 @@ class Advanced_Ads {
                 echo Advads_Ad_Placements::output($_placement_id);
             }
         }
-
-        /* FROM HERE, THE CODE IS DEPRECATED – MOVE AUTO INJECTED ADS TO PLACEMENTS */
-        // get information about injected ads
-        $injections = get_option('advads-ads-injections', array());
-        if(isset($injections['header']) && is_array($injections['header'])){
-            $ads = $injections['header'];
-            // randomize ads
-            shuffle($ads);
-            // check ads one by one for being able to be displayed on this spot
-            foreach ($ads as $_ad_id) {
-                // load the ad object
-                $ad = new Advads_Ad($_ad_id);
-                if ($ad->can_display()) {
-                    // display the ad
-                    echo $ad->output();
-                }
-            }
-        }
     }
 
     /**
@@ -655,24 +662,6 @@ class Advanced_Ads {
                 echo Advads_Ad_Placements::output($_placement_id);
             }
         }
-
-        /* FROM HERE, THE CODE IS DEPRECATED – MOVE AUTO INJECTED ADS TO PLACEMENTS */
-        // get information about injected ads
-        $injections = get_option('advads-ads-injections', array());
-        if(isset($injections['footer']) && is_array($injections['footer'])){
-            $ads = $injections['footer'];
-            // randomize ads
-            shuffle($ads);
-            // check ads one by one for being able to be displayed on this spot
-            foreach ($ads as $_ad_id) {
-                // load the ad object
-                $ad = new Advads_Ad($_ad_id);
-                if ($ad->can_display()) {
-                    // display the ad
-                    echo $ad->output();
-                }
-            }
-        }
     }
 
     /**
@@ -683,11 +672,15 @@ class Advanced_Ads {
      * @param str $content post content
      */
     public function inject_content($content = ''){
-        // run only on single pages
-        if(!is_singular(array('post', 'page'))) return $content;
+        // run only on single pages of public post types
+        $public_post_types = get_post_types(array('public' => true, 'publicly_queryable' => true), 'names', 'or');
+
+        if(!is_singular($public_post_types)) return $content;
 
         $placements = get_option('advads-ads-placements', array());
         foreach($placements as $_placement_id => $_placement){
+            if(empty($_placement['item'])) continue;
+
             if(isset($_placement['type']) && $_placement['type'] == 'post_top'){
                 $content = Advads_Ad_Placements::output($_placement_id) . $content;
             }
@@ -696,42 +689,6 @@ class Advanced_Ads {
             }
             if(isset($_placement['type']) && $_placement['type'] == 'post_content'){
                 $content = Advads_Ad_Placements::inject_in_content($_placement_id, $_placement['options'], $content);
-            }
-        }
-
-        /* FROM HERE, THE CODE IS DEPRECATED – MOVE AUTO INJECTED ADS TO PLACEMENTS */
-        // get information about injected ads
-        $injections = get_option('advads-ads-injections', array());
-
-        // display ad before the content
-        if(isset($injections['post_start']) && is_array($injections['post_start'])){
-            $ads = $injections['post_start'];
-            // randomize ads
-            shuffle($ads);
-            // check ads one by one for being able to be displayed on this spot
-            foreach ($ads as $_ad_id) {
-                // load the ad object
-                $ad = new Advads_Ad($_ad_id);
-                if ($ad->can_display()) {
-                    // display the ad
-                    $content = $ad->output() . $content;
-                }
-            }
-        }
-
-        // display ad after the content
-        if(isset($injections['post_end']) && is_array($injections['post_end'])){
-            $ads = $injections['post_end'];
-            // randomize ads
-            shuffle($ads);
-            // check ads one by one for being able to be displayed on this spot
-            foreach ($ads as $_ad_id) {
-                // load the ad object
-                $ad = new Advads_Ad($_ad_id);
-                if ($ad->can_display()) {
-                    // display the ad
-                    $content .= $ad->output();
-                }
             }
         }
 

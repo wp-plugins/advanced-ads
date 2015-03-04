@@ -52,7 +52,7 @@ class Advads_Ad_Placements {
                 'description' => __('Injected into the post content. You can choose the paragraph after which the ad content is displayed.', ADVADS_SLUG),
                 ),
         );
-        return apply_filters('advads-placement-types', $types);
+        return apply_filters('advanced-ads-placement-types', $types);
     }
 
     /**
@@ -71,7 +71,7 @@ class Advads_Ad_Placements {
 
         // check if slug already exists
         if ($new_placement['slug'] == '')
-            return __('Slug can’t be empty.', ADVADS_SLUG);
+            return __('Slug can\'t be empty.', ADVADS_SLUG);
         if (isset($placements[$new_placement['slug']]))
             return __('Slug already exists.', ADVADS_SLUG);
 
@@ -137,19 +137,36 @@ class Advads_Ad_Placements {
     static function items_for_select() {
         $select = array();
 
-        // load all ads
-        $ads = Advanced_Ads::get_ads();
-        foreach ($ads as $_ad) {
-            $select['ads']['ad_' . $_ad->ID] = $_ad->post_title;
-        }
-
         // load all ad groups
         $groups = Advanced_Ads::get_ad_groups();
         foreach ($groups as $_group) {
             $select['groups']['group_' . $_group->term_id] = $_group->name;
         }
 
+        // load all ads
+        $ads = Advanced_Ads::get_ads(array('orderby' => 'name', 'order' => 'ASC'));
+        foreach ($ads as $_ad) {
+            $select['ads']['ad_' . $_ad->ID] = $_ad->post_title;
+        }
+
         return $select;
+    }
+
+    /**
+     * get html tags for content injection
+     *
+     * @since 1.3.5
+     * @return arr $tags array with tags that can be used for content injection
+     */
+    static function tags_for_content_injection(){
+        $tags = array(
+            'p' => sprintf(__('paragraph (%s)', ADVADS_SLUG), '&lt;p&gt;'),
+            'h2' => sprintf(__('headline 2 (%s)', ADVADS_SLUG), '&lt;h2&gt;'),
+            'h3' => sprintf(__('headline 3 (%s)', ADVADS_SLUG), '&lt;h3&gt;'),
+            'h4' => sprintf(__('headline 4 (%s)', ADVADS_SLUG), '&lt;h4&gt;'),
+        );
+
+        return $tags;
     }
 
     /**
@@ -175,9 +192,26 @@ class Advads_Ad_Placements {
 
             // return either ad or group content
             if ($_item[0] == 'ad') {
-                return get_ad($_item_id);
+                // add the placement to the global output array
+                $advads = Advanced_Ads::get_instance();
+                $advads->current_ads[] = array('type' => 'placement', 'id' => $id, 'title' => $placements[$id]['name']);
+
+                // create class from placement id, but not, if header injection
+                if(isset($placements[$id]['type']) && $placements[$id]['type'] == 'header'){
+                    $ad_args = array();
+                } else {
+                    $class = 'advads-' . $id;
+                    $ad_args = array('output' => array('class' => array($class)));
+                }
+                return get_ad($_item_id, $ad_args);
+
             } elseif ($_item[0] == 'group') {
+                // add the placement to the global output array
+                $advads = Advanced_Ads::get_instance();
+                $advads->current_ads[] = array('type' => 'placement', 'id' => $id, 'title' => $placements[$id]['name']);
+
                 return get_ad_group($_item_id);
+
             }
         } else {
             return;
@@ -197,26 +231,51 @@ class Advads_Ad_Placements {
      * @link inspired by http://www.wpbeginner.com/wp-tutorials/how-to-insert-ads-within-your-post-content-in-wordpress/
      */
     static function inject_in_content($placement_id, $options, $content) {
-        $closing_p = '</p>';
+
+        $tag = (isset($options['tag'])) ? $options['tag'] : 'p';
+        $position = (isset($options['position'])) ? $options['position'] : 'after';
+
+        if($position == 'before'){
+            $tag = '<' . $tag . '>';
+        } else {
+            $tag = '</' . $tag . '>';
+        }
+
         $paragraph_id = isset($options['index']) ? $options['index'] : 1;
         $ad_content = Advads_Ad_Placements::output($placement_id);
+        $paragraphs = explode($tag, $content);
 
-        $paragraphs = explode($closing_p, $content);
         $offset = 0;
         $running = true;
         foreach ($paragraphs as $index => $paragraph) {
 
-            // check if current paragraph is empty and if so, increate offset
-            if($running && $index > 0 && trim(str_replace(array('<p>', '&nbsp;'), '', $paragraph)) == '')
+            // check if current paragraph is empty and if so, create offset
+            if($running && $index > 0 && trim(str_replace(array($tag, '&nbsp;'), '', $paragraph)) == ''){
                     $offset++;
-
-            if (trim($paragraph)) {
-                $paragraphs[$index] .= $closing_p;
+            } elseif($index == 0 && trim(str_replace(array($tag, '&nbsp;'), '', $paragraph)) == ''){
+                // if the current paragraph is empty (because the tag was the first one in the content) attach the tag
+                $paragraphs[$index] = $tag;
             }
 
+
+            // insert tag in case the ads position is after it
+            if (trim($paragraph) && $position == 'after'){
+                // not on the last paragraph
+                if($index+1 != count($paragraphs))
+                    $paragraphs[$index] .= $tag;
+            }
+
+            // insert ad content
             if ($paragraph_id + $offset == $index + 1) {
                 $paragraphs[$index] .= $ad_content;
                 $running = false;
+            }
+
+            // insert tag in case the ads position is before it
+            if (trim($paragraph) && $position == 'before'){
+                // not on the last paragraph
+                if($index+1 != count($paragraphs))
+                    $paragraphs[$index] = $paragraphs[$index] . $tag;
             }
         }
         return implode('', $paragraphs);
