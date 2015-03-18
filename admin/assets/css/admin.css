@@ -1,6 +1,7 @@
 /**
 * DASHBOARD WIDGET
 */
+#advads_dashboard_widget h4 { margin-top: .5em; }
 #advads_dashboard_widget a.rsswidget { font-weight: 400; }
 #advads_dashboard_widget .rss-widget ul li { margin-bottom: 6px; }
 

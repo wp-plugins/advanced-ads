@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.1.1
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -165,6 +165,14 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 3. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.4.2 =
+
+* COOL: [vote for and suggest features](http://wpadvancedads.com/advancedads/feature-requests/)
+* switching from an existing plain text ad with AdSense code into the AdSense ad type gets the right options automatically
+* added Advanced Ads Tutorials rss to dashboard widget
+
+Need ad analytics and impression tracking? Try the [tracking add-on](http://wpadvancedads.com/ad-tracking/).
 
 = 1.4.1 =
 

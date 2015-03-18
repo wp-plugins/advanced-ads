@@ -242,7 +242,6 @@ class Advads_Ad_Placements {
         }
 
         $paragraph_id = isset($options['index']) ? $options['index'] : 1;
-        $ad_content = Advads_Ad_Placements::output($placement_id);
         $paragraphs = explode($tag, $content);
 
         $offset = 0;
@@ -267,6 +266,7 @@ class Advads_Ad_Placements {
 
             // insert ad content
             if ($paragraph_id + $offset == $index + 1) {
+                $ad_content = Advads_Ad_Placements::output($placement_id);
                 $paragraphs[$index] .= $ad_content;
                 $running = false;
             }

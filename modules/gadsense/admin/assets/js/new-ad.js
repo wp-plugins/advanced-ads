@@ -15,39 +15,25 @@
 		$(document).on('click', '#submit-pastecode', function(ev){
 			ev.preventDefault();
 			var rawContent = $('#pastecode-content').val();
-			rawContent = rawContent.trim();
-			var theAd = {};
-			var theContent = $('<div />').html(rawContent);
-			var adByGoogle = theContent.find('ins');
-			theAd.slotId = adByGoogle.attr('data-ad-slot');
-			theAd.pubId = ''; 
-			if ('undefined' != typeof(adByGoogle.attr('data-ad-client'))) {
-				theAd.pubId = adByGoogle.attr('data-ad-client').substr(3);
-			}
-			if ('' != theAd.slotId && '' != theAd.pubId) {
-				theAd.display = adByGoogle.css('display');
-				theAd.format = adByGoogle.attr('data-ad-format');
-				theAd.style = adByGoogle.attr('style');
-				
-				if ('undefined' == typeof(theAd.format) && -1 != theAd.style.indexOf('width')) {
-					/* normal ad */
-					theAd.type = 'normal';
-					theAd.width = adByGoogle.css('width').replace('px', '');
-					theAd.height = adByGoogle.css('height').replace('px', '');
-					setDetailsFromAdCode(theAd);
-					return;
-				}
-				
-				if ('undefined' != typeof(theAd.format) && 'auto' == theAd.format) {
-					/* Responsive ad, auto resize */
-					theAd.type = 'responsive';
-					setDetailsFromAdCode(theAd)
-					return;
-				}
-			}
-			// Not recognized ad code
-			$('#pastecode-msg').append($('<p />').css('color', 'red').html(gadsenseData.msg.unknownAd));
 			
+			var parseResult = parseAdContent(rawContent);
+			if (false === parseResult) {
+				// Not recognized ad code
+				$('#pastecode-msg').append($('<p />').css('color', 'red').html(gadsenseData.msg.unknownAd));
+			} else {
+				setDetailsFromAdCode(parseResult);
+			}
+			
+		});
+		
+		$(document).on('click', '#advanced-ad-type-adsense', function(){
+			$('#advanced-ads-ad-parameters').on('paramloaded', function(){
+				var content = $('#advanced-ads-ad-parameters input[name="advanced_ad[content]"]').val();
+				var parseResult = parseAdContent(content);
+				if (false !== parseResult) {
+					setDetailsFromAdCode(parseResult);
+				}
+			});
 		});
 		
         $(document).on('change', '#unit-type, #unit-code', function (ev) {
@@ -72,7 +58,39 @@
 			$('#pastecode-content').val('');
 			$('#pastecode-msg').empty();
 		});
+		
+		function parseAdContent(content) {
+			var rawContent = ('undefined' != typeof(content))? content.trim() : '';
+			var theAd = {};
+			var theContent = $('<div />').html(rawContent);
+			var adByGoogle = theContent.find('ins');
+			theAd.slotId = adByGoogle.attr('data-ad-slot');
+			theAd.pubId = ''; 
+			if ('undefined' != typeof(adByGoogle.attr('data-ad-client'))) {
+				theAd.pubId = adByGoogle.attr('data-ad-client').substr(3);
+			}
+			if ('' != theAd.slotId && '' != theAd.pubId) {
+				theAd.display = adByGoogle.css('display');
+				theAd.format = adByGoogle.attr('data-ad-format');
+				theAd.style = adByGoogle.attr('style');
 				
+				if ('undefined' == typeof(theAd.format) && -1 != theAd.style.indexOf('width')) {
+					/* normal ad */
+					theAd.type = 'normal';
+					theAd.width = adByGoogle.css('width').replace('px', '');
+					theAd.height = adByGoogle.css('height').replace('px', '');
+					return theAd;
+				}
+				
+				if ('undefined' != typeof(theAd.format) && 'auto' == theAd.format) {
+					/* Responsive ad, auto resize */
+					theAd.type = 'responsive';
+					return theAd;
+				}
+			}
+			return false;
+		}
+		
 		/**
 		 * Set ad parameters fields from the result of parsing ad code
 		 */

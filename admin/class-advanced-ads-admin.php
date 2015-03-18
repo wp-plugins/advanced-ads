@@ -883,14 +883,25 @@ class Advanced_Ads_Admin {
      */
     public function dashboard_widget_function($post, $callback_args){
         // load ad optimization feed
-        $feed = array(
-            'link'         => 'http://webgilde.com/en/ad-optimization/',
-            'url'          => 'http://webgilde.com/en/ad-optimization/feed/',
-            'title'        => __('Tutorials and News'),
-            'items'        => 3,
-            'show_summary' => 0,
-            'show_author'  => 0,
-            'show_date'    => 0,
+        $feeds = array(
+            array(
+                'link'         => 'http://webgilde.com/en/ad-optimization/',
+                'url'          => 'http://webgilde.com/en/ad-optimization/feed/',
+                'title'        => __('From the ad optimization universe', ADVADS_SLUG),
+                'items'        => 3,
+                'show_summary' => 0,
+                'show_author'  => 0,
+                'show_date'    => 0,
+            ),
+            array(
+                'link'         => 'http://wpadvancedads.com/',
+                'url'          => 'http://wpadvancedads.com/feed/',
+                'title'        => __('Advanced Ads Tutorials', ADVADS_SLUG),
+                'items'        => 2,
+                'show_summary' => 0,
+                'show_author'  => 0,
+                'show_date'    => 0,
+            ),
         );
 
         // get number of ads
@@ -911,9 +922,8 @@ class Advanced_Ads_Admin {
         }
 
         // rss feed
-	echo '<h4>' . __('From the ad optimization universe', ADVADS_SLUG) . '</h4>';
         // $this->dashboard_widget_function_output('advads_dashboard_widget', $feed);
-        $this->dashboard_cached_rss_widget( 'advads_dashboard_widget', array($this, 'dashboard_widget_function_output'), array('advads' => $feed) );
+        $this->dashboard_cached_rss_widget( 'advads_dashboard_widget', array($this, 'dashboard_widget_function_output'), array('advads' => $feeds) );
     }
 
     /**
@@ -926,20 +936,20 @@ class Advanced_Ads_Admin {
      * @param array $check_urls RSS feeds
      * @return bool False on failure. True on success.
      */
-    function dashboard_cached_rss_widget( $widget_id, $callback, $feed = array() ) {
-        if ( empty($feed) ) {
+    function dashboard_cached_rss_widget( $widget_id, $callback, $feeds = array() ) {
+        if ( empty($feeds) ) {
             return;
         }
 
         $cache_key = 'dash_' . md5( $widget_id );
-        if ( false !== ( $output = get_transient( $cache_key ) ) ) {
+        /*if ( false !== ( $output = get_transient( $cache_key ) ) ) {
             echo $output;
             return true;
-        }
+        }*/
 
         if ( $callback && is_callable( $callback ) ) {
             ob_start();
-            call_user_func_array( $callback, $feed );
+            call_user_func_array( $callback, $feeds );
             set_transient( $cache_key, ob_get_flush(), 12 * HOUR_IN_SECONDS ); // Default lifetime in cache of 12 hours (same as the feeds)
         }
 
@@ -952,11 +962,13 @@ class Advanced_Ads_Admin {
      * @param string $widget_id Widget ID.
      * @param array  $feeds     Array of RSS feeds.
      */
-    function dashboard_widget_function_output( $feed ) {
-
-	echo '<div class="rss-widget">';
-        wp_widget_rss_output( $feed['url'], $feed );
-        echo "</div>";
+    function dashboard_widget_function_output( $feeds ) {
+        foreach($feeds as $_feed){
+            echo '<div class="rss-widget">';
+            echo '<h4>'.$_feed['title'].'</h4>';
+            wp_widget_rss_output( $_feed['url'], $_feed );
+            echo "</div>";
+        }
     }
 
 }
