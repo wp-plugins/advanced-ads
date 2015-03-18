@@ -9,14 +9,14 @@
  *
  * @since 1.0.0
  * @param int $id id of the ad (post)
- *
+ * @param arr $args additional arguments
  */
-function get_ad($id = 0){
+function get_ad($id = 0, $args = array()){
     $id = absint($id);
     if(empty($id)) return;
 
     // get ad
-    $ad = new Advads_Ad($id);
+    $ad = new Advads_Ad($id, $args);
 
     // check conditions
     if($ad->can_display())
@@ -28,10 +28,11 @@ function get_ad($id = 0){
  *
  * @since 1.0.0
  * @param int $id id of the ad (post)
+ * @param arr $args additional arguments
  */
-function the_ad($id = 0){
+function the_ad($id = 0, $args = array()){
 
-    echo get_ad($id);
+    echo get_ad($id, $args);
 
 }
 

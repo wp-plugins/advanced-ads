@@ -93,16 +93,18 @@
                 <h3><?php _e('Manual and Support', ADVADS_SLUG); ?></h3>
                 <p><?php _e('Need some help? These are your options', ADVADS_SLUG); ?></p>
                 <ul>
-                    <li><?php printf(__('Visit the <a href="%s">plugin homepage</a>', ADVADS_SLUG), 'http://wpadvancedads.com/advancedads/'); ?></li>
-                    <li><?php printf(__('Have a look into the <a href="%s">manual</a>', ADVADS_SLUG), 'http://wpadvancedads.com/advancedads/manual/'); ?></li>
-                    <li><?php printf(__('Ask a question to other users in the <a href="%s">wordpress.org forum</a>', ADVADS_SLUG), 'http://wordpress.org/plugins/advanced-ads/'); ?></li>
-                    <li><?php printf(__('<a href="%s">Hire the developer</a>', ADVADS_SLUG), 'http://webgilde.com/en/contact/'); ?></li>
+                    <li><?php printf(__('Visit the <a href="%s" target="_blank">plugin homepage</a>', ADVADS_SLUG), 'http://wpadvancedads.com/advancedads/'); ?></li>
+                    <li><?php printf(__('Have a look into the <a href="%s" target="_blank">manual</a>', ADVADS_SLUG), 'http://wpadvancedads.com/advancedads/manual/'); ?></li>
+                    <li><?php printf(__('Ask a question to other users in the <a href="%s" target="_blank">wordpress.org forum</a>', ADVADS_SLUG), 'http://wordpress.org/plugins/advanced-ads/'); ?></li>
+                    <li><?php printf(__('<a href="%s" target="_blank">Hire the developer</a>', ADVADS_SLUG), 'http://webgilde.com/en/contact/'); ?></li>
+                    <li><?php printf(__('Vote for a <a href="%s" target="_blank">feature</a>', ADVADS_SLUG), 'http://wpadvancedads.com/advancedads/feature-requests/'); ?></li>
                 </ul>
             </div>
             <div class="advads-box">
                 <h3><?php _e('Add-ons', ADVADS_SLUG); ?></h3>
                 <p><?php _e('Want to boost your ad income? Try these add-ons', ADVADS_SLUG); ?></p>
                 <ul>
+                    <li><a href="http://wpadvancedads.com/ad-tracking/?utm_campaign=advads&utm_medium=plugin&utm_source=overview" target="_blank">Ad Tracking and Analytics</a></li>
                     <li><a href="http://wpadvancedads.com/responsive-ads/?utm_campaign=advads&utm_medium=plugin&utm_source=overview" target="_blank">Responsive Ads</a></li>
                     <li><a href="http://wpadvancedads.com/layer-ads/?utm_campaign=advads&utm_medium=plugin&utm_source=overview" target="_blank">PopUp and Layer Ads</a></li>
                     <li><a href="http://wpadvancedads.com/sticky-ads/?utm_campaign=advads&utm_medium=plugin&utm_source=overview" target="_blank">Sticky Ads</a></li>
