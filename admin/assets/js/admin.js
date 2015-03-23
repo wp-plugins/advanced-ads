@@ -14,7 +14,7 @@ jQuery(document).ready(function ($) {
             success: function (data, textStatus, XMLHttpRequest) {
                 // toggle main content field
                 if (data) {
-                    $('#advanced-ads-ad-parameters').html(data);
+                    $('#advanced-ads-ad-parameters').html(data).trigger('paramloaded');
                 }
             },
             error: function (MLHttpRequest, textStatus, errorThrown) {
@@ -68,27 +68,29 @@ jQuery(document).ready(function ($) {
     });
     // register autocomplete to display condition posts
     var response = [];
-    $("#advads-display-conditions-individual-post").autocomplete({
-        source: function(request, callback){
-            var searchParam  = request.term;
-            advads_post_search(searchParam, callback);
-        },
-        minLength: 2,
-        select: function( event, ui ) {
-            // append new line with input fields
-            var newline = $('<li></li>');
-            $('<a class="remove" href="#">remove</a>').appendTo(newline);
-            $('<span>' + ui.item.label + '</span><input type="hidden" name="advanced_ad[conditions][postids][ids][]" value="'+ ui.item.value +'">').appendTo(newline);
-            newline.insertBefore('.advads-conditions-postids-list .show-search');
+    if($("#advads-display-conditions-individual-post").length){
+        $("#advads-display-conditions-individual-post").autocomplete({
+            source: function(request, callback){
+                var searchParam  = request.term;
+                advads_post_search(searchParam, callback);
+            },
+            minLength: 2,
+            select: function( event, ui ) {
+                // append new line with input fields
+                var newline = $('<li></li>');
+                $('<a class="remove" href="#">remove</a>').appendTo(newline);
+                $('<span>' + ui.item.label + '</span><input type="hidden" name="advanced_ad[conditions][postids][ids][]" value="'+ ui.item.value +'">').appendTo(newline);
+                newline.insertBefore('.advads-conditions-postids-list .show-search');
 
-            // show / hide other elements
-            $('#advads-display-conditions-individual-post').hide();
-            $('.advads-conditions-postids-list .show-search a').show();
-        },
-        close: function( event, ui ) {
-            $('#advads-display-conditions-individual-post').val('');
-        }
-    });
+                // show / hide other elements
+                $('#advads-display-conditions-individual-post').hide();
+                $('.advads-conditions-postids-list .show-search a').show();
+            },
+            close: function( event, ui ) {
+                $('#advads-display-conditions-individual-post').val('');
+            }
+        });
+    };
 
     // remove individual posts from the display conditions post list
     $(document).on('click', '.advads-conditions-postids-list .remove', function(e){
