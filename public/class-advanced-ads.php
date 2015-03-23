@@ -716,13 +716,13 @@ class Advanced_Ads {
      * load all ad groups
      *
      * @since 1.1.0
+     * @param arr $args array with options
      * @return arr $groups array with ad groups
      * @link http://codex.wordpress.org/Function_Reference/get_terms
      */
-    static function get_ad_groups(){
-        $args = array(
-            'hide_empty' => false // also display groups without any ads
-        );
+    static function get_ad_groups($args = array()){
+        $args['hide_empty'] = isset($args['hide_empty']) ? $args['hide_empty'] : false; // display groups without any ads
+
         return get_terms(Advanced_Ads::AD_GROUP_TAXONOMY, $args);
     }
 }

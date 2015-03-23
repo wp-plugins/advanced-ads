@@ -113,6 +113,10 @@ class Advanced_Ads_Admin {
         // register dashboard widget
         add_action('wp_dashboard_setup', array($this, 'add_dashboard_widget'));
 
+        // set 1 column layout on overview page as user and page option
+        add_filter( 'screen_layout_columns', array('AdvAds_Overview_Widgets_Callbacks', 'one_column_overview_page'));
+        add_filter( 'get_user_option_screen_layout_toplevel_page_advanced', array( 'AdvAds_Overview_Widgets_Callbacks', 'one_column_overview_page_user'));
+
     }
 
     /**
@@ -222,9 +226,17 @@ class Advanced_Ads_Admin {
      * @since    1.2.2
      */
     public function display_overview_page() {
-        $recent_ads = Advanced_Ads::get_ads();
-        $groups = Advanced_Ads::get_ad_groups();
-        $placements = Advanced_Ads::get_ad_placements_array();
+
+        $screen = get_current_screen();
+
+        require_once('includes/class-overview-widgets.php');
+
+        // set up overview widgets
+        AdvAds_Overview_Widgets_Callbacks::setup_overview_widgets($screen);
+
+        // convert from vertical order to horizontal
+        $screen->add_option('layout_columns', 1);
+
         include_once( 'views/overview.php' );
     }
 
@@ -874,7 +886,6 @@ class Advanced_Ads_Admin {
      * @since 1.3.12
      */
     public function add_dashboard_widget(){
-        // wp_add_dashboard_widget('advads_dashboard_widget', __('Ads Dashboard', ADVADS_SLUG), array($this, 'dashboard_widget_function'));
         add_meta_box('advads_dashboard_widget', __('Ads Dashboard', ADVADS_SLUG), array($this, 'dashboard_widget_function'), 'dashboard', 'side', 'high');
     }
 
@@ -970,5 +981,4 @@ class Advanced_Ads_Admin {
             echo "</div>";
         }
     }
-
 }

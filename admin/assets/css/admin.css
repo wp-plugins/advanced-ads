@@ -8,10 +8,11 @@
 /**
 * OVERVIEW PAGE
 */
-
-.advads-content-wrapper { display: table; width: 100%; }
-.advads-content-left { display: table-cell; min-width: 500px; vertical-align: top; }
-.advads-content-right { display: table-cell; width: 250px; padding: 0 0 0 20px; vertical-align: top; }
+.toplevel_page_advanced-ads #dashboard-widgets .postbox-container { width: 100% !important; }
+.toplevel_page_advanced-ads #dashboard-widgets .postbox-container .postbox { float: left; width: 24%; min-width: 310px; }
+.toplevel_page_advanced-ads #dashboard-widgets .postbox-container .postbox + .postbox { margin-left: 1%; }
+.toplevel_page_advanced-ads #dashboard-widgets .postbox-container .postbox ul.list { list-style: inside; }
+.toplevel_page_advanced-ads .metabox-holder .postbox-container .empty-container { display: none; }
 
 /**
 * AD EDIT PAGE

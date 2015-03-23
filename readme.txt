@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.1.1
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,7 @@ display ads by conditions based on the visitor
 
 * display ads on all devices, mobile only or exclude mobile users
 * hide all ads from logged in users based on their role
+* display ads by exact browser width with the [Responsive add-on](http://wpadvancedads.com/responsive-ads/)
 
 = ad injection =
 
@@ -88,6 +89,7 @@ There is an ad type dedicated to Google AdSense that supports:
 * switch ad sizes
 * switch between normal and responsive
 * automatic limit 3 AdSense ads according to AdSense terms of service (can be disabled)
+* assistant for exact sizes of responsive ads with the [Responsive add-on](http://wpadvancedads.com/responsive-ads/)
 * (more coming soon)
 
 = based on WordPress standards =
@@ -99,11 +101,12 @@ Learn more on the [plugin homepage](http://wpadvancedads.com).
 
 Localizations: English, German, Italien, Portuguese
 
-= Add-Ons =
-
-* Responsive Ads – load and display ads only for specific browser sizes - [Demo](http://wpadvancedads.com/responsive-ads/)
-* PopUp and Layer Ads – display ads and any other content in layers and popups - [Demo](http://wpadvancedads.com/layer-ads/)
-* Sticky Ads – increase click rates with fixed, sticky and anchor ads - [Demo](http://wpadvancedads.com/sticky-ads/demo/)
+> <strong>Add-Ons</strong>
+>
+> * Tracking – ad tracking and statistics – [more](http://wpadvancedads.com/ad-tracking/)
+> * Responsive Ads – create mobile ads or ads for specific browser sizes - [Demo](http://wpadvancedads.com/responsive-ads/)
+> * Sticky Ads – increase click rates with fixed, sticky, and anchor ads - [Demo](http://wpadvancedads.com/sticky-ads/demo/)
+> * PopUp and Layer Ads – display ads and other content in layers and popups - [Demo](http://wpadvancedads.com/layer-ads/)
 
 == Installation ==
 
@@ -165,6 +168,14 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 3. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.4.3 =
+
+* COOL: complete makeover of the plugin dashboard based on WP standards
+* added `advanced-ads-admin-overview-after` action hook to overview page
+* fixed display of only 10 posts for display conditions
+* minor optimization
+* updated German translation
 
 = 1.4.2 =
 

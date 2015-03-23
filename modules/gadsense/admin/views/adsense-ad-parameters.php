@@ -15,13 +15,9 @@ if ($is_responsive) {
 }
 ?>
 <div id="adsense-new-add-div-default">
-    <p><strong style="color: red;">BETA</strong> - <?php _e('This feature is still in beta. Please report issues to <a href="mailto:support@webgilde.com">support@webgilde.com</a>', ADVADS_SLUG); ?></p>
-	<input type="hidden" id="advads-ad-content-adsense" name="advanced_ad[content]" value="<?php echo esc_attr($json_content); ?>" />
-        <input type="hidden" name="unit_id" id="unit_id" value="<?php echo esc_attr($unit_id); ?>" />
-    <hr />
+    <input type="hidden" id="advads-ad-content-adsense" name="advanced_ad[content]" value="<?php echo esc_attr($json_content); ?>" />
+    <input type="hidden" name="unit_id" id="unit_id" value="<?php echo esc_attr($unit_id); ?>" />
     <?php printf(__('<a class="button" href="#" id="%s">Copy&Paste existing ad code</a>', ADVADS_SLUG), 'show-pastecode-div'); ?>
-    <p><strong><?php _e('-or-', ADVADS_SLUG); ?></strong></p>
-        <p><?php _e('enter ad details manually', ADVADS_SLUG); ?>:</p>
             <p id="adsense-ad-param-error"></p>
         <label>
             <?php _e('Ad Slot ID', ADVADS_SLUG); ?>&nbsp;:&nbsp;
@@ -34,7 +30,11 @@ if ($is_responsive) {
                 <option value="responsive" <?php selected($unit_type, 'responsive'); ?>><?php _e('Responsive', ADVADS_SLUG); ?></option>
             </select>
         </label>
+        <?php if(!defined('AAR_SLUG')) : ?>
+            <p><?php printf(__('Use the <a href="%s" target="_blank">Responsive add-on</a> in order to define the exact creative for each browser width.', ADVADS_SLUG), 'http://wpadvancedads.com/responsive-ads/'); ?></p>
+        <?php else : ?>
         <br />
+        <?php endif; ?>
 		<?php
 			$db = Gadsense_Data::get_instance();
 			$sizing_array = $db->get_responsive_sizing();
@@ -47,7 +47,6 @@ if ($is_responsive) {
 			<?php endforeach; ?>
 			</select>
 		</label>
-    </p>
 	<?php do_action('advanced-ads-gadsense-extra-ad-param', $extra_params, $content); ?>
 </div><!-- #adsense-new-add-div-default -->
 <div id="pastecode-div" style="display: none;">
