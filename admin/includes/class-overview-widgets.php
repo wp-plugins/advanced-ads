@@ -89,7 +89,7 @@ class AdvAds_Overview_Widgets_Callbacks {
 
         $next_steps = array();
 
-        if(count($recent_ads) > 0) :
+        if(count($recent_ads) == 0) :
             $next_steps[] = '<p><a class="button button-primary" href="' . admin_url('post-new.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG) .
             '">' . __('Create your first ad', ADVADS_SLUG) . '</a></p>';
         endif;
@@ -98,7 +98,7 @@ class AdvAds_Overview_Widgets_Callbacks {
                 '<p><a class="button button-primary" href="' . admin_url('admin.php?action=edit&page=advanced-ads-groups') .
                 '">' . __('Create your first group', ADVADS_SLUG) . '</a></p>';
         endif;
-        if(count($placements) > 0) :
+        if(count($placements) == 0) :
             $next_steps[] = '<p class="description">' . __('Ad Placements are the best way to manage where to display ads and groups.', ADVADS_SLUG) . '</p>'
                 . '<p><a class="button button-primary" href="' . admin_url('admin.php?action=edit&page=advanced-ads-placements') .
                 '">' . __('Create your first placement', ADVADS_SLUG) . '</a></p>';
