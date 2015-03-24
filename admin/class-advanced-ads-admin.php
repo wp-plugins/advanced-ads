@@ -7,7 +7,7 @@
  * @author    Thomas Maier <thomas.maier@webgilde.com>
  * @license   GPL-2.0+
  * @link      http://webgilde.com
- * @copyright 2013 Thomas Maier, webgilde GmbH
+ * @copyright 2013-2015 Thomas Maier, webgilde GmbH
  */
 
 /**
@@ -228,8 +228,6 @@ class Advanced_Ads_Admin {
     public function display_overview_page() {
 
         $screen = get_current_screen();
-
-        require_once('includes/class-overview-widgets.php');
 
         // set up overview widgets
         AdvAds_Overview_Widgets_Callbacks::setup_overview_widgets($screen);

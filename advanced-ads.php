@@ -12,7 +12,7 @@
  * Plugin Name:       Advanced Ads
  * Plugin URI:        http://wpadvancedads.com
  * Description:       Manage and optimize your ads in WordPress
- * Version:           1.4.3
+ * Version:           1.4.4
  * Author:            Thomas Maier
  * Author URI:        http://webgilde.com
  * Text Domain:       advanced-ads
@@ -72,8 +72,11 @@ if( defined('DOING_AJAX') ) {
 require_once( plugin_dir_path( __FILE__ ) . 'includes/array_ad_conditions.php' );
 
 if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
-	require_once( plugin_dir_path( __FILE__ ) . 'admin/class-advanced-ads-admin.php' );
-	add_action( 'plugins_loaded', array( 'Advanced_Ads_Admin', 'get_instance' ) );
+    // register all classes with callbacks and hooks here
+    require_once( plugin_dir_path( __FILE__ ) . 'admin/class-advanced-ads-admin.php' );
+    require_once( plugin_dir_path( __FILE__ ) . 'admin/includes/class-overview-widgets.php' );
+
+    add_action( 'plugins_loaded', array( 'Advanced_Ads_Admin', 'get_instance' ) );
 }
 
 // load public functions
