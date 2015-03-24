@@ -12,7 +12,7 @@
  * Plugin Name:       Advanced Ads
  * Plugin URI:        http://wpadvancedads.com
  * Description:       Manage and optimize your ads in WordPress
- * Version:           1.2.6
+ * Version:           1.4.4
  * Author:            Thomas Maier
  * Author URI:        http://webgilde.com
  * Text Domain:       advanced-ads
@@ -33,8 +33,10 @@ if( defined('ADVADS_BASE_PATH') ) {
 
 // load basic path to the plugin
 define('ADVADS_BASE_PATH', plugin_dir_path(__FILE__));
+define('ADVADS_BASE_URL', plugin_dir_url(__FILE__));
+define('ADVADS_BASE_DIR', dirname( plugin_basename( __FILE__ ) )); // directory of the plugin without any paths
 // general and global slug, e.g. to store options in WP, textdomain
-define('ADVADS_SLUG', 'advancedads');
+define('ADVADS_SLUG', 'advanced-ads');
 
 /*----------------------------------------------------------------------------*
  * Autoloading Objects
@@ -70,8 +72,11 @@ if( defined('DOING_AJAX') ) {
 require_once( plugin_dir_path( __FILE__ ) . 'includes/array_ad_conditions.php' );
 
 if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
-	require_once( plugin_dir_path( __FILE__ ) . 'admin/class-advanced-ads-admin.php' );
-	add_action( 'plugins_loaded', array( 'Advanced_Ads_Admin', 'get_instance' ) );
+    // register all classes with callbacks and hooks here
+    require_once( plugin_dir_path( __FILE__ ) . 'admin/class-advanced-ads-admin.php' );
+    require_once( plugin_dir_path( __FILE__ ) . 'admin/includes/class-overview-widgets.php' );
+
+    add_action( 'plugins_loaded', array( 'Advanced_Ads_Admin', 'get_instance' ) );
 }
 
 // load public functions
@@ -84,3 +89,11 @@ function advads_widget_init() {
 }
 
 add_action('widgets_init', 'advads_widget_init');
+
+// Load advads extensions
+require_once(ADVADS_BASE_PATH . 'modules/gadsense/main.php');
+
+// load modules, if they exist
+if(file_exists(ADVADS_BASE_PATH . 'modules/pro/advads_pro.php')){
+    require_once(ADVADS_BASE_PATH . 'modules/pro/advads_pro.php');
+}

@@ -16,4 +16,7 @@
         <label for="advanced-ad-visitor-mobile-no"><?php _e('not on mobile devices', ADVADS_SLUG); ?></label>
     </li>
 </ul>
-<?php do_action('advanced-ads-visitor-conditions-after', $ad);
+<?php do_action('advanced-ads-visitor-conditions-after', $ad); ?>
+<?php if(!defined('AAR_SLUG')) : ?>
+<p><?php printf(__('Define the exact browser width for which an ad should be visible using the <a href="%s" target="_blank">Responsive add-on</a>.', ADVADS_SLUG), 'http://wpadvancedads.com/responsive-ads/'); ?></p>
+<?php endif;

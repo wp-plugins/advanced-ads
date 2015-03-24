@@ -37,7 +37,7 @@ wp_nonce_field('update-group_' . $group_id); ?>
                 <tr class="form-field">
                     <th scope="row" valign="top"><label for="slug"><?php _ex('Slug', 'Taxonomy Slug'); ?></label></th>
                     <td><input name="slug" id="slug" type="text" value="<?php if (isset($tag->slug)) echo esc_attr(apply_filters('editable_slug', $tag->slug)); ?>" size="40" />
-                        <p class="description"><?php _e('An id-like string with only letters in lower case, numbers, and hyphens.', $this->plugin_slug); ?></p></td>
+                        <p class="description"><?php _e('An id-like string with only letters in lower case, numbers, and hyphens.', ADVADS_SLUG); ?></p></td>
                 </tr>
 <?php } ?>
 <?php if (is_taxonomy_hierarchical($taxonomy)) : ?>
@@ -65,9 +65,9 @@ wp_nonce_field('update-group_' . $group_id); ?>
         do_action($taxonomy . '_edit_form', $tag, $taxonomy);
 
         if($group_id == 0){
-            submit_button(__('Create new Ad Group', $this->plugin_slug));
+            submit_button(__('Create new Ad Group', ADVADS_SLUG));
         } else {
-            submit_button(__('Update', $this->plugin_slug));
+            submit_button(__('Update', ADVADS_SLUG));
         }
         ?>
     </form>
