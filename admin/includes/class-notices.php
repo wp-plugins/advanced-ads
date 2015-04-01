@@ -44,9 +44,6 @@ class AdvAds_Admin_Notices {
                 $_SESSION['advanced_ads_version_notices'] = $this->new_versions;
         }
 
-        print_r($this->versions);
-        die();
-
         if($this->new_versions == array()) return;
 
         // load update notices
