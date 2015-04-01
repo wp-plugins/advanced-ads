@@ -8,80 +8,80 @@
  */
 ;
 (function ($) {
-    "use strict";
-	
-    // On DOM ready
-    $(function () {
-		$(document).on('click', '#submit-pastecode', function(ev){
+	"use strict";
+
+	// On DOM ready
+	$(function () {
+		$( document ).on('click', '#submit-pastecode', function(ev){
 			ev.preventDefault();
-			var rawContent = $('#pastecode-content').val();
-			
-			var parseResult = parseAdContent(rawContent);
+			var rawContent = $( '#pastecode-content' ).val();
+
+			var parseResult = parseAdContent( rawContent );
 			if (false === parseResult) {
 				// Not recognized ad code
-				$('#pastecode-msg').append($('<p />').css('color', 'red').html(gadsenseData.msg.unknownAd));
+				$( '#pastecode-msg' ).append( $( '<p />' ).css( 'color', 'red' ).html( gadsenseData.msg.unknownAd ) );
 			} else {
-				setDetailsFromAdCode(parseResult);
+				setDetailsFromAdCode( parseResult );
 			}
-			
+
 		});
-		
-		$(document).on('click', '#advanced-ad-type-adsense', function(){
-			$('#advanced-ads-ad-parameters').on('paramloaded', function(){
-				var content = $('#advanced-ads-ad-parameters input[name="advanced_ad[content]"]').val();
-				var parseResult = parseAdContent(content);
+
+		$( document ).on('click', '#advanced-ad-type-adsense', function(){
+			$( '#advanced-ads-ad-parameters' ).on('paramloaded', function(){
+				var content = $( '#advanced-ads-ad-parameters input[name="advanced_ad[content]"]' ).val();
+				var parseResult = parseAdContent( content );
 				if (false !== parseResult) {
-					setDetailsFromAdCode(parseResult);
+					setDetailsFromAdCode( parseResult );
 				}
 			});
 		});
-		
-        $(document).on('change', '#unit-type, #unit-code', function (ev) {
-			var type = $('#unit-type').val();
-			if ('responsive' == type) {
-				$('#advanced-ads-ad-parameters-size').css('display', 'none');
-			} else if ('normal' == type) {
-				$('#advanced-ads-ad-parameters-size').css('display', 'block');
-			}
-			$(document).trigger('gadsenseUnitChanged');
-            window.gadsenseFormatAdContent();
-        });
 
-		$(document).on('click', '#show-pastecode-div', function(ev){
-			ev.preventDefault();
-			$('#pastecode-div').show(500);
+		$( document ).on('change', '#unit-type, #unit-code', function (ev) {
+			var type = $( '#unit-type' ).val();
+			if ('responsive' == type) {
+				$( '#advanced-ads-ad-parameters-size' ).css( 'display', 'none' );
+			} else if ('normal' == type) {
+				$( '#advanced-ads-ad-parameters-size' ).css( 'display', 'block' );
+			}
+			$( document ).trigger( 'gadsenseUnitChanged' );
+			window.gadsenseFormatAdContent();
 		});
-		
-		$(document).on('click', '#hide-pastecode-div', function(ev){
+
+		$( document ).on('click', '#show-pastecode-div', function(ev){
 			ev.preventDefault();
-			$('#pastecode-div').hide(500);
-			$('#pastecode-content').val('');
-			$('#pastecode-msg').empty();
+			$( '#pastecode-div' ).show( 500 );
 		});
-		
+
+		$( document ).on('click', '#hide-pastecode-div', function(ev){
+			ev.preventDefault();
+			$( '#pastecode-div' ).hide( 500 );
+			$( '#pastecode-content' ).val( '' );
+			$( '#pastecode-msg' ).empty();
+		});
+
 		function parseAdContent(content) {
 			var rawContent = ('undefined' != typeof(content))? content.trim() : '';
 			var theAd = {};
-			var theContent = $('<div />').html(rawContent);
-			var adByGoogle = theContent.find('ins');
-			theAd.slotId = adByGoogle.attr('data-ad-slot');
-			theAd.pubId = ''; 
-			if ('undefined' != typeof(adByGoogle.attr('data-ad-client'))) {
-				theAd.pubId = adByGoogle.attr('data-ad-client').substr(3);
+			var theContent = $( '<div />' ).html( rawContent );
+			var adByGoogle = theContent.find( 'ins' );
+			theAd.slotId = adByGoogle.attr( 'data-ad-slot' );
+			theAd.pubId = '';
+			if ('undefined' != typeof(adByGoogle.attr( 'data-ad-client' ))) {
+				theAd.pubId = adByGoogle.attr( 'data-ad-client' ).substr( 3 );
 			}
 			if ('' != theAd.slotId && '' != theAd.pubId) {
-				theAd.display = adByGoogle.css('display');
-				theAd.format = adByGoogle.attr('data-ad-format');
-				theAd.style = adByGoogle.attr('style');
-				
-				if ('undefined' == typeof(theAd.format) && -1 != theAd.style.indexOf('width')) {
+				theAd.display = adByGoogle.css( 'display' );
+				theAd.format = adByGoogle.attr( 'data-ad-format' );
+				theAd.style = adByGoogle.attr( 'style' );
+
+				if ('undefined' == typeof(theAd.format) && -1 != theAd.style.indexOf( 'width' )) {
 					/* normal ad */
 					theAd.type = 'normal';
-					theAd.width = adByGoogle.css('width').replace('px', '');
-					theAd.height = adByGoogle.css('height').replace('px', '');
+					theAd.width = adByGoogle.css( 'width' ).replace( 'px', '' );
+					theAd.height = adByGoogle.css( 'height' ).replace( 'px', '' );
 					return theAd;
 				}
-				
+
 				if ('undefined' != typeof(theAd.format) && 'auto' == theAd.format) {
 					/* Responsive ad, auto resize */
 					theAd.type = 'responsive';
@@ -90,62 +90,62 @@
 			}
 			return false;
 		}
-		
+
 		/**
 		 * Set ad parameters fields from the result of parsing ad code
 		 */
 		function setDetailsFromAdCode(theAd) {
-			$('#unit-code').val(theAd.slotId);
+			$( '#unit-code' ).val( theAd.slotId );
 			if ('normal' == theAd.type) {
-				$('#unit-type').val('normal');
-				$('#advanced-ads-ad-parameters-size input[name="advanced_ad[width]"]').val(theAd.width);
-				$('#advanced-ads-ad-parameters-size input[name="advanced_ad[height]"]').val(theAd.height);
+				$( '#unit-type' ).val( 'normal' );
+				$( '#advanced-ads-ad-parameters-size input[name="advanced_ad[width]"]' ).val( theAd.width );
+				$( '#advanced-ads-ad-parameters-size input[name="advanced_ad[height]"]' ).val( theAd.height );
 			}
 			if ('responsive' == theAd.type) {
-				$('#unit-type').val('responsive');
-				$('#ad-resize-type').val('auto');
-				$('#advanced-ads-ad-parameters-size input[name="advanced_ad[width]"]').val('');
-				$('#advanced-ads-ad-parameters-size input[name="advanced_ad[height]"]').val('');
+				$( '#unit-type' ).val( 'responsive' );
+				$( '#ad-resize-type' ).val( 'auto' );
+				$( '#advanced-ads-ad-parameters-size input[name="advanced_ad[width]"]' ).val( '' );
+				$( '#advanced-ads-ad-parameters-size input[name="advanced_ad[height]"]' ).val( '' );
 			}
 			var storedPubId = gadsenseData.pubId;
 			if ('' == storedPubId) {
-				$('#adsense-ad-param-error').text(gadsenseData.msg.missingPubId);
+				$( '#adsense-ad-param-error' ).text( gadsenseData.msg.missingPubId );
 			} else if (theAd.pubId != storedPubId) {
-				$('#adsense-ad-param-error').text(gadsenseData.msg.pubIdMismatch);
+				$( '#adsense-ad-param-error' ).text( gadsenseData.msg.pubIdMismatch );
 			} else {
-				$('#adsense-ad-param-error').empty();
+				$( '#adsense-ad-param-error' ).empty();
 			}
-			$('#unit-type').trigger('change');
-			$('#hide-pastecode-div').trigger('click');
+			$( '#unit-type' ).trigger( 'change' );
+			$( '#hide-pastecode-div' ).trigger( 'click' );
 		}
-				
-        /**
-         * Format the post content field
+
+		/**
+		 * Format the post content field
 		 *
-         */
+		 */
 		window.gadsenseFormatAdContent = function () {
-            var slotId = $('#adsense-new-add-div-default #unit-code').val();
-            if ('' == slotId) return false;
-            var unitType = $('#adsense-new-add-div-default #unit-type').val();
-            var adContent = {
-                slotId: slotId,
-                unitType: unitType,
-            };
+			var slotId = $( '#adsense-new-add-div-default #unit-code' ).val();
+			if ('' == slotId) { return false; }
+			var unitType = $( '#adsense-new-add-div-default #unit-type' ).val();
+			var adContent = {
+				slotId: slotId,
+				unitType: unitType,
+			};
 			if ('responsive' == unitType) {
-				var resize = $('#adsense-new-add-div-default #ad-resize-type').val();
-				if (0 == resize) resize = 'auto';
+				var resize = $( '#adsense-new-add-div-default #ad-resize-type' ).val();
+				if (0 == resize) { resize = 'auto'; }
 				adContent.resize = resize;
 			}
 			if ('undefined' != typeof(adContent.resize) && 'auto' != adContent.resize) {
-				$(document).trigger('gadsenseFormatAdResponsive', [adContent]);
+				$( document ).trigger( 'gadsenseFormatAdResponsive', [adContent] );
 			}
 			if ('undefined' != typeof(window.gadsenseAdContent)) {
 				adContent = window.gadsenseAdContent;
-				delete(window.gadsenseAdContent);
+				delete( window.gadsenseAdContent );
 			}
-            $('#advads-ad-content-adsense').val(JSON.stringify(adContent, false, 2));
-        }
+			$( '#advads-ad-content-adsense' ).val( JSON.stringify( adContent, false, 2 ) );
+		}
 
-    });
+	});
 
 })(jQuery);

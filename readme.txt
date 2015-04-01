@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.1.1
-Stable tag: 1.4.4
+Stable tag: 1.4.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -168,6 +168,16 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 3. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.4.5 =
+
+* optimized code for some WordPress coding standards
+* ad content injection now also supports tags with attributes (e.g. `<h2 class="headline">)
+* added `advanced-ads-output-inside-wrapper` filter
+* avoid session for gadsense module option page
+* complete makeover of display conditions for specific page types
+* added logic for important update messages
+* fix for `is_home` condition
 
 = 1.4.4 =
 

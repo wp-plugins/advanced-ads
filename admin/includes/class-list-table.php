@@ -84,8 +84,8 @@ class AdvAds_List_Table {
 
 		add_filter( "manage_{$this->screen->id}_columns", array( $this, 'get_columns' ), 0 );
 
-		if ( !$args['plural'] )
-			$args['plural'] = $this->screen->base;
+		if ( ! $args['plural'] ) {
+			$args['plural'] = $this->screen->base; }
 
 		$args['plural'] = sanitize_key( $args['plural'] );
 		$args['singular'] = sanitize_key( $args['singular'] );
@@ -135,8 +135,8 @@ class AdvAds_List_Table {
 			'per_page' => 0,
 		) );
 
-		if ( !$args['total_pages'] && $args['per_page'] > 0 )
-			$args['total_pages'] = ceil( $args['total_items'] / $args['per_page'] );
+		if ( ! $args['total_pages'] && $args['per_page'] > 0 ) {
+			$args['total_pages'] = ceil( $args['total_items'] / $args['per_page'] ); }
 
 		// redirect if page number is invalid and headers are not already sent
 		if ( ! headers_sent() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) && $args['total_pages'] > 0 && $this->get_pagenum() > $args['total_pages'] ) {
@@ -157,11 +157,11 @@ class AdvAds_List_Table {
 	 * @return array
 	 */
 	function get_pagination_arg( $key ) {
-		if ( 'page' == $key )
-			return $this->get_pagenum();
+		if ( 'page' == $key ) {
+			return $this->get_pagenum(); }
 
-		if ( isset( $this->_pagination_args[$key] ) )
-			return $this->_pagination_args[$key];
+		if ( isset( $this->_pagination_args[$key] ) ) {
+			return $this->_pagination_args[$key]; }
 	}
 
 	/**
@@ -173,7 +173,7 @@ class AdvAds_List_Table {
 	 * @return bool
 	 */
 	function has_items() {
-		return !empty( $this->items );
+		return ! empty( $this->items );
 	}
 
 	/**
@@ -196,19 +196,19 @@ class AdvAds_List_Table {
 	 * @param string $input_id The search input id
 	 */
 	function search_box( $text, $input_id ) {
-		if ( empty( $_REQUEST['s'] ) && !$this->has_items() )
-			return;
+		if ( empty( $_REQUEST['s'] ) && ! $this->has_items() ) {
+			return; }
 
 		$input_id = $input_id . '-search-input';
 
-		if ( ! empty( $_REQUEST['orderby'] ) )
-			echo '<input type="hidden" name="orderby" value="' . esc_attr( $_REQUEST['orderby'] ) . '" />';
-		if ( ! empty( $_REQUEST['order'] ) )
-			echo '<input type="hidden" name="order" value="' . esc_attr( $_REQUEST['order'] ) . '" />';
-		if ( ! empty( $_REQUEST['post_mime_type'] ) )
-			echo '<input type="hidden" name="post_mime_type" value="' . esc_attr( $_REQUEST['post_mime_type'] ) . '" />';
-		if ( ! empty( $_REQUEST['detached'] ) )
-			echo '<input type="hidden" name="detached" value="' . esc_attr( $_REQUEST['detached'] ) . '" />';
+		if ( ! empty( $_REQUEST['orderby'] ) ) {
+			echo '<input type="hidden" name="orderby" value="' . esc_attr( $_REQUEST['orderby'] ) . '" />'; }
+		if ( ! empty( $_REQUEST['order'] ) ) {
+			echo '<input type="hidden" name="order" value="' . esc_attr( $_REQUEST['order'] ) . '" />'; }
+		if ( ! empty( $_REQUEST['post_mime_type'] ) ) {
+			echo '<input type="hidden" name="post_mime_type" value="' . esc_attr( $_REQUEST['post_mime_type'] ) . '" />'; }
+		if ( ! empty( $_REQUEST['detached'] ) ) {
+			echo '<input type="hidden" name="detached" value="' . esc_attr( $_REQUEST['detached'] ) . '" />'; }
 ?>
 <p class="search-box">
 	<label class="screen-reader-text" for="<?php echo $input_id ?>"><?php echo $text; ?>:</label>
@@ -251,15 +251,15 @@ class AdvAds_List_Table {
 		 */
 		$views = apply_filters( "views_{$this->screen->id}", $views );
 
-		if ( empty( $views ) )
-			return;
+		if ( empty( $views ) ) {
+			return; }
 
 		echo "<ul class='subsubsub'>\n";
 		foreach ( $views as $class => $view ) {
 			$views[ $class ] = "\t<li class='$class'>$view";
 		}
 		echo implode( " |</li>\n", $views ) . "</li>\n";
-		echo "</ul>";
+		echo '</ul>';
 	}
 
 	/**
@@ -303,8 +303,8 @@ class AdvAds_List_Table {
 			$two = '2';
 		}
 
-		if ( empty( $this->_actions ) )
-			return;
+		if ( empty( $this->_actions ) ) {
+			return; }
 
 		echo "<select name='action$two'>\n";
 		echo "<option value='-1' selected='selected'>" . __( 'Bulk Actions' ) . "</option>\n";
@@ -330,11 +330,11 @@ class AdvAds_List_Table {
 	 * @return string|bool The action name or False if no action was selected
 	 */
 	function current_action() {
-		if ( isset( $_REQUEST['action'] ) && -1 != $_REQUEST['action'] )
-			return $_REQUEST['action'];
+		if ( isset( $_REQUEST['action'] ) && -1 != $_REQUEST['action'] ) {
+			return $_REQUEST['action']; }
 
-		if ( isset( $_REQUEST['action2'] ) && -1 != $_REQUEST['action2'] )
-			return $_REQUEST['action2'];
+		if ( isset( $_REQUEST['action2'] ) && -1 != $_REQUEST['action2'] ) {
+			return $_REQUEST['action2']; }
 
 		return false;
 	}
@@ -353,8 +353,8 @@ class AdvAds_List_Table {
 		$action_count = count( $actions );
 		$i = 0;
 
-		if ( !$action_count )
-			return '';
+		if ( ! $action_count ) {
+			return ''; }
 
 		$out = '<div class="' . ( $always_visible ? 'row-actions visible' : 'row-actions' ) . '">';
 		foreach ( $actions as $action => $link ) {
@@ -395,28 +395,28 @@ class AdvAds_List_Table {
 
 		$month_count = count( $months );
 
-		if ( !$month_count || ( 1 == $month_count && 0 == $months[0]->month ) )
-			return;
+		if ( ! $month_count || ( 1 == $month_count && 0 == $months[0]->month ) ) {
+			return; }
 
 		$m = isset( $_GET['m'] ) ? (int) $_GET['m'] : 0;
 ?>
 		<select name='m'>
 			<option<?php selected( $m, 0 ); ?> value='0'><?php _e( 'Show all dates' ); ?></option>
 <?php
-		foreach ( $months as $arc_row ) {
-			if ( 0 == $arc_row->year )
-				continue;
+foreach ( $months as $arc_row ) {
+	if ( 0 == $arc_row->year ) {
+		continue; }
 
-			$month = zeroise( $arc_row->month, 2 );
-			$year = $arc_row->year;
+	$month = zeroise( $arc_row->month, 2 );
+	$year = $arc_row->year;
 
-			printf( "<option %s value='%s'>%s</option>\n",
-				selected( $m, $year . $month, false ),
-				esc_attr( $arc_row->year . $month ),
-				/* translators: 1: month name, 2: 4-digit year */
-				sprintf( __( '%1$s %2$d' ), $wp_locale->get_month( $month ), $year )
-			);
-		}
+	printf( "<option %s value='%s'>%s</option>\n",
+		selected( $m, $year . $month, false ),
+		esc_attr( $arc_row->year . $month ),
+		/* translators: 1: month name, 2: 4-digit year */
+		sprintf( __( '%1$s %2$d' ), $wp_locale->get_month( $month ), $year )
+	);
+}
 ?>
 		</select>
 <?php
@@ -438,10 +438,10 @@ class AdvAds_List_Table {
 		<input type="hidden" name="mode" value="<?php echo esc_attr( $current_mode ); ?>" />
 		<div class="view-switch">
 <?php
-			foreach ( $modes as $mode => $title ) {
-				$class = ( $current_mode == $mode ) ? 'class="current"' : '';
-				echo "<a href='" . esc_url( add_query_arg( 'mode', $mode, $_SERVER['REQUEST_URI'] ) ) . "' $class><img id='view-switch-$mode' src='" . esc_url( includes_url( 'images/blank.gif' ) ) . "' width='20' height='20' title='$title' alt='$title' /></a>\n";
-			}
+foreach ( $modes as $mode => $title ) {
+	$class = ( $current_mode == $mode ) ? 'class="current"' : '';
+	echo "<a href='" . esc_url( add_query_arg( 'mode', $mode, $_SERVER['REQUEST_URI'] ) ) . "' $class><img id='view-switch-$mode' src='" . esc_url( includes_url( 'images/blank.gif' ) ) . "' width='20' height='20' title='$title' alt='$title' /></a>\n";
+}
 		?>
 		</div>
 <?php
@@ -459,13 +459,13 @@ class AdvAds_List_Table {
 	function comments_bubble( $post_id, $pending_comments ) {
 		$pending_phrase = sprintf( __( '%s pending' ), number_format( $pending_comments ) );
 
-		if ( $pending_comments )
-			echo '<strong>';
+		if ( $pending_comments ) {
+			echo '<strong>'; }
 
-		echo "<a href='" . esc_url( add_query_arg( 'p', $post_id, admin_url( 'edit-comments.php' ) ) ) . "' title='" . esc_attr( $pending_phrase ) . "' class='post-com-count'><span class='comment-count'>" . number_format_i18n( get_comments_number() ) . "</span></a>";
+		echo "<a href='" . esc_url( add_query_arg( 'p', $post_id, admin_url( 'edit-comments.php' ) ) ) . "' title='" . esc_attr( $pending_phrase ) . "' class='post-com-count'><span class='comment-count'>" . number_format_i18n( get_comments_number() ) . '</span></a>';
 
-		if ( $pending_comments )
-			echo '</strong>';
+		if ( $pending_comments ) {
+			echo '</strong>'; }
 	}
 
 	/**
@@ -479,8 +479,8 @@ class AdvAds_List_Table {
 	function get_pagenum() {
 		$pagenum = isset( $_REQUEST['paged'] ) ? absint( $_REQUEST['paged'] ) : 0;
 
-		if( isset( $this->_pagination_args['total_pages'] ) && $pagenum > $this->_pagination_args['total_pages'] )
-			$pagenum = $this->_pagination_args['total_pages'];
+		if ( isset( $this->_pagination_args['total_pages'] ) && $pagenum > $this->_pagination_args['total_pages'] ) {
+			$pagenum = $this->_pagination_args['total_pages']; }
 
 		return max( 1, $pagenum );
 	}
@@ -495,8 +495,8 @@ class AdvAds_List_Table {
 	 */
 	function get_items_per_page( $option, $default = 20 ) {
 		$per_page = (int) get_user_option( $option );
-		if ( empty( $per_page ) || $per_page < 1 )
-			$per_page = $default;
+		if ( empty( $per_page ) || $per_page < 1 ) {
+			$per_page = $default; }
 
 		/**
 		 * Filter the number of items to be displayed on each page of the list table.
@@ -520,8 +520,8 @@ class AdvAds_List_Table {
 	 * @access protected
 	 */
 	function pagination( $which ) {
-		if ( empty( $this->_pagination_args ) )
-			return;
+		if ( empty( $this->_pagination_args ) ) {
+			return; }
 
 		extract( $this->_pagination_args, EXTR_SKIP );
 
@@ -536,10 +536,10 @@ class AdvAds_List_Table {
 		$page_links = array();
 
 		$disable_first = $disable_last = '';
-		if ( $current == 1 )
-			$disable_first = ' disabled';
-		if ( $current == $total_pages )
-			$disable_last = ' disabled';
+		if ( $current == 1 ) {
+			$disable_first = ' disabled'; }
+		if ( $current == $total_pages ) {
+			$disable_last = ' disabled'; }
 
 		$page_links[] = sprintf( "<a class='%s' title='%s' href='%s'>%s</a>",
 			'first-page' . $disable_first,
@@ -551,18 +551,18 @@ class AdvAds_List_Table {
 		$page_links[] = sprintf( "<a class='%s' title='%s' href='%s'>%s</a>",
 			'prev-page' . $disable_first,
 			esc_attr__( 'Go to the previous page' ),
-			esc_url( add_query_arg( 'paged', max( 1, $current-1 ), $current_url ) ),
+			esc_url( add_query_arg( 'paged', max( 1, $current -1 ), $current_url ) ),
 			'&lsaquo;'
 		);
 
-		if ( 'bottom' == $which )
-			$html_current_page = $current;
-		else
+		if ( 'bottom' == $which ) {
+			$html_current_page = $current; }
+		else {
 			$html_current_page = sprintf( "<input class='current-page' title='%s' type='text' name='paged' value='%s' size='%d' />",
 				esc_attr__( 'Current page' ),
 				$current,
 				strlen( $total_pages )
-			);
+			); }
 
 		$html_total_pages = sprintf( "<span class='total-pages'>%s</span>", number_format_i18n( $total_pages ) );
 		$page_links[] = '<span class="paging-input">' . sprintf( _x( '%1$s of %2$s', 'paging' ), $html_current_page, $html_total_pages ) . '</span>';
@@ -570,7 +570,7 @@ class AdvAds_List_Table {
 		$page_links[] = sprintf( "<a class='%s' title='%s' href='%s'>%s</a>",
 			'next-page' . $disable_last,
 			esc_attr__( 'Go to the next page' ),
-			esc_url( add_query_arg( 'paged', min( $total_pages, $current+1 ), $current_url ) ),
+			esc_url( add_query_arg( 'paged', min( $total_pages, $current + 1 ), $current_url ) ),
 			'&rsaquo;'
 		);
 
@@ -582,14 +582,14 @@ class AdvAds_List_Table {
 		);
 
 		$pagination_links_class = 'pagination-links';
-		if ( ! empty( $infinite_scroll ) )
-			$pagination_links_class = ' hide-if-js';
+		if ( ! empty( $infinite_scroll ) ) {
+			$pagination_links_class = ' hide-if-js'; }
 		$output .= "\n<span class='$pagination_links_class'>" . join( "\n", $page_links ) . '</span>';
 
-		if ( $total_pages )
-			$page_class = $total_pages < 2 ? ' one-page' : '';
-		else
-			$page_class = ' no-pages';
+		if ( $total_pages ) {
+			$page_class = $total_pages < 2 ? ' one-page' : ''; }
+		else {
+			$page_class = ' no-pages'; }
 
 		$this->_pagination = "<div class='tablenav-pages{$page_class}'>$output</div>";
 
@@ -636,8 +636,8 @@ class AdvAds_List_Table {
 	 * @return array
 	 */
 	function get_column_info() {
-		if ( isset( $this->_column_headers ) )
-			return $this->_column_headers;
+		if ( isset( $this->_column_headers ) ) {
+			return $this->_column_headers; }
 
 		$columns = get_column_headers( $this->screen );
 		$hidden = get_hidden_columns( $this->screen );
@@ -657,12 +657,12 @@ class AdvAds_List_Table {
 
 		$sortable = array();
 		foreach ( $_sortable as $id => $data ) {
-			if ( empty( $data ) )
-				continue;
+			if ( empty( $data ) ) {
+				continue; }
 
 			$data = (array) $data;
-			if ( !isset( $data[1] ) )
-				$data[1] = false;
+			if ( ! isset( $data[1] ) ) {
+				$data[1] = false; }
 
 			$sortable[$id] = $data;
 		}
@@ -700,15 +700,15 @@ class AdvAds_List_Table {
 		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
 		$current_url = remove_query_arg( 'paged', $current_url );
 
-		if ( isset( $_GET['orderby'] ) )
-			$current_orderby = $_GET['orderby'];
-		else
-			$current_orderby = '';
+		if ( isset( $_GET['orderby'] ) ) {
+			$current_orderby = $_GET['orderby']; }
+		else {
+			$current_orderby = ''; }
 
-		if ( isset( $_GET['order'] ) && 'desc' == $_GET['order'] )
-			$current_order = 'desc';
-		else
-			$current_order = 'asc';
+		if ( isset( $_GET['order'] ) && 'desc' == $_GET['order'] ) {
+			$current_order = 'desc'; }
+		else {
+			$current_order = 'asc'; }
 
 		if ( ! empty( $columns['cb'] ) ) {
 			static $cb_counter = 1;
@@ -721,13 +721,13 @@ class AdvAds_List_Table {
 			$class = array( 'manage-column', "column-$column_key" );
 
 			$style = '';
-			if ( in_array( $column_key, $hidden ) )
-				$style = 'display:none;';
+			if ( in_array( $column_key, $hidden ) ) {
+				$style = 'display:none;'; }
 
 			$style = ' style="' . $style . '"';
 
-			if ( 'cb' == $column_key )
-				$class[] = 'check-column';
+			if ( 'cb' == $column_key ) {
+				$class[] = 'check-column'; }
 			elseif ( in_array( $column_key, array( 'posts', 'comments', 'links' ) ) )
 				$class[] = 'num';
 
@@ -749,8 +749,8 @@ class AdvAds_List_Table {
 
 			$id = $with_id ? "id='$column_key'" : '';
 
-			if ( !empty( $class ) )
-				$class = "class='" . join( ' ', $class ) . "'";
+			if ( ! empty( $class ) ) {
+				$class = "class='" . join( ' ', $class ) . "'"; }
 
 			echo "<th scope='col' $id $class $style>$column_display_name</th>";
 		}
@@ -781,7 +781,7 @@ class AdvAds_List_Table {
 	</tr>
 	</tfoot>
 
-	<tbody id="the-list"<?php if ( $singular ) echo " data-wp-lists='list:$singular'"; ?>>
+	<tbody id="the-list"<?php if ( $singular ) { echo " data-wp-lists='list:$singular'"; } ?>>
 		<?php $this->display_rows_or_placeholder(); ?>
 	</tbody>
 </table>
@@ -808,8 +808,8 @@ class AdvAds_List_Table {
 	 * @access protected
 	 */
 	function display_tablenav( $which ) {
-		if ( 'top' == $which )
-			wp_nonce_field( 'bulk-' . $this->_args['plural'] );
+		if ( 'top' == $which ) {
+			wp_nonce_field( 'bulk-' . $this->_args['plural'] ); }
 ?>
 	<div class="tablenav <?php echo esc_attr( $which ); ?>">
 
@@ -858,8 +858,8 @@ class AdvAds_List_Table {
 	 * @access protected
 	 */
 	function display_rows() {
-		foreach ( $this->items as $item )
-			$this->single_row( $item );
+		foreach ( $this->items as $item ) {
+			$this->single_row( $item ); }
 	}
 
 	/**
@@ -894,8 +894,8 @@ class AdvAds_List_Table {
 			$class = "class='$column_name column-$column_name'";
 
 			$style = '';
-			if ( in_array( $column_name, $hidden ) )
-				$style = ' style="display:none;"';
+			if ( in_array( $column_name, $hidden ) ) {
+				$style = ' style="display:none;"'; }
 
 			$attributes = "$class$style";
 
@@ -907,12 +907,12 @@ class AdvAds_List_Table {
 			elseif ( method_exists( $this, 'column_' . $column_name ) ) {
 				echo "<td $attributes>";
 				echo call_user_func( array( $this, 'column_' . $column_name ), $item );
-				echo "</td>";
+				echo '</td>';
 			}
 			else {
 				echo "<td $attributes>";
 				echo $this->column_default( $item, $column_name );
-				echo "</td>";
+				echo '</td>';
 			}
 		}
 	}
@@ -930,17 +930,17 @@ class AdvAds_List_Table {
 		extract( $this->_pagination_args, EXTR_SKIP );
 
 		ob_start();
-		if ( ! empty( $_REQUEST['no_placeholder'] ) )
-			$this->display_rows();
-		else
-			$this->display_rows_or_placeholder();
+		if ( ! empty( $_REQUEST['no_placeholder'] ) ) {
+			$this->display_rows(); }
+		else {
+			$this->display_rows_or_placeholder(); }
 
 		$rows = ob_get_clean();
 
 		$response = array( 'rows' => $rows );
 
-		if ( isset( $total_items ) )
-			$response['total_items_i18n'] = sprintf( _n( '1 item', '%s items', $total_items ), number_format_i18n( $total_items ) );
+		if ( isset( $total_items ) ) {
+			$response['total_items_i18n'] = sprintf( _n( '1 item', '%s items', $total_items ), number_format_i18n( $total_items ) ); }
 
 		if ( isset( $total_pages ) ) {
 			$response['total_pages'] = $total_pages;

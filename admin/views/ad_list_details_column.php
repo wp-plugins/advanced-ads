@@ -1,7 +1,7 @@
-<?php if(!empty($type)) :
-    ?><p><strong><?php echo $type; ?></strong></p><?php
+<?php if ( ! empty($type) ) :
+	?><p><strong><?php echo $type; ?></strong></p><?php
 endif;
-if(!empty($size)) :
-    ?><p><?php echo $size; ?></p><?php
+if ( ! empty($size) ) :
+	?><p><?php echo $size; ?></p><?php
 endif;
-do_action('advanced-ads-ad-list-details-column-after', $ad);
+do_action( 'advanced-ads-ad-list-details-column-after', $ad );

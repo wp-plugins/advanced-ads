@@ -12,15 +12,15 @@
  * @param arr $args additional arguments
  */
 function get_ad($id = 0, $args = array()){
-    $id = absint($id);
-    if(empty($id)) return;
+	$id = absint( $id );
+	if ( empty($id) ) { return; }
 
-    // get ad
-    $ad = new Advads_Ad($id, $args);
+	// get ad
+	$ad = new Advads_Ad( $id, $args );
 
-    // check conditions
-    if($ad->can_display())
-        return $ad->output();
+	// check conditions
+	if ( $ad->can_display() ) {
+		return $ad->output(); }
 }
 
 /**
@@ -32,7 +32,7 @@ function get_ad($id = 0, $args = array()){
  */
 function the_ad($id = 0, $args = array()){
 
-    echo get_ad($id, $args);
+	echo get_ad( $id, $args );
 
 }
 
@@ -44,12 +44,12 @@ function the_ad($id = 0, $args = array()){
  *
  */
 function get_ad_group($id = 0){
-    $id = absint($id);
-    if(empty($id)) return;
+	$id = absint( $id );
+	if ( empty($id) ) { return; }
 
-    // get ad
-    $adgroup = new Advads_Ad_Group($id);
-    return $adgroup->output_random_ad();
+	// get ad
+	$adgroup = new Advads_Ad_Group( $id );
+	return $adgroup->output_random_ad();
 }
 
 /**
@@ -60,7 +60,7 @@ function get_ad_group($id = 0){
  */
 function the_ad_group($id = 0){
 
-    echo get_ad_group($id);
+	echo get_ad_group( $id );
 
 }
 
@@ -72,11 +72,11 @@ function the_ad_group($id = 0){
  *
  */
 function get_ad_placement($id = ''){
-    if($id == '') return;
+	if ( $id == '' ) { return; }
 
-    // get placement content
-    $output = Advads_Ad_Placements::output($id);
-    return $output;
+	// get placement content
+	$output = Advads_Ad_Placements::output( $id );
+	return $output;
 }
 
 /**
@@ -87,6 +87,6 @@ function get_ad_placement($id = ''){
  */
 function the_ad_placement($id = ''){
 
-    echo get_ad_placement($id);
+	echo get_ad_placement( $id );
 
 }
