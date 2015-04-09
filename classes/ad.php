@@ -526,17 +526,17 @@ class Advads_Ad {
 	 */
 	public function can_display_by_expiry_date(){
 
-		if ( empty($this->options['expiry_date']) ) { return true; }
+		if ( !isset($this->options['expiry_date']) ) { return true; }
 
-		$expiry_date = absint( $this->options( 'expiry_date' ) );
+		$ad_expiry_date = absint($this->options( 'expiry_date' ));
 
-		if ( $expiry_date == 0 ) { return true; }
+		if ( $ad_expiry_date == 0 ) { return true; }
 
 		// create blog specific timestamp
-		$blog_expiry_date = $expiry_date + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS );
+		$blog_expiry_date = time() + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS );
 
 		// check blog time against current time
-		if ( $blog_expiry_date <= time() ) { return false; }
+		if ( $blog_expiry_date >= $ad_expiry_date ) { return false; }
 
 		return true;
 	}

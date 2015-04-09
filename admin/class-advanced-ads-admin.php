@@ -91,6 +91,10 @@ class Advanced_Ads_Admin {
 		// save ads post type
 		add_action( 'save_post', array($this, 'save_ad') );
 
+                // ad updated messages
+                add_filter( 'post_updated_messages', array($this, 'ad_update_messages'));
+                add_filter( 'bulk_post_updated_messages', array($this, 'ad_bulk_update_messages'), 10, 2);
+
 		// handling (ad) lists
 		add_filter( 'request', array($this, 'ad_list_request') ); // order ads by title, not ID
 		add_filter( 'manage_advanced_ads_posts_columns', array($this, 'ad_list_columns_head') ); // extra column
@@ -567,6 +571,61 @@ class Advanced_Ads_Admin {
 
 		$ad->save();
 	}
+
+        /**
+         * edit ad update messages
+         *
+         * @since 1.4.7
+         * @param arr $messages existing post update messages
+         * @return arr $messages
+         *
+         * @see wp-admin/edit-form-advanced.php
+         */
+        public function ad_update_messages(array $messages){
+            $post = get_post();
+
+            $messages[Advanced_Ads::POST_TYPE_SLUG] = array(
+		0  => '', // Unused. Messages start at index 1.
+		1  => __( 'Ad updated.', ADVADS_SLUG ),
+		4  => __( 'Ad updated.', ADVADS_SLUG ),
+		/* translators: %s: date and time of the revision */
+		5  => isset( $_GET['revision'] ) ? sprintf( __( 'Ad restored to revision from %s', ADVADS_SLUG ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+		6  => __( 'Ad published.', ADVADS_SLUG ),
+		7  => __( 'Ad saved.', ADVADS_SLUG ),
+		8  => __( 'Ad submitted.', ADVADS_SLUG ),
+		9  => sprintf(
+			__( 'Ad scheduled for: <strong>%1$s</strong>.', ADVADS_SLUG ),
+			// translators: Publish box date format, see http://php.net/date
+			date_i18n( __( 'M j, Y @ G:i', ADVADS_SLUG ), strtotime( $post->post_date ) )
+		),
+		10 => __( 'Ad draft updated.', ADVADS_SLUG )
+            );
+            return $messages;
+        }
+
+        /**
+         * edit ad bulk update messages
+         *
+         * @since 1.4.7
+         * @param arr $messages existing bulk update messages
+         * @param arr $counts numbers of updated ads
+         * @return arr $messages
+         *
+         * @see wp-admin/edit.php
+         */
+        public function ad_bulk_update_messages(array $messages, array $counts){
+            $post = get_post();
+
+            $messages[Advanced_Ads::POST_TYPE_SLUG] = array(
+                'updated'   => _n( '%s ad updated.', '%s ads updated.', $counts['updated'] ),
+                'locked'    => _n( '%s ad not updated, somebody is editing it.', '%s ads not updated, somebody is editing them.', $counts['locked'] ),
+                'deleted'   => _n( '%s ad permanently deleted.', '%s ads permanently deleted.', $counts['deleted'] ),
+                'trashed'   => _n( '%s ad moved to the Trash.', '%s ads moved to the Trash.', $counts['trashed'] ),
+                'untrashed' => _n( '%s ad restored from the Trash.', '%s ads restored from the Trash.', $counts['untrashed'] ),
+            );
+
+            return $messages;
+        }
 
 	/**
 	 * get action from the params

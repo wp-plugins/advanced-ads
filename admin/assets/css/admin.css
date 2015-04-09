@@ -51,16 +51,28 @@
 .post-type-advanced_ads #ad-display-box label { margin-right: 1em; }
 .post-type-advanced_ads #ad-display-box td, .post-type-advanced_ads #ad-display-box th { padding-right: 10px; }
 .post-type-advanced_ads #ad-display-box .advanced-ads-display-condition-set label { float: left; margin-right: -1px; }
-.post-type-advanced_ads #ad-display-box .advanced-ads-display-condition-set .ui-state-active { border-color: #0074a2; background: #2ea2cc; color: #fff; }
+.post-type-advanced_ads #ad-display-box .ui-widget { font-size: inherit; }
 .post-type-advanced_ads .advads-conditions-all { display: block; }
 .post-type-advanced_ads .advads-conditions-single { margin-bottom: 10px; padding: 10px; }
 .post-type-advanced_ads .advads-conditions-single.disabled { display: none; opacity: .5; }
 .post-type-advanced_ads .advads-conditions-single th { vertical-align: top; }
 .advads-conditions-postids-list li { background: #F1F1F1; padding: 3px; }
 .advads-conditions-postids-list .remove { margin-right: 1em; font-size: .9em; }
-.post-type-advanced_ads #advads-ad-content-plain {
-	width: 100%;
-}
+
+.post-type-advanced_ads #advads-ad-content-plain { width: 100%; }
+.post-type-advanced_ads #ad-display-box .advads-conditions-terms-buttons { display: inline-block; }
+.post-type-advanced_ads #ad-display-box .advads-conditions-terms-buttons label,
+.post-type-advanced_ads #ad-display-box .advads-conditions-terms-buttons .button { margin: 0 -1px .3em 0; padding: 0 .5em; background: #f7f7f7; height: 22px; line-height: 22px; color: #555; border: 1px solid #ccc; border-radius: 0; font-family: inherit; }
+.post-type-advanced_ads #ad-display-box .advads-conditions-terms-buttons label span { margin: 0; padding: 0; line-height: 22px; }
+
+.post-type-advanced_ads #ad-display-box .advads-conditions-terms-buttons .ui-state-active,
+.post-type-advanced_ads #ad-display-box .advads-conditions-terms-buttons .button,
+.post-type-advanced_ads #ad-display-box .advanced-ads-display-condition-set .ui-button.ui-state-active { border-color: #0074a2; background: #2ea2cc; color: #fff; box-shadow: none; }
+
+#ad-display-box .advads-conditions-terms-show-search { height: 22px; line-height: 22px; font-weight: bold; font-size: 1.5em; }
+.advads-conditions-terms-show-search + .description { display: none; }
+.advads-conditions-terms-show-search:hover + .description { display: inline-block; margin-left: .5em;  color: #666; }
+.advads-conditions-terms-search { display: none; }
 .post-type-advanced_ads #ad-parameters-box .advads-ad-parameters-spinner { display: block; float: none; }
 .post-type-advanced_ads #advanced-ads-ad-parameters-size { margin-top: 1em; }
 .post-type-advanced_ads #advanced-ads-ad-parameters-size p { float: left; margin: 0 1em 0 0; font-weight: bold; }

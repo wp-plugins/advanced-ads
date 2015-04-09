@@ -184,7 +184,7 @@ class Advads_Ad_Type_Adsense extends Advads_Ad_Type_Abstract {
 
 	protected function append_defaut_responsive_content(&$output, $pub_id, $slot_id) {
 		$output .= '<ins class="adsbygoogle" ';
-		$output .= 'style="display:block;"';
+		$output .= 'style="display:block;" ';
 		$output .= 'data-ad-client="ca-' . $pub_id . '" ' . "\n";
 		$output .= 'data-ad-slot="' . $slot_id . '" ' . "\n";
 		$output .= 'data-ad-format="auto"></ins>' . "\n";

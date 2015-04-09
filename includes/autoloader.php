@@ -12,20 +12,20 @@
  */
 class Advads_Autoloader {
 
-    public static function load($classname) {
-        // to lower case
-        $classname = strtolower($classname);
+	public static function load($classname) {
+		// to lower case
+		$classname = strtolower( $classname );
 
-        // strip "advads_" prefix
-        $classname = str_replace('advads_', '', $classname);
+		// strip "advads_" prefix
+		$classname = str_replace( 'advads_', '', $classname );
 
-        $filepath = ADVADS_BASE_PATH . 'classes' . DIRECTORY_SEPARATOR . $classname . '.php';
+		$filepath = ADVADS_BASE_PATH . 'classes' . DIRECTORY_SEPARATOR . $classname . '.php';
 
-        if (file_exists($filepath)) {
-            require_once $filepath;
-        } else {
-            return false;
-        }
-    }
+		if ( file_exists( $filepath ) ) {
+			require_once $filepath;
+		} else {
+			return false;
+		}
+	}
 
 }

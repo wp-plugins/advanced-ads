@@ -3,8 +3,8 @@ Contributors: webzunft
 Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5RRRCEBGN3UT2
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
-Tested up to: 4.1.1
-Stable tag: 1.4.6
+Tested up to: 4.2 beta
+Stable tag: 1.4.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -169,7 +169,18 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 
 == Changelog ==
 
+= 1.4.7 =
+
+* COOL: beautiful selection of terms in display conditions
+* search for terms if there are more than 50 in the current taxonomy
+* updated more messages in the dashboard
+* fixed expiry date discrepancy
+* minor general code fixes
+* minor fix for AdSense ads
+
 = 1.4.6 =
+
+* hotfix
 
 = 1.4.5 =
 

@@ -19,13 +19,13 @@
  */
 class Advanced_Ads {
 	/**
-	 * Plugin version, used for cache-busting of style and script file references.
+	 * Plugin version, used for cache-busting of style and script file references and update notices
 	 *
 	 * @since   1.0.0
 	 * @var     string
 	 */
 
-	const VERSION = '1.4.6';
+	const VERSION = '1.4.7';
 
 	/**
 	 * post type slug
