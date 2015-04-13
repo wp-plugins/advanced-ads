@@ -49,7 +49,7 @@ function get_ad_group($id = 0){
 
 	// get ad
 	$adgroup = new Advads_Ad_Group( $id );
-	return $adgroup->output_random_ad();
+	return $adgroup->output();
 }
 
 /**

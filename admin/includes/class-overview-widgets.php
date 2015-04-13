@@ -15,7 +15,7 @@ class AdvAds_Overview_Widgets_Callbacks {
 	 * @param arr $columns columns array
 	 * @return int $columns
 	 */
-	public static function one_column_overview_page( $columns ) {
+	static function one_column_overview_page( $columns ) {
 		// $columns['toplevel_page_advanced-ads'] = 1;
 		return $columns;
 	}

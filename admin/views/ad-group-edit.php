@@ -39,18 +39,7 @@ wp_nonce_field( 'update-group_' . $group_id ); ?>
                     <td><input name="slug" id="slug" type="text" value="<?php if ( isset($tag->slug) ) { echo esc_attr( apply_filters( 'editable_slug', $tag->slug ) ); } ?>" size="40" />
                         <p class="description"><?php _e( 'An id-like string with only letters in lower case, numbers, and hyphens.', ADVADS_SLUG ); ?></p></td>
                 </tr>
-<?php } ?>
-<?php if ( is_taxonomy_hierarchical( $taxonomy ) ) : ?>
-                <tr class="form-field">
-                    <th scope="row" valign="top"><label for="parent"><?php _ex( 'Parent', 'Taxonomy Parent' ); ?></label></th>
-                    <td>
-                <?php if ( $group_id == 0 ){
-						wp_dropdown_categories( array('hide_empty' => 0, 'hide_if_empty' => false, 'name' => 'parent', 'orderby' => 'name', 'taxonomy' => $taxonomy, 'hierarchical' => true, 'show_option_none' => __( 'None' )) );
-} else {
-	wp_dropdown_categories( array('hide_empty' => 0, 'hide_if_empty' => false, 'name' => 'parent', 'orderby' => 'name', 'taxonomy' => $taxonomy, 'selected' => $tag->parent, 'exclude_tree' => $tag->term_id, 'hierarchical' => true, 'show_option_none' => __( 'None' )) );
-}; ?></td>
-                </tr>
-<?php endif; // is_taxonomy_hierarchical()
+<?php }
 	$text = (isset($tag->description)) ? $tag->description : ''; ?>
             <tr class="form-field">
                 <th scope="row" valign="top"><label for="description"><?php _ex( 'Description', 'Taxonomy Description' ); ?></label></th>

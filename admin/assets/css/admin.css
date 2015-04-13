@@ -91,10 +91,19 @@
 /**
  AD GROUP LIST
 */
-.advads-groups-ads-list { margin: 0; }
-.ad-group-ads-form table td { margin: 0; padding: 3px 5px 3px 0; }
-.ad-group-ads-form table td:first-child { font-weight: bold; }
-.ad-group-ads-form table td.ad-group-ads-weight input { width: 3em; }
+#advads-ad-group-list .row-actions span + span::before { content: '|'; padding: 0 3px; }
+#advads-ad-group-list ul, #advads-ad-group-list ol { margin: 0; list-style-position: inside; }
+#advads-ad-group-list tbody tr:nth-child(4n+1) { background: #f9f9f9; }
+.advads-ad-group-list-ads li { margin: 0; padding: 3px 0; }
+.advads-ad-group-list-ads li:hover { background: #eee; }
+.advads-ad-group-list-ads span { float: right; }
+.advads-group-row .row-actions a { cursor: pointer; }
+.advads-group-row .advads-usage { margin-top: 1em; }
+.advads-group-row code { background: none; }
+.advads-ad-group-form > td { border-bottom: 1px solid; }
+.advads-ad-group-form label { display: inline-block; margin-bottom: 1em; }
+.advads-ad-group-form strong { float: left; width: 180px; }
+.advads-ad-group-form ul { float: left; }
 
 /**
  AD PLACEMENTS

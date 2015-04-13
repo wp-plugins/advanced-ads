@@ -364,8 +364,8 @@ class Advanced_Ads_Admin {
 			default :
 				$title = $tax->labels->name;
 				// load needed classes
-				include_once( 'includes/class-list-table.php' );
-				include_once( 'includes/class-ad-groups-list-table.php' );
+                                include_once( 'includes/class-ad-groups-list.php');
+                                $wp_list_table = _get_list_table('WP_Terms_List_Table');
 				// load template
 				include_once( 'views/ad-group.php' );
 		}

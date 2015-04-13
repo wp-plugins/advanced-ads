@@ -133,6 +133,27 @@ jQuery( document ).ready(function ($) {
 		$( this ).parent( 'li' ).remove();
 	});
 
+        // display ad groups form
+        $('#advads-ad-group-list a.edit, #advads-ad-group-list a.row-title').click(function(e){
+            e.preventDefault();
+            var advadsgroupformrow = $(this).parents('.advads-group-row').next('.advads-ad-group-form');
+            if(advadsgroupformrow.is(':visible')){
+                advadsgroupformrow.hide();
+            } else {
+                advadsgroupformrow.show();
+            }
+        });
+        // display ad groups usage
+        $('#advads-ad-group-list a.usage').click(function(e){
+            e.preventDefault();
+            var usagediv = $(this).parents('.advads-group-row').find('.advads-usage');
+            if(usagediv.is(':visible')){
+                usagediv.hide();
+            } else {
+                usagediv.show();
+            }
+        });
+
 });
 
 /**

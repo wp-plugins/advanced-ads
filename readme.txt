@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.2 beta
-Stable tag: 1.4.7
+Stable tag: 1.4.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,6 +44,8 @@ choose between different ad types that enable you to:
 * use placements in your theme to change ads and groups in template files without coding
 * disable all ads on individual single pages
 * set start time and expiry date for ads
+* display multiple ads from an ad group (ad blocks)
+* define the order of ads from an ad group and allow default ads
 
 = display conditions =
 
@@ -168,6 +170,14 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 3. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.5.0 =
+
+* COMPLETE MAKEOVER OF AD GROUPS
+* added ordered ad group type to control the order of ads displayed
+* display multiple ads from an ad group (allowing ad blocks)
+* fixed wrong group ids displaying ads
+* fixed ads group output being empty on first frontend impression
 
 = 1.4.7 =
 
