@@ -171,13 +171,14 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 
 == Changelog ==
 
-= 1.5.0 =
+= 1.4.8 =
 
 * COMPLETE MAKEOVER OF AD GROUPS
 * added ordered ad group type to control the order of ads displayed
 * display multiple ads from an ad group (allowing ad blocks)
 * fixed wrong group ids displaying ads
 * fixed ads group output being empty on first frontend impression
+* added filter `advanced-ads-group-types`
 
 = 1.4.7 =
 

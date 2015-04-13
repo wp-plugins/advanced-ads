@@ -192,7 +192,7 @@ class AdvAds_Groups_List {
             )
         );
 
-        return apply_filters('advads-ad-group-types', $types);
+        return apply_filters('advanced-ads-group-types', $types);
     }
 
     /**
