@@ -9,18 +9,20 @@
  *
  * @since 1.0.0
  * @param int $id id of the ad (post)
- *
+ * @param arr $args additional arguments
  */
-function get_ad($id = 0){
-    $id = absint($id);
-    if(empty($id)) return;
+function get_ad($id = 0, $args = array()){
+	$id = absint( $id );
+	if ( empty($id) ) { return; }
 
-    // get ad
-    $ad = new Advads_Ad($id);
+        if(!advads_can_display_ads()) return;
 
-    // check conditions
-    if($ad->can_display())
-        return $ad->output();
+	// get ad
+	$ad = new Advads_Ad( $id, $args );
+
+	// check conditions
+	if ( $ad->can_display() ) {
+		return $ad->output(); }
 }
 
 /**
@@ -28,10 +30,11 @@ function get_ad($id = 0){
  *
  * @since 1.0.0
  * @param int $id id of the ad (post)
+ * @param arr $args additional arguments
  */
-function the_ad($id = 0){
+function the_ad($id = 0, $args = array()){
 
-    echo get_ad($id);
+	echo get_ad( $id, $args );
 
 }
 
@@ -43,12 +46,14 @@ function the_ad($id = 0){
  *
  */
 function get_ad_group($id = 0){
-    $id = absint($id);
-    if(empty($id)) return;
+	$id = absint( $id );
+	if ( empty($id) ) { return; }
 
-    // get ad
-    $adgroup = new Advads_Ad_Group($id);
-    return $adgroup->output_random_ad();
+        if(!advads_can_display_ads()) return;
+
+	// get ad
+	$adgroup = new Advads_Ad_Group( $id );
+	return $adgroup->output();
 }
 
 /**
@@ -59,7 +64,7 @@ function get_ad_group($id = 0){
  */
 function the_ad_group($id = 0){
 
-    echo get_ad_group($id);
+	echo get_ad_group( $id );
 
 }
 
@@ -71,11 +76,13 @@ function the_ad_group($id = 0){
  *
  */
 function get_ad_placement($id = ''){
-    if($id == '') return;
+	if ( $id == '' ) { return; }
 
-    // get placement content
-    $output = Advads_Ad_Placements::output($id);
-    return $output;
+        if(!advads_can_display_ads()) return;
+
+	// get placement content
+	$output = Advads_Ad_Placements::output( $id );
+	return $output;
 }
 
 /**
@@ -86,6 +93,16 @@ function get_ad_placement($id = ''){
  */
 function the_ad_placement($id = ''){
 
-    echo get_ad_placement($id);
+	echo get_ad_placement( $id );
 
+}
+
+/**
+ * return true if ads can be displayed
+ *
+ * @since 1.4.9
+ * @return bool, true if ads can be displayed
+ */
+function advads_can_display_ads(){
+    return Advanced_Ads::get_instance()->can_display_ads();
 }
