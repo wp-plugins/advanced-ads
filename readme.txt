@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.2 beta
-Stable tag: 1.4.8
+Stable tag: 1.4.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,12 +56,15 @@ deliver ads based on conditions like
 * posts by category, tags, taxonomies
 * archive pages by category, tags, taxonomies
 * special page types like 404, attachment and front page
+* hide ads on secondary queries (e.g. posts in sidebars)
 
 global conditions
 
 * disable all ads in the frontend (e.g. when your ad network breaks down)
 * disable all ads on 404 pages (e.g. AdSense doesn’t allow that)
 * disable all ads on non-singular pages with a single click
+* disable all ads in secondary queries
+* hide ads from bots and web crawlers
 
 = visitor conditions =
 
@@ -170,6 +173,16 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 3. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.4.9 =
+
+* added option to hide ads from crawlers and other bots (option is disabled by default)
+* added Secondary Queries display condition, e.g. to hide ads from posts in sidebars
+* added frontend function `advads_can_display_ads()` to check if ads are displayed in general
+* global option to disable all ads in secondary queries
+* search for term ids in display conditions
+* fixed ad conditions using conditional tags of subquery instead of the main query
+* fixed search for terms in display conditions
 
 = 1.4.8 =
 

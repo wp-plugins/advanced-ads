@@ -692,6 +692,14 @@ class Advanced_Ads_Admin {
 			$hook,
 			'advanced_ads_setting_section'
 		);
+		// add setting fields for content injection priority
+		add_settings_field(
+			'block-bots',
+			__( 'Hide ads from bots', ADVADS_SLUG ),
+			array($this, 'render_settings_block_bots'),
+			$hook,
+			'advanced_ads_setting_section'
+		);
 
 		// hook for additional settings from add-ons
 		do_action( 'advanced-ads-settings-init', $hook );
@@ -718,6 +726,7 @@ class Advanced_Ads_Admin {
 		$disable_all = isset($options['disabled-ads']['all']) ? 1 : 0;
 		$disable_404 = isset($options['disabled-ads']['404']) ? 1 : 0;
 		$disable_archives = isset($options['disabled-ads']['archives']) ? 1 : 0;
+		$disable_secondary = isset($options['disabled-ads']['secondary']) ? 1 : 0;
 
 		// load the template
 		$view = plugin_dir_path( __FILE__ ) . 'views/settings_disable_ads.php';
@@ -776,6 +785,20 @@ class Advanced_Ads_Admin {
 
 		echo '<input id="advanced-ads-content-injection-priority" type="number" value="'.$priority.'" name="'.ADVADS_SLUG.'[content-injection-priority]" size="3"/>';
 		echo '<p class="description">'. __( 'Play with this value in order to change the priority of the injected ads compared to other auto injected elements in the post content.', ADVADS_SLUG ) .'</p>';
+	}
+
+	/**
+	 * render setting for blocking bots
+	 *
+	 * @since 1.4.9
+	 */
+	public function render_settings_block_bots(){
+		$options = Advanced_Ads::get_instance()->options();
+		$checked = ( ! empty($options['block-bots'])) ? 1 : 0;
+
+		echo '<input id="advanced-ads-block-bots" type="checkbox" value="1" name="'.ADVADS_SLUG.'[block-bots]" '.checked( $checked, 1, false ).'>';
+		echo '<p class="description">'. sprintf(__( 'Hide ads from crawlers and other bots. Also prevents counting impressions for bots when using the <a href="%s" target="_blank">Tracking Add-On</a>.', ADVADS_SLUG ), 'http://wpadvancedads.com/ad-tracking/') .'<br/>'
+                        . __( 'Disabling this option only makes sense if your ads contain content you want to display to bots (like search engines) or your site is cached and bots could create a cached version without the ads.', ADVADS_SLUG ) . '</p>';
 	}
 
 	/**

@@ -25,7 +25,7 @@ class Advanced_Ads {
 	 * @var     string
 	 */
 
-	const VERSION = '1.4.8';
+	const VERSION = '1.4.9';
 
 	/**
 	 * post type slug
@@ -88,6 +88,14 @@ class Advanced_Ads {
 	 * @var     array (if loaded)
 	 */
 	protected $internal_options = false;
+
+        /**
+         * list of bots and crawlers to exclude from ad impressions
+         *
+         * @since 1.4.9
+         * @var array list of bots
+         */
+        protected $bots = array('008','ABACHOBot','Accoona-AI-Agent','AddSugarSpiderBot','ADmantX','AhrefsBot','alexa','AnyApexBot','appie','Apple-PubSub','Arachmo','Ask Jeeves','avira.com','B-l-i-t-z-B-O-T','Baiduspider','BecomeBot','BeslistBot','BillyBobBot','Bimbot','Bingbot','BLEXBot','BlitzBOT','boitho.com-dc','boitho.com-robot','bot','btbot','CatchBot','Cerberian Drtrs','Charlotte','ConveraCrawler','cosmos','Covario IDS','crawler','CrystalSemanticsBot','curl','DataparkSearch','DiamondBot','Discobot','Dotbot','EmeraldShield.com WebBot','envolk[ITS]spider','EsperanzaBot','Exabot','expo9','facebookexternalhit','FAST Enterprise Crawler','FAST-WebCrawler','FDSE robot','Feedfetcher-Google','FindLinks','Firefly','froogle','FurlBot','FyberSpider','g2crawler','Gaisbot','GalaxyBot','genieBot','Genieo','Gigabot','Girafabot','Googlebot','Googlebot-Image','GrapeshotCrawler','GurujiBot','HappyFunBot','heritrix','hl_ftien_spider','Holmes','htdig','https://developers.google.com','ia_archiver','iaskspider','iCCrawler','ichiro','igdeSpyder','InfoSeek','inktomi','IRLbot','IssueCrawler','Jaxified Bot','Jyxobot','KoepaBot','Kraken','L.webis','LapozzBot','Larbin','LDSpider','LexxeBot','Linguee','Bot','LinkWalker','lmspider','looksmart','lwp-trivial','mabontland','magpie-crawler','Mail.RU_Bot','MaxPointCrawler','Mediapartners-Google','MJ12bot','Mnogosearch','mogimogi','MojeekBot','Moreoverbot','Morning Paper','msnbot','MSRBot','MVAClient','mxbot','NationalDirectory','NetResearchServer','NetSeer Crawler','NewsGator','NG-Search','nicebot','noxtrumbot','Nusearch','Spider','Nutch crawler','NutchCVS','Nymesis','obot','oegp','omgilibot','OmniExplorer_Bot','OOZBOT','Orbiter','PageBitesHyperBot','Peew','polybot','Pompos','PostPost','proximic','Psbot','PycURL','Qseero','rabaz','Radian6','RAMPyBot','Rankivabot','RufusBot','SandCrawler','savetheworldheritage','SBIder','Scooter','ScoutJet','Scrubby','SearchSight','Seekbot','semanticdiscovery','Sensis','Web Crawler','SEOChat::Bot','SeznamBot','Shim-Crawler','ShopWiki','Shoula robot','silk','Sitebot','Snappy','sogou spider','Sogou web spider','Sosospider','Spade','Speedy Spider','Sqworm','StackRambler','suggybot','SurveyBot','SynooBot','TechnoratiSnoop','TECNOSEEK','Teoma','TerrawizBot','TheSuBot','Thumbnail.CZ','robot','TinEye','truwoGPS','TurnitinBot','TweetedTimes Bot','TwengaBot','updated','URL_Spider_SQL','Urlfilebot','Vagabondo','VoilaBot','voltron','Vortex','voyager','VYU2','WebAlta Crawler','WebBug','webcollage','WebFindBot','WebIndex','Websquash.com','WeSEE:Ads','wf84','Wget','WoFindeIch Robot','WomlpeFactory','WordPress','Xaldon_WebSpider','yacy','Yahoo! Slurp','Yahoo! Slurp China','YahooSeeker','YahooSeeker-Testing','YandexBot','YandexImages','Yasaklibot','Yeti','YodaoBot','yoogliFetchAgent','YoudaoBot','Zao','Zealbot','zspider','ZyBorg');
 
 	/**
 	 * Initialize the plugin by setting localization and loading public scripts
@@ -152,7 +160,7 @@ class Advanced_Ads {
 	 */
 	public function set_disabled_constant(){
 
-		global $post;
+		global $post, $wp_the_query;
 
 		// don't set the constant if already defined
 		if ( defined( 'ADVADS_ADS_DISABLED' ) ) { return; }
@@ -166,19 +174,25 @@ class Advanced_Ads {
 		}
 
 		// check if ads are disabled from 404 pages
-		if ( is_404() && ! empty($options['disabled-ads']['404']) ){
+		if ( $wp_the_query->is_404() && ! empty($options['disabled-ads']['404']) ){
 			define( 'ADVADS_ADS_DISABLED', true );
 			return;
 		}
 
 		// check if ads are disabled from non singular pages (often = archives)
-		if ( ! is_singular() && ! empty($options['disabled-ads']['archives']) ){
+		if ( ! $wp_the_query->is_singular() && ! empty($options['disabled-ads']['archives']) ){
+			define( 'ADVADS_ADS_DISABLED', true );
+			return;
+		}
+
+		// check if ads are disabled in secondary queries
+		if ( ! is_main_query() && ! empty($options['disabled-ads']['secondary']) ){
 			define( 'ADVADS_ADS_DISABLED', true );
 			return;
 		}
 
 		// check if ads are disabled on the current page
-		if ( is_singular() && isset($post->ID) ){
+		if ( $wp_the_query->is_singular() && isset($post->ID) ){
 			$post_ad_options = get_post_meta( $post->ID, '_advads_ad_settings', true );
 
 			if ( ! empty($post_ad_options['disable_ads']) ){
@@ -750,4 +764,51 @@ class Advanced_Ads {
 
 		return get_terms( Advanced_Ads::AD_GROUP_TAXONOMY, $args );
 	}
+
+        /**
+         * general check if ads can be displayed for the whole page impression
+         *
+         * @since 1.4.9
+         * @return bool true, if ads can be displayed
+         * @todo move this to set_disabled_constant()
+         */
+        public function can_display_ads(){
+
+            // check global constant if ads are enabled or disabled
+            if ( defined( 'ADVADS_ADS_DISABLED' ) ) { return false; }
+
+            $options = $this->options();
+            $see_ads_capability = ( ! empty($options['hide-for-user-role'])) ? $options['hide-for-user-role'] : 0;
+
+            // check if user is logged in and if so if users with his rights can see ads
+            if ( is_user_logged_in() && $see_ads_capability && current_user_can( $see_ads_capability ) ) {
+                    return false;
+            }
+
+            // check bots if option is enabled
+            if(isset($options['block-bots']) && $options['block-bots'] && $this->is_bot()) return false;
+
+            return true;
+        }
+
+        /**
+         * check if the current user agent is given or a bot
+         *
+         * @since 1.4.9
+         * @return bool true if the current user agent is empty or a bot
+         */
+        public function is_bot(){
+            $bots = apply_filters('advanced-ads-bots', $this->bots);
+            $bots = implode('|', $bots);
+            $bots = preg_replace('@[^-_;/|\][ a-z0-9]@i', '', $bots);
+            $regex = "@$bots@i";
+
+            if(isset($_SERVER['HTTP_USER_AGENT'])) {
+                $agent = $_SERVER['HTTP_USER_AGENT'];
+
+                return preg_match($regex, $agent) === 1;
+            }
+
+            return true;
+        }
 }

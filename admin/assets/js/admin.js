@@ -79,7 +79,7 @@ jQuery( document ).ready(function ($) {
 				// var searchField  = request.term;
 				advads_term_search(self, callback);
 			},
-			minLength: 2,
+			minLength: 1,
 			select: function( event, ui ) {
 				// append new line with input fields
 				$( '<label class="button">' + ui.item.label + '<input type="hidden" name="advanced_ad[conditions]['+ self.dataset.group +']['+ self.dataset.includeType +'][]" value="' + ui.item.value + '"></label>' ).appendTo( $(self).siblings('.advads-conditions-terms-buttons'));

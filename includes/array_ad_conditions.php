@@ -82,6 +82,11 @@ $advanced_ads_ad_conditions = array(
 		'label' => __( 'Attachment Pages', $advanced_ads_slug ),
 		'description' => __( 'show on attachment pages', $advanced_ads_slug ),
 		'type' => 'radio',
+	),
+	'is_main_query' => array(
+		'label' => __( 'Secondary Queries', $advanced_ads_slug ),
+		'description' => __( 'allow ads in secondary queries', $advanced_ads_slug ),
+		'type' => 'radio',
 	)
 );
 

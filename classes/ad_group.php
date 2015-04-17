@@ -145,7 +145,7 @@ class Advads_Ad_Group {
             $ads = $this->load_all_ads();
             if ( $ads === array() ) { return; }
 
-            // get ad weights serving as a order here
+            // get ad weights serving as an order here
             $weights = $this->get_ad_weights();
             asort($weights);
 
@@ -287,10 +287,10 @@ class Advads_Ad_Group {
 
 		$rand = mt_rand( 1, $max );
 
-		foreach ( $ad_weights as $key => $value ) {
-			$rand -= $value;
+		foreach ( $ad_weights as $ad_id => $_weight ) {
+			$rand -= $_weight;
 			if ( $rand <= 0 ) {
-				return $key;
+				return $ad_id;
 			}
 		}
 	}

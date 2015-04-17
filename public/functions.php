@@ -15,6 +15,8 @@ function get_ad($id = 0, $args = array()){
 	$id = absint( $id );
 	if ( empty($id) ) { return; }
 
+        if(!advads_can_display_ads()) return;
+
 	// get ad
 	$ad = new Advads_Ad( $id, $args );
 
@@ -47,6 +49,8 @@ function get_ad_group($id = 0){
 	$id = absint( $id );
 	if ( empty($id) ) { return; }
 
+        if(!advads_can_display_ads()) return;
+
 	// get ad
 	$adgroup = new Advads_Ad_Group( $id );
 	return $adgroup->output();
@@ -74,6 +78,8 @@ function the_ad_group($id = 0){
 function get_ad_placement($id = ''){
 	if ( $id == '' ) { return; }
 
+        if(!advads_can_display_ads()) return;
+
 	// get placement content
 	$output = Advads_Ad_Placements::output( $id );
 	return $output;
@@ -89,4 +95,14 @@ function the_ad_placement($id = ''){
 
 	echo get_ad_placement( $id );
 
+}
+
+/**
+ * return true if ads can be displayed
+ *
+ * @since 1.4.9
+ * @return bool, true if ads can be displayed
+ */
+function advads_can_display_ads(){
+    return Advanced_Ads::get_instance()->can_display_ads();
 }

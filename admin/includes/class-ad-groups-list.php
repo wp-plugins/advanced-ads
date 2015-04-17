@@ -138,7 +138,7 @@ class AdvAds_Groups_List {
         $ads = $this->get_ads($group);
 
         $weights = $group->get_ad_weights();
-        $weight_sum = array_sum( $weights );;
+        $weight_sum = array_sum( $weights );
 
         // The Loop
         if ( $ads->have_posts() ) {

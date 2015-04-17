@@ -241,26 +241,15 @@ class Advads_Ad {
 	}
 
 	/**
-	 * check if the ad can be displayed in frontend due to its conditions
+	 * check if the ad can be displayed in frontend due to its own conditions
 	 *
 	 * @since 1.0.0
 	 * @return bool $can_display true if can be displayed in frontend
 	 */
 	public function can_display(){
 
-		$options = Advanced_Ads::get_instance()->options();
-		$see_ads_capability = ( ! empty($options['hide-for-user-role'])) ? $options['hide-for-user-role'] : 0;
-
-		// check global constant if ads are enabled or disabled
-		if ( defined( 'ADVADS_ADS_DISABLED' ) ) { return false; }
-
 		// don’t display ads that are not published or private for users not logged in
 		if ( $this->status !== 'publish' && ! ($this->status === 'private' && ! is_user_logged_in()) ){
-			return false;
-		}
-
-		// check if user is logged in and if so if users with his rights can see ads
-		if ( is_user_logged_in() && $see_ads_capability && current_user_can( $see_ads_capability ) ) {
 			return false;
 		}
 
@@ -283,9 +272,10 @@ class Advads_Ad {
 	 * @return bool $can_display true if can be displayed in frontend
 	 */
 	public function can_display_by_conditions(){
-		global $post, $wp_query;
+            // use $wp_the_query to check the original query and not custom queries
+		global $post, $wp_the_query;
 
-		$query = $wp_query->get_queried_object();
+		$query = $wp_the_query->get_queried_object();
 
 		if ( empty($this->options['conditions']) ||
 				! is_array( $this->options['conditions'] ) ) { return true; }
@@ -298,7 +288,7 @@ class Advads_Ad {
 			switch ( $_cond_key ){
 				// check for post ids
 				case 'postids' :
-					if ( is_singular() && empty($_cond_value['all']) ){
+					if ( $wp_the_query->is_singular() && empty($_cond_value['all']) ){
 						// included posts
 						if ( ! empty($_cond_value['include']) ){
 							if ( is_string( $_cond_value['include'] ) ){
@@ -327,7 +317,7 @@ class Advads_Ad {
 				// check for category ids
 				case 'categoryids' :
 					// included
-					if ( is_singular() && empty($_cond_value['all']) ){
+					if ( $wp_the_query->is_singular() && empty($_cond_value['all']) ){
 						// get all taxonomies of the post
 						$term_ids = $this->get_object_terms( $post->ID );
 
@@ -363,7 +353,7 @@ class Advads_Ad {
 				// check for included category archive ids
 				// @link http://codex.wordpress.org/Conditional_Tags#A_Category_Page
 				case 'categoryarchiveids' :
-					if ( isset($query->term_id) && is_archive() && empty($_cond_value['all']) ){
+					if ( isset($query->term_id) && $wp_the_query->is_archive() && empty($_cond_value['all']) ){
 						if ( ! empty($_cond_value['include']) ){
 							if ( is_string( $_cond_value['include'] ) ){
 								$category_ids = explode( ',', $_cond_value['include'] );
@@ -415,37 +405,43 @@ class Advads_Ad {
 				// check is_front_page
 				// @link https://codex.wordpress.org/Conditional_Tags#The_Front_Page
 				case 'is_front_page' :
-					if ( $_cond_value == 0 && (is_front_page() || is_home()) ) {
+					if ( $_cond_value == 0 && $wp_the_query->is_front_page()) {
 						return false; }
 				break;
 				// check is_singular
 				// @link https://codex.wordpress.org/Conditional_Tags#A_Post_Type
 				case 'is_singular' :
-					if ( $_cond_value == 0 && is_singular() ) {
+					if ( $_cond_value == 0 && $wp_the_query->is_singular() ) {
 						return false; }
 				break;
 				// check is_archive
 				// @link https://codex.wordpress.org/Conditional_Tags#Any_Archive_Page
 				case 'is_archive' :
-					if ( $_cond_value == 0 && is_archive() ) {
+					if ( $_cond_value == 0 && $wp_the_query->is_archive() ) {
 						return false; }
 				break;
 				// check is_search
 				// @link https://codex.wordpress.org/Conditional_Tags#A_Search_Result_Page
 				case 'is_search' :
-					if ( $_cond_value == 0 && is_search() ) {
+					if ( $_cond_value == 0 && $wp_the_query->is_search() ) {
 						return false; }
 				break;
 				// check is_404
 				// @link https://codex.wordpress.org/Conditional_Tags#A_404_Not_Found_Page
 				case 'is_404' :
-					if ( $_cond_value == 0 && is_404() ) {
+					if ( $_cond_value == 0 && $wp_the_query->is_404() ) {
 						return false; }
 				break;
 				// check is_attachment
 				// @link https://codex.wordpress.org/Conditional_Tags#An_Attachment
 				case 'is_attachment' :
-					if ( $_cond_value == 0 && is_attachment() ) {
+					if ( $_cond_value == 0 && $wp_the_query->is_attachment() ) {
+						return false; }
+				break;
+				// check !is_main_query
+				// @link https://codex.wordpress.org/Function_Reference/is_main_query
+				case 'is_main_query' :
+					if ( $_cond_value == 0 && !is_main_query() ) {
 						return false; }
 				break;
 			}
