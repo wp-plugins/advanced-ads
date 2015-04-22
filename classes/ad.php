@@ -93,7 +93,6 @@ class Advads_Ad {
 	 * @param arr $args additional arguments
 	 */
 	public function __construct($id, $args = array()) {
-		global $advanced_ads_ad_conditions;
 		$id = absint( $id );
 		$this->id = $id;
 		$this->args = is_array( $args ) ? $args : array();
@@ -102,6 +101,8 @@ class Advads_Ad {
 
 		// dynamically add sanitize filters for condition types
 		$_types = array();
+		// -TODO use model
+		$advanced_ads_ad_conditions = Advanced_Ads::get_ad_conditions();
 		foreach ( $advanced_ads_ad_conditions as $_condition ) {
 			// add unique
 			$_types[$_condition['type']] = false;
@@ -618,8 +619,8 @@ class Advads_Ad {
 		// load ad type specific content filter
 		$output = $this->type_obj->prepare_output( $this );
 
-                // filter to manipulate the output before the wrapper is added
-                $output = apply_filters( 'advanced-ads-output-inside-wrapper', $output, $this );
+		// filter to manipulate the output before the wrapper is added
+		$output = apply_filters( 'advanced-ads-output-inside-wrapper', $output, $this );
 
 		// build wrapper around the ad
 		$output = $this->add_wrapper( $output );
@@ -960,5 +961,4 @@ class Advads_Ad {
 	private function create_wrapper_id(){
 		return 'advads-' . mt_rand();
 	}
-
 }

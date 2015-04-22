@@ -66,15 +66,16 @@ class AdvAds_Overview_Widgets_Callbacks {
 	 */
 	public static function render_ad_widget(){
 
-		$recent_ads = Advanced_Ads::get_ads();
+		$model = Advanced_Ads::get_instance()->get_model();
+		$recent_ads = $model->get_ads();
 
 		?><p class="description"><?php _e( 'Ads are the smallest unit, containing the content or a single ad to be displayed.', ADVADS_SLUG ); ?></p>
-        <p><?php printf( __( 'You have published %d ads.', ADVADS_SLUG ), count( $recent_ads ) );?></p><p><?php
+		<p><?php printf( __( 'You have published %d ads.', ADVADS_SLUG ), count( $recent_ads ) );?></p><p><?php
 		printf(__( '<a href="%s">Manage</a> them or <a href="%s">create</a> a new one', ADVADS_SLUG ),
 			'edit.php?post_type='. Advanced_Ads::POST_TYPE_SLUG,
 		'post-new.php?post_type='. Advanced_Ads::POST_TYPE_SLUG);
 		?>
-        </p><?php
+		</p><?php
 
 		// get next steps
 		self::render_next_steps( $recent_ads );
@@ -84,8 +85,9 @@ class AdvAds_Overview_Widgets_Callbacks {
 	 * render next-steps
 	 */
 	private static function render_next_steps($recent_ads = array()){
-		$groups = Advanced_Ads::get_ad_groups();
-		$placements = Advanced_Ads::get_ad_placements_array();
+		$model = Advanced_Ads::get_instance()->get_model();
+		$groups = $model->get_ad_groups();
+		$placements = $model->get_ad_placements_array();
 
 		$next_steps = array();
 

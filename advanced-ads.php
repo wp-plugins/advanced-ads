@@ -12,7 +12,7 @@
  * Plugin Name:       Advanced Ads
  * Plugin URI:        http://wpadvancedads.com
  * Description:       Manage and optimize your ads in WordPress
- * Version:           1.4.9
+ * Version:           1.5.0
  * Author:            Thomas Maier
  * Author URI:        http://webgilde.com
  * Text Domain:       advanced-ads
@@ -39,62 +39,26 @@ define( 'ADVADS_BASE_DIR', dirname( plugin_basename( __FILE__ ) ) ); // director
 define( 'ADVADS_SLUG', 'advanced-ads' );
 
 /*----------------------------------------------------------------------------*
- * Autoloading Objects
+ * Autoloading, modules and functions
  *----------------------------------------------------------------------------*/
-if ( ! class_exists( 'Advanced_Ads', true ) ) {
-	require_once ADVADS_BASE_PATH . 'includes/autoloader.php';
-	require_once ADVADS_BASE_PATH . 'public/class-advanced-ads.php';
-	spl_autoload_register( array('Advads_Autoloader', 'load') );
-}
+
+// load public functions (might be used by modules, other plugins or theme)
+require_once ADVADS_BASE_PATH . 'includes/functions.php';
+require_once ADVADS_BASE_PATH . 'includes/load_modules.php';
+
+Advanced_Ads_ModuleLoader::getLoader(); // enable autoloading
 
 /*----------------------------------------------------------------------------*
- * Public-Facing Functionality
+ * Public-Facing and Core Functionality
  *----------------------------------------------------------------------------*/
 
-/*
- * Register hooks that are fired when the plugin is activated or deactivated.
- * When the plugin is deleted, the uninstall.php file is loaded.
- *
- */
-register_activation_hook( __FILE__, array( 'Advanced_Ads', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'Advanced_Ads', 'deactivate' ) );
-
-add_action( 'plugins_loaded', array( 'Advanced_Ads', 'get_instance' ) );
+Advanced_Ads::get_instance();
+Advanced_Ads_ModuleLoader::loadModules( ADVADS_BASE_PATH . 'modules/' ); // enable modules, requires base class
 
 /*----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
  *----------------------------------------------------------------------------*/
 
-if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-	new Advads_Ad_Ajax_Callbacks;
-}
-// load ad conditions array
-require_once ADVADS_BASE_PATH . 'includes/array_ad_conditions.php';
-
-if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
-	// register all classes with callbacks and hooks here
-	require_once ADVADS_BASE_PATH . 'admin/class-advanced-ads-admin.php';
-	require_once ADVADS_BASE_PATH . 'admin/includes/class-overview-widgets.php';
-        require_once ADVADS_BASE_PATH . 'admin/includes/class-notices.php';
-
-	add_action( 'plugins_loaded', array( 'Advanced_Ads_Admin', 'get_instance' ) );
-}
-
-// load public functions
-require_once ADVADS_BASE_PATH . 'public/functions.php';
-
-// load widget
-require_once ADVADS_BASE_PATH . 'classes/widget.php';
-function advads_widget_init() {
-	register_widget( 'Advads_Widget' );
-}
-
-add_action( 'widgets_init', 'advads_widget_init' );
-
-// Load advads extensions
-require_once ADVADS_BASE_PATH . 'modules/gadsense/main.php';
-
-// load modules, if they exist
-if ( file_exists( ADVADS_BASE_PATH . 'modules/pro/advads_pro.php' ) ){
-	require_once ADVADS_BASE_PATH . 'modules/pro/advads_pro.php';
+if ( is_admin() ) {
+	Advanced_Ads_Admin::get_instance();
 }

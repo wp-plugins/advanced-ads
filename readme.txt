@@ -3,8 +3,8 @@ Contributors: webzunft
 Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5RRRCEBGN3UT2
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
-Tested up to: 4.2 beta
-Stable tag: 1.4.9
+Tested up to: 4.2
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -174,6 +174,21 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 
 == Changelog ==
 
+= 1.5.0 =
+
+* major changes in the code base to support upcoming features
+* PLEASE TEST and report any bugs
+
+* further interface cleanup
+* fully implemented autoloading
+* added composer definitions
+* hook modules deep into ad selection and display
+* autoload modules (for base plugin and add-ons)
+* added `advanced-ads-ad-select-args` filter to modify ad selection arguments
+* added `advanced-ads-ad-select-methods` filter to append or override ad code selection methods
+* standardise and autoload modules
+* add AJAX handler
+
 = 1.4.9 =
 
 * added option to hide ads from crawlers and other bots (option is disabled by default)
@@ -253,127 +268,6 @@ Need ad analytics and impression tracking? Try the [tracking add-on](http://wpad
 * fix translation of textdomain if the plugin folder is renamed
 * load pro module, if exists
 * updated German translation
-
-= 1.3.18 =
-
-* removed wrapper for header injection placement
-* removed deprecated code used for ad based content injections
-* ordered ads by title in ads list
-* removed broken pagination from ad groups list. now, all ad groups are displayed
-* order ad groups by name when no other order is specified
-* fixed search for ad groups in ad groups list
-* PHP is not automatically allowed for new plain text ad codes anymore
-* add an internal description and notes to your ads
-
-= 1.3.17 =
-
-* allow ad injection in all public post types now
-* added Portuguese translation, props to [brunobarros](https://wordpress.org/support/profile/brunobarros)
-* added advanced js file into repository
-
-= 1.3.16 =
-
-* fixed minor issue in admin js
-* fixed expiry date showing up on other post types too
-
-= 1.3.15 =
-
-* COOL: added expiry date for ads, see the [manual](http://wpadvancedads.com/advancedads/manual/start-expiry-date/)
-* removed limit on ads loaded for one group, props to [brunobarros](https://wordpress.org/support/topic/bug-without-posts_per_page)
-* updated German translation
-
-= 1.3.14 =
-
-* fixed ad wrapper class for [Advanced Ads Layer add-on](http://wpadvancedads.com/layer-ads/)
-
-= 1.3.13 =
-
-* fixed ad wrapper options disappearing for placements
-
-= 1.3.12 =
-
-* limited number of terms on ad edit screen to 200, introduced _advanced-ads-admin-max-terms_ filter
-* wrapped placement ads in a container with a unique id and a class to target them with css and js
-* added dashboard widget with plugin version and news about ad optimization
-
-Good to know: [What you didn’t know about the AdSense Program Policies](http://webgilde.com/en/adsense-program-policies/).
-
-= 1.3.11 =
-
-* COOL: disable ads completely, on 404 pages or for non-singular pages with a single click
-* renamed hooks starting with _advads_ to _advanced-ads_ for better names consistency
-* ordered ads by ad title not by date in placement and widget ad select list
-
-Good to know: AdSense does not allow ads on 404 pages, so if you use AdSense a lot, be sure to check this new option on your settings page.
-
-= 1.3.10 =
-
-* COOL: disable all ads on individual single pages
-* fixed saving some ad conditions to global array
-* fixed minor issue with empty ad condition
-* updated translation files
-* updated German translation
-
-Developers might want to take a look at the [Codex](http://wpadvancedads.com/advancedads/codex/). I am currently updating the cool stuff in there.
-
-= 1.3.9 =
-
-* disabled empty css file in frontend
-* removed older changelog from readme
-* fixed saving new ad conditions type "other" into global array
-
-= 1.3.8 =
-
-* fixed empty content placements still being parsed
-* fixed missing or double tags created by content placements
-
-= 1.3.7 =
-
-* fixed bug with display conditions not working for custom post types and taxonomies
-* minor fix in ad injection
-
-= 1.3.6 =
-
-* COOL: inject ads into content before or after specific paragraphs or headlines
-* Updated translation files, German translation
-
-= 1.3.5 =
-
-* hotfix: fix the use of shortcodes within ads
-
-= 1.3.4 =
-
-* hotfix: display ads for placements when no ad group exists
-
-= 1.3.3 =
-
-* added column with ad details
-* removed the date column from ad list
-* fixed saving and retrieving of settings
-* changed the dashboard icon
-* renamed admin images so they won’t get blocked by ad blockers
-
-* ACTION REQUIRED: please check and resave settings (_Advanced Ads > Settings_)
-
-= 1.3.2 =
-
-* hotfix: prevent infinite loops (ads within ads…) for rich content ads
-
-= 1.3.1 =
-
-* COOL: new ad type: rich media and formatable content – it’s like editing a normal post
-* parse ad content as post content; this allows the use of shortcodes
-* increased priority of content filter to reduce the risk of `wpautop` not being run yet
-* finished German translation
-
-= 1.3 =
-
-* COOL: layout options for ads, e.g. to set floating and margins (see the [manual](http://wpadvancedads.com/advancedads/manual/optimizing-the-ad-layout/))
-* list ad groups before ads when selecting them for a placement
-* fixed error when removing an ad that is still in a group
-* fixed possible translation issue
-* added partial German translation
-* added Italien translation (thanks to sangkavr)
 
 [Changelog Archive](http://wpadvancedads.com/advancedads/codex/changelog-archive/)
 

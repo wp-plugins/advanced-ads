@@ -20,6 +20,11 @@
  *
  */
 
+// avoid direct execution
+if ( ! class_exists( 'Advanced_Ads', false ) ) {
+	die();
+}
+
 $advanced_ads_slug = Advanced_Ads::get_instance()->get_plugin_slug();
 
 $advanced_ads_ad_conditions = array(
@@ -90,4 +95,4 @@ $advanced_ads_ad_conditions = array(
 	)
 );
 
-$advanced_ads_ad_conditions = apply_filters( 'advanced-ads-conditions', $advanced_ads_ad_conditions );
+return apply_filters( 'advanced-ads-conditions', $advanced_ads_ad_conditions );

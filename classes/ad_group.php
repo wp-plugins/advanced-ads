@@ -90,7 +90,7 @@ class Advads_Ad_Group {
 
 		$this->taxonomy = Advanced_Ads::AD_GROUP_TAXONOMY;
 
-                $group = get_term( $group, $this->taxonomy );
+		$group = get_term( $group, $this->taxonomy );
 		if ( $group == null || is_wp_error($group) ) { return; }
 
 		$this->load( $group );
@@ -98,94 +98,96 @@ class Advads_Ad_Group {
 
 	/**
 	 * load additional ad group properties
-         *
+	 *
 	 * @since 1.4.8
-         * @param int $id group id
-         * @param obj $group wp term object
+     * @param int $id group id
+     * @param obj $group wp term object
 	 */
 	private function load($group) {
-            $this->id = $group->term_id;
-            $this->name = $group->name;
-            $this->slug = $group->slug;
-            $this->description = $group->description;
-            $this->post_type = Advanced_Ads::POST_TYPE_SLUG;
+		$this->id = $group->term_id;
+		$this->name = $group->name;
+		$this->slug = $group->slug;
+		$this->description = $group->description;
+		$this->post_type = Advanced_Ads::POST_TYPE_SLUG;
 
-            $this->load_additional_attributes();
+		$this->load_additional_attributes();
 	}
 
-        /**
-         * load additional attributes for groups that are not part of the WP terms
-         *
-         * @since 1.4.8
-         */
-        protected function load_additional_attributes(){
-            $all_groups = get_option( 'advads-ad-groups', array() );
+	/**
+	 * load additional attributes for groups that are not part of the WP terms
+	 *
+	 * @since 1.4.8
+	 */
+	protected function load_additional_attributes(){
+		$all_groups = get_option( 'advads-ad-groups', array() );
 
-            if(isset($all_groups[$this->id]['type'])){
-                $this->type = $all_groups[$this->id]['type'];
-            }
+		if(isset($all_groups[$this->id]['type'])){
+			$this->type = $all_groups[$this->id]['type'];
+		}
 
-            // get ad count; default is 1
-            if(isset($all_groups[$this->id]['ad_count'])){
-                $this->ad_count = (int) $all_groups[$this->id]['ad_count'];
-            }
-        }
+		// get ad count; default is 1
+		if(isset($all_groups[$this->id]['ad_count'])){
+			$this->ad_count = (int) $all_groups[$this->id]['ad_count'];
+		}
+	}
 
-        /**
-         * control the output of the group by type and amount of ads
-         *
-         * @since 1.4.8
-         * @return str $output output of ad(s) by ad
-         */
-        public function output(){
+	/**
+	 * control the output of the group by type and amount of ads
+	 *
+	 * @since 1.4.8
+	 * @return str $output output of ad(s) by ad
+	 */
+	public function output(){
 
-            if(!$this->id) return;
+		if(!$this->id) return;
 
-            // load ads
-            $ads = $this->load_all_ads();
-            if ( $ads === array() ) { return; }
+		// load ads
+		$ads = $this->load_all_ads();
+		if ( $ads === array() ) { return; }
 
-            // get ad weights serving as an order here
-            $weights = $this->get_ad_weights();
-            asort($weights);
+		// get ad weights serving as an order here
+		$weights = $this->get_ad_weights();
+		asort($weights);
 
-            // if ads and weights don’t have the same keys, update weights array
-            if ( (count( $weights ) == 0 && count( $ads ) > 0) || count( $weights ) != count( $ads ) || array_diff_key( $weights, $ads ) != array()
-                    || array_diff_key( $ads, $weights ) != array() ) {
-                $this->update_ad_weights();
-                $weights = $this->ad_weights;
-            }
+		// if ads and weights don’t have the same keys, update weights array
+		if ( (count( $weights ) == 0 && count( $ads ) > 0) || count( $weights ) != count( $ads ) || array_diff_key( $weights, $ads ) != array()
+				|| array_diff_key( $ads, $weights ) != array() ) {
+			$this->update_ad_weights();
+			$weights = $this->ad_weights;
+		}
 
-            // order ads based on group type
-            switch($this->type){
-                case 'ordered' :
-                    $ordered_ad_ids = array_keys($weights);
-                    break;
-                default : // default
-                    $ordered_ad_ids = $this->shuffle_ads($ads, $weights);
-            }
+		// order ads based on group type
+		switch($this->type){
+			case 'ordered' :
+				$ordered_ad_ids = array_keys($weights);
+				break;
+			default : // default
+				$ordered_ad_ids = $this->shuffle_ads($ads, $weights);
+		}
 
-            // load the ad outpur
-            $output = '';
-            $ads_displayed = 0;
-            foreach ( $ordered_ad_ids as $_ad_id ) {
-                // load the ad object
-                $ad = new Advads_Ad( $_ad_id );
-                if ( $ad->can_display() ) {
-                    $output .= $ad->output();
-                    $ads_displayed++;
-                    if($ads_displayed === $this->ad_count) break;
-                }
-                // break the loop when maximum ads are reached
-            }
+		// load the ad output
+		$output = '';
+		$ads_displayed = 0;
+		foreach ( $ordered_ad_ids as $_ad_id ) {
+		    // +TODO should use ad-selection interface to output actual ad
+		    //    .. might break context otherwise or cause hard to detect issues
+			// load the ad object
+			$ad = new Advads_Ad( $_ad_id );
+			if ( $ad->can_display() ) {
+				$output .= $ad->output();
+				$ads_displayed++;
+				if($ads_displayed === $this->ad_count) break;
+			}
+			// break the loop when maximum ads are reached
+		}
 
-            // add the group to the global output array
-            $advads = Advanced_Ads::get_instance();
-            $advads->current_ads[] = array('type' => 'group', 'id' => $this->id, 'title' => $this->name);
+		// add the group to the global output array
+		$advads = Advanced_Ads::get_instance();
+		$advads->current_ads[] = array('type' => 'group', 'id' => $this->id, 'title' => $this->name);
 
-            // filter again, in case a developer wants to filter group output individually
-            return apply_filters( 'advanced-ads-group-output', $output, $this );
-        }
+		// filter again, in case a developer wants to filter group output individually
+		return apply_filters( 'advanced-ads-group-output', $output, $this );
+	}
 
 	/**
 	 * return all ads from this group
@@ -315,7 +317,7 @@ class Advads_Ad_Group {
 		return array();
 	}
 
-        /**
+	/**
 	 * save ad group information that are not included in terms or ad weight
 	 *
 	 * @since 1.4.8
@@ -323,15 +325,15 @@ class Advads_Ad_Group {
 	 */
 	public function save($args = array()) {
 
-            $defaults = array( 'type' => 'default', 'ad_count' => 1 );
-            $args = wp_parse_args($args, $defaults);
+		$defaults = array( 'type' => 'default', 'ad_count' => 1 );
+		$args = wp_parse_args($args, $defaults);
 
-            // get global ad group option
-            $groups = get_option( 'advads-ad-groups', array() );
+		// get global ad group option
+		$groups = get_option( 'advads-ad-groups', array() );
 
-            $groups[$this->id] = $args;
+		$groups[$this->id] = $args;
 
-            update_option( 'advads-ad-groups', $groups );
+		update_option( 'advads-ad-groups', $groups );
 	}
 
 	/**

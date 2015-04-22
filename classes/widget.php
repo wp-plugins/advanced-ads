@@ -80,15 +80,16 @@ class Advads_Widget extends WP_Widget {
 	 */
 	static function items_for_select(){
 		$select = array();
+		$model = Advanced_Ads::get_instance()->get_model();
 
 		// load all ads
-		$ads = Advanced_Ads::get_ads( array('orderby' => 'name', 'order' => 'ASC') );
+		$ads = $model->get_ads( array('orderby' => 'name', 'order' => 'ASC') );
 		foreach ( $ads as $_ad ){
 			$select['ads']['ad_' . $_ad->ID] = $_ad->post_title;
 		}
 
 		// load all ad groups
-		$groups = Advanced_Ads::get_ad_groups();
+		$groups = $model->get_ad_groups();
 		foreach ( $groups as $_group ){
 			$select['groups']['group_' . $_group->term_id] = $_group->name;
 		}

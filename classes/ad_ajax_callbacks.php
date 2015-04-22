@@ -20,6 +20,7 @@ class Advads_Ad_Ajax_Callbacks {
 
 	public function __construct() {
 
+		// NOTE: admin only!
 		add_action( 'wp_ajax_load_content_editor', array( $this, 'load_content_editor' ) );
 		add_action( 'wp_ajax_load_ad_parameters_metabox', array( $this, 'load_ad_parameters_metabox' ) );
                 add_action( 'wp_ajax_advads-terms-search', array( $this, 'search_terms' ) );

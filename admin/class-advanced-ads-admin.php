@@ -14,6 +14,7 @@
  * Plugin class. This class should ideally be used to work with the
  * administrative side of the WordPress site.
  *
+ * +TODO fix relative paths
  *
  * @package Advanced_Ads_Admin
  * @author  Thomas Maier <thomas.maier@webgilde.com>
@@ -67,7 +68,14 @@ class Advanced_Ads_Admin {
 	 * @since     1.0.0
 	 */
 	private function __construct() {
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			new Advads_Ad_Ajax_Callbacks;
+		} else {
+			add_action( 'plugins_loaded', array( $this, 'wp_plugins_loaded' ) );
+		}
+	}
 
+	public function wp_plugins_loaded() {
 		/*
          * Call $plugin_slug from public plugin class.
          *
@@ -123,7 +131,6 @@ class Advanced_Ads_Admin {
 		// set 1 column layout on overview page as user and page option
 		add_filter( 'screen_layout_columns', array('AdvAds_Overview_Widgets_Callbacks', 'one_column_overview_page') );
 		add_filter( 'get_user_option_screen_layout_toplevel_page_advanced', array( 'AdvAds_Overview_Widgets_Callbacks', 'one_column_overview_page_user') );
-
 	}
 
 	/**
@@ -271,7 +278,7 @@ class Advanced_Ads_Admin {
 			$success = __( 'Placements updated', ADVADS_SLUG );
 		}
 		$placement_types = Advads_Ad_Placements::get_placement_types();
-		$placements = Advanced_Ads::get_ad_placements_array();
+		$placements = Advanced_Ads::get_ad_placements_array(); // -TODO use model
 		// load ads and groups for select field
 
 		// display view
@@ -288,9 +295,9 @@ class Advanced_Ads_Admin {
 		$plugin = Advanced_Ads::get_instance();
 		$plugin_options = $plugin->options();
 		$ads_by_conditions = $plugin->get_ads_by_conditions_array();
-		$ad_placements = Advanced_Ads::get_ad_placements_array();
+		$ad_placements = Advanced_Ads::get_ad_placements_array(); // -TODO use model
 
-		include_once( 'views/debug.php' );
+		include( 'views/debug.php' );
 	}
 
 	/**
@@ -358,16 +365,15 @@ class Advanced_Ads_Admin {
 					$tag = false;
 				}
 
-				require_once( 'views/ad-group-edit.php' );
+				include( 'views/ad-group-edit.php' );
 				break;
 
 			default :
 				$title = $tax->labels->name;
-				// load needed classes
-                                include_once( 'includes/class-ad-groups-list.php');
-                                $wp_list_table = _get_list_table('WP_Terms_List_Table');
+				$wp_list_table = _get_list_table('WP_Terms_List_Table');
+
 				// load template
-				include_once( 'views/ad-group.php' );
+				include( 'views/ad-group.php' );
 		}
 	}
 
@@ -416,7 +422,7 @@ class Advanced_Ads_Admin {
 		}
 		$ad = new Advads_Ad( $post->ID );
 
-		require_once('views/ad_info.php');
+		include('views/ad_info.php');
 	}
 
 	/**
@@ -462,7 +468,7 @@ class Advanced_Ads_Admin {
 
 		$enabled = ( ! empty($ad->expiry_date)) ? 1 : 0;
 
-		require_once(plugin_dir_path( __FILE__ ) . 'views/ad-submitbox-meta.php');
+		include(plugin_dir_path( __FILE__ ) . 'views/ad-submitbox-meta.php');
 	}
 
 	/**
@@ -498,7 +504,7 @@ class Advanced_Ads_Admin {
 			return; }
 		$view = plugin_dir_path( __FILE__ ) . 'views/' . $view;
 		if ( is_file( $view ) ) {
-			require_once( $view );
+			include( $view );
 		}
 	}
 
@@ -991,7 +997,7 @@ class Advanced_Ads_Admin {
 		);
 
 		// get number of ads
-		$recent_ads = Advanced_Ads::get_ads();
+		$recent_ads = Advanced_Ads::get_instance()->get_model()->get_ads();
 		echo '<p>';
 		printf(__( '%d ads – <a href="%s">manage</a> - <a href="%s">new</a>', ADVADS_SLUG ),
 			count( $recent_ads ),

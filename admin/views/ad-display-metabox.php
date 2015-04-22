@@ -23,12 +23,13 @@ jQuery(document).ready(function() {
         <li><?php printf( __( 'Learn more about display conditions from the <a href="%s" target="_blank">manual</a>.', ADVADS_SLUG ), 'http://wpadvancedads.com/advancedads/manual/display-conditions/' ); ?></li>
     </ul>
     <?php
-	global $advanced_ads_ad_conditions;
-	if ( is_array( $advanced_ads_ad_conditions ) ) :
-		foreach ( $advanced_ads_ad_conditions as $_key => $_condition ) :
-			if ( ! isset($_condition['callback']) ) {
-				continue; }
-			?><div class="advanced-ad-display-condition">
+    // -TODO use model
+    $advanced_ads_ad_conditions = Advanced_Ads::get_ad_conditions();
+    if (is_array($advanced_ads_ad_conditions)) :
+        foreach ($advanced_ads_ad_conditions as $_key => $_condition) :
+            if (!isset($_condition['callback']))
+                continue;
+            ?><div class="advanced-ad-display-condition">
             <?php
 			if ( is_array( $_condition['callback'] ) && method_exists( $_condition['callback'][0], $_condition['callback'][1] ) ) {
 				call_user_func( array($_condition['callback'][0], $_condition['callback'][1]), $ad ); // works also in php below 5.3

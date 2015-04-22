@@ -12,17 +12,7 @@
  * @param arr $args additional arguments
  */
 function get_ad($id = 0, $args = array()){
-	$id = absint( $id );
-	if ( empty($id) ) { return; }
-
-        if(!advads_can_display_ads()) return;
-
-	// get ad
-	$ad = new Advads_Ad( $id, $args );
-
-	// check conditions
-	if ( $ad->can_display() ) {
-		return $ad->output(); }
+	return Advanced_Ads_Select::get_instance()->get_ad_by_method( $id, 'id', $args );
 }
 
 /**
@@ -33,9 +23,7 @@ function get_ad($id = 0, $args = array()){
  * @param arr $args additional arguments
  */
 function the_ad($id = 0, $args = array()){
-
 	echo get_ad( $id, $args );
-
 }
 
 /**
@@ -46,14 +34,7 @@ function the_ad($id = 0, $args = array()){
  *
  */
 function get_ad_group($id = 0){
-	$id = absint( $id );
-	if ( empty($id) ) { return; }
-
-        if(!advads_can_display_ads()) return;
-
-	// get ad
-	$adgroup = new Advads_Ad_Group( $id );
-	return $adgroup->output();
+	return Advanced_Ads_Select::get_instance()->get_ad_by_method( $id, 'group' );
 }
 
 /**
@@ -63,9 +44,7 @@ function get_ad_group($id = 0){
  * @param int $id id of the ad (post)
  */
 function the_ad_group($id = 0){
-
 	echo get_ad_group( $id );
-
 }
 
 /**
@@ -76,13 +55,7 @@ function the_ad_group($id = 0){
  *
  */
 function get_ad_placement($id = ''){
-	if ( $id == '' ) { return; }
-
-        if(!advads_can_display_ads()) return;
-
-	// get placement content
-	$output = Advads_Ad_Placements::output( $id );
-	return $output;
+	return Advanced_Ads_Select::get_instance()->get_ad_by_method( $id, 'placement' );
 }
 
 /**
@@ -92,9 +65,7 @@ function get_ad_placement($id = ''){
  * @param string $id slug of the ad placement
  */
 function the_ad_placement($id = ''){
-
 	echo get_ad_placement( $id );
-
 }
 
 /**

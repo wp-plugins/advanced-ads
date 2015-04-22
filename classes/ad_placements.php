@@ -63,7 +63,7 @@ class Advads_Ad_Placements {
 	 * @return mixed true if saved; error message if not
 	 */
 	public static function save_new_placement($new_placement) {
-		// load placements
+		// load placements // -TODO use model
 		$placements = Advanced_Ads::get_ad_placements_array();
 
 		// escape slug as slug
@@ -102,7 +102,7 @@ class Advads_Ad_Placements {
 	 */
 	public static function save_placements($placement_items) {
 
-		// load placements
+		// load placements // -TODO use model
 		$placements = Advanced_Ads::get_ad_placements_array();
 
 		foreach ( $placement_items as $_placement_slug => $_placement ) {
@@ -136,15 +136,16 @@ class Advads_Ad_Placements {
 	 */
 	public static function items_for_select() {
 		$select = array();
+		$model = Advanced_Ads::get_instance()->get_model();
 
 		// load all ad groups
-		$groups = Advanced_Ads::get_ad_groups();
+		$groups = $model->get_ad_groups();
 		foreach ( $groups as $_group ) {
 			$select['groups']['group_' . $_group->term_id] = $_group->name;
 		}
 
 		// load all ads
-		$ads = Advanced_Ads::get_ads( array('orderby' => 'name', 'order' => 'ASC') );
+		$ads = $model->get_ads( array('orderby' => 'name', 'order' => 'ASC') );
 		foreach ( $ads as $_ad ) {
 			$select['ads']['ad_' . $_ad->ID] = $_ad->post_title;
 		}
@@ -203,18 +204,15 @@ class Advads_Ad_Placements {
 					$class = 'advads-' . $id;
 					$ad_args = array('output' => array('class' => array($class)));
 				}
-				return get_ad( $_item_id, $ad_args );
 
+				return Advanced_Ads_Select::get_instance()->get_ad_by_method( $_item_id, 'id', $ad_args );
 			} elseif ( $_item[0] == 'group' ) {
 				// add the placement to the global output array
 				$advads = Advanced_Ads::get_instance();
 				$advads->current_ads[] = array('type' => 'placement', 'id' => $id, 'title' => $placements[$id]['name']);
 
-				return get_ad_group( $_item_id );
-
+				return Advanced_Ads_Select::get_instance()->get_ad_by_method( $_item_id, 'group' );
 			}
-		} else {
-			return;
 		}
 
 		return;
@@ -275,7 +273,7 @@ class Advads_Ad_Placements {
 		}
 
 		if ( isset($insertAt) ) {
-			$ad_content = Advads_Ad_Placements::output($placement_id);
+			$ad_content = Advads_Ad_Placements::output( $placement_id );
 			if ( $insertAt === false ) {
 				$content .= $ad_content; // fallback: end-of-content
 			} else {
