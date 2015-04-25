@@ -25,7 +25,7 @@ class Advanced_Ads {
 	 * @var     string
 	 */
 
-	const VERSION = '1.5.0';
+	const VERSION = '1.5.0.1';
 
 	/**
 	 * post type slug
@@ -114,9 +114,8 @@ class Advanced_Ads {
 		// only when not doing ajax
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			Advanced_Ads_Ajax::get_instance();
-		} else {
-			add_action( 'plugins_loaded', array( $this, 'wp_plugins_loaded' ) );
 		}
+		add_action( 'plugins_loaded', array( $this, 'wp_plugins_loaded' ) );
 	}
 
 	/**
