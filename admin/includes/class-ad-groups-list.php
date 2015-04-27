@@ -104,9 +104,10 @@ class AdvAds_Groups_List {
         // query ads
         $ads = $this->get_ads($group);
         $weights = $group->get_ad_weights();
+        $ad_form_rows = $weights;
+        arsort($ad_form_rows);
 
         // The Loop
-        $ad_form_rows = array();
         if ( $ads->post_count ) {
             foreach($ads->posts as $_ad)  {
                 $row = '';
@@ -118,8 +119,10 @@ class AdvAds_Groups_List {
                     $row .= '<option ' . selected( $ad_weight, $i, false ) . '>' . $i . '</option>';
                 }
                 $row .= '</select></td></tr>';
-                $ad_form_rows[] = $row;
+                $ad_form_rows[$_ad->ID] = $row;
             }
+
+            $ad_form_rows = $this->remove_empty_weights($ad_form_rows);
         }
         // Restore original Post Data
         wp_reset_postdata();
@@ -139,24 +142,59 @@ class AdvAds_Groups_List {
 
         $weights = $group->get_ad_weights();
         $weight_sum = array_sum( $weights );
+        $ads_output = $weights;
+        arsort($ads_output);
 
         // The Loop
         if ( $ads->have_posts() ) {
-            echo '<ul>';
+            echo ($group->type == 'default' && $weight_sum) ? '<ul>' : '<ol>';
             while ( $ads->have_posts() ) {
                 $ads->the_post();
-                echo '<li><a href="' . get_edit_post_link(get_the_ID()) . '">' . get_the_title() . '</a>';
+                $line_output = '<li><a href="' . get_edit_post_link(get_the_ID()) . '">' . get_the_title() . '</a>';
+
+                $status = get_post_status();
+                switch($status){
+                    case 'future' :
+                        $line_output .= '<i>(' . __('scheduled', ADVADS_SLUG) . ')</i>';
+                        break;
+                    case 'pending' :
+                        $line_output .= '<i>(' . __('pending', ADVADS_SLUG) . ')</i>';
+                        break;
+                }
                 $_weight = (isset($weights[get_the_ID()])) ? $weights[get_the_ID()] : Advads_Ad_Group::MAX_AD_GROUP_WEIGHT;
-                $_weight_string = ($group->type == 'default' && $weight_sum) ? number_format(($_weight / $weight_sum) * 100) . '%' : $_weight;
-                echo '<span class="ad-weight" title="'.__('Ad weight', ADVADS_SLUG).'">' . $_weight_string .'</span></li>';
+                if($group->type == 'default' && $weight_sum) {
+                    $line_output .= '<span class="ad-weight" title="'.__('Ad weight', ADVADS_SLUG).'">' . number_format(($_weight / $weight_sum) * 100) .'%</span></li>';
+                }
+                $ads_output[get_the_ID()] = $line_output;
             }
-            echo '</ul>';
+
+            $ads_output = $this->remove_empty_weights($ads_output);
+
+            echo implode('', $ads_output);
+            echo ($group->type == 'default' && $weight_sum) ? '</ul>' : '</ol>';
             if($group->ad_count > 1) echo '<p>' . sprintf(__('up to %d ads displayed', ADVADS_SLUG), $group->ad_count) . '</p>';
         } else {
             _e('No ads assigned', ADVADS_SLUG);
         }
         // Restore original Post Data
         wp_reset_postdata();
+    }
+
+    /**
+     * remove entries from the ad weight array that are just id
+     *
+     * @since 1.5.1
+     * @param arr $ads_output array with any output other that an integer
+     * @return arr $ads_output array with ad output
+     */
+    private function remove_empty_weights(array $ads_output){
+
+        foreach($ads_output as $key => $value){
+            if(is_int($value))
+                unset($ads_output[$key]);
+        }
+
+        return $ads_output;
     }
 
     /**
@@ -168,7 +206,7 @@ class AdvAds_Groups_List {
     public function get_ads($group){
         $args = array(
             'post_type' => $this->post_type,
-            'post_status' => 'publish',
+            'post_status' => array('publish', 'pending', 'future', 'private'),
             'taxonomy' => $group->taxonomy,
             'term' => $group->slug
         );

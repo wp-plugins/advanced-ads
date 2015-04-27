@@ -9,23 +9,32 @@ class Gadsense_Data {
 	private $resizing;
 
 	private function __construct() {
-		$options = get_option( GADSENSE_OPT_NAME, array() );
-		$update = false;
 
-		// adSense publisher id
-		if ( ! isset($options['adsense_id']) ) {
-			$options['adsense_id'] = '';
-			$update = true;
-		}
-		// Limit of 3 ads per page
-		if ( ! isset($options['limit_ads_per_page']) ) {
-			$options['limit_ads_per_page'] = true;
-			$update = true;
+                $options = get_option(GADSENSE_OPT_NAME, array());
+
+		// AdSense publisher id
+		if ( ! isset($options['adsense-id']) ) {
+                        // check if there is still an old setting
+                        // 'gadsense_options' was renamed
+                        $old_options = get_option( 'gadsense_options', array() );
+                        if ( isset($old_options['adsense_id']) ) {
+                            $options['adsense-id'] = $old_options['adsense_id'];
+                            $options['limit-per-page'] = $old_options['limit_ads_per_page'];
+
+                            // remove old options
+                            delete_option('gadsense_options');
+                        } else {
+                            $options['adsense-id'] = '';
+                            $options['limit-per-page'] = true;
+                        }
+
+                        update_option(GADSENSE_OPT_NAME, $options);
 		}
 
-		if ( $update ) {
-			update_option( GADSENSE_OPT_NAME, $options );
-		}
+                if ( !isset($options['limit-per-page']) ) {
+                    $options['limit-per-page'] = '';
+                }
+
 		$this->options = $options;
 
 		// Resizing method for responsive ads
@@ -34,30 +43,15 @@ class Gadsense_Data {
 		);
 	}
 
-	/**
-	 * SETTERS
-	 */
-	public function set_adsense_id($id) {
-		$old_id = $this->options['adsense_id'];
-		$this->options['adsense_id'] = $id;
-		update_option( GADSENSE_OPT_NAME, $this->options );
-		do_action( 'advanced-ads-gadsense-after-id-changed', $id, $old_id );
-	}
-
-	public function set_limit_per_page($value = true) {
-		$this->options['limit_ads_per_page'] = $value;
-		update_option( GADSENSE_OPT_NAME, $this->options );
-	}
-
-	/**
+        /**
 	 * GETTERS
 	 */
 	public function get_adsense_id() {
-		return $this->options['adsense_id'];
+		return $this->options['adsense-id'];
 	}
 
 	public function get_limit_per_page() {
-		return $this->options['limit_ads_per_page'];
+		return $this->options['limit-per-page'];
 	}
 
 	public function get_responsive_sizing() {

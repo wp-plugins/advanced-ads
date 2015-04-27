@@ -153,7 +153,32 @@ jQuery( document ).ready(function ($) {
                 usagediv.show();
             }
         });
+        // menu tabs
+        $('#advads-tabs').find('a').click(function () {
+            $('#advads-tabs').find('a').removeClass('nav-tab-active');
+            $('.advads-tab').removeClass('active');
 
+            var id = jQuery(this).attr('id').replace('-tab', '');
+            jQuery('#' + id).addClass('active');
+            jQuery(this).addClass('nav-tab-active');
+        });
+
+        // activate specific or first tab
+        var active_tab = window.location.hash.replace('#top#', '');
+        if (active_tab == '' || active_tab == '#_=_') {
+            active_tab = $('.advads-tab').attr('id');
+        }
+        $('#' + active_tab).addClass('active');
+        $('#' + active_tab + '-tab').addClass('nav-tab-active');
+        $('.nav-tab-active').click();
+
+        /**
+         * SETTINGS PAGE
+         */
+        // render button sets on settings page
+        $(function() {
+            $( ".advads-settings-buttonset" ).buttonset();
+        });
 });
 
 /**
@@ -299,7 +324,6 @@ function advads_toggle_single_display_condition_checkbox(checkbox) {
 		counterpart.attr( 'checked', false );
 		counterpart.attr( 'disabled', 'disabled' );
                 // mark label
-                console.log(jQuery('label[for="'+counterpart.attr('id')+'"]'));
                 jQuery('label[for="'+counterpart.attr('id')+'"]').addClass('ui-button-disabled').addClass('ui-state-disabled');
 	} else {
 		counterpart.removeAttr( 'disabled' );

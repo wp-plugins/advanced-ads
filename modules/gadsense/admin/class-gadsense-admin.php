@@ -6,10 +6,14 @@ class Gadsense_Admin {
 	private $nonce;
 	private static $instance = null;
 	protected $notice = null;
+        private $settings_page_hook = 'advanced-ads-adsense-settings-page';
 
 	private function __construct() {
 		$this->data = Gadsense_Data::get_instance();
-		add_action( 'advanced-ads-additional-settings-form', array($this, 'settings_form') );
+		add_action( 'advanced-ads-settings-init', array($this, 'settings_init') );
+		// add_action( 'advanced-ads-additional-settings-form', array($this, 'settings_init') );
+                add_filter('advanced-ads-setting-tabs', array($this, 'setting_tabs'));
+
 		add_action( 'admin_enqueue_scripts', array($this, 'enqueue_scripts') );
 		add_action( 'admin_print_scripts', array($this, 'print_scripts') );
 		add_action( 'admin_init', array($this, 'init') );
@@ -157,8 +161,124 @@ class Gadsense_Admin {
 		return self::$instance;
 	}
 
-	public function settings_form() {
-		require GADSENSE_BASE_PATH . 'admin/views/admin-page.php';
+	public function settings_init() {
+
+                // get settings page hook
+		$hook = $this->settings_page_hook;
+
+                register_setting( ADVADS_SLUG . '-adsense', ADVADS_SLUG . '-adsense', array($this, 'sanitize_settings') );
+
+		// add new section
+		add_settings_section(
+                        'advanced_ads_adsense_setting_section',
+                        __( 'AdSense', ADVADS_SLUG ),
+                        array($this, 'render_settings_section_callback'),
+                        $hook
+		);
+
+		// add setting field to disable ads
+		add_settings_field(
+			'adsense-id',
+			__( 'AdSense ID', ADVADS_SLUG ),
+			array($this, 'render_settings_adsense_id'),
+			$hook,
+			'advanced_ads_adsense_setting_section'
+		);
+
+		// add setting field for adsense limit
+		add_settings_field(
+			'adsense-limit',
+			__( 'Limit to 3 ads', ADVADS_SLUG ),
+			array($this, 'render_settings_adsense_limit'),
+			$hook,
+			'advanced_ads_adsense_setting_section'
+		);
+
+		// hook for additional settings from add-ons
+		do_action( 'advanced-ads-adsense-settings-init', $hook );
+
+		// require GADSENSE_BASE_PATH . 'admin/views/admin-page.php';
 	}
+
+        /**
+	 * render adsense settings section
+	 *
+	 * @since 1.5.1
+	 */
+	public function render_settings_section_callback(){
+		// for whatever purpose there might come
+	}
+
+	/**
+	 * render adsense id setting
+	 *
+	 * @since 1.5.1
+	 */
+	public function render_settings_adsense_id(){
+                $adsense_id = $this->data->get_adsense_id();
+
+                ?><input type="text" name="<?php echo GADSENSE_OPT_NAME; ?>[adsense-id]" id="adsense-id" size="32" value="<?php echo $adsense_id; ?>" />
+                <p class="description"><?php _e( 'Your AdSense Publisher ID <em>(pub-xxxxxxxxxxxxxx)</em>', ADVADS_SLUG ) ?></p><?php
+	}
+
+	/**
+	 * render adsense limit setting
+	 *
+	 * @since 1.5.1
+	 */
+	public function render_settings_adsense_limit(){
+                $limit_per_page = $this->data->get_limit_per_page();
+
+                ?><input type="checkbox" name="<?php echo GADSENSE_OPT_NAME; ?>[limit-per-page]" value="1" <?php checked( $limit_per_page ); ?> />
+		<?php printf( __( 'Limit to %d AdSense ads', ADVADS_SLUG ), 3 ); ?>
+                <p class="description">
+		<?php
+			printf(
+				__( 'Currently, Google AdSense <a target="_blank" href="%s" title="Terms Of Service">TOS</a> imposes a limit of %d display ads per page. You can disable this limitation at your own risks.', ADVADS_SLUG ),
+				esc_url( 'https://www.google.com/adsense/terms' ), 3
+			); ?><br/><?php
+						_e( 'Notice: Advanced Ads only considers the AdSense ad type for this limit.', ADVADS_SLUG );
+	}
+
+        /**
+         * sanitize adsense settings
+         *
+         * @since 1.5.1
+         * @param array $options all the options
+         */
+        public function sanitize_settings($options){
+
+            // sanitize whatever option one wants to sanitize
+            if(isset($options['adsense-id']) && $options['adsense-id'] != ''){
+                if(0 !== strpos( $options['adsense-id'], 'pub-' )){
+                    // add settings error
+                    add_settings_error(
+                            'adsense-limit',
+                            'settings_updated',
+                            __( 'The Publisher ID has an incorrect format. (must start with "pub-")', ADVADS_SLUG ));
+                }
+            }
+
+            return $options;
+        }
+
+        /**
+         * add adsense setting tab
+         *
+         * @since 1.5.1
+         * @param arr $tabs existing setting tabs
+         * @return arr $tabs setting tabs with AdSense tab attached
+         */
+        public function setting_tabs(array $tabs){
+
+            $tabs['adsense'] = array(
+                'page' => $this->settings_page_hook,
+                'group' => ADVADS_SLUG . '-adsense',
+                'tabid' => 'adsense',
+                'title' => __( 'AdSense', ADVADS_SLUG )
+            );
+
+            return $tabs;
+        }
 
 }

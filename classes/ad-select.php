@@ -69,12 +69,11 @@ class Advanced_Ads_Select {
 	 */
 	public function get_ad_arguments( $method, $id, $args = array() )
 	{
-	    $args = (array) $args;
+		$args = (array) $args;
 
-	    if ( ! isset($args['method']) ) $args['method'] = $method;
-	    if ( ! isset($args['id']) ) $args['id'] = $id;
+		if ( ! isset($args['method']) ) $args['method'] = $method;
+		if ( ! isset($args['id']) ) $args['id'] = $id;
 
-		// -TODO add hook: document, review existing use cases
 		$args = apply_filters( 'advanced-ads-ad-select-args', $args );
 
 		return $args;

@@ -29,7 +29,7 @@ class Advanced_Ads_Plugin {
 	 * @since   1.0.1
 	 * @var     array (if loaded)
 	 */
-	protected $options = false;
+	protected $options;
 
 	/**
 	 * interal plugin options – set by the plugin
@@ -37,7 +37,7 @@ class Advanced_Ads_Plugin {
 	 * @since   1.4.5
 	 * @var     array (if loaded)
 	 */
-	protected $internal_options = false;
+	protected $internal_options;
 
 	private function __construct() {
 		register_activation_hook( dirname( __FILE__ ), array( $this, 'activate' ) );
@@ -53,7 +53,7 @@ class Advanced_Ads_Plugin {
 	public static function get_instance() {
 		// If the single instance hasn't been set, set it now.
 		if ( null === self::$instance ) {
-		self::$instance = new self;
+			self::$instance = new self;
 		}
 
 		return self::$instance;
@@ -310,11 +310,27 @@ class Advanced_Ads_Plugin {
 	 * @todo parse default options
 	 */
 	public function options() {
-		if ( false === $this->options ){
+		if ( ! isset( $this->options ) ) {
 			$this->options = get_option( ADVADS_SLUG, array() );
 		}
 
 		return $this->options;
+	}
+
+	/**
+	 * update plugin options (not for settings page, but if automatic options are needed)
+	 *
+	 * @since 1.5.1
+	 * @param array $options new options
+	 */
+	public function update_options( array $options ) {
+		// do not allow to clear options
+		if ( $options === array() ) {
+			return;
+		}
+
+		$this->options = $options;
+		update_option( ADVADS_SLUG, $options );
 	}
 
 	/**
@@ -326,10 +342,26 @@ class Advanced_Ads_Plugin {
 	 * @todo parse default options
 	 */
 	public function internal_options() {
-		if ( false === $this->internal_options ){
+		if ( ! isset( $this->internal_options ) ) {
 			$this->internal_options = get_option( ADVADS_SLUG . '-internal', array() );
 		}
 
 		return $this->internal_options;
+	}
+
+	/**
+	 * update internal plugin options
+	 *
+	 * @since 1.5.1
+	 * @param array $options new internal options
+	 */
+	public function update_internal_options( array $options ) {
+		// do not allow to clear options
+		if ( $options === array() ) {
+			return;
+		}
+
+		$this->internal_options = $options;
+		update_option( ADVADS_SLUG . '-internal', $options );
 	}
 }

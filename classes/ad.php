@@ -571,7 +571,7 @@ class Advads_Ad {
 		// update global settings
 		$this->update_general_ad_conditions( $conditions );
 
-		update_post_meta( $this->id, self::$options_meta_field, $options );
+                update_post_meta( $this->id, self::$options_meta_field, $options );
 
 	}
 

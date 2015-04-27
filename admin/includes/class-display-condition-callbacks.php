@@ -230,7 +230,7 @@ if ( ! empty($ad->conditions['categoryarchiveids']['exclude']) ){
 
 		if ( is_object( $ad ) ){
 			$_all = (isset($ad->conditions['postids']['all'])) ? 1 : 0;
-			if ( ! $_all && empty($ad->conditions['postids']['include']) && empty($ad->conditions['postids']['exclude']) ){
+			if ( ! $_all && empty($ad->conditions['postids']['method']) ){
 				$_all = 1;
 			}
 		}
@@ -293,6 +293,8 @@ if ( ! empty($ad->conditions['categoryarchiveids']['exclude']) ){
 			} else {
 				$_postids = $ad->conditions['postids']['exclude'];
 			}
+		} elseif( isset($ad->conditions['postids']['ids']) && is_array($ad->conditions['postids']['ids'])) {
+			$_postids = $ad->conditions['postids']['ids'];
 		} else {
 			$_postids = array();
 		}

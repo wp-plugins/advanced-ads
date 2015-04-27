@@ -307,14 +307,16 @@ class Advads_Ad_Group {
 		if ( $this->ad_weights == 0 ) {
 			$weights = get_option( 'advads-ad-weights', array() );
 			if ( isset($weights[$this->id]) ) {
-				return $this->ad_weights = $weights[$this->id];
+                            $this->ad_weights = $weights[$this->id];
 			}
-		} elseif ( is_array( $this->ad_weights ) ) { // return ad weigths if not empty
-			return $this->ad_weights;
 		}
 
-		// return empty array
-		return array();
+		// return ad weights ordered by weight
+                if(!is_array($this->ad_weights)) {
+                    return array();
+                } else {
+                    return $this->ad_weights;
+                }
 	}
 
 	/**

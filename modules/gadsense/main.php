@@ -3,7 +3,7 @@
 if ( class_exists( 'Advanced_Ads', false ) ) {
 	define( 'GADSENSE_BASE_PATH', plugin_dir_path( __FILE__ ) );
 	define( 'GADSENSE_BASE_URL', plugins_url( basename( ADVADS_BASE_PATH ) . '/modules/' . basename( GADSENSE_BASE_PATH ) . '/' ) );
-	define( 'GADSENSE_OPT_NAME', 'gadsense_options' );
+	define( 'GADSENSE_OPT_NAME', ADVADS_SLUG . '-adsense' );
 
 	/**
 	 * initialize ad type and add it to the plugins ad types

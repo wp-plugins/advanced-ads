@@ -656,15 +656,25 @@ class Advanced_Ads_Admin {
 		$hook = $this->plugin_screen_hook_suffix;
 
 		// register settings
-		register_setting( $hook, ADVADS_SLUG );
+		register_setting( ADVADS_SLUG, ADVADS_SLUG, array($this, 'sanitize_settings') );
+                // register license settings
+                register_setting( ADVADS_SLUG . '-licenses', ADVADS_SLUG . '-licenses');
 
-		// add new section
+		// general settings section
 		add_settings_section(
 			'advanced_ads_setting_section',
 			__( 'General', ADVADS_SLUG ),
 			array($this, 'render_settings_section_callback'),
 			$hook
 		);
+
+                // licenses section
+                add_settings_section(
+                        'advanced_ads_settings_license_section',
+                        __('Licenses', ADVADS_SLUG),
+                        array($this, 'render_settings_licenses_section_callback'),
+                        'advanced-ads-settings-license-page'
+                );
 
 		// add setting fields to disable ads
 		add_settings_field(
@@ -718,6 +728,15 @@ class Advanced_Ads_Admin {
 	 */
 	public function render_settings_section_callback(){
 		// for whatever purpose there might come
+	}
+
+	/**
+	 * render licenses settings section
+	 *
+	 * @since 1.5.1
+	 */
+	public function render_settings_licenses_section_callback(){
+            echo '<p>'. __('Enter license keys for our powerful add-ons.', ADVADS_SLUG) .'</p>';
 	}
 
 	/**
@@ -806,6 +825,19 @@ class Advanced_Ads_Admin {
 		echo '<p class="description">'. sprintf(__( 'Hide ads from crawlers and other bots. Also prevents counting impressions for bots when using the <a href="%s" target="_blank">Tracking Add-On</a>.', ADVADS_SLUG ), 'http://wpadvancedads.com/ad-tracking/') .'<br/>'
                         . __( 'Disabling this option only makes sense if your ads contain content you want to display to bots (like search engines) or your site is cached and bots could create a cached version without the ads.', ADVADS_SLUG ) . '</p>';
 	}
+
+        /**
+         * sanitize plugin settings
+         *
+         * @since 1.5.1
+         * @param array $options all the options
+         */
+        public function sanitize_settings($options){
+
+            // sanitize whatever option one wants to sanitize
+
+            return $options;
+        }
 
 	/**
 	 * add heading for extra column of ads list
@@ -1063,46 +1095,50 @@ class Advanced_Ads_Admin {
 		}
 	}
 
-        /**
-         * checks needed when the plugin was updated
-         *
-         * @since 1.4.5
-         */
-        public function update_version_logic(){
-            $plugin = Advanced_Ads::get_instance();
-            $options = $plugin->internal_options();
-            $user_options = $plugin->options();
+	/**
+	 * checks needed when the plugin was updated
+	 *
+	 * @since 1.4.5
+	 */
+	public function update_version_logic(){
+		$plugin = Advanced_Ads_Plugin::get_instance();
+		$options = $plugin->internal_options();
+		$user_options = $plugin->options();
 
-            $new_options = $options;
+		$new_options = $options;
 
-            // check, if current notices were deleted
-            // TODO: there is probably a better hook for that
-            if(isset($_GET['advads-remove-notices'])){
-                // get options and clear the notices option
-                $new_options['version_notices'] = array();
-                unset($_SESSION['advanced_ads_version_notices']);
-            }
+		// check, if current notices were deleted
+		// TODO: there is probably a better hook for that
+		if ( isset( $_GET['advads-remove-notices'] ) ) {
+		    // TODO could as well use internal options instead of $_SESSION
+			// get options and clear the notices option
+			$new_options['version_notices'] = array();
+			if ( isset($_SESSION['advanced_ads_version_notices'] ) ) {
+				unset( $_SESSION['advanced_ads_version_notices'] );
+			}
+		}
 
-            // use an artifical older version for updates on installed plugins before the notice logic was invented
-            if(!isset($options['version']) && $user_options !== array()){
-                $old_version = '1.4.4';
-            } else {
-                // set empty version for new installations
-                $old_version = 0;
-            }
-            $version = Advanced_Ads::VERSION;
-            $updated_versions = isset($new_options['version_notices']) ? $new_options['version_notices'] : array();
+		// use an artifical older version for updates on installed plugins before the notice logic was invented
+		if( ! isset( $options['version'] ) && $user_options !== array() ){
+			$old_version = '1.4.4';
+		} else {
+			// set empty version for new installations
+			$old_version = 0;
+		}
+		$version = Advanced_Ads::VERSION;
+		$updated_versions = isset( $new_options['version_notices'] ) ? $new_options['version_notices'] : array();
 
-            // handle update notices
-            new AdvAds_Admin_Notices($old_version, $version, $updated_versions);
+		// handle update notices
+		new AdvAds_Admin_Notices( $old_version, $version, $updated_versions );
 
-            $new_options['version'] = $version;
-            if(isset($_SESSION['advanced_ads_version_notices'])) $new_options['version_notices'] = $_SESSION['advanced_ads_version_notices'];
+		$new_options['version'] = $version;
+		if ( isset( $_SESSION['advanced_ads_version_notices'] ) ) {
+			$new_options['version_notices'] = $_SESSION['advanced_ads_version_notices'];
+		}
 
-            // save options, if version information changed
-            if($options === $new_options) return;
-
-            // update new option
-            update_option(ADVADS_SLUG . '-internal', $new_options);
-        }
+		// save options, if version information changed
+		if ( $options !== $new_options ) {
+			$plugin->update_internal_options( $new_options );
+		}
+	}
 }

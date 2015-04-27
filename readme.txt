@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.2
-Stable tag: 1.5.0.1
+Stable tag: 1.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -174,11 +174,21 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 
 == Changelog ==
 
+= 1.5.1 =
+
+* added tab menu für settings
+* allow to set ad weights for pending, future and private ads
+* improvements to groups overview based on group types
+* fixed switching ad types
+* fixed individual post conditions not showing up
+* fixed update message being displayed for new installations
+* other fixes under the hood
+* new hooks: `advanced-ads-setting-tabs`, `advanced-ads-adsense-settings-init`
+* removed hooks: `advanced-ads-gadsense-after-id-changed`
+
 = 1.5.0 =
 
 * major changes in the code base to support upcoming features
-* PLEASE TEST and report any bugs
-
 * further interface cleanup
 * fully implemented autoloading
 * added composer definitions
