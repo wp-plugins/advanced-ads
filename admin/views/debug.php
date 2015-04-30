@@ -13,9 +13,6 @@
     <h2><?php _e( 'Settings', ADVADS_SLUG ); ?></h2>
     <pre><?php print_r( $plugin_options ); ?></pre>
 
-    <h2><?php _e( 'Ad Condition Overview', ADVADS_SLUG ); ?></h2>
-    <pre><?php print_r( $ads_by_conditions ); ?></pre>
-
     <h2><?php _e( 'Ad Placements', ADVADS_SLUG ); ?></h2>
     <pre><?php print_r( $ad_placements ); ?></pre>
 

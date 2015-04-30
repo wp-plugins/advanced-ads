@@ -26,18 +26,14 @@ final class Advanced_Ads_ModuleLoader {
 		$loader = self::getLoader();
 
 		$disabledModules = isset($options['disabled']) ? (array) $options['disabled'] : array();
+		$isAdmin = is_admin();
 
 		// iterate modules
 		foreach ( glob( $path . '*/main.php' ) as $module ) {
 			$modulePath = dirname( $module );
 			$moduleName = basename( $modulePath );
 
-			// skip if disabled
-			if ( isset( $disabledModules[$moduleName] ) ) {
-				continue ;
-			}
-
-			self::$modules[$moduleName] = $modulePath;
+			// configuration is enabled by default (localisation, autoloading and other undemanding stuff)
 			if ( file_exists( $modulePath . '/config.php' ) ) {
 				$config = require $modulePath . '/config.php';
 				// append autoload classmap
@@ -49,6 +45,18 @@ final class Advanced_Ads_ModuleLoader {
 					self::$textdomains[$config['textdomain']] = "modules/$moduleName/languages";
 				}
 			}
+
+			// admin is enabled by default
+			if ( $isAdmin && file_exists( $modulePath . '/admin.php' ) ) {
+				include $modulePath . '/admin.php'; // do not care if this fails
+			}
+
+			// skip if disabled
+			if ( isset( $disabledModules[$moduleName] ) ) {
+				continue ;
+			}
+
+			self::$modules[$moduleName] = $modulePath;
 		}
 
 		// register textdomains if non-empty

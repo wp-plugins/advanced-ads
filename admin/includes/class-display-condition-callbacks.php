@@ -86,7 +86,7 @@ class AdvAds_Display_Condition_Callbacks {
 		_e( 'Display for all <strong>categories, tags and taxonomies</strong>.', ADVADS_SLUG ); ?></label></h4><?php
 		?><div class="advads-conditions-single"><h5 class="header"><?php _e( 'Display here', ADVADS_SLUG ); ?></h5><p class="description"><?php _e( 'Choose terms from public categories, tags and other taxonomies a post must belong to in order to have ads.', ADVADS_SLUG ); ?></p>
                 <table><?php
-		self::_display_taxonomy_term_list($_includes, 'include', 'advanced_ad[conditions][categoryids][include][]', 'categoryids');
+				self::_display_taxonomy_term_list( $_includes, 'include', 'advanced_ad[conditions][categoryids][include][]', 'categoryids' );
 		?></table><?php
 
 if ( ! empty($ad->conditions['categoryids']['exclude']) ){
@@ -103,104 +103,104 @@ if ( ! empty($ad->conditions['categoryids']['exclude']) ){
 
 		?><h5 class="header"><?php _e( 'Hide from here', ADVADS_SLUG ); ?></h5><p class="description"><?php _e( 'Choose the terms from public categories, tags and other taxonomies a post must belong to hide the ad from it.', ADVADS_SLUG ); ?></p>
         <table><?php
-		self::_display_taxonomy_term_list($_excludes, 'exclude', 'advanced_ad[conditions][categoryids][exclude][]', 'categoryids');
+		self::_display_taxonomy_term_list( $_excludes, 'exclude', 'advanced_ad[conditions][categoryids][exclude][]', 'categoryids' );
 		?></table></div><?php
 	}
 
-        /**
-         * render taxonomy term list with options
-         *
-         * @since 1.4.7
-         * @param arr $checked array with ids of checked terms
-         * @param str $includetype is this an include or exclude type of setting
-         * @param str $inputname value of the name attribute of the input tag
-         * @param str $group group of the values
-         */
-        private static function _display_taxonomy_term_list($checked = array(), $includetype = 'include', $inputname = '', $group = ''){
-            $taxonomies = get_taxonomies( array('public' => true, 'publicly_queryable' => true), 'objects', 'or' );
-            foreach ( $taxonomies as $_tax ):
-                    if ( $_tax->name === 'advanced_ads_groups' ) { continue; // exclude adv ads groups
-                    }
-                    // limit the number of terms so many terms don’t break the admin page
-                    $max_terms = absint( apply_filters( 'advanced-ads-admin-max-terms', 50 ) );
-                    $terms = get_terms( $_tax->name, array('hide_empty' => false, 'number' => $max_terms) );
+		/**
+		 * render taxonomy term list with options
+		 *
+		 * @since 1.4.7
+		 * @param arr $checked array with ids of checked terms
+		 * @param str $includetype is this an include or exclude type of setting
+		 * @param str $inputname value of the name attribute of the input tag
+		 * @param str $group group of the values
+		 */
+		private static function _display_taxonomy_term_list($checked = array(), $includetype = 'include', $inputname = '', $group = ''){
+			$taxonomies = get_taxonomies( array('public' => true, 'publicly_queryable' => true), 'objects', 'or' );
+		foreach ( $taxonomies as $_tax ):
+			if ( $_tax->name === 'advanced_ads_groups' ) { continue; // exclude adv ads groups
+			}
+				// limit the number of terms so many terms don’t break the admin page
+				$max_terms = absint( apply_filters( 'advanced-ads-admin-max-terms', 50 ) );
+				$terms = get_terms( $_tax->name, array('hide_empty' => false, 'number' => $max_terms) );
 
-                    if ( ! empty( $terms ) && ! is_wp_error( $terms ) ):
-                        ?><tr><th><?php echo $_tax->label; ?></th><?php
-                        ?><td><?php
-                        // display search field if the term limit is reached
-                        if(count($terms) == $max_terms) :
-                            ?><div class="advads-conditions-terms-buttons" title="click to remove"><?php
+			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ):
+				?><tr><th><?php echo $_tax->label; ?></th><?php
+				?><td><?php
+				// display search field if the term limit is reached
+if ( count( $terms ) == $max_terms ) :
+	?><div class="advads-conditions-terms-buttons" title="click to remove"><?php
 
-                            // query active terms
-                            if(is_array($checked) && count($checked)){
-                                $args = array('hide_empty' => false);
-                                $args['include'] = $checked;
-                                $checked_terms = get_terms($_tax->name, $args);
+	// query active terms
+if ( is_array( $checked ) && count( $checked ) ){
+	$args = array('hide_empty' => false);
+	$args['include'] = $checked;
+	$checked_terms = get_terms( $_tax->name, $args );
 
-                                foreach ( $checked_terms as $_checked_term ) :
-                                    ?><label class="button"><?php echo $_checked_term->name;
-                                    ?><input type="hidden" name="<?php echo $inputname; ?>" value="<?php
-                                    echo $_checked_term->term_id; ?>"></label><?php
-                                endforeach;
-                            }
+	foreach ( $checked_terms as $_checked_term ) :
+		?><label class="button"><?php echo $_checked_term->name;
+		?><input type="hidden" name="<?php echo $inputname; ?>" value="<?php
+		echo $_checked_term->term_id; ?>"></label><?php
+	endforeach;
+}
 
-                            ?></div><span class="advads-conditions-terms-show-search button" title="<?php
-                                _ex('add more terms', 'display the terms search field on ad edit page', ADVADS_SLUG);
-                                ?>">+</span><span class="description"><?php _e('add more terms', ADVADS_SLUG);
-                                    ?></span><br/><input type="text" class="advads-conditions-terms-search" data-tag-name="<?php echo $_tax->name;
-                                    ?>" data-include-type="<?php echo $includetype; ?>" data-group="<?php echo $group; ?>" placeholder="<?php
-                                    _e('term name or id', ADVADS_SLUG); ?>"/><?php
-                        else :
-                            ?><div class="advads-conditions-terms-buttons"><?php
-                            foreach ( $terms as $_term ) :
-                                $field_id = "advads-conditions-terms-$includetype-$group-$_term->term_id";
-                                ?><input type="checkbox" id="<?php echo $field_id; ?>" name="<?php echo $inputname; ?>" value="<?php echo $_term->term_id; ?>" <?php
-                                checked( in_array( $_term->term_id, $checked ), true ); ?>><label for="<?php echo $field_id; ?>"><?php echo $_term->name; ?></label><?php
-                            endforeach;
-                            ?></div><?php
-                        endif;
-                        ?></td></tr><?php
-                    endif;
-            endforeach;
-        }
+	?></div><span class="advads-conditions-terms-show-search button" title="<?php
+		_ex( 'add more terms', 'display the terms search field on ad edit page', ADVADS_SLUG );
+		?>">+</span><span class="description"><?php _e( 'add more terms', ADVADS_SLUG );
+			?></span><br/><input type="text" class="advads-conditions-terms-search" data-tag-name="<?php echo $_tax->name;
+			?>" data-include-type="<?php echo $includetype; ?>" data-group="<?php echo $group; ?>" placeholder="<?php
+				_e( 'term name or id', ADVADS_SLUG ); ?>"/><?php
+					else :
+						?><div class="advads-conditions-terms-buttons"><?php
+foreach ( $terms as $_term ) :
+	$field_id = "advads-conditions-terms-$includetype-$group-$_term->term_id";
+	?><input type="checkbox" id="<?php echo $field_id; ?>" name="<?php echo $inputname; ?>" value="<?php echo $_term->term_id; ?>" <?php
+	checked( in_array( $_term->term_id, $checked ), true ); ?>><label for="<?php echo $field_id; ?>"><?php echo $_term->name; ?></label><?php
+						endforeach;
+						?></div><?php
+					endif;
+					?></td></tr><?php
+				endif;
+			endforeach;
+		}
 
-	 /**
+		/**
 	 * render display condition for taxonomy/term archive pages
 	 *
 	 * @param obj $ad ad object
 	 * @since 1.2.5
 	 */
-	public static function category_archives($ad = false){
+		public static function category_archives($ad = false){
 
-		// set defaults
-		if ( is_object( $ad ) ){
-			$_all = (isset($ad->conditions['categoryarchiveids']['all'])) ? 1 : 0;
-			if ( ! $_all && empty($ad->conditions['categoryarchiveids']['include']) && empty($ad->conditions['categoryarchiveids']['exclude']) ){
-				$_all = 1;
+			// set defaults
+			if ( is_object( $ad ) ){
+				$_all = (isset($ad->conditions['categoryarchiveids']['all'])) ? 1 : 0;
+				if ( ! $_all && empty($ad->conditions['categoryarchiveids']['include']) && empty($ad->conditions['categoryarchiveids']['exclude']) ){
+					$_all = 1;
+				}
 			}
-		}
 
-		if ( ! empty($ad->conditions['categoryarchiveids']['include']) ){
-			// backward compatibility
-			// TODO: remove in a later version; this should already be an array
-			if ( is_string( $ad->conditions['categoryarchiveids']['include'] ) ){
-				$_includes = explode( ',', $ad->conditions['categoryarchiveids']['include'] );
+			if ( ! empty($ad->conditions['categoryarchiveids']['include']) ){
+				// backward compatibility
+				// TODO: remove in a later version; this should already be an array
+				if ( is_string( $ad->conditions['categoryarchiveids']['include'] ) ){
+					$_includes = explode( ',', $ad->conditions['categoryarchiveids']['include'] );
+				} else {
+					$_includes = $ad->conditions['categoryarchiveids']['include'];
+				}
 			} else {
-				$_includes = $ad->conditions['categoryarchiveids']['include'];
+				$_includes = array();
 			}
-		} else {
-			$_includes = array();
-		}
 
-		?><h4><label class="advads-conditions-all"><input type="checkbox" name="advanced_ad[conditions][categoryarchiveids][all]" value="1" <?php checked( $_all, 1 ); ?>><?php
+			?><h4><label class="advads-conditions-all"><input type="checkbox" name="advanced_ad[conditions][categoryarchiveids][all]" value="1" <?php checked( $_all, 1 ); ?>><?php
 		_e( 'Display on all <strong>category archive pages</strong>.', ADVADS_SLUG ); ?></label></h4><?php
 		$taxonomies = get_taxonomies( array('public' => true, 'publicly_queryable' => true), 'objects', 'or' );
 		?><div class="advads-conditions-single"><table>
                 <p class="description"><?php _e( 'Choose the terms from public categories, tags and other taxonomies on which\'s archive page ads can appear', ADVADS_SLUG ); ?></p>
                 <table><?php
-                    self::_display_taxonomy_term_list($_includes, 'include', 'advanced_ad[conditions][categoryarchiveids][include][]', 'categoryarchiveids');
-		?></table><?php
+					self::_display_taxonomy_term_list( $_includes, 'include', 'advanced_ad[conditions][categoryarchiveids][include][]', 'categoryarchiveids' );
+			?></table><?php
 
 if ( ! empty($ad->conditions['categoryarchiveids']['exclude']) ){
 	// backward compatibility
@@ -216,9 +216,9 @@ if ( ! empty($ad->conditions['categoryarchiveids']['exclude']) ){
 
 		?><h5 class="header"><?php _e( 'Hide from here', ADVADS_SLUG ); ?></h5><p class="description"><?php _e( 'Choose the terms from public categories, tags and other taxonomies on which\'s archive pages ads are hidden.', ADVADS_SLUG ); ?></p>
         <table><?php
-            self::_display_taxonomy_term_list($_excludes, 'exclude', 'advanced_ad[conditions][categoryarchiveids][exclude][]', 'categoryarchiveids');
-            ?></table></div><?php
-	}
+			self::_display_taxonomy_term_list( $_excludes, 'exclude', 'advanced_ad[conditions][categoryarchiveids][exclude][]', 'categoryarchiveids' );
+			?></table></div><?php
+		}
 
 		/**
 	 * render display condition for single post types
@@ -226,16 +226,16 @@ if ( ! empty($ad->conditions['categoryarchiveids']['exclude']) ){
 	 * @param obj $ad ad object
 	 * @since 1.2.6
 	 */
-	public static function single_posts($ad = false){
+		public static function single_posts($ad = false){
 
-		if ( is_object( $ad ) ){
-			$_all = (isset($ad->conditions['postids']['all'])) ? 1 : 0;
-			if ( ! $_all && empty($ad->conditions['postids']['method']) ){
-				$_all = 1;
+			if ( is_object( $ad ) ){
+				$_all = (isset($ad->conditions['postids']['all'])) ? 1 : 0;
+				if ( ! $_all && empty($ad->conditions['postids']['method']) ){
+					$_all = 1;
+				}
 			}
-		}
 
-		?><h4><label class="advads-conditions-all"><input type="checkbox" name="advanced_ad[conditions][postids][all]" value="1" <?php
+			?><h4><label class="advads-conditions-all"><input type="checkbox" name="advanced_ad[conditions][postids][all]" value="1" <?php
 			checked( $_all, 1 ); ?>><?php _e( 'Display an all <strong>individual posts, pages</strong> and public post type pages', ADVADS_SLUG ); ?></label></h4><?php
 
 		?><div class="advads-conditions-single">
@@ -293,13 +293,13 @@ if ( ! empty($ad->conditions['categoryarchiveids']['exclude']) ){
 			} else {
 				$_postids = $ad->conditions['postids']['exclude'];
 			}
-		} elseif( isset($ad->conditions['postids']['ids']) && is_array($ad->conditions['postids']['ids'])) {
+		} elseif ( isset($ad->conditions['postids']['ids']) && is_array( $ad->conditions['postids']['ids'] ) ) {
 			$_postids = $ad->conditions['postids']['ids'];
 		} else {
 			$_postids = array();
 		}
 
-		?><ul class='advads-conditions-postids-list'><?php
+			?><ul class='advads-conditions-postids-list'><?php
 if ( $_postids != array() ){
 	$args = array(
 		'post_type' => 'any',
@@ -318,9 +318,9 @@ if ( $_postids != array() ){
 		?><li class="show-search"><a href="#"><?php _e( 'new', ADVADS_SLUG ); ?></a>
             <input type="text" style="display:none;" id="advads-display-conditions-individual-post" value="" placeholder="<?php
 			_e( 'type the title', ADVADS_SLUG ); ?>"/>
-            <?php wp_nonce_field( 'internal-linking', '_ajax_linking_nonce', false ); ?>
-        </li>
-        </ul>
-        </div><?php
-	}
+				<?php wp_nonce_field( 'internal-linking', '_ajax_linking_nonce', false ); ?>
+			</li>
+			</ul>
+			</div><?php
+		}
 }

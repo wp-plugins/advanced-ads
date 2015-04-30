@@ -47,7 +47,7 @@ class Gadsense_Data {
 	 * GETTERS
 	 */
 	public function get_adsense_id() {
-		return $this->options['adsense-id'];
+		return trim($this->options['adsense-id']);
 	}
 
 	public function get_limit_per_page() {

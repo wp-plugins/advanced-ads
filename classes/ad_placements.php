@@ -14,10 +14,10 @@
  * grouping placements functions
  *
  * @since 1.1.0
- * @package Advads_Placements
+ * @package Advanced_Ads_Placements
  * @author  Thomas Maier <thomas.maier@webgilde.com>
  */
-class Advads_Ad_Placements {
+class Advanced_Ads_Placements {
 
 	/**
 	 * get placement types
@@ -56,6 +56,33 @@ class Advads_Ad_Placements {
 	}
 
 	/**
+	* update placements if sent
+	 *
+	 * @since 1.5.2
+	*/
+	static function update_placements(){
+
+	    // check user permissions
+	    if(!current_user_can('manage_options')){
+		return;
+	    }
+	    remove_query_arg('message');
+
+	    if ( isset($_POST['advads']['placement']) && check_admin_referer( 'advads-placement', 'advads_placement' ) ){
+		$success = self::save_new_placement( $_POST['advads']['placement'] );
+	    }
+	    // save placement data
+	    if ( isset($_POST['advads']['placements']) && check_admin_referer( 'advads-placement', 'advads_placement' )){
+		$success = self::save_placements( $_POST['advads']['placements'] );
+	    }
+
+	    if(isset($success)){
+		$message = $success ? 'updated' : 'error';
+		wp_redirect( add_query_arg(array('message' => $message)) );
+	    }
+	}
+
+	/**
 	 * save a new placement
 	 *
 	 * @since 1.1.0
@@ -71,12 +98,15 @@ class Advads_Ad_Placements {
 
 		// check if slug already exists
 		if ( $new_placement['slug'] == '' ) {
-			return __( 'Slug can\'t be empty.', ADVADS_SLUG ); }
+		    return false;
+		}
+
 		if ( isset($placements[$new_placement['slug']]) ) {
-			return __( 'Slug already exists.', ADVADS_SLUG ); }
+		    return false;
+		}
 
 		// make sure only allowed types are being saved
-		$placement_types = Advads_Ad_Placements::get_placement_types();
+		$placement_types = Advanced_Ads_Placements::get_placement_types();
 		$new_placement['type'] = (isset($placement_types[$new_placement['type']])) ? $new_placement['type'] : 'default';
 		// escape name
 		$new_placement['name'] = esc_attr( $new_placement['name'] );
@@ -273,7 +303,7 @@ class Advads_Ad_Placements {
 		}
 
 		if ( isset($insertAt) ) {
-			$ad_content = Advads_Ad_Placements::output( $placement_id );
+			$ad_content = Advanced_Ads_Placements::output( $placement_id );
 			if ( $insertAt === false ) {
 				$content .= $ad_content; // fallback: end-of-content
 			} else {

@@ -126,6 +126,6 @@ class Advanced_Ads_Select {
 		}
 
 		// get placement content
-		return Advads_Ad_Placements::output( $args['id'] );
+		return Advanced_Ads_Placements::output( $args['id'] );
 	}
 }

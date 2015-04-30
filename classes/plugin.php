@@ -117,7 +117,7 @@ class Advanced_Ads_Plugin {
 		// wp_enqueue_script( $this->get_plugin_slug() . '-plugin-script', plugins_url('assets/js/public.js', __FILE__), array('jquery'), Advanced_Ads::VERSION);
 		$options = $this->options();
 		if ( ! empty($options['advanced-js']) ){
-			wp_enqueue_script( $this->get_plugin_slug() . '-advanced-js', ADVADS_BASE_URL . 'assets/js/advanced.js', array( 'jquery' ), Advanced_Ads::VERSION );
+			wp_enqueue_script( $this->get_plugin_slug() . '-advanced-js', ADVADS_BASE_URL . 'public/assets/js/advanced.js', array( 'jquery' ), Advanced_Ads::VERSION );
 		}
 	}
 

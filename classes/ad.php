@@ -530,6 +530,7 @@ class Advads_Ad {
 		if ( $ad_expiry_date == 0 ) { return true; }
 
 		// create blog specific timestamp
+		// TODO this is broken: use get_date_from_gmt()
 		$blog_expiry_date = time() + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS );
 
 		// check blog time against current time
@@ -567,9 +568,6 @@ class Advads_Ad {
 
 		// filter to manipulate options or add more to be saved
 		$options = apply_filters( 'advanced-ads-save-options', $options, $this );
-
-		// update global settings
-		$this->update_general_ad_conditions( $conditions );
 
                 update_post_meta( $this->id, self::$options_meta_field, $options );
 
@@ -731,128 +729,6 @@ class Advads_Ad {
 			$cond = preg_replace( '#[^0-9,A-Za-z-_]#', '', $cond );
 		}
 		return $cond;
-	}
-
-	/**
-	 * update general ad conditions with conditions for the current ad
-	 *
-	 * @param array $conditions ad display conditions from ad form
-	 * @since 1.0.0
-	 * @todo make those condition checks extendible
-	 */
-	public function update_general_ad_conditions($conditions){
-		global $advanced_ads_ad_conditions;
-
-		$plugin = Advanced_Ads::get_instance();
-		$ads_by_conditions = $plugin->get_ads_by_conditions_array();
-
-		// remove current ad from general ad condition array
-		$ads_by_conditions = $this->remove_ad_from_general_ad_conditions( $this->id, $ads_by_conditions );
-
-		// only run conditions if ad is publically visible
-		if ( $this->status == 'publish' ) {
-			// iterate through the ads display condition
-			foreach ( $conditions as $_condition_key => $_condition ){
-				if ( ! isset($advanced_ads_ad_conditions[$_condition_key]['type']) ) {
-					$plugin->log( sprintf( __( 'A "%s" display condition does not exist', ADVADS_SLUG ), $_condition_key ) );
-					return;
-				}
-				// add conditions based on type
-				switch ( $advanced_ads_ad_conditions[$_condition_key]['type'] ){
-					case 'idfield' :
-						if ( isset($_condition['include']) && $_condition['include'] != '' ){
-							if ( is_array( $_condition['include'] ) ){
-								$_ids = $_condition['include'];
-							} else {
-								$_ids = explode( ',', $_condition['include'] );
-							}
-							if ( is_array( $_ids ) ) { foreach ( $_ids as $_id ){
-									$ads_by_conditions[$_condition_key][$_id]['include'][] = $this->id;
-							}
-							}
-						}
-						if ( isset($_condition['exclude']) && $_condition['exclude'] != '' ){
-							if ( is_array( $_condition['exclude'] ) ){
-								$_ids = $_condition['exclude'];
-							} else {
-								$_ids = explode( ',', $_condition['exclude'] );
-							}
-							if ( is_array( $_ids ) ) { foreach ( $_ids as $_id ){
-									$ads_by_conditions[$_condition_key][$_id]['exclude'][] = $this->id;
-							}
-							}
-						}
-						break;
-					case 'textvalues' :
-						if ( isset($_condition['include']) && $_condition['include'] != '' ){
-							if ( is_array( $_condition['include'] ) ){
-								$_ids = $_condition['include'];
-							} else {
-								$_ids = explode( ',', $_condition['include'] );
-							}
-							if ( is_array( $_ids ) ) { foreach ( $_ids as $_id ){
-									$ads_by_conditions[$_condition_key][$_id]['include'][] = $this->id;
-							}
-							}
-						}
-						if ( isset($_condition['exclude']) && $_condition['exclude'] != '' ){
-							if ( is_array( $_condition['exclude'] ) ){
-								$_ids = $_condition['exclude'];
-							} else {
-								$_ids = explode( ',', $_condition['exclude'] );
-							}
-							if ( is_array( $_ids ) ) { foreach ( $_ids as $_id ){
-									$ads_by_conditions[$_condition_key][$_id]['exclude'][] = $this->id;
-							}
-							}
-						}
-						break;
-					case 'radio' :
-						if ( $_condition == 1 ) {
-							$ads_by_conditions[$_condition_key]['include'][] = $this->id; }
-						elseif ($_condition == 0)
-						$ads_by_conditions[$_condition_key]['exclude'][] = $this->id;
-						break;
-					case 'other' :
-						$ads_by_conditions[$_condition_key][$this->id] = $_condition;
-				} // switch
-			} // forearch
-		}
-		update_option( 'advads-ads-by-conditions', $ads_by_conditions );
-	}
-
-	/**
-	 * remove ad id from ad conditions array
-	 *
-	 * @param int $ad_id id of the ad (=post id)
-	 * @param arr $conditions array with the general, global ad conditions
-	 * @since 1.0.0
-	 */
-	static function remove_ad_from_general_ad_conditions($ad_id = 0, $conditions = array()){
-		$ad_id = absint( $ad_id );
-		if ( empty($ad_id) || ! is_array( $conditions ) || $conditions == array() ) { return; }
-
-		foreach ( $conditions as $_key => $_cond ){
-			// remove single elements
-			if ( ! is_array( $_cond ) && $_cond == $ad_id ){
-				unset($conditions[$_key]);
-			} elseif ( empty($_cond) ){
-				unset($conditions[$_key]);
-			}
-			// check recursively
-			elseif ( is_array( $_cond ) ){
-				$new_cond = self::remove_ad_from_general_ad_conditions( $ad_id, $_cond );
-
-				if ( $new_cond == array() || $new_cond == '' ){
-					// remove empty arrays
-					unset($conditions[$_key]);
-				} else {
-					$conditions[$_key] = $new_cond;
-				}
-			}
-		}
-
-		return $conditions;
 	}
 
 	/**

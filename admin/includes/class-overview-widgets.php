@@ -120,10 +120,10 @@ foreach ( $next_steps as $_step ){
 	 */
 	public static function render_support(){
 		?><ul>
-            <li><?php printf( __( '<a href="%s" target="_blank">Plugin Homepage</a>', ADVADS_SLUG ), 'http://wpadvancedads.com/advancedads/' ); ?> –
-            <?php printf( __( '<a href="%s" target="_blank">Manual</a>', ADVADS_SLUG ), 'http://wpadvancedads.com/advancedads/manual/' ); ?></li>
+            <li><?php printf( __( '<a href="%s" target="_blank">Plugin Homepage</a>', ADVADS_SLUG ), ADVADS_URL . 'advancedads/' ); ?> –
+            <?php printf( __( '<a href="%s" target="_blank">Manual</a>', ADVADS_SLUG ), ADVADS_URL . 'advancedads/manual/' ); ?></li>
             <li><?php printf( __( 'Ask other users in the <a href="%s" target="_blank">wordpress.org forum</a>', ADVADS_SLUG ), 'http://wordpress.org/plugins/advanced-ads/' ); ?></li>
-            <li><?php printf( __( 'Vote for a <a href="%s" target="_blank">feature</a>', ADVADS_SLUG ), 'http://wpadvancedads.com/advancedads/feature-requests/' ); ?></li>
+            <li><?php printf( __( 'Vote for a <a href="%s" target="_blank">feature</a>', ADVADS_SLUG ), ADVADS_URL . 'advancedads/feature-requests/' ); ?></li>
             <li><?php printf( __( '<a href="%s" target="_blank">Hire the developer</a>', ADVADS_SLUG ), 'http://webgilde.com/en/contact/' ); ?></li>
             <li><?php printf( __( 'Thank the developer with a &#9733;&#9733;&#9733;&#9733;&#9733; review on <a href="%s" target="_blank">wordpress.org</a>', ADVADS_SLUG ), 'https://wordpress.org/support/view/plugin-reviews/advanced-ads' ); ?></li>
         </ul><?php
@@ -134,12 +134,12 @@ foreach ( $next_steps as $_step ){
 	 */
 	public static function render_add_on_tracking(){
 
-		?><p><?php _e( 'Track the impressions of your ads.', ADVADS_SLUG ); ?></p><ul class='list'>
+		?><p><?php _e( 'Track the impressions of and clicks on your ads.', ADVADS_SLUG ); ?></p><ul class='list'>
             <li><?php _e( '2 methods to count impressions', ADVADS_SLUG ); ?></li>
             <li><?php _e( 'beautiful stats for all or single ads', ADVADS_SLUG ); ?></li>
             <li><?php _e( 'get stats for predefined and custom persiods', ADVADS_SLUG ); ?></li>
             <li><?php _e( 'group stats by day, week or month', ADVADS_SLUG ); ?></li>
-        </ul><p><a class="button button-primary" href="http://wpadvancedads.com/ad-tracking/" target="_blank"><?php
+        </ul><p><a class="button button-primary" href="<?php echo ADVADS_URL; ?>add-ons/tracking/" target="_blank"><?php
 			_e( 'Get the Tracking add-on', ADVADS_SLUG ); ?></a></p><?php
 	}
 
@@ -152,7 +152,7 @@ foreach ( $next_steps as $_step ){
             <li><?php _e( 'set a range (from … to …) pixels for the browser size', ADVADS_SLUG ); ?></li>
             <li><?php _e( 'set custom sizes for AdSense responsive ads', ADVADS_SLUG ); ?></li>
             <li><?php _e( 'list all ads by their responsive settings', ADVADS_SLUG ); ?></li>
-        </ul><p><a class="button button-primary" href="http://wpadvancedads.com/responsive-ads/" target="_blank"><?php
+        </ul><p><a class="button button-primary" href="<?php echo ADVADS_URL; ?>add-ons/responsive-ads/" target="_blank"><?php
 			_e( 'Get the Responsive add-on', ADVADS_SLUG ); ?></a></p><?php
 	}
 
@@ -164,7 +164,7 @@ foreach ( $next_steps as $_step ){
 		?><p><?php _e( 'Fix ads to the browser while users are scrolling and create best performing anchor ads.', ADVADS_SLUG ); ?></p><ul class='list'>
             <li><?php _e( 'position ads that don’t scroll with the screen', ADVADS_SLUG ); ?></li>
             <li><?php _e( 'build anchor ads not only on mobile devices', ADVADS_SLUG ); ?></li>
-        </ul><p><a class="button button-primary" href="http://wpadvancedads.com/sticky-ads" target="_blank"><?php
+        </ul><p><a class="button button-primary" href="<?php echo ADVADS_URL; ?>add-ons/sticky-ads/" target="_blank"><?php
 			_e( 'Get the Sticky add-on', ADVADS_SLUG ); ?></a></p><?php
 	}
 
@@ -177,7 +177,7 @@ foreach ( $next_steps as $_step ){
             <li><?php _e( 'display a popup after a user interaction like scrolling', ADVADS_SLUG ); ?></li>
             <li><?php _e( 'optional backgroup overlay', ADVADS_SLUG ); ?></li>
             <li><?php _e( 'allow users to close the popup', ADVADS_SLUG ); ?></li>
-        </ul><p><a class="button button-primary" href="http://wpadvancedads.com/layer-ads/" target="_blank"><?php
+        </ul><p><a class="button button-primary" href="<?php echo ADVADS_URL; ?>add-ons/popup-and-layer-ads/" target="_blank"><?php
 			_e( 'Get the PopUp and Layer add-on', ADVADS_SLUG ); ?></a></p><?php
 	}
 

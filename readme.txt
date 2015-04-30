@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.2
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ Manage and optimize your ads in WordPress as easy as creating posts. Including s
 
 Advanced Ads is a simple ad manager made by a publisher for publishers. Based on my experience delivering millions of ads per month I built this plugin as a powerful, but light weight solution to not only manage and serve ads in WordPress, but to test and optimize them as well.
 
-Learn more on the [plugin homepage](http://wpadvancedads.com).
+Learn more on the [plugin homepage](https://wpadvancedads.com).
 
 = create and manage ads =
 
@@ -72,7 +72,7 @@ display ads by conditions based on the visitor
 
 * display ads on all devices, mobile only or exclude mobile users
 * hide all ads from logged in users based on their role
-* display ads by exact browser width with the [Responsive add-on](http://wpadvancedads.com/responsive-ads/)
+* display ads by exact browser width with the [Responsive add-on](https://wpadvancedads.com/add-ons/responsive-ads/)
 
 = ad injection =
 
@@ -94,7 +94,7 @@ There is an ad type dedicated to Google AdSense that supports:
 * switch ad sizes
 * switch between normal and responsive
 * automatic limit 3 AdSense ads according to AdSense terms of service (can be disabled)
-* assistant for exact sizes of responsive ads with the [Responsive add-on](http://wpadvancedads.com/responsive-ads/)
+* assistant for exact sizes of responsive ads with the [Responsive add-on](https://wpadvancedads.com/add-ons/responsive-ads/)
 * (more coming soon)
 
 = based on WordPress standards =
@@ -102,16 +102,16 @@ There is an ad type dedicated to Google AdSense that supports:
 * integrated into WordPress using standards like custom post types, taxonomies and hooks
 * easily customizable by any WordPress plugin developer
 
-Learn more on the [plugin homepage](http://wpadvancedads.com).
+Learn more on the [plugin homepage](https://wpadvancedads.com).
 
 Localizations: English, German, Italien, Portuguese
 
 > <strong>Add-Ons</strong>
 >
-> * Tracking – ad tracking and statistics – [more](http://wpadvancedads.com/ad-tracking/)
-> * Responsive Ads – create mobile ads or ads for specific browser sizes - [Demo](http://wpadvancedads.com/responsive-ads/)
-> * Sticky Ads – increase click rates with fixed, sticky, and anchor ads - [Demo](http://wpadvancedads.com/sticky-ads/demo/)
-> * PopUp and Layer Ads – display ads and other content in layers and popups - [Demo](http://wpadvancedads.com/layer-ads/)
+> * Tracking – ad tracking and statistics – [more](https://wpadvancedads.com/add-ons/tracking/)
+> * Responsive Ads – create mobile ads or ads for specific browser sizes - [Demo](https://wpadvancedads.com/add-ons/responsive-ads/)
+> * Sticky Ads – increase click rates with fixed, sticky, and anchor ads - [Demo](https://wpadvancedads.com/sticky-ads/demo/)
+> * PopUp and Layer Ads – display ads and other content in layers and popups - [Demo](https://wpadvancedads.com/add-ons/layer-ads/)
 
 == Installation ==
 
@@ -173,6 +173,18 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 3. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.5.2 =
+
+* fixed empty bots not excluded if option is activated
+* fixed updated placements not showing up right away
+* removing spaces from AdSense publisher id
+* simplify admin capabilities for modules
+* fixed admin includes to avoid relative paths
+* fixed a warning in add-on admin settings
+* fixed wrong path to advanced.js
+* removed old code and global ad conditions previously saved in field 'advads-ads-by-conditions'
+* updated German translation
 
 = 1.5.1 =
 

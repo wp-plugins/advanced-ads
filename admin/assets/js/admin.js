@@ -46,52 +46,52 @@ jQuery( document ).ready(function ($) {
 	});
 
 	// toggle single display condition checkboxes that have a counterpart
-	$(document).on('click', '.advads-conditions-single input[type="checkbox"]', function () {
-                advads_toggle_single_display_condition_checkbox( this );
-                // update buttons
-                $('.advads-conditions-terms-buttons label').button('refresh');
+	$( document ).on('click', '.advads-conditions-single input[type="checkbox"]', function () {
+				advads_toggle_single_display_condition_checkbox( this );
+				// update buttons
+				$( '.advads-conditions-terms-buttons label' ).button( 'refresh' );
 	});
 	// toggle single display condition checkboxes that have a counterpart on load
 	$( '.advads-conditions-single input[type="checkbox"]' ).each(function () {
 		advads_toggle_single_display_condition_checkbox( this );
 	});
 	// activate buttons
-	$('.advads-conditions-terms-buttons').buttonset();
+	$( '.advads-conditions-terms-buttons' ).buttonset();
 
-	$(document).on('click', '.advads-conditions-terms-buttons .button', function (e) {
-		$(this).remove();
+	$( document ).on('click', '.advads-conditions-terms-buttons .button', function (e) {
+		$( this ).remove();
 	});
 	// display input field to search for terms
 	$( '.advads-conditions-terms-show-search' ).click(function (e) {
 		e.preventDefault();
 		// display input field
-		$(this).siblings('.advads-conditions-terms-search').show().focus();
-		$(this).next('br').show();
-		$(this).hide();
+		$( this ).siblings( '.advads-conditions-terms-search' ).show().focus();
+		$( this ).next( 'br' ).show();
+		$( this ).hide();
 	});
 	// register autocomplete to display condition posts
-        var response = [];
+		var response = [];
 	if($( ".advads-conditions-terms-search" ).length){
 		$( ".advads-conditions-terms-search" ).each(function(){
-                    var self = this;
-                    $(this).autocomplete({
-			source: function(request, callback){
-				// var searchField  = request.term;
-				advads_term_search(self, callback);
-			},
-			minLength: 1,
-			select: function( event, ui ) {
-				// append new line with input fields
-				$( '<label class="button">' + ui.item.label + '<input type="hidden" name="advanced_ad[conditions]['+ self.dataset.group +']['+ self.dataset.includeType +'][]" value="' + ui.item.value + '"></label>' ).appendTo( $(self).siblings('.advads-conditions-terms-buttons'));
+					var self = this;
+					$( this ).autocomplete({
+						source: function(request, callback){
+							// var searchField  = request.term;
+							advads_term_search( self, callback );
+						},
+						minLength: 1,
+						select: function( event, ui ) {
+							// append new line with input fields
+							$( '<label class="button">' + ui.item.label + '<input type="hidden" name="advanced_ad[conditions][' + self.dataset.group + '][' + self.dataset.includeType + '][]" value="' + ui.item.value + '"></label>' ).appendTo( $( self ).siblings( '.advads-conditions-terms-buttons' ) );
 
-				// show / hide other elements
-				// $( '#advads-display-conditions-individual-post' ).hide();
-				// $( '.advads-conditions-postids-list .show-search a' ).show();
-			},
-			close: function( event, ui ) {
-                                $(self).val( '' );
-			}
-                    });
+							// show / hide other elements
+							// $( '#advads-display-conditions-individual-post' ).hide();
+							// $( '.advads-conditions-postids-list .show-search a' ).show();
+						},
+						close: function( event, ui ) {
+								$( self ).val( '' );
+						}
+					});
 		});
 	};
 	// display input field to search for post, page, etc.
@@ -133,52 +133,52 @@ jQuery( document ).ready(function ($) {
 		$( this ).parent( 'li' ).remove();
 	});
 
-        // display ad groups form
-        $('#advads-ad-group-list a.edit, #advads-ad-group-list a.row-title').click(function(e){
-            e.preventDefault();
-            var advadsgroupformrow = $(this).parents('.advads-group-row').next('.advads-ad-group-form');
-            if(advadsgroupformrow.is(':visible')){
-                advadsgroupformrow.hide();
-            } else {
-                advadsgroupformrow.show();
-            }
-        });
-        // display ad groups usage
-        $('#advads-ad-group-list a.usage').click(function(e){
-            e.preventDefault();
-            var usagediv = $(this).parents('.advads-group-row').find('.advads-usage');
-            if(usagediv.is(':visible')){
-                usagediv.hide();
-            } else {
-                usagediv.show();
-            }
-        });
-        // menu tabs
-        $('#advads-tabs').find('a').click(function () {
-            $('#advads-tabs').find('a').removeClass('nav-tab-active');
-            $('.advads-tab').removeClass('active');
+		// display ad groups form
+		$( '#advads-ad-group-list a.edit, #advads-ad-group-list a.row-title' ).click(function(e){
+			e.preventDefault();
+			var advadsgroupformrow = $( this ).parents( '.advads-group-row' ).next( '.advads-ad-group-form' );
+			if(advadsgroupformrow.is( ':visible' )){
+				advadsgroupformrow.hide();
+			} else {
+				advadsgroupformrow.show();
+			}
+		});
+		// display ad groups usage
+		$( '#advads-ad-group-list a.usage' ).click(function(e){
+			e.preventDefault();
+			var usagediv = $( this ).parents( '.advads-group-row' ).find( '.advads-usage' );
+			if(usagediv.is( ':visible' )){
+				usagediv.hide();
+			} else {
+				usagediv.show();
+			}
+		});
+		// menu tabs
+		$( '#advads-tabs' ).find( 'a' ).click(function () {
+			$( '#advads-tabs' ).find( 'a' ).removeClass( 'nav-tab-active' );
+			$( '.advads-tab' ).removeClass( 'active' );
 
-            var id = jQuery(this).attr('id').replace('-tab', '');
-            jQuery('#' + id).addClass('active');
-            jQuery(this).addClass('nav-tab-active');
-        });
+			var id = jQuery( this ).attr( 'id' ).replace( '-tab', '' );
+			jQuery( '#' + id ).addClass( 'active' );
+			jQuery( this ).addClass( 'nav-tab-active' );
+		});
 
-        // activate specific or first tab
-        var active_tab = window.location.hash.replace('#top#', '');
-        if (active_tab == '' || active_tab == '#_=_') {
-            active_tab = $('.advads-tab').attr('id');
-        }
-        $('#' + active_tab).addClass('active');
-        $('#' + active_tab + '-tab').addClass('nav-tab-active');
-        $('.nav-tab-active').click();
+		// activate specific or first tab
+		var active_tab = window.location.hash.replace( '#top#', '' );
+		if (active_tab == '' || active_tab == '#_=_') {
+			active_tab = $( '.advads-tab' ).attr( 'id' );
+		}
+		$( '#' + active_tab ).addClass( 'active' );
+		$( '#' + active_tab + '-tab' ).addClass( 'nav-tab-active' );
+		$( '.nav-tab-active' ).click();
 
-        /**
-         * SETTINGS PAGE
-         */
-        // render button sets on settings page
-        $(function() {
-            $( ".advads-settings-buttonset" ).buttonset();
-        });
+		/**
+		 * SETTINGS PAGE
+		 */
+		// render button sets on settings page
+		$(function() {
+			$( ".advads-settings-buttonset" ).buttonset();
+		});
 });
 
 /**
@@ -192,7 +192,7 @@ function advads_term_search(field, callback) {
 
 	// return ['post', 'poster'];
 	var query = {
-            action: 'advads-terms-search',
+		action: 'advads-terms-search',
 	};
 
 	query.search = field.value;
@@ -207,8 +207,8 @@ function advads_term_search(field, callback) {
 		if(r){
 			r.map(function(element, index){
 				results[index] = {
-                                    value: element.term_id,
-                                    label: element.name
+					value: element.term_id,
+					label: element.name
 				};
 			});
 		}
@@ -323,11 +323,11 @@ function advads_toggle_single_display_condition_checkbox(checkbox) {
 	if (jQuery( checkbox ).is( ':checked' )) {
 		counterpart.attr( 'checked', false );
 		counterpart.attr( 'disabled', 'disabled' );
-                // mark label
-                jQuery('label[for="'+counterpart.attr('id')+'"]').addClass('ui-button-disabled').addClass('ui-state-disabled');
+				// mark label
+				jQuery( 'label[for="' + counterpart.attr( 'id' ) + '"]' ).addClass( 'ui-button-disabled' ).addClass( 'ui-state-disabled' );
 	} else {
 		counterpart.removeAttr( 'disabled' );
-                jQuery('label[for="'+counterpart.attr('id')+'"]').removeClass('ui-button-disabled');
-                jQuery('label[for="'+counterpart.attr('id')+'"]').removeClass('ui-state-disabled');
+				jQuery( 'label[for="' + counterpart.attr( 'id' ) + '"]' ).removeClass( 'ui-button-disabled' );
+				jQuery( 'label[for="' + counterpart.attr( 'id' ) + '"]' ).removeClass( 'ui-state-disabled' );
 	}
 }

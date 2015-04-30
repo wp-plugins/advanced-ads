@@ -196,8 +196,6 @@ class Gadsense_Admin {
 
 		// hook for additional settings from add-ons
 		do_action( 'advanced-ads-adsense-settings-init', $hook );
-
-		// require GADSENSE_BASE_PATH . 'admin/views/admin-page.php';
 	}
 
         /**
@@ -257,6 +255,8 @@ class Gadsense_Admin {
                             'settings_updated',
                             __( 'The Publisher ID has an incorrect format. (must start with "pub-")', ADVADS_SLUG ));
                 }
+		// trim publisher id
+		$options['adsense-id'] = trim($options['adsense-id']);
             }
 
             return $options;

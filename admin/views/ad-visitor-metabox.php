@@ -18,5 +18,5 @@
 </ul>
 <?php do_action( 'advanced-ads-visitor-conditions-after', $ad ); ?>
 <?php if ( ! defined( 'AAR_SLUG' ) ) : ?>
-<p><?php printf( __( 'Define the exact browser width for which an ad should be visible using the <a href="%s" target="_blank">Responsive add-on</a>.', ADVADS_SLUG ), 'http://wpadvancedads.com/responsive-ads/' ); ?></p>
+<p><?php printf( __( 'Define the exact browser width for which an ad should be visible using the <a href="%s" target="_blank">Responsive add-on</a>.', ADVADS_SLUG ), ADVADS_URL . 'add-ons/responsive-ads/' ); ?></p>
 <?php endif;

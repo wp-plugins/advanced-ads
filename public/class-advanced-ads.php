@@ -25,7 +25,7 @@ class Advanced_Ads {
 	 * @var     string
 	 */
 
-	const VERSION = '1.5.1';
+	const VERSION = '1.5.2';
 
 	/**
 	 * post type slug
@@ -273,26 +273,6 @@ class Advanced_Ads {
 	}
 
 	/**
-	 * get an array with all ads by conditions
-	 * = list possible ads for each condition
-	 * TODO is this a duplication of Advanced_Ads_Model::get_ad_conditions() ??
-	 *
-	 * @since 1.0.0
-	 * @return arr $ads_by_conditions
-	 * @todo make static
-	 */
-	public function get_ads_by_conditions_array(){
-
-		$ads_by_conditions = get_option( 'advads-ads-by-conditions', array() );
-		// load default array if no conditions saved yet
-		if ( ! is_array( $ads_by_conditions ) ){
-			$ads_by_conditions = array();
-		}
-
-		return $ads_by_conditions;
-	}
-
-	/**
 	 * add plain and content ad types to the default ads of the plugin using a filter
 	 *
 	 * @since 1.0.0
@@ -341,7 +321,7 @@ class Advanced_Ads {
 		$placements = get_option( 'advads-ads-placements', array() );
 		foreach ( $placements as $_placement_id => $_placement ){
 			if ( isset($_placement['type']) && 'header' == $_placement['type'] ){
-				echo Advads_Ad_Placements::output( $_placement_id );
+				echo Advanced_Ads_Placements::output( $_placement_id );
 			}
 		}
 	}
@@ -355,7 +335,7 @@ class Advanced_Ads {
 		$placements = get_option( 'advads-ads-placements', array() );
 		foreach ( $placements as $_placement_id => $_placement ){
 			if ( isset($_placement['type']) && 'footer' == $_placement['type'] ){
-				echo Advads_Ad_Placements::output( $_placement_id );
+				echo Advanced_Ads_Placements::output( $_placement_id );
 			}
 		}
 	}
@@ -379,13 +359,13 @@ class Advanced_Ads {
 
 			switch ( $_placement['type'] ) {
 				case 'post_top':
-					$content = Advads_Ad_Placements::output( $_placement_id ) . $content;
+					$content = Advanced_Ads_Placements::output( $_placement_id ) . $content;
 					break;
 				case 'post_bottom':
-					$content .= Advads_Ad_Placements::output( $_placement_id );
+					$content .= Advanced_Ads_Placements::output( $_placement_id );
 					break;
 				case 'post_content':
-					$content = Advads_Ad_Placements::inject_in_content( $_placement_id, $_placement['options'], $content );
+					$content = Advanced_Ads_Placements::inject_in_content( $_placement_id, $_placement['options'], $content );
 					break;
 			}
 		}
@@ -480,7 +460,7 @@ class Advanced_Ads {
 		$bots = preg_replace('@[^-_;/|\][ a-z0-9]@i', '', $bots);
 		$regex = "@$bots@i";
 
-		if(isset($_SERVER['HTTP_USER_AGENT'])) {
+		if(isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] !== '') {
 			$agent = $_SERVER['HTTP_USER_AGENT'];
 
 			return preg_match($regex, $agent) === 1;

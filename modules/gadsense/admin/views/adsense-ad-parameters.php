@@ -31,7 +31,7 @@ if ( $is_responsive ) {
             </select>
         </label>
         <?php if ( ! defined( 'AAR_SLUG' ) ) : ?>
-            <p><?php printf( __( 'Use the <a href="%s" target="_blank">Responsive add-on</a> in order to define the exact creative for each browser width.', ADVADS_SLUG ), 'http://wpadvancedads.com/responsive-ads/' ); ?></p>
+            <p><?php printf( __( 'Use the <a href="%s" target="_blank">Responsive add-on</a> in order to define the exact creative for each browser width.', ADVADS_SLUG ), ADVADS_URL . 'add-ons/responsive-ads/' ); ?></p>
         <?php else : ?>
         <br />
         <?php endif; ?>

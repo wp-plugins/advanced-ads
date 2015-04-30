@@ -20,16 +20,16 @@ jQuery(document).ready(function() {
     <ul id="advads-how-it-works">
         <li><?php _e( 'If you want to display the ad everywhere, don\'t do anything here. ', ADVADS_SLUG ); ?></li>
         <li><?php _e( 'The fewer conditions you enter, the better the performance will be.', ADVADS_SLUG ); ?></li>
-        <li><?php printf( __( 'Learn more about display conditions from the <a href="%s" target="_blank">manual</a>.', ADVADS_SLUG ), 'http://wpadvancedads.com/advancedads/manual/display-conditions/' ); ?></li>
+        <li><?php printf( __( 'Learn more about display conditions from the <a href="%s" target="_blank">manual</a>.', ADVADS_SLUG ), ADVADS_URL . 'advancedads/manual/display-conditions/' ); ?></li>
     </ul>
     <?php
-    // -TODO use model
-    $advanced_ads_ad_conditions = Advanced_Ads::get_ad_conditions();
-    if (is_array($advanced_ads_ad_conditions)) :
-        foreach ($advanced_ads_ad_conditions as $_key => $_condition) :
-            if (!isset($_condition['callback']))
-                continue;
-            ?><div class="advanced-ad-display-condition">
+	// -TODO use model
+	$advanced_ads_ad_conditions = Advanced_Ads::get_ad_conditions();
+	if ( is_array( $advanced_ads_ad_conditions ) ) :
+		foreach ( $advanced_ads_ad_conditions as $_key => $_condition ) :
+			if ( ! isset($_condition['callback']) ) {
+				continue; }
+			?><div class="advanced-ad-display-condition">
             <?php
 			if ( is_array( $_condition['callback'] ) && method_exists( $_condition['callback'][0], $_condition['callback'][1] ) ) {
 				call_user_func( array($_condition['callback'][0], $_condition['callback'][1]), $ad ); // works also in php below 5.3
@@ -40,12 +40,12 @@ jQuery(document).ready(function() {
 			?><h4><?php _e( 'Other conditions', ADVADS_SLUG ); ?></h4><br/>
         <table>
             <tbody><?php
-				foreach ( $advanced_ads_ad_conditions as $_key => $_condition ) :
-					if ( isset($_condition['callback']) || empty($_condition['label']) ) {
-						continue; }
-					?><tr>
+			foreach ( $advanced_ads_ad_conditions as $_key => $_condition ) :
+				if ( isset($_condition['callback']) || empty($_condition['label']) ) {
+					continue; }
+				?><tr>
 				<th><?php echo $_condition['label']; ?>
-                        </th>
+					</th>
         <?php if ( empty($_condition['type']) ) : continue; ?>
                         <?php elseif ( $_condition['type'] == 'idfield' || $_condition['type'] == 'textvalues' ) : ?>
                             <td><input type="text" name="advanced_ad[conditions][<?php echo $_key; ?>][include]" value="<?php if ( isset($ad->conditions[$_key]['include']) ) { echo $ad->conditions[$_key]['include']; } ?>"/></td>
@@ -53,16 +53,16 @@ jQuery(document).ready(function() {
                     <?php elseif ( $_condition['type'] == 'radio' ) : ?>
                             <td class="advanced-ads-display-condition-set">
                                 <input type="radio" name="advanced_ad[conditions][<?php
-                                    echo $_key; ?>]" id="advanced-ads-display-condition-<?php
-                                    echo $_key; ?>-1" value="1" <?php if ( !isset($ad->conditions[$_key]) || $ad->conditions[$_key]) { checked(1); } ?>/>
-                                <label for="advanced-ads-display-condition-<?php echo $_key; ?>-1"><?php _ex('on', 'button label', ADVADS_SLUG); ?></label>
+									echo $_key; ?>]" id="advanced-ads-display-condition-<?php
+									echo $_key; ?>-1" value="1" <?php if ( ! isset($ad->conditions[$_key]) || $ad->conditions[$_key] ) { checked( 1 ); } ?>/>
+                                <label for="advanced-ads-display-condition-<?php echo $_key; ?>-1"><?php _ex( 'on', 'button label', ADVADS_SLUG ); ?></label>
                                 <input type="radio" name="advanced_ad[conditions][<?php
-                                    echo $_key; ?>]" id="advanced-ads-display-condition-<?php
-                                    echo $_key; ?>-0" value="0" <?php if ( isset($ad->conditions[$_key]) ) { checked( $ad->conditions[$_key], 0 ); } ?>/>
-                                <label for="advanced-ads-display-condition-<?php echo $_key; ?>-0"><?php _ex('off', 'button label', ADVADS_SLUG); ?></label>
+									echo $_key; ?>]" id="advanced-ads-display-condition-<?php
+									echo $_key; ?>-0" value="0" <?php if ( isset($ad->conditions[$_key]) ) { checked( $ad->conditions[$_key], 0 ); } ?>/>
+                                <label for="advanced-ads-display-condition-<?php echo $_key; ?>-0"><?php _ex( 'off', 'button label', ADVADS_SLUG ); ?></label>
                             </td>
                             <td>
-                                 <?php if ( ! empty($_condition['description']) ) : ?>
+									<?php if ( ! empty($_condition['description']) ) : ?>
                                 <p class="description on-hover"><?php echo $_condition['description']; ?></p>
                                 <?php endif; ?>
                             </td>

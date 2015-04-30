@@ -8,15 +8,15 @@
 $ad_groups_list = new AdvAds_Groups_List();
 
 // save updated groups
-if(isset($_REQUEST['advads-group-update-nonce'])){
-    $udpate_result = $ad_groups_list->update_groups();
-    // display error message
-    if ( is_wp_error( $udpate_result ) ){
-        $error_string = $udpate_result->get_error_message();
-        echo '<div id="message" class="error"><p>' . $error_string . '</p></div>';
-    } else {
-        echo '<div id="message" class="updated"><p>' . __('Ad Groups successfully updated', ADVADS_SLUG) . '</p></div>';
-    }
+if ( isset($_REQUEST['advads-group-update-nonce']) ){
+	$udpate_result = $ad_groups_list->update_groups();
+	// display error message
+	if ( is_wp_error( $udpate_result ) ){
+		$error_string = $udpate_result->get_error_message();
+		echo '<div id="message" class="error"><p>' . $error_string . '</p></div>';
+	} else {
+		echo '<div id="message" class="updated"><p>' . __( 'Ad Groups successfully updated', ADVADS_SLUG ) . '</p></div>';
+	}
 }
 
 /*$messages[$taxonomy] = array(
@@ -59,7 +59,7 @@ if ( isset($_REQUEST['message']) && ( $msg = (int) $_REQUEST['message'] ) || iss
     <div id="ajax-response"></div>
     <a onclick="advads_toggle('#advads-ad-group-display-info')"><?php _e( 'How to display an Ad Group?', ADVADS_SLUG ); ?></a>
     <div id="advads-ad-group-display-info" style="display: none;">
-        <p><?php printf( __( 'Examples on how to display an ad group? Find more help and examples in the <a href="%s" target="_blank">manual</a>', ADVADS_SLUG ), 'http://wpadvancedads.com/advanced-ads/manual/ad-groups/' ); ?></p>
+        <p><?php printf( __( 'Examples on how to display an ad group? Find more help and examples in the <a href="%s" target="_blank">manual</a>', ADVADS_SLUG ), ADVADS_URL . 'advanced-ads/manual/ad-groups/' ); ?></p>
         <h4><?php _e( 'shortcode', ADVADS_SLUG ); ?></h4>
             <p class="description"><?php _e( 'To display an ad group with the ID 6 in content fields', ADVADS_SLUG ); ?></p>
             <pre><input type="text" onclick="this.select();" style="width: 250px;" value='[the_ad_group id="6"]'/></pre>
@@ -79,12 +79,12 @@ if ( isset($_REQUEST['message']) && ( $msg = (int) $_REQUEST['message'] ) || iss
             <br class="clear" />
             <div id="advads-ad-group-list">
                 <form action="" method="post">
-                    <?php wp_nonce_field('update-advads-groups', 'advads-group-update-nonce'); ?>
+                    <?php wp_nonce_field( 'update-advads-groups', 'advads-group-update-nonce' ); ?>
                     <table class="wp-list-table widefat fixed adgroups">
                         <?php $ad_groups_list->render_header(); ?>
                         <?php $ad_groups_list->render_rows(); ?>
                     </table>
-                    <?php submit_button( __('Update Groups', ADVADS_SLUG) ); ?>
+                    <?php submit_button( __( 'Update Groups', ADVADS_SLUG ) ); ?>
                 </form>
             </div>
         </div>

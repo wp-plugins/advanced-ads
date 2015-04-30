@@ -3,16 +3,17 @@
  * the view for the placements page
  */
 ?><div class="wrap">
-<?php if ( $error ) : ?>
-        <div id="message" class="error"><p><?php echo $error; ?></p></div>
-    <?php endif; ?>
-    <?php if ( $success ) : ?>
-        <div id="message" class="updated"><p><?php echo $success; ?></p></div>
-    <?php endif; ?>
+<?php if ( isset($_GET['message'] ) ) :
+	if ( $_GET['message'] === 'error' ) :
+	?><div id="message" class="error"><p><?php _e( 'Couldn’t create empty or existing slug.', ADVADS_SLUG ); ?></p></div><?php
+	elseif ( $_GET['message'] === 'updated' ) :
+	?><div id="message" class="updated"><p><?php _e( 'Placements updated', ADVADS_SLUG ); ?></p></div><?php
+	endif; ?>
+<?php endif; ?>
     <?php screen_icon(); ?>
     <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
     <p class="description"><?php _e( 'Placements are physically places in your theme and posts. You can use them if you plan to change ads and ad groups on the same place without the need to change your templates.', ADVADS_SLUG ); ?></p>
-    <p class="description"><?php printf( __( 'See also the manual for more information on <a href="%s">placements</a> and <a href="%s">auto injection</a>.', ADVADS_SLUG ), 'http://wpadvancedads.com/advancedads/manual/placements/', 'http://wpadvancedads.com/advancedads/manual/auto-injection/' ); ?></p>
+    <p class="description"><?php printf( __( 'See also the manual for more information on <a href="%s">placements</a> and <a href="%s">auto injection</a>.', ADVADS_SLUG ), ADVADS_URL . 'advancedads/manual/placements/', ADVADS_URL . 'advancedads/manual/auto-injection/' ); ?></p>
     <h2><?php _e( 'Create a new placement', ADVADS_SLUG ); ?></h2>
     <form method="POST" action="" class="advads-placements-new-form">
         <label for="advads-placement-type"><?php _e( 'Type', ADVADS_SLUG ); ?></label>
@@ -42,12 +43,13 @@
         <p class="description"><?php _e( 'Individual identifier. Allowed are alphanumeric signs (lower case) and hyphen.', ADVADS_SLUG ); ?></p>
         <p class=""><?php _e( 'You can assign Ads and Groups after you created the placement.', ADVADS_SLUG ); ?></p>
         <input type="submit" class="button button-primary" value="<?php _e( 'Save New Placement', ADVADS_SLUG ); ?>"/>
+	<?php wp_nonce_field( 'advads-placement', 'advads_placement', true ) ?>
     </form>
 <?php if ( isset($placements) && is_array( $placements ) ) : ?>
         <h2><?php _e( 'Placements', ADVADS_SLUG ); ?></h2>
         <a onclick="advads_toggle('#advads-ad-place-display-info')"><?php _e( 'How to use the <i>default</i> Ad Placement?', ADVADS_SLUG ); ?></a>
         <div id="advads-ad-place-display-info" style="display: none;">
-            <p><?php printf( __( 'Examples on how to use the <i>default</i> ad placement? Find more help and examples in the <a href="%s" target="_blank">manual</a>', ADVADS_SLUG ), 'http://wpadvancedads.com/advanced-ads/manual/placements/' ); ?></p>
+            <p><?php printf( __( 'Examples on how to use the <i>default</i> ad placement? Find more help and examples in the <a href="%s" target="_blank">manual</a>', ADVADS_SLUG ), ADVADS_URL . 'advanced-ads/manual/placements/' ); ?></p>
             <h4><?php _e( 'shortcode', ADVADS_SLUG ); ?></h4>
             <p class="description"><?php _e( 'To use an ad placement with the ID skyscraper_left in content fields', ADVADS_SLUG ); ?></p>
             <pre><input type="text" onclick="this.select();" style="width: 400px;" value='[the_ad_placement id="skyscraper_left"]'/></pre>
@@ -76,7 +78,7 @@
                             <th><?php echo $_placement_slug; ?></th>
                             <td class="advads-placements-table-options">
                                 <?php do_action( 'advanced-ads-placement-options-before', $_placement_slug, $_placement );
-								$items = Advads_Ad_Placements::items_for_select(); ?>
+								$items = Advanced_Ads_Placements::items_for_select(); ?>
                                 <label for="adsads-placements-item-<?php echo $_placement_slug; ?>"><?php _e( 'Item', ADVADS_SLUG ); ?></label>
                                 <select id="adsads-placements-item-<?php echo $_placement_slug; ?>" name="advads[placements][<?php echo $_placement_slug; ?>][item]">
                                     <option value=""><?php _e( '--empty--', ADVADS_SLUG ); ?></option>
@@ -111,7 +113,7 @@
 										echo (isset($_placement['options']['index'])) ? $_placement['options']['index'] : 1;
 										?>"/>.
 
-                                        <?php $tags = Advads_Ad_Placements::tags_for_content_injection(); ?>
+                                        <?php $tags = Advanced_Ads_Placements::tags_for_content_injection(); ?>
                                         <select name="advads[placements][<?php echo $_placement_slug; ?>][options][tag]">
                                             <?php foreach ( $tags as $_tag_key => $_tag ) : ?>
                                             <option value="<?php echo $_tag_key; ?>" <?php if ( isset($_placement['options']['tag']) ) { selected( $_placement['options']['tag'], $_tag_key ); } ?>><?php echo $_tag; ?></option>
@@ -132,6 +134,7 @@
                 </tbody>
             </table>
             <input type="submit" class="button button-primary" value="<?php _e( 'Save Placements', ADVADS_SLUG ); ?>"/>
+	    <?php wp_nonce_field( 'advads-placement', 'advads_placement', true ) ?>
         </form>
 <?php endif; ?>
 </div>
