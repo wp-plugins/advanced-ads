@@ -1,0 +1,1276 @@
+# Copyright (C) 2013 Thomas Maier, webgilde.com
+# This file is distributed under the same license as the Advanced_Ads package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Advanved Ads\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
+"POT-Creation-Date: 2015-01-28 20:07+0100\n"
+"PO-Revision-Date: 2015-01-31 20:18-0300\n"
+"Last-Translator: projetos@clinimkt.com.br <projetos@clinimkt.com.br>\n"
+"Language-Team: webgilde <thomas.maier@webgilde.com>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.3\n"
+"X-Poedit-KeywordsList: __;_e;_n;_x;esc_html_e;esc_html__;esc_attr_e;esc_attr__;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_x:1,2c;_n:1,2\n"
+"X-Poedit-Basepath: ../\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: admin/class-advanced-ads-admin.php:194
+#, php-format
+msgid "Advanced Ads Update: Auto injections are now managed through placements. Please convert these ads with auto injections: %s"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:208
+msgid "Overview"
+msgstr "Visão geral"
+
+#: admin/class-advanced-ads-admin.php:208 classes/widget.php:21
+msgid "Advanced Ads"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:212 admin/includes/class-ad-groups-list-table.php:191 admin/views/overview.php:12 admin/views/placements.php:91 classes/widget.php:66 public/class-advanced-ads.php:566
+msgid "Ads"
+msgstr "Banners"
+
+#: admin/class-advanced-ads-admin.php:216 admin/views/placements.php:84 classes/widget.php:59
+msgid "Ad Groups"
+msgstr "Grupos"
+
+#: admin/class-advanced-ads-admin.php:216 admin/views/overview.php:40 public/class-advanced-ads.php:540
+msgid "Groups"
+msgstr "Grupos"
+
+#: admin/class-advanced-ads-admin.php:221 admin/views/debug.php:19
+msgid "Ad Placements"
+msgstr "Locais"
+
+#: admin/class-advanced-ads-admin.php:221 admin/views/overview.php:66 admin/views/placements.php:47
+msgid "Placements"
+msgstr "Locais"
+
+#: admin/class-advanced-ads-admin.php:225
+msgid "Advanced Ads Settings"
+msgstr "Configurações"
+
+#: admin/class-advanced-ads-admin.php:225 admin/class-advanced-ads-admin.php:403 admin/views/debug.php:13
+msgid "Settings"
+msgstr "Configurações"
+
+#: admin/class-advanced-ads-admin.php:228
+msgid "Advanced Ads Debugging"
+msgstr "Debug de Banners"
+
+#: admin/class-advanced-ads-admin.php:228
+msgid "Debug"
+msgstr ""
+
+#: admin/class-advanced-ads-admin.php:272
+msgid "Placements updated"
+msgstr "Locais atualizados"
+
+#: admin/class-advanced-ads-admin.php:316 admin/class-advanced-ads-admin.php:343
+msgid "Sorry, you are not allowed to access this feature."
+msgstr "Desculpe, você não tem permissão para acessar esta função."
+
+#: admin/class-advanced-ads-admin.php:329
+msgid "You attempted to edit an ad group that doesn&#8217;t exist. Perhaps it was deleted?"
+msgstr "Você está tentando editar um Grupo que não existe. Talvez tenha sido apagado?"
+
+#: admin/class-advanced-ads-admin.php:428
+msgid "Ad Type"
+msgstr "Tipo de banner"
+
+#: admin/class-advanced-ads-admin.php:431
+msgid "Ad Parameters"
+msgstr "Parâmetros do banner"
+
+#: admin/class-advanced-ads-admin.php:434
+msgid "Layout / Output"
+msgstr "Layout / Exibição"
+
+#: admin/class-advanced-ads-admin.php:437
+msgid "Display Conditions"
+msgstr "Condições de exibição"
+
+#: admin/class-advanced-ads-admin.php:440
+#, fuzzy
+msgid "Visitor Conditions"
+msgstr "Condições para visitantes"
+
+#: admin/class-advanced-ads-admin.php:443
+msgid "Auto injection"
+msgstr "Autoinjeção"
+
+#: admin/class-advanced-ads-admin.php:609
+msgid "General"
+msgstr "Geral"
+
+#: admin/class-advanced-ads-admin.php:617
+msgid "Disable ads"
+msgstr "Desativar banners"
+
+#: admin/class-advanced-ads-admin.php:625
+msgid "Hide ads for logged in users"
+msgstr "Não exibir banners para usuários logados"
+
+#: admin/class-advanced-ads-admin.php:633
+msgid "Use advanced JavaScript"
+msgstr "Usar JavaScript avançado"
+
+#: admin/class-advanced-ads-admin.php:680
+msgid "(display to all)"
+msgstr "(exibir para todos)"
+
+#: admin/class-advanced-ads-admin.php:681
+msgid "Subscriber"
+msgstr "Assinante"
+
+#: admin/class-advanced-ads-admin.php:682
+msgid "Contributor"
+msgstr "Contribuidor"
+
+#: admin/class-advanced-ads-admin.php:683
+msgid "Author"
+msgstr "Autor"
+
+#: admin/class-advanced-ads-admin.php:684
+msgid "Editor"
+msgstr "Editor"
+
+#: admin/class-advanced-ads-admin.php:685
+msgid "Admin"
+msgstr "Administrador"
+
+#: admin/class-advanced-ads-admin.php:693
+msgid "Choose the lowest role a user must have in order to not see any ads."
+msgstr "Escolha o nível de usuário mais baixo para não ver os banners."
+
+#: admin/class-advanced-ads-admin.php:706
+#, php-format
+msgid "Only enable this if you can and want to use the advanced JavaScript functions described <a href=\"%s\">here</a>."
+msgstr "Somente ative esta função se você usar <a href=\"%s\">JavaScript avançado</a>"
+
+#: admin/class-advanced-ads-admin.php:753
+msgid "Ad Details"
+msgstr "Detalhes do banner"
+
+#: admin/class-advanced-ads-admin.php:806
+msgid "Ad Settings"
+msgstr "Configurações do banner"
+
+#: admin/class-advanced-ads-admin.php:881
+msgid "Ads Dashboard"
+msgstr "Painel de banners"
+
+#: admin/class-advanced-ads-admin.php:892
+msgid "Tutorials and News"
+msgstr "Tutoriais e novidades"
+
+#: admin/class-advanced-ads-admin.php:902
+#, php-format
+msgid "%d ads – <a href=\"%s\">manage</a> – <a href=\"%s\">new</a>"
+msgstr "%d banners – <a href=\"%s\">gerenciar</a> – <a href=\"%s\">novo</a>"
+
+#: admin/class-advanced-ads-admin.php:913
+msgid "plugin manual and homepage"
+msgstr "manual e página do plugin"
+
+#: admin/class-advanced-ads-admin.php:917
+msgid "From the ad optimization universe"
+msgstr "Universo de otimizações de banners"
+
+#: admin/includes/class-ad-groups-list-table.php:57
+#, fuzzy, php-format
+msgid "Select %s"
+msgstr "Selecione %s"
+
+#: admin/includes/class-ad-groups-list-table.php:94
+#, php-format
+msgid "Edit &#8220;%s&#8221;"
+msgstr "Editar &#8220;%s&#8221;"
+
+#: admin/includes/class-ad-groups-list-table.php:99 admin/includes/class-ad-groups-list-table.php:167 public/class-advanced-ads.php:570
+#, fuzzy
+msgid "Edit"
+msgstr "Editar"
+
+#: admin/includes/class-ad-groups-list-table.php:108
+msgid "Delete"
+msgstr "Apagar"
+
+#: admin/includes/class-ad-groups-list-table.php:162
+msgid "Ad weight"
+msgstr "Peso do banner"
+
+#: admin/includes/class-ad-groups-list-table.php:188 admin/views/placements.php:40 admin/views/placements.php:64
+msgid "ID"
+msgstr "ID"
+
+#: admin/includes/class-ad-groups-list-table.php:189
+msgid "Ad Group"
+msgstr "Grupo"
+
+#: admin/includes/class-ad-groups-list-table.php:190
+msgid "Slug"
+msgstr ""
+
+#: admin/includes/class-display-condition-callbacks.php:28
+msgid "Display on all public <strong>post types</strong>."
+msgstr "Exibir todos os <strong>tipos de conteúdos</strong> públicos."
+
+#: admin/includes/class-display-condition-callbacks.php:31 includes/array_ad_conditions.php:34
+msgid "Choose the public post types on which to display the ad."
+msgstr "Escolha o tipo de conteúdo para exibir o banner"
+
+#: admin/includes/class-display-condition-callbacks.php:86
+msgid "Display for all <strong>categories, tags and taxonomies</strong>."
+msgstr "Exibir para todas as <strong>categorias, tags e taxonomias</strong>."
+
+#: admin/includes/class-display-condition-callbacks.php:88
+msgid "Display here"
+msgstr "Exibir aqui"
+
+#: admin/includes/class-display-condition-callbacks.php:88
+msgid "Choose terms from public categories, tags and other taxonomies a post must belong to in order to have ads."
+msgstr "Escolha os termos das categorias, tags e outras taxonomias um post deve pertencer para EXIBIR um banner"
+
+#: admin/includes/class-display-condition-callbacks.php:121 admin/includes/class-display-condition-callbacks.php:208
+#, fuzzy
+msgid "Hide from here"
+msgstr "Esconder aqui"
+
+#: admin/includes/class-display-condition-callbacks.php:121
+msgid "Choose the terms from public categories, tags and other taxonomies a post must belong to hide the ad from it."
+msgstr "Escolha os termos das categorias, tags e outras taxonomias um post deve pertencer para ESCONDER um banner"
+
+#: admin/includes/class-display-condition-callbacks.php:172
+msgid "Display on all <strong>category archive pages</strong>."
+msgstr "Exibir em todas as <strong>páginas de categorias</strong>."
+
+#: admin/includes/class-display-condition-callbacks.php:175
+msgid "Choose the terms from public categories, tags and other taxonomies on which's archive page ads can appear"
+msgstr "Escolha os termos de categorias, tags e taxonomias onde as páginas de arquivos PODEM exibir banners"
+
+#: admin/includes/class-display-condition-callbacks.php:208
+msgid "Choose the terms from public categories, tags and other taxonomies on which's archive pages ads are hidden."
+msgstr "Escolha os termos de categorias, tags e taxonomias onde as páginas de arquivos NÃO PODEM exibir banners"
+
+#: admin/includes/class-display-condition-callbacks.php:246
+msgid "Display an all <strong>individual posts, pages</strong> and public post type pages"
+msgstr "Exibir em todos os <strong>posts e páginas</strong> e páginas de tipos de conteúdo"
+
+#: admin/includes/class-display-condition-callbacks.php:249 includes/array_ad_conditions.php:52
+msgid "Choose on which individual posts, pages and public post type pages you want to display or hide ads."
+msgstr "Escolha em qual post, página e tipos de conteúdo você quer exibir/esconder banners"
+
+#: admin/includes/class-display-condition-callbacks.php:266
+msgid "What should happen with ads on the list of individual posts below?"
+msgstr "O que deve acontecer com os banners da lista de posts abaixo?"
+
+#: admin/includes/class-display-condition-callbacks.php:267
+#, fuzzy
+msgid "ignore the list"
+msgstr "ignorar lists"
+
+#: admin/includes/class-display-condition-callbacks.php:268
+#, fuzzy
+msgid "display the ad only there"
+msgstr "exibir o banner somente aqui"
+
+#: admin/includes/class-display-condition-callbacks.php:269
+#, fuzzy
+msgid "hide the ad here"
+msgstr "esconder banner aqui"
+
+#: admin/includes/class-display-condition-callbacks.php:277
+#, fuzzy
+msgid "Update warning"
+msgstr "Alerta de atualização"
+
+#: admin/includes/class-display-condition-callbacks.php:278
+msgid ""
+"Due to some conflicts before version 1.2.6, it is from now on only possible to choose either individual pages to include or exclude an ad, but not both with mixed settings. It seems you are still using mixed settings on this page. "
+"Please consider changing your setup for this ad."
+msgstr ""
+
+#: admin/includes/class-display-condition-callbacks.php:279
+#, fuzzy
+msgid "Your old values are:"
+msgstr "Seus valores antigos são:"
+
+#: admin/includes/class-display-condition-callbacks.php:280
+msgid "Post IDs the ad is displayed on:"
+msgstr "IDs de conteúdos onde os banners são exibidos:"
+
+#: admin/includes/class-display-condition-callbacks.php:281
+msgid "Post IDs the ad is hidden from:"
+msgstr "IDs dos conteúdos onde os banners NÃO são exibidos:"
+
+#: admin/includes/class-display-condition-callbacks.php:282
+msgid "Below you find the pages the ad is displayed on. If this is ok, just save the ad. If not, please update your settings."
+msgstr "Abaixo você encotra as páginas que o banner é exibido. Se isto está correto, apenas salve o banner. Senão, altere as configurações."
+
+#: admin/includes/class-display-condition-callbacks.php:322
+#, fuzzy
+msgid "new"
+msgstr "novo"
+
+#: admin/includes/class-display-condition-callbacks.php:324
+msgid "type the title"
+msgstr "tipo o título"
+
+#: admin/includes/class-list-table.php:186
+#, fuzzy
+msgid "No items found."
+msgstr "Nenhum item encontrado."
+
+#: admin/includes/class-list-table.php:310
+msgid "Bulk Actions"
+msgstr "Ações em massa"
+
+#: admin/includes/class-list-table.php:320
+msgid "Apply"
+msgstr "Aplicar"
+
+#: admin/includes/class-list-table.php:404
+#, fuzzy
+msgid "Show all dates"
+msgstr "(Exibir todas as datas)"
+
+#: admin/includes/class-list-table.php:417
+#, php-format
+msgid "%1$s %2$d"
+msgstr ""
+
+#: admin/includes/class-list-table.php:433
+#, fuzzy
+msgid "List View"
+msgstr "Visão de lista"
+
+#: admin/includes/class-list-table.php:434
+#, fuzzy
+msgid "Excerpt View"
+msgstr "Visão com resumo"
+
+#: admin/includes/class-list-table.php:460
+#, fuzzy, php-format
+msgid "%s pending"
+msgstr "%s pendente"
+
+#: admin/includes/class-list-table.php:528 admin/includes/class-list-table.php:943
+#, php-format
+msgid "1 item"
+msgid_plural "%s items"
+msgstr[0] "1 item"
+msgstr[1] "%s itens"
+
+#: admin/includes/class-list-table.php:546
+msgid "Go to the first page"
+msgstr "Vá para a página principal"
+
+#: admin/includes/class-list-table.php:553
+msgid "Go to the previous page"
+msgstr "Vá para a página anterior"
+
+#: admin/includes/class-list-table.php:562
+msgid "Current page"
+msgstr "Página atual"
+
+#: admin/includes/class-list-table.php:568
+#, fuzzy, php-format
+msgctxt "paging"
+msgid "%1$s of %2$s"
+msgstr "%1$s de %2$s"
+
+#: admin/includes/class-list-table.php:572
+msgid "Go to the next page"
+msgstr "Próxima página"
+
+#: admin/includes/class-list-table.php:579
+#, fuzzy
+msgid "Go to the last page"
+msgstr "Última página"
+
+#: admin/includes/class-list-table.php:715
+#, fuzzy
+msgid "Select All"
+msgstr "(Selecionar tudo)"
+
+#: admin/views/ad-display-metabox.php:6
+msgid "Choose where to display the ad and where to hide it."
+msgstr "Escolha onde exibir o banner e onde escondê-lo."
+
+#: admin/views/ad-display-metabox.php:9
+#, fuzzy
+msgid "Display ad everywhere"
+msgstr "Exibir em todos os lugares"
+
+#: admin/views/ad-display-metabox.php:10
+#, fuzzy
+msgid "Set display conditions"
+msgstr "Defina as condições de exibição"
+
+#: admin/views/ad-display-metabox.php:14
+msgid "If you want to display the ad everywhere, don't do anything here. "
+msgstr "Se você quer exibir o banner em todo lugar, não faça nada aqui."
+
+#: admin/views/ad-display-metabox.php:15
+msgid "The fewer conditions you enter, the better the performance will be."
+msgstr "Quento menos opções, melhor a performance."
+
+#: admin/views/ad-display-metabox.php:16
+#, php-format
+msgid "Learn more about display conditions from the <a href=\"%s\" target=\"_blank\">manual</a>."
+msgstr "Aprenda mais sobre condições de exibição no <a href=\"%s\" target=\"_blank\">manual</a>."
+
+#: admin/views/ad-display-metabox.php:32
+#, fuzzy
+msgid "Other conditions"
+msgstr "Outras condições"
+
+#: admin/views/ad-display-metabox.php:33
+msgid "When using one of the two choices on checkbox conditions, the rule is binding. E.g. \"Front Page: show\" will result on the ad being only visible on the front page."
+msgstr "Quando usar uma das duas opções de condição, a regra é aplicada."
+
+#: admin/views/ad-display-metabox.php:38
+#, fuzzy
+msgid "show"
+msgstr "exibir"
+
+#: admin/views/ad-display-metabox.php:39
+#, fuzzy
+msgid "hide"
+msgstr "esconder"
+
+#: admin/views/ad-display-metabox.php:59
+#, fuzzy
+msgid "clear"
+msgstr "limpar"
+
+#: admin/views/ad-display-metabox.php:66
+#, fuzzy
+msgid "show debug output"
+msgstr "exibir saída debug"
+
+#: admin/views/ad-display-metabox.php:67
+msgid "Values saved for this ad in the database (post metas)"
+msgstr "Os valores para este banner são salvos na tabela de metadados de post"
+
+#: admin/views/ad-group-ads-inline-form.php:10
+msgctxt "ad group ads form"
+msgid "weight"
+msgstr "peso"
+
+#: admin/views/ad-group-ads-inline-form.php:24
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: admin/views/ad-group-ads-inline-form.php:25 admin/views/ad-group-edit.php:70 classes/ad_type_content.php:68 classes/ad_type_content.php:69
+#, fuzzy
+msgid "Update"
+msgstr "Atualizar"
+
+#: admin/views/ad-group-ads-inline-form.php:33
+msgid "There are no ads in this group"
+msgstr "Não existem banners neste grupo"
+
+#: admin/views/ad-group-edit.php:14
+msgid "You did not select an item for editing."
+msgstr "Você não selecionou um item para editar"
+
+#: admin/views/ad-group-edit.php:33
+#, fuzzy
+msgctxt "Taxonomy Name"
+msgid "Name"
+msgstr "Nome"
+
+#: admin/views/ad-group-edit.php:38
+msgctxt "Taxonomy Slug"
+msgid "Slug"
+msgstr ""
+
+#: admin/views/ad-group-edit.php:40
+msgid "An id-like string with only letters in lower case, numbers, and hyphens."
+msgstr "Um estilo de Slug, apenas letras, números e hífen."
+
+#: admin/views/ad-group-edit.php:45
+#, fuzzy
+msgctxt "Taxonomy Parent"
+msgid "Parent"
+msgstr "Taxonomia mãe"
+
+#: admin/views/ad-group-edit.php:48 admin/views/ad-group-edit.php:50
+msgid "None"
+msgstr "Nenhum"
+
+#: admin/views/ad-group-edit.php:56
+msgctxt "Taxonomy Description"
+msgid "Description"
+msgstr "Descrição"
+
+#: admin/views/ad-group-edit.php:68
+msgid "Create new Ad Group"
+msgstr "Criar um novo grupo"
+
+#: admin/views/ad-group.php:33
+msgid "Ad Group added."
+msgstr "Grupo de banner adicionado."
+
+#: admin/views/ad-group.php:34 admin/views/ad-group.php:38
+msgid "Ad Group deleted."
+msgstr "Grupo de banner apagado."
+
+#: admin/views/ad-group.php:35
+msgid "Ad Group updated."
+msgstr "Grupo de banner atualizado."
+
+#: admin/views/ad-group.php:36
+msgid "Ad Group not added."
+msgstr "Grupo de banner não adicionado."
+
+#: admin/views/ad-group.php:37
+msgid "Ad Group not updated."
+msgstr "Grupo de banner não atualizado."
+
+#: admin/views/ad-group.php:55
+#, php-format
+msgid "Search results for &#8220;%s&#8221;"
+msgstr "Resultado da pesquisa para &#8220;%s&#8221;"
+
+#: admin/views/ad-group.php:61
+msgid ""
+"Ad Groups are a very flexible method to bundle ads. You can use them to display random ads in the frontend or run split tests, but also just for informational purposes. Not only can an Ad Groups have multiple ads, but an ad can belong "
+"to multiple ad groups."
+msgstr "Grupo são uma forma flexível de agrupar banners. Você pode usá-lo para exibir randomicamente ou em partes, mas também apenas com objetivos informativos. Um grupo pode ter vários banners, mas banners pode pertencer a vários grupos."
+
+#: admin/views/ad-group.php:69
+msgid "How to display an Ad Group?"
+msgstr "Como exibir um Grupo?"
+
+#: admin/views/ad-group.php:71
+#, php-format
+msgid "Examples on how to display an ad group? Find more help and examples in the <a href=\"%s\" target=\"_blank\">manual</a>"
+msgstr "Exemplos de como exibir um banner? Encontre ajuda no<a href=\"%s\" target=\"_blank\">manual</a>"
+
+#: admin/views/ad-group.php:72 admin/views/ad_info.php:6 admin/views/placements.php:51
+msgid "shortcode"
+msgstr ""
+
+#: admin/views/ad-group.php:73
+msgid "To display an ad group with the ID 6 in content fields"
+msgstr "Para exibir um Grupo com ID 6 num campo de conteúdo"
+
+#: admin/views/ad-group.php:75 admin/views/ad_info.php:9 admin/views/placements.php:54
+msgid "template"
+msgstr ""
+
+#: admin/views/ad-group.php:76
+msgid "To display an ad group with the ID 6 in template files"
+msgstr "Para exibir um Grupo com ID 6 num arquivo de template"
+
+#: admin/views/ad-inject-metabox.php:1
+msgid "Include ads on specific places automatically without shortcodes or functions."
+msgstr "Inclua banners em lugares específicos automaticamente sem shortcodes ou funções."
+
+#: admin/views/ad-inject-metabox.php:4 admin/views/ad-inject-metabox.php:32
+msgid "This feature is now provided through placements. Please convert the settings made here to placements."
+msgstr "Essa função é provida por Locais (placements). Converta as configurações aqui para Locais."
+
+#: admin/views/ad-inject-metabox.php:10
+msgid "Include in Header (before closing </head> Tag, probably not visible)"
+msgstr "Inclua no cabeçalho (antes de fechar a tag </head>)"
+
+#: admin/views/ad-inject-metabox.php:16
+msgid "Include in Footer (before closing </body> Tag)"
+msgstr "Inclua no rodapé"
+
+#: admin/views/ad-inject-metabox.php:22
+msgid "Include before the post content"
+msgstr "Inclua antes do conteúdo do post"
+
+#: admin/views/ad-inject-metabox.php:28
+msgid "Include after the post content"
+msgstr "Inclua após o conteúdo do post"
+
+#: admin/views/ad-main-metabox.php:3
+msgid "No ad types defined"
+msgstr "Nenhum tipo de banner definido"
+
+#: admin/views/ad-output-metabox.php:1
+msgid "Everything connected to the ads layout and output."
+msgstr "Tudo conectado ao layout dos banners e saída para exibição."
+
+#: admin/views/ad-output-metabox.php:5
+msgid "Position"
+msgstr "Posição"
+
+#: admin/views/ad-output-metabox.php:6
+msgid "- default -"
+msgstr "- padrão -"
+
+#: admin/views/ad-output-metabox.php:7 admin/views/placements.php:75 classes/ad_placements.php:31
+msgid "default"
+msgstr "padrão"
+
+#: admin/views/ad-output-metabox.php:8
+msgid "left"
+msgstr "esquerda"
+
+#: admin/views/ad-output-metabox.php:11
+msgid "center"
+msgstr "centro"
+
+#: admin/views/ad-output-metabox.php:14
+msgid "right"
+msgstr "direita"
+
+#: admin/views/ad-output-metabox.php:19
+msgid "Check this if you don't want the following elements to float around the ad. (adds a clearfix)"
+msgstr "Marque isso se você não quer elementos flutuando no entorno do banner."
+
+#: admin/views/ad-output-metabox.php:22
+msgid "Margin"
+msgstr "Margem"
+
+#: admin/views/ad-output-metabox.php:23
+msgid "top:"
+msgstr "topo:"
+
+#: admin/views/ad-output-metabox.php:25
+msgid "right:"
+msgstr "direita:"
+
+#: admin/views/ad-output-metabox.php:27
+msgid "bottom:"
+msgstr "abaixo:"
+
+#: admin/views/ad-output-metabox.php:29
+msgid "left:"
+msgstr "esquerda:"
+
+#: admin/views/ad-output-metabox.php:31
+msgid "tip: use this to add a margin around the ad"
+msgstr "dica: use isso para criar margem em torno do banner"
+
+#: admin/views/ad-parameters-metabox.php:15
+msgid "size:"
+msgstr "tamanho:"
+
+#: admin/views/ad-parameters-metabox.php:16
+msgid "width"
+msgstr "largura"
+
+#: admin/views/ad-parameters-metabox.php:17
+msgid "height"
+msgstr "altura"
+
+#: admin/views/ad-submitbox-meta.php:4
+msgid "Set expiry date"
+msgstr "Defina a data de expiração"
+
+#: admin/views/ad-submitbox-meta.php:11
+#, fuzzy, php-format
+msgctxt "1: month number (01, 02, etc.), 2: month abbreviation"
+msgid "%1$s-%2$s"
+msgstr "%1$s-%2$s"
+
+#: admin/views/ad-submitbox-meta.php:20
+#, fuzzy, php-format
+msgctxt "order of expiry date fields 1: month, 2: day, 3: year"
+msgid "%1$s %2$s, %3$s"
+msgstr "%1$s %2$s, %3$s"
+
+#: admin/views/ad-visitor-metabox.php:1
+msgid "Display conditions that are based on the user. Use with caution on cached websites."
+msgstr "Exiba condições baseadas no usuário. Use com cautela se usar cache."
+
+#: admin/views/ad-visitor-metabox.php:8
+#, fuzzy
+msgid "Display on all devices"
+msgstr "Exibir em todos os dispositivos"
+
+#: admin/views/ad-visitor-metabox.php:12
+msgid "only on mobile devices"
+msgstr "somente em smartphones"
+
+#: admin/views/ad-visitor-metabox.php:16
+msgid "not on mobile devices"
+msgstr "menos em smartphones"
+
+#: admin/views/ad_info.php:1
+#, fuzzy, php-format
+msgid "Ad Id: %s"
+msgstr "Banner ID: %s"
+
+#: admin/views/ad_info.php:2
+msgid "How to use this Ad?"
+msgstr "Como usar este banner?"
+
+#: admin/views/ad_info.php:5
+#, php-format
+msgid "How to display the ad directly? Find more help and examples in the <a href=\"%s\" target=\"_blank\">manual</a>"
+msgstr "Como exibir o banner diretamente? Aprenda mais no <a href=\"%s\" target=\"_blank\">manual</a>"
+
+#: admin/views/ad_info.php:7
+msgid "To display an ad in content fields"
+msgstr "Para exibir um banner no campo de conteúdo"
+
+#: admin/views/ad_info.php:10
+msgid "To display an ad in template files"
+msgstr "Para exibir um banner num arquivo de template"
+
+#: admin/views/debug.php:8
+msgid "Work in progress"
+msgstr "Trabalho em andamento"
+
+#: admin/views/debug.php:9
+msgid "This screen is work in progress. You can use the information if you understand them, but there is nothing to do here yet."
+msgstr ""
+
+#: admin/views/debug.php:16
+msgid "Ad Condition Overview"
+msgstr "Visão geral de condições do banner"
+
+#: admin/views/overview.php:13
+msgid "Ads are the smallest unit, containing the content or a single ad to be displayed."
+msgstr "Banners são as menores unidades, contém o banner."
+
+#: admin/views/overview.php:14
+#, php-format
+msgid "You have published %d ads."
+msgstr "Você já publicou %d banners."
+
+#: admin/views/overview.php:15
+#, php-format
+msgid "<a href=\"%s\">Manage</a> them or <a href=\"%s\">create</a> a new one"
+msgstr "<a href=\"%s\">Gerencie</a> ou <a href=\"%s\">Crie</a> um novo banner"
+
+#: admin/views/overview.php:23
+msgid "recent ads"
+msgstr "banners recentes"
+
+#: admin/views/overview.php:33
+msgid "Create your first ad"
+msgstr "Crie seu primeiro banner"
+
+#: admin/views/overview.php:41
+msgid "Ad Groups contain ads and are currently used to rotate multiple ads on a single spot."
+msgstr "Grupo são containers usados para alternar entre banners."
+
+#: admin/views/overview.php:42
+#, php-format
+msgid "You have %d groups."
+msgstr "Você tem %d Grupos."
+
+#: admin/views/overview.php:43 admin/views/overview.php:69
+#, php-format
+msgid "<a href=\"%s\">Manage</a> them."
+msgstr "<a href=\"%s\">Gerenciar</a>."
+
+#: admin/views/overview.php:49
+msgid "recent groups"
+msgstr "grupos recentes"
+
+#: admin/views/overview.php:59
+msgid "Create your first group"
+msgstr "Crie seu primeiro Grupo"
+
+#: admin/views/overview.php:67
+msgid "Ad Placements are the best way to manage where to display ads and groups."
+msgstr "Locais de Banner são a melhor forma de exibí-los."
+
+#: admin/views/overview.php:68
+#, php-format
+msgid "You have %d placements."
+msgstr "Você tem %d Locais."
+
+#: admin/views/overview.php:75
+msgid "recent placements"
+msgstr "Locais recentes"
+
+#: admin/views/overview.php:85
+msgid "Create your first placement"
+msgstr "Crie seu primeiro Local"
+
+#: admin/views/overview.php:93
+msgid "Manual and Support"
+msgstr "Manual e Suporte"
+
+#: admin/views/overview.php:94
+msgid "Need some help? These are your options"
+msgstr "Precisa de ajuda? Estas são suas opções"
+
+#: admin/views/overview.php:96
+#, php-format
+msgid "Visit the <a href=\"%s\">plugin homepage</a>"
+msgstr "<a href=\"%s\"></a>"
+
+#: admin/views/overview.php:97
+#, php-format
+msgid "Have a look into the <a href=\"%s\">manual</a>"
+msgstr "<a href=\"%s\"></a>"
+
+#: admin/views/overview.php:98
+#, php-format
+msgid "Ask a question to other users in the <a href=\"%s\">wordpress.org forum</a>"
+msgstr "<a href=\"%s\"></a>"
+
+#: admin/views/overview.php:99
+#, php-format
+msgid "<a href=\"%s\">Hire the developer</a>"
+msgstr "<a href=\"%s\"> </a>"
+
+#: admin/views/overview.php:103
+msgid "Add-ons"
+msgstr ""
+
+#: admin/views/overview.php:104
+msgid "Want to boost your ad income? Try these add-ons"
+msgstr ""
+
+#: admin/views/overview.php:111
+#, fuzzy
+msgid "See Add-Ons"
+msgstr "Neues Kreuzworträtsel hinzufügen"
+
+#: admin/views/placements.php:14
+msgid "Placements are physically places in your theme and posts. You can use them if you plan to change ads and ad groups on the same place without the need to change your templates."
+msgstr ""
+
+#: admin/views/placements.php:15
+#, php-format
+msgid "See also the manual for more information on <a href=\"%s\">placements</a> and <a href=\"%s\">auto injection</a>."
+msgstr ""
+
+#: admin/views/placements.php:16
+#, fuzzy
+msgid "Create a new placement"
+msgstr "Crie um novo Local"
+
+#: admin/views/placements.php:18 admin/views/placements.php:63
+msgid "Type"
+msgstr "Tipo"
+
+#: admin/views/placements.php:27
+msgid "What is this?"
+msgstr "O que é isto?"
+
+#: admin/views/placements.php:29
+msgid "Placement types define how the placements works and where it is going to be displayed."
+msgstr "Tipo de Local é define como o Local funciona e onde será exibido."
+
+#: admin/views/placements.php:38 admin/views/placements.php:62
+#, fuzzy
+msgid "Name"
+msgstr "Nome"
+
+#: admin/views/placements.php:42
+msgid "Individual identifier. Allowed are alphanumeric signs (lower case) and hyphen."
+msgstr "Identificador único. (letras, números e hífen)"
+
+#: admin/views/placements.php:43
+msgid "You can assign Ads and Groups after you created the placement."
+msgstr "Você pode adicionar Banners e Grupos depois de criar o Local."
+
+#: admin/views/placements.php:44
+#, fuzzy
+msgid "Save New Placement"
+msgstr "Salve o novo Local"
+
+#: admin/views/placements.php:48
+msgid "How to use the <i>default</i> Ad Placement?"
+msgstr "Como usar o <i>Local padrão</i>?"
+
+#: admin/views/placements.php:50
+#, php-format
+msgid "Examples on how to use the <i>default</i> ad placement? Find more help and examples in the <a href=\"%s\" target=\"_blank\">manual</a>"
+msgstr ""
+
+#: admin/views/placements.php:52
+msgid "To use an ad placement with the ID skyscraper_left in content fields"
+msgstr ""
+
+#: admin/views/placements.php:55
+msgid "To use an ad placement with the ID skyscraper_left in template files"
+msgstr ""
+
+#: admin/views/placements.php:65
+#, fuzzy
+msgid "Options"
+msgstr "Opções"
+
+#: admin/views/placements.php:80
+msgid "Item"
+msgstr ""
+
+#: admin/views/placements.php:82 classes/widget.php:57
+#, fuzzy
+msgid "--empty--"
+msgstr "--vazio--"
+
+#: admin/views/placements.php:102
+msgid "Inject"
+msgstr "Injetar"
+
+#: admin/views/placements.php:103
+msgid "after"
+msgstr "depois"
+
+#: admin/views/placements.php:103
+msgid "before"
+msgstr "antes"
+
+#: admin/views/placements.php:128
+#, fuzzy
+msgid "remove placement"
+msgstr "Remover Local"
+
+#: admin/views/placements.php:134
+msgid "Save Placements"
+msgstr "Salvar Local"
+
+#: admin/views/post_ad_settings_metabox.php:3
+msgid "Disable ads on this page"
+msgstr "Desabilitar Banners nesta página"
+
+#: admin/views/settings.php:23
+msgid "Debug Page"
+msgstr ""
+
+#: admin/views/settings.php:24
+msgid "Advanced Ads on WordPress.org"
+msgstr ""
+
+#: admin/views/settings.php:24
+msgid "Advanced Ads on wp.org"
+msgstr ""
+
+#: admin/views/settings.php:25
+msgid "the company behind Advanced Ads"
+msgstr "-"
+
+#: admin/views/settings.php:25
+msgid "webgilde GmbH"
+msgstr "-"
+
+#: admin/views/settings_disable_ads.php:3
+msgid "Disable all ads in frontend"
+msgstr "Desabilitar todos os banners no site"
+
+#: admin/views/settings_disable_ads.php:4
+msgid "Use this option to disable all ads in the frontend, but still be able to use the plugin."
+msgstr "Esta opção irá desativar todos os Banners no site, mas ainda mantém o funcionamento do plugin."
+
+#: admin/views/settings_disable_ads.php:8
+msgid "Disable ads on 404 error pages"
+msgstr "Desabilitar Banners na página 404"
+
+#: admin/views/settings_disable_ads.php:12
+msgid "Disable ads on non-singular pages"
+msgstr "Desabilitar Banners na página de listagem de conteúdo"
+
+#: admin/views/settings_disable_ads.php:13
+msgid "e.g. archive pages like categories, tags, authors, front page (if a list)"
+msgstr "Ex: index.php, tags, categorias"
+
+#: classes/ad.php:758
+#, php-format
+msgid "A \"%s\" display condition does not exist"
+msgstr "Uma \"%s\" condição de exibição não existe"
+
+#: classes/ad_placements.php:32
+msgid "Manual placement."
+msgstr "Local manual"
+
+#: classes/ad_placements.php:35
+msgid "header"
+msgstr "cabeçalho"
+
+#: classes/ad_placements.php:36
+msgid "Injected in Header (before closing </head> Tag, often not visible)."
+msgstr "Inserido no cabeçalho"
+
+#: classes/ad_placements.php:39
+msgid "footer"
+msgstr "rodapé"
+
+#: classes/ad_placements.php:40
+msgid "Injected in Footer (before closing </body> Tag)."
+msgstr "Inserido no rodapé"
+
+#: classes/ad_placements.php:43
+msgid "before post"
+msgstr "antes do post"
+
+#: classes/ad_placements.php:44
+msgid "Injected before the post content."
+msgstr "Inserido antes do post"
+
+#: classes/ad_placements.php:47
+msgid "after post"
+msgstr "depois do post"
+
+#: classes/ad_placements.php:48
+msgid "Injected after the post content."
+msgstr "Inserido depois do post"
+
+#: classes/ad_placements.php:51
+msgid "post content"
+msgstr "conteúdo do post"
+
+#: classes/ad_placements.php:52
+msgid "Injected into the post content. You can choose the paragraph after which the ad content is displayed."
+msgstr "Inserido no conteúdo do post. Você pode escolher o parágrafo em que o Banner será exibido."
+
+#: classes/ad_placements.php:74
+#, fuzzy
+msgid "Slug can't be empty."
+msgstr "O Slug não pode estar vazio"
+
+#: classes/ad_placements.php:76
+msgid "Slug already exists."
+msgstr "O Slug já existe."
+
+#: classes/ad_placements.php:163
+#, php-format
+msgid "paragraph (%s)"
+msgstr "parágrafo (%s)"
+
+#: classes/ad_placements.php:164
+#, php-format
+msgid "headline 2 (%s)"
+msgstr "Título 2 (%s)"
+
+#: classes/ad_placements.php:165
+#, php-format
+msgid "headline 3 (%s)"
+msgstr "Título 3 (%s)"
+
+#: classes/ad_placements.php:166
+#, php-format
+msgid "headline 4 (%s)"
+msgstr "Título 4 (%s)"
+
+#: classes/ad_type_content.php:35
+msgid "Rich Content"
+msgstr "Conteúdo rico"
+
+#: classes/ad_type_content.php:36
+msgid "The full content editor from WordPress with all features like shortcodes, image upload or styling, but also simple text/html mode for scripts and code."
+msgstr "O editor de conteúdo do WordPress com todas as suas funcções, como shortcodes, mas também simples editores de HTML."
+
+#: classes/ad_type_content.php:63
+msgid "Please <strong>save the ad</strong> before changing it to the content type."
+msgstr "Por favor <strong>salve o banner</strong> antes de editar o conteúdo."
+
+#: classes/ad_type_content.php:66
+msgid "Save Draft"
+msgstr "Salvar rascunho"
+
+#: classes/ad_type_plain.php:31
+#, fuzzy
+msgid "Plain Text and Code"
+msgstr "Texto puro e código"
+
+#: classes/ad_type_plain.php:32
+msgid "Simple text editor without any filters. You might use it to display unfiltered content, php code or javascript. Shortcodes and other WordPress content field magic does not work here."
+msgstr "Texto simples sem nenhum filtro. Você pode querer isso para exibir conteúdo sem restrições, código PHP ou JavaScript. Shortcodes a outras funções do WP não têm efeito aqui."
+
+#: classes/ad_type_plain.php:55
+msgid "Insert plain text or code into this field."
+msgstr "Insira o texo ou código no campo."
+
+#: classes/widget.php:19
+msgid "Display Ads and Ad Groups."
+msgstr "Exibir Banners e Grupos."
+
+#: classes/widget.php:51
+msgid "Title:"
+msgstr "Título:"
+
+#: includes/array_ad_conditions.php:33
+msgid "Post Types"
+msgstr "Tipo de conteúdo"
+
+#: includes/array_ad_conditions.php:39
+#, fuzzy
+msgid "Categories, Tags and Taxonomies"
+msgstr "Categorias, Tags e Taxonomias"
+
+#: includes/array_ad_conditions.php:40
+msgid "Choose terms from public category, tag and other taxonomies a post must belong to in order to have ads."
+msgstr "Escolha os termos de categorias, tag e outra taxonomia que um post deve ter para exibir Banners."
+
+#: includes/array_ad_conditions.php:45
+msgid "Category Archives"
+msgstr "Arquivo de categorias"
+
+#: includes/array_ad_conditions.php:46
+msgid "comma seperated IDs of category archives"
+msgstr "IDs dos arquivos de categorias separados por vírgula"
+
+#: includes/array_ad_conditions.php:51
+msgid "Individual Posts, Pages and Public Post Types"
+msgstr "Post individuais, páginas e tipos de posts públicos"
+
+#: includes/array_ad_conditions.php:57
+msgid "Home Page"
+msgstr "Página inicial"
+
+#: includes/array_ad_conditions.php:58
+msgid "(don't) show on Home page"
+msgstr "(não) exiba na página inicial"
+
+#: includes/array_ad_conditions.php:62
+msgid "Singular Pages"
+msgstr "Página simples"
+
+#: includes/array_ad_conditions.php:63
+msgid "(don't) show on singular pages/posts"
+msgstr "(não) exiba em páginas ou posts"
+
+#: includes/array_ad_conditions.php:67
+msgid "Archive Pages"
+msgstr "Arquivos de páginas"
+
+#: includes/array_ad_conditions.php:68
+msgid "(don't) show on any type of archive page (category, tag, author and date)"
+msgstr "(não) exiba em nenhum dos tipos (categoria, tag, autor e data)"
+
+#: includes/array_ad_conditions.php:72
+#, fuzzy
+msgid "Search Results"
+msgstr "Resultado da busca"
+
+#: includes/array_ad_conditions.php:73
+msgid "(don't) show on search result pages"
+msgstr "(não) exiba na página de pesquisa"
+
+#: includes/array_ad_conditions.php:77
+msgid "404 Page"
+msgstr "página 404"
+
+#: includes/array_ad_conditions.php:78
+msgid "(don't) show on 404 error page"
+msgstr "(não) exiba na página 404"
+
+#: includes/array_ad_conditions.php:82
+msgid "Attachment Pages"
+msgstr "Página de anexos"
+
+#: includes/array_ad_conditions.php:83
+msgid "(don't) show on attachment pages"
+msgstr "(não) exiba na página de anexos"
+
+#: public/class-advanced-ads.php:530
+msgctxt "ad group general name"
+msgid "Ad Groups"
+msgstr "Grupos de banner"
+
+#: public/class-advanced-ads.php:531
+msgctxt "ad group singular name"
+msgid "Ad Group"
+msgstr "Grupo de banner"
+
+#: public/class-advanced-ads.php:532
+#, fuzzy
+msgid "Search Ad Groups"
+msgstr "Pesquisar Grupos de banner"
+
+#: public/class-advanced-ads.php:533
+#, fuzzy
+msgid "All Ad Groups"
+msgstr "Todos os grupos"
+
+#: public/class-advanced-ads.php:534
+#, fuzzy
+msgid "Parent Ad Groups"
+msgstr "Grupos mãe"
+
+#: public/class-advanced-ads.php:535
+#, fuzzy
+msgid "Parent Ad Groups:"
+msgstr "Grupos mãe:"
+
+#: public/class-advanced-ads.php:536
+#, fuzzy
+msgid "Edit Ad Group"
+msgstr "Editar Grupo"
+
+#: public/class-advanced-ads.php:537
+#, fuzzy
+msgid "Update Ad Group"
+msgstr "Alterar Grupo"
+
+#: public/class-advanced-ads.php:538
+#, fuzzy
+msgid "Add New Ad Group"
+msgstr "Adicionar Grupo"
+
+#: public/class-advanced-ads.php:539
+#, fuzzy
+msgid "New Ad Groups Name"
+msgstr "Novo nome do Grupo"
+
+#: public/class-advanced-ads.php:541
+#, fuzzy
+msgid "No Ad Group found"
+msgstr "Nenhum Grupo encontrado"
+
+#: public/class-advanced-ads.php:567 public/class-advanced-ads.php:583
+msgid "Ad"
+msgstr "Banner"
+
+#: public/class-advanced-ads.php:568 public/class-advanced-ads.php:572
+#, fuzzy
+msgid "New Ad"
+msgstr "Novo Banner"
+
+#: public/class-advanced-ads.php:569
+#, fuzzy
+msgid "Add New Ad"
+msgstr "Adicionar Banner"
+
+#: public/class-advanced-ads.php:571
+#, fuzzy
+msgid "Edit Ad"
+msgstr "Editar Banner"
+
+#: public/class-advanced-ads.php:573
+#, fuzzy
+msgid "View"
+msgstr "Ver"
+
+#: public/class-advanced-ads.php:574
+#, fuzzy
+msgid "View the Ad"
+msgstr "Ver Banner"
+
+#: public/class-advanced-ads.php:575
+#, fuzzy
+msgid "Search Ads"
+msgstr "Pesquisar Banners"
+
+#: public/class-advanced-ads.php:576
+#, fuzzy
+msgid "No Ads found"
+msgstr "Nenhum Banner encontrado"
+
+#: public/class-advanced-ads.php:577
+#, fuzzy
+msgid "No Ads found in Trash"
+msgstr "Nenhum Banner encontrado na lixeira"
+
+#: public/class-advanced-ads.php:578
+#, fuzzy
+msgid "Parent Ad"
+msgstr "Banner mãe"
+
+#: public/class-advanced-ads.php:634
+#, php-format
+msgid "Advanced Ads Error: %s"
+msgstr "Erro: %s"
