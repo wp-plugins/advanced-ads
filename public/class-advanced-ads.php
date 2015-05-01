@@ -25,7 +25,7 @@ class Advanced_Ads {
 	 * @var     string
 	 */
 
-	const VERSION = '1.5.2';
+	const VERSION = '1.5.2.1';
 
 	/**
 	 * post type slug

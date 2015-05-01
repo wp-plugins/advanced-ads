@@ -290,7 +290,7 @@ class Advads_Ad {
 				// check for post ids
 				case 'postids' :
 					if ( $wp_the_query->is_singular() && empty($_cond_value['all']) ){
-						// included posts
+						// this check is deprecated: included posts
 						if ( ! empty($_cond_value['include']) ){
 							if ( is_string( $_cond_value['include'] ) ){
 								$post_ids = explode( ',', $_cond_value['include'] );
@@ -302,7 +302,14 @@ class Advads_Ad {
 									&& ! in_array( $post->ID, $post_ids ) ) {
 									return false; }
 						}
-						// excluded posts
+						// included posts
+						if ( ! empty($_cond_value['method']) && 'include' == $_cond_value['method'] ){
+    						    $post_ids = $_cond_value['ids'];
+						    if ( is_array( $post_ids ) && isset($post->ID) && ! in_array( $post->ID, $post_ids ) ){
+							    return false;
+						    }
+						}
+						// this check is deprecated: excluded posts
 						if ( ! empty($_cond_value['exclude']) ){
 							if ( is_string( $_cond_value['exclude'] ) ){
 								$post_ids = explode( ',', $_cond_value['exclude'] );
@@ -312,6 +319,13 @@ class Advads_Ad {
 							if ( is_array( $post_ids ) && isset($post->ID) && in_array( $post->ID, $post_ids ) ){
 								return false;
 							}
+						}
+						// excluded posts
+						if ( ! empty($_cond_value['method']) && 'exclude' == $_cond_value['method'] ){
+    						    $post_ids = $_cond_value['ids'];
+						    if ( is_array( $post_ids ) && isset($post->ID) && in_array( $post->ID, $post_ids ) ){
+							    return false;
+						    }
 						}
 					}
 				break;
