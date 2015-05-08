@@ -32,31 +32,31 @@ $advanced_ads_ad_conditions = array(
 		// 'label' => __('Post Types', $advanced_ads_slug),
 		// 'description' => __('Choose the public post types on which to display the ad.', $advanced_ads_slug),
 		'type' => 'other',
-		// 'callback' => array('AdvAds_Display_Condition_Callbacks', 'post_types')
+		// 'callback' => array('Advanced_Ads_Display_Condition_Callbacks', 'post_types')
 	),
 	'posttypes' => array(
 		'label' => __( 'Post Types', $advanced_ads_slug ),
 		'description' => __( 'Choose the public post types on which to display the ad.', $advanced_ads_slug ),
 		'type' => 'textvalues',
-		'callback' => array('AdvAds_Display_Condition_Callbacks', 'post_types')
+		'callback' => array('Advanced_Ads_Display_Condition_Callbacks', 'post_types')
 	),
 	'categoryids' => array(
 		'label' => __( 'Categories, Tags and Taxonomies', $advanced_ads_slug ),
 		'description' => __( 'Choose terms from public category, tag and other taxonomies a post must belong to in order to have ads.', $advanced_ads_slug ),
 		'type' => 'idfield',
-		'callback' => array('AdvAds_Display_Condition_Callbacks', 'terms')
+		'callback' => array('Advanced_Ads_Display_Condition_Callbacks', 'terms')
 	),
 	'categoryarchiveids' => array(
 		'label' => __( 'Category Archives', $advanced_ads_slug ),
 		'description' => __( 'comma seperated IDs of category archives', $advanced_ads_slug ),
 		'type' => 'idfield',
-		'callback' => array('AdvAds_Display_Condition_Callbacks', 'category_archives')
+		'callback' => array('Advanced_Ads_Display_Condition_Callbacks', 'category_archives')
 	),
 	'postids' => array(
 		'label' => __( 'Individual Posts, Pages and Public Post Types', $advanced_ads_slug ),
 		'description' => __( 'Choose on which individual posts, pages and public post type pages you want to display or hide ads.', $advanced_ads_slug ),
 		'type' => 'other',
-		'callback' => array('AdvAds_Display_Condition_Callbacks', 'single_posts')
+		'callback' => array('Advanced_Ads_Display_Condition_Callbacks', 'single_posts')
 	),
 	'is_front_page' => array(
 		'label' => __( 'Home Page', $advanced_ads_slug ),

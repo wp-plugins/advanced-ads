@@ -6,7 +6,7 @@
  * @subpackage Advanced Ads Plugin
  * @since 1.4.3
  */
-class AdvAds_Overview_Widgets_Callbacks {
+class Advanced_Ads_Overview_Widgets_Callbacks {
 
 	 /**
 	 * set the overview page to one column layout so widgets can get ordered horizontally
@@ -45,19 +45,19 @@ class AdvAds_Overview_Widgets_Callbacks {
 		add_meta_box('advads_overview_news', __( 'News and Tutorials', ADVADS_SLUG ),
 		array('Advanced_Ads_Admin', 'dashboard_widget_function'), $screen->id, 'normal', 'high');
 		add_meta_box('advads_overview_ads', __( 'My Ads', ADVADS_SLUG ),
-		array('AdvAds_Overview_Widgets_Callbacks', 'render_ad_widget'), $screen->id, 'normal', 'high');
+		array('Advanced_Ads_Overview_Widgets_Callbacks', 'render_ad_widget'), $screen->id, 'normal', 'high');
 		add_meta_box('advads_overview_support', __( 'Manual and Support', ADVADS_SLUG ),
-		array('AdvAds_Overview_Widgets_Callbacks', 'render_support'), $screen->id, 'normal', 'high');
+		array('Advanced_Ads_Overview_Widgets_Callbacks', 'render_support'), $screen->id, 'normal', 'high');
 
 		// add widgets for pro add ons
 		add_meta_box('advads_overview_addon_tracking', __( 'Tracking and Stats', ADVADS_SLUG ),
-		array('AdvAds_Overview_Widgets_Callbacks', 'render_add_on_tracking'), $screen->id, 'side', 'high');
+		array('Advanced_Ads_Overview_Widgets_Callbacks', 'render_add_on_tracking'), $screen->id, 'side', 'high');
 		add_meta_box('advads_overview_addon_responsive', __( 'Responsive and Mobile ads', ADVADS_SLUG ),
-		array('AdvAds_Overview_Widgets_Callbacks', 'render_add_on_responsive'), $screen->id, 'side', 'high');
+		array('Advanced_Ads_Overview_Widgets_Callbacks', 'render_add_on_responsive'), $screen->id, 'side', 'high');
 		add_meta_box('advads_overview_addon_sticky', __( 'Sticky ads', ADVADS_SLUG ),
-		array('AdvAds_Overview_Widgets_Callbacks', 'render_add_on_sticky'), $screen->id, 'side', 'high');
+		array('Advanced_Ads_Overview_Widgets_Callbacks', 'render_add_on_sticky'), $screen->id, 'side', 'high');
 		add_meta_box('advads_overview_addon_layer', __( 'PopUps and Layers', ADVADS_SLUG ),
-		array('AdvAds_Overview_Widgets_Callbacks', 'render_add_on_layer'), $screen->id, 'side', 'high');
+		array('Advanced_Ads_Overview_Widgets_Callbacks', 'render_add_on_layer'), $screen->id, 'side', 'high');
 
 	}
 

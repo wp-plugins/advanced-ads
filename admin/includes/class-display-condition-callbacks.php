@@ -6,7 +6,7 @@
  * @subpackage Advanced Ads Plugin
  * @since 1.2.2
  */
-class AdvAds_Display_Condition_Callbacks {
+class Advanced_Ads_Display_Condition_Callbacks {
 
 	/**
 	 * render display condition for post types

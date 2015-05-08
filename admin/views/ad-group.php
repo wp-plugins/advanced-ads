@@ -5,7 +5,7 @@
  * @since 1.0.0
  * @see /wp-admin/edit-tags.php (for a good example in WP core)
  */
-$ad_groups_list = new AdvAds_Groups_List();
+$ad_groups_list = new Advanced_Ads_Groups_List();
 
 // save updated groups
 if ( isset($_REQUEST['advads-group-update-nonce']) ){

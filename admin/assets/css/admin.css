@@ -129,7 +129,7 @@
 .advads-box { margin-bottom: 20px; padding: 10px; background: #fff; border: solid 1px; }
 .on-hover { display: none; }
 tr:hover .on-hover { display: block; }
-.advads-admin-notices .button-primary { float: right; margin-bottom: 0.5em; }
+.advads-admin-notice .button-primary { margin-left: 1em; }
 
 /**
 - GOOGLE ADSENSE MODULE

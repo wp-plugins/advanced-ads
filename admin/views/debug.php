@@ -2,9 +2,7 @@
 /**
  * the view for the debug page
  */
-?>
-
-<div class="wrap">
+?><div class="wrap">
     <h2 style="color:red;"><?php _e( 'Work in progress', ADVADS_SLUG ); ?></h2>
     <p><?php _e( 'This screen is work in progress. You can use the information if you understand them, but there is nothing to do here yet.', ADVADS_SLUG ); ?></p>
     <?php screen_icon(); ?>
@@ -16,4 +14,5 @@
     <h2><?php _e( 'Ad Placements', ADVADS_SLUG ); ?></h2>
     <pre><?php print_r( $ad_placements ); ?></pre>
 
+    <?php do_action('advanced-ads-debug-after', $plugin_options); ?>
 </div>

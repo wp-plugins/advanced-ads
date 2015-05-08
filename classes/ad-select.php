@@ -100,7 +100,7 @@ class Advanced_Ads_Select {
 		}
 
 		// get ad
-		$ad = new Advads_Ad( (int) $args['id'], $args );
+		$ad = new Advanced_Ads_Ad( (int) $args['id'], $args );
 
 		// check conditions
 		if ( $ad->can_display() ) {
@@ -115,7 +115,7 @@ class Advanced_Ads_Select {
 		}
 
 		// get ad
-		$adgroup = new Advads_Ad_Group( (int) $args['id'] );
+		$adgroup = new Advanced_Ads_Group( (int) $args['id'] );
 		return $adgroup->output();
 	}
 

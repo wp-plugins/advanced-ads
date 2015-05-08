@@ -172,13 +172,52 @@ jQuery( document ).ready(function ($) {
 		$( '#' + active_tab + '-tab' ).addClass( 'nav-tab-active' );
 		$( '.nav-tab-active' ).click();
 
-		/**
-		 * SETTINGS PAGE
-		 */
-		// render button sets on settings page
-		$(function() {
-			$( ".advads-settings-buttonset" ).buttonset();
-		});
+        /**
+         * SETTINGS PAGE
+         */
+        // render button sets on settings page
+        $(function() {
+            $( ".advads-settings-buttonset" ).buttonset();
+        });
+
+	/**
+	 * ADMIN NOTICES
+	 */
+	// close button
+	$('.advads-notices-button-close').click(function(){
+	    if(this.dataset.notice === undefined) return;
+	    var messagebox = $(this).parents('.advads-admin-notice');
+
+	    var query = {
+		action: 'advads-close-notice',
+		notice: this.dataset.notice
+	    };
+	    // send and close message
+	    $.post(ajaxurl, query, function (r) {
+		messagebox.fadeOut();
+	    });
+
+	});
+	// autoresponder button
+	$('.advads-notices-button-subscribe').click(function(){
+	    if(this.dataset.notice === undefined) return;
+	    var messagebox = $(this).parents('.advads-admin-notice');
+
+	    var query = {
+		action: 'advads-subscribe-notice',
+		notice: this.dataset.notice
+	    };
+	    // send and close message
+	    $.post(ajaxurl, query, function (r) {
+		if(r === '1'){
+		    messagebox.fadeOut();
+		} else {
+		    messagebox.find('p').html(r);
+		    messagebox.removeClass('updated').addClass('error');
+		}
+	    });
+
+	});
 });
 
 /**
