@@ -114,8 +114,8 @@ class Advanced_Ads_Visitor_Conditions {
 		<label><?php echo $type_options[ $options['type'] ]['label'];
 		?><select name="<?php echo $name; ?>[operator]">
 		    <option value="is_equal" <?php selected( 'is_equal', $operator ); ?>><?php _e( 'equal', ADVADS_SLUG ); ?></option>
-		    <option value="is_higher" <?php selected( 'is_higher', $operator ); ?>><?php _e( 'equal and higher', ADVADS_SLUG ); ?></option>
-		    <option value="is_lower" <?php selected( 'is_lower', $operator ); ?>><?php _e( 'equal and lower', ADVADS_SLUG ); ?></option>
+		    <option value="is_higher" <?php selected( 'is_higher', $operator ); ?>><?php _e( 'equal or higher', ADVADS_SLUG ); ?></option>
+		    <option value="is_lower" <?php selected( 'is_lower', $operator ); ?>><?php _e( 'equal or lower', ADVADS_SLUG ); ?></option>
 		</select></label><input type="number" name="<?php echo $name; ?>[value]" value="<?php echo absint( $value ); ?>"/></p><?php
 	}
 

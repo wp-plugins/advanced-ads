@@ -3,8 +3,8 @@ $visitor_conditions = Advanced_Ads_Visitor_Conditions::get_instance()->condition
 $options = $ad->options( 'visitors' );
 ?><p class="description"><?php _e( 'Display conditions that are based on the user. Use with caution on cached websites.', ADVADS_SLUG ); ?></p>
 <div id="advads-visitor-conditions">
-    <?php if ( isset( $options ) ) :
-	?><table><tbody><?php
+	<table><tbody><?php
+    if ( isset( $options ) ) :
 	$i = 0;
 foreach ( $options as $_options ) :
 	if ( isset( $visitor_conditions[ $_options['type'] ]['metabox'] ) ) {
@@ -20,8 +20,8 @@ foreach ( $options as $_options ) :
 	    ?></td><td><button type="button" class="advads-visitor-conditions-remove button">x</button></td></tr><?php
 	}
 	endforeach;
-	?></tbody></table><?php
-	endif; ?>
+	endif;
+	?></tbody></table>
     <input type="hidden" id="advads-visitor-conditions-index" value="<?php echo isset( $options ) ? count( $options ) : 0; ?>"/>
 </div>
 <hr/>
