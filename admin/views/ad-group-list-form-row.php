@@ -17,7 +17,8 @@
 		for ( $i = 1; $i <= 10; $i++ ) : ?>
                 <option <?php selected( $group->ad_count, $i ); ?>><?php echo $i; ?></option>
             <?php endfor;
-			?></select>
+                ?><option <?php selected( $group->ad_count, 'all' ); ?> value="all"><?php _ex('all', 'option to display all ads in an ad groups', ADVADS_SLUG); ?></option>
+		</select>
         </label>
         <p class="description"><?php _e( 'Number of ads to display in the block', ADVADS_SLUG ); ?></p>
         <h3><?php _e( 'Ads', ADVADS_SLUG ); ?></h3>

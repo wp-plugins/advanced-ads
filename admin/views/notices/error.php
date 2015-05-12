@@ -1,0 +1,1 @@
+<div class="error advads-admin-notice"><p><?php echo $text; ?><button type="button" class="button-primary advads-notices-button-close" data-notice="<?php echo $_notice; ?>"><?php _e('OK', ADVADS_SLUG); ?></button></p></div>

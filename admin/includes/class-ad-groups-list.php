@@ -5,7 +5,7 @@
  * @package Advanced Ads
  * @since 1.4.4
  */
-class AdvAds_Groups_List {
+class Advanced_Ads_Groups_List {
 
 	/**
 	 * array with all groups
@@ -60,7 +60,7 @@ class AdvAds_Groups_List {
 
 		$groups = array();
 		foreach ( $terms as $_group ){
-			$groups[] = new Advads_Ad_Group( $_group );
+			$groups[] = new Advanced_Ads_Group( $_group );
 		}
 
 		return $groups;
@@ -99,7 +99,7 @@ class AdvAds_Groups_List {
 	 *
 	 * @param obj $group the ad group object
 	 */
-	public function render_form_row(Advads_Ad_Group $group){
+	public function render_form_row(Advanced_Ads_Group $group){
 
 		// query ads
 		$ads = $this->get_ads( $group );
@@ -114,8 +114,8 @@ class AdvAds_Groups_List {
 				$ad_id = $_ad->ID;
 				$row .= '<tr><td>' . $_ad->post_title . '</td><td>';
 				$row .= '<select name="advads-groups['. $group->id . '][ads]['.$_ad->ID.']">';
-				$ad_weight = (isset($weights[$ad_id])) ? $weights[$ad_id] : Advads_Ad_Group::MAX_AD_GROUP_WEIGHT;
-				for ( $i = 0; $i <= Advads_Ad_Group::MAX_AD_GROUP_WEIGHT; $i++ ) {
+				$ad_weight = (isset($weights[$ad_id])) ? $weights[$ad_id] : Advanced_Ads_Group::MAX_AD_GROUP_WEIGHT;
+				for ( $i = 0; $i <= Advanced_Ads_Group::MAX_AD_GROUP_WEIGHT; $i++ ) {
 					$row .= '<option ' . selected( $ad_weight, $i, false ) . '>' . $i . '</option>';
 				}
 				$row .= '</select></td></tr>';
@@ -136,7 +136,7 @@ class AdvAds_Groups_List {
 	 *
 	 * @param $obj $group group object
 	 */
-	public function render_ads_list(Advads_Ad_Group $group){
+	public function render_ads_list(Advanced_Ads_Group $group){
 
 		$ads = $this->get_ads( $group );
 
@@ -161,7 +161,13 @@ class AdvAds_Groups_List {
 						$line_output .= '<i>(' . __( 'pending', ADVADS_SLUG ) . ')</i>';
 						break;
 				}
-				$_weight = (isset($weights[get_the_ID()])) ? $weights[get_the_ID()] : Advads_Ad_Group::MAX_AD_GROUP_WEIGHT;
+				// check expiry date
+				$ad = new Advanced_Ads_Ad( get_the_ID() );
+				if( ! $ad->can_display_by_expiry_date() ) {
+				    $line_output .= '<i>(' . __( 'expired', ADVADS_SLUG ) . ')</i>';
+				}
+
+				$_weight = (isset($weights[get_the_ID()])) ? $weights[get_the_ID()] : Advanced_Ads_Group::MAX_AD_GROUP_WEIGHT;
 				if ( $group->type == 'default' && $weight_sum ) {
 					$line_output .= '<span class="ad-weight" title="'.__( 'Ad weight', ADVADS_SLUG ).'">' . number_format( ($_weight / $weight_sum) * 100 ) .'%</span></li>';
 				}
@@ -172,7 +178,11 @@ class AdvAds_Groups_List {
 
 			echo implode( '', $ads_output );
 			echo ($group->type == 'default' && $weight_sum) ? '</ul>' : '</ol>';
-			if ( $group->ad_count > 1 ) { echo '<p>' . sprintf( __( 'up to %d ads displayed', ADVADS_SLUG ), $group->ad_count ) . '</p>'; }
+			if ( $group->ad_count === 'all' ) {
+			    echo '<p>' . __( 'all published ads are displayed', ADVADS_SLUG ) . '</p>';
+			} elseif ( $group->ad_count > 1 ) {
+			    echo '<p>' . sprintf( __( 'up to %d ads displayed', ADVADS_SLUG ), $group->ad_count ) . '</p>';
+			}
 		} else {
 			_e( 'No ads assigned', ADVADS_SLUG );
 		}
@@ -222,7 +232,7 @@ class AdvAds_Groups_List {
 		$types = array(
 			'default' => array(
 				'title' => __( 'Random ads', ADVADS_SLUG ),
-				'description' => __( 'Display ads randomly based on ad weight', ADVADS_SLUG )
+				'description' => __( 'Display random ads based on ad weight', ADVADS_SLUG )
 			),
 			'ordered' => array(
 				'title' => __( 'Ordered ads', ADVADS_SLUG ),
@@ -294,7 +304,7 @@ class AdvAds_Groups_List {
 				wp_update_term( $_group_id, Advanced_Ads::AD_GROUP_TAXONOMY, $_group );
 
 				// save ad weights
-				$group = new Advads_Ad_Group( $_group['id'] );
+				$group = new Advanced_Ads_Group( $_group['id'] );
 				if ( isset($_group['ads']) ) {
 					$group->save_ad_weights( $_group['ads'] ); }
 

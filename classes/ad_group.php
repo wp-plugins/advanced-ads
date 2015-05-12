@@ -3,7 +3,7 @@
 /**
  * Advanced Ads
  *
- * @package   Advads_Ad_Group
+ * @package   Advanced_Ads_Group
  * @author    Thomas Maier <thomas.maier@webgilde.com>
  * @license   GPL-2.0+
  * @link      http://webgilde.com
@@ -13,10 +13,10 @@
 /**
  * an ad group object
  *
- * @package Advads_Ad_Group
+ * @package Advanced_Ads_Group
  * @author  Thomas Maier <thomas.maier@webgilde.com>
  */
-class Advads_Ad_Group {
+class Advanced_Ads_Group {
 
 	/**
 	 * default ad group weight
@@ -127,7 +127,7 @@ class Advads_Ad_Group {
 
 		// get ad count; default is 1
 		if(isset($all_groups[$this->id]['ad_count'])){
-			$this->ad_count = (int) $all_groups[$this->id]['ad_count'];
+		    $this->ad_count = ($all_groups[$this->id]['ad_count'] === 'all' ) ? 'all' : absint( $all_groups[$this->id]['ad_count'] );
 		}
 	}
 
@@ -172,11 +172,13 @@ class Advads_Ad_Group {
 		    // +TODO should use ad-selection interface to output actual ad
 		    //    .. might break context otherwise or cause hard to detect issues
 			// load the ad object
-			$ad = new Advads_Ad( $_ad_id );
+			$ad = new Advanced_Ads_Ad( $_ad_id );
 			if ( $ad->can_display() ) {
 				$output .= $ad->output();
 				$ads_displayed++;
-				if($ads_displayed === $this->ad_count) break;
+				if( $ads_displayed === $this->ad_count ) {
+				    break;
+				}
 			}
 			// break the loop when maximum ads are reached
 		}

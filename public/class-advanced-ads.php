@@ -25,7 +25,7 @@ class Advanced_Ads {
 	 * @var     string
 	 */
 
-	const VERSION = '1.5.2.1';
+	const VERSION = '1.5.4';
 
 	/**
 	 * post type slug
@@ -279,8 +279,8 @@ class Advanced_Ads {
 	 *
 	 */
 	function setup_default_ad_types($types){
-		$types['plain'] = new Advads_Ad_Type_Plain(); /* plain text and php code */
-		$types['content'] = new Advads_Ad_Type_Content(); /* rich content editor */
+		$types['plain'] = new Advanced_Ads_Ad_Type_Plain(); /* plain text and php code */
+		$types['content'] = new Advanced_Ads_Ad_Type_Content(); /* rich content editor */
 		return $types;
 	}
 

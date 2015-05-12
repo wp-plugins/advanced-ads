@@ -7,7 +7,7 @@
  * @author    Thomas Maier <thomas.maier@webgilde.com>
  * @license   GPL-2.0+
  * @link      http://webgilde.com
- * @copyright 2013 Thomas Maier, webgilde GmbH
+ * @copyright 2013-2015 Thomas Maier, webgilde GmbH
  */
 
 /**
@@ -16,14 +16,17 @@
  * @package Advanced_Ads_Ajax_Callbacks
  * @author  Thomas Maier <thomas.maier@webgilde.com>
  */
-class Advads_Ad_Ajax_Callbacks {
+class Advanced_Ads_Ad_Ajax_Callbacks {
 
 	public function __construct() {
 
 		// NOTE: admin only!
 		add_action( 'wp_ajax_load_content_editor', array( $this, 'load_content_editor' ) );
 		add_action( 'wp_ajax_load_ad_parameters_metabox', array( $this, 'load_ad_parameters_metabox' ) );
+		add_action( 'wp_ajax_load_visitor_conditions_metabox', array( $this, 'load_visitor_condition' ) );
                 add_action( 'wp_ajax_advads-terms-search', array( $this, 'search_terms' ) );
+                add_action( 'wp_ajax_advads-close-notice', array( $this, 'close_notice' ) );
+                add_action( 'wp_ajax_advads-subscribe-notice', array( $this, 'subscribe' ) );
 	}
 
 	/**
@@ -38,7 +41,7 @@ class Advads_Ad_Ajax_Callbacks {
 		$ad_id = absint( $_REQUEST['ad_id'] );
 		if ( empty($ad_id) ) { wp_die(); }
 
-		$ad = new Advads_Ad( $ad_id );
+		$ad = new Advanced_Ads_Ad( $ad_id );
 
 		if ( ! empty($types[$type]) && method_exists( $types[$type], 'render_parameters' ) ) {
 			$types[$type]->render_parameters( $ad );
@@ -53,6 +56,39 @@ class Advads_Ad_Ajax_Callbacks {
 
 		wp_die();
 
+	}
+
+	/**
+	 * load interface for single visitor condition
+	 *
+	 * @since 1.5.4
+	 */
+	public function load_visitor_condition() {
+
+		if( ! current_user_can( 'manage_options') ) {
+		    return;
+		}
+
+		// get visitor condition types
+		$visitor_conditions = Advanced_Ads_Visitor_Conditions::get_instance()->conditions;
+		$condition = array();
+
+		$condition['type'] = isset( $_POST['type'] ) ? $_POST['type'] : '';
+		$condition['connector'] = isset( $_POST['connector'] ) ? $_POST['connector'] : '';
+
+		$index = isset( $_POST['index'] ) ? $_POST['index'] : 0;
+
+		if( isset( $visitor_conditions[$condition['type']] ) ) {
+		    $metabox = $visitor_conditions[$condition['type']]['metabox'];
+		} else {
+		    die();
+		}
+
+		if ( method_exists( $metabox[0], $metabox[1] ) ) {
+			call_user_func( array($metabox[0], $metabox[1]), $condition, $index );
+		}
+
+		die();
 	}
 
         /**
@@ -79,5 +115,31 @@ class Advads_Ad_Ajax_Callbacks {
             echo wp_json_encode( $results );
             echo "\n";
             wp_die();
+        }
+
+        /**
+         * search terms belonging to a specific taxonomy
+         *
+         * @since 1.5.3
+         */
+        public function close_notice(){
+
+            if ( !isset( $_POST['notice'] ) || $_POST['notice'] === '' ) { die(); }
+
+	    Advanced_Ads_Admin_Notices::get_instance()->remove_from_queue($_POST['notice']);
+            die();
+        }
+
+        /**
+         * subscribe to newsletter
+         *
+         * @since 1.5.3
+         */
+        public function subscribe(){
+
+            if ( !isset( $_POST['notice'] ) || $_POST['notice'] === '' ) { die(); }
+
+	    echo Advanced_Ads_Admin_Notices::get_instance()->subscribe($_POST['notice']);
+            die();
         }
 }

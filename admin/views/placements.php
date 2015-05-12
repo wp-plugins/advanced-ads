@@ -11,41 +11,10 @@
 	endif; ?>
 <?php endif; ?>
     <?php screen_icon(); ?>
-    <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+    <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
     <p class="description"><?php _e( 'Placements are physically places in your theme and posts. You can use them if you plan to change ads and ad groups on the same place without the need to change your templates.', ADVADS_SLUG ); ?></p>
     <p class="description"><?php printf( __( 'See also the manual for more information on <a href="%s">placements</a> and <a href="%s">auto injection</a>.', ADVADS_SLUG ), ADVADS_URL . 'advancedads/manual/placements/', ADVADS_URL . 'advancedads/manual/auto-injection/' ); ?></p>
-    <h2><?php _e( 'Create a new placement', ADVADS_SLUG ); ?></h2>
-    <form method="POST" action="" class="advads-placements-new-form">
-        <label for="advads-placement-type"><?php _e( 'Type', ADVADS_SLUG ); ?></label>
-        <select id="advads-plcement-type" name="advads[placement][type]">
-            <?php
-			if ( is_array( $placement_types ) ) {
-				foreach ( $placement_types as $_key => $_place ) :
-					?><option value="<?php echo $_key; ?>"><?php echo $_place['title']; ?></option><?php
-				endforeach; };
-			?>
-        </select>
-        <a onclick="advads_toggle('#advads-ad-place-type-info')"><?php _e( 'What is this?', ADVADS_SLUG ); ?></a>
-        <div id="advads-ad-place-type-info" style="display: none;">
-            <p class="description"><?php _e( 'Placement types define how the placements works and where it is going to be displayed.', ADVADS_SLUG ); ?></p>
-            <dl><?php foreach ( $placement_types as $_place ) : ?>
-                <dt><?php echo $_place['title']; ?></dt><dd><?php echo $_place['description']; ?></dd>
-            <?php endforeach; ?>
-            </dl>
-        </div>
-
-
-        <br/>
-        <label for="advads-placement-name"><?php _e( 'Name', ADVADS_SLUG ); ?></label>
-        <input id="advads-plcement-name" name="advads[placement][name]" type="text" value=""/><br/>
-        <label for="advads-placement-slug"><?php _e( 'ID', ADVADS_SLUG ); ?></label>
-        <input id="advads-plcement-slug" name="advads[placement][slug]" type="text" value=""/>
-        <p class="description"><?php _e( 'Individual identifier. Allowed are alphanumeric signs (lower case) and hyphen.', ADVADS_SLUG ); ?></p>
-        <p class=""><?php _e( 'You can assign Ads and Groups after you created the placement.', ADVADS_SLUG ); ?></p>
-        <input type="submit" class="button button-primary" value="<?php _e( 'Save New Placement', ADVADS_SLUG ); ?>"/>
-	<?php wp_nonce_field( 'advads-placement', 'advads_placement', true ) ?>
-    </form>
-<?php if ( isset($placements) && is_array( $placements ) ) : ?>
+<?php if ( isset($placements) && is_array( $placements ) && count( $placements ) ) : ?>
         <h2><?php _e( 'Placements', ADVADS_SLUG ); ?></h2>
         <a onclick="advads_toggle('#advads-ad-place-display-info')"><?php _e( 'How to use the <i>default</i> Ad Placement?', ADVADS_SLUG ); ?></a>
         <div id="advads-ad-place-display-info" style="display: none;">
@@ -58,12 +27,11 @@
             <pre><input type="text" onclick="this.select();" style="width: 400px;" value='the_ad_placement("skyscraper_left");'/></pre>
         </div>
         <form method="POST" action="">
-            <table class="advads-placements-table">
+            <table class="widefat advads-placements-table">
                 <thead>
                     <tr>
                         <th><?php _e( 'Name', ADVADS_SLUG ); ?></th>
                         <th><?php _e( 'Type', ADVADS_SLUG ); ?></th>
-                        <th><?php _e( 'ID', ADVADS_SLUG ); ?></th>
                         <th><?php _e( 'Options', ADVADS_SLUG ); ?></th>
                         <th></th>
                     </tr>
@@ -73,9 +41,12 @@
 			$_placement['type'] = ( ! empty($_placement['type'])) ? $_placement['type'] : 'default';
 		?>
                         <tr>
-                            <td><?php echo $_placement['name']; ?></td>
+                            <th><?php echo $_placement['name']; ?><br/>
+				<?php if( 'default' === $_placement['type']) :
+				 ?><span>ID: <?php echo $_placement_slug; ?></span><?php
+				 endif;
+			    ?></th>
                             <td><?php echo (isset($_placement['type']) && ! empty($placement_types[$_placement['type']]['title'])) ? $placement_types[$_placement['type']]['title'] : __( 'default', ADVADS_SLUG ); ?></td>
-                            <th><?php echo $_placement_slug; ?></th>
                             <td class="advads-placements-table-options">
                                 <?php do_action( 'advanced-ads-placement-options-before', $_placement_slug, $_placement );
 								$items = Advanced_Ads_Placements::items_for_select(); ?>
@@ -137,4 +108,24 @@
 	    <?php wp_nonce_field( 'advads-placement', 'advads_placement', true ) ?>
         </form>
 <?php endif; ?>
+
+	<p><button type="button" class="<?php echo ( isset($placements) && count( $placements ) ) ? 'button-secondary' : 'button-primary'; ?>" onclick="advads_toggle('.advads-placements-new-form')"><?php _e( 'Create a new placement', ADVADS_SLUG ); ?></button></p>
+    <form method="POST" action="" class="advads-placements-new-form" style="display: none;">
+	<h4>1. <?php _e( 'Choose a placement type', ADVADS_SLUG ); ?></h4>
+	<p class="description"><?php printf(__( 'Placement types define how the placements works and where it is going to be displayed. Learn more about the different types from the <a href="%s">manual</a>', ADVADS_SLUG ), ADVADS_URL . 'manual/placements/' ); ?></p>
+	<?php
+	if ( is_array( $placement_types ) ) {
+		foreach ( $placement_types as $_key => $_place ) :
+		    ?><p><label>
+			    <input type="radio" name="advads[placement][type]" value="<?php echo $_key; ?>"/><?php echo $_place['title']; ?></label>
+			<span class="description"><?php echo $_place['description']; ?></span>
+		    </p><?php
+		endforeach; };
+	?>
+	<h4>2. <?php _e( 'Choose a Name', ADVADS_SLUG ); ?></h4>
+	<p class="description"><?php _e( 'The name of the placement is only visible to you. Tip: choose a descriptive one, e.g. <em>Below Post Headline</em>.', ADVADS_SLUG ); ?></p>
+        <p><input name="advads[placement][name]" type="text" value="" placeholder="<?php _e( 'Placement Name', ADVADS_SLUG ); ?>"/></p>
+        <input type="submit" class="button button-primary" value="<?php _e( 'Save New Placement', ADVADS_SLUG ); ?>"/>
+	<?php wp_nonce_field( 'advads-placement', 'advads_placement', true ) ?>
+    </form>
 </div>
