@@ -4,12 +4,6 @@ require_once(ADVADS_BASE_PATH . 'admin/includes/class-display-condition-callback
 $types = Advanced_Ads::get_instance()->ad_types;
 $jquery_ui_buttons = array();
 ?>
-<script>
-jQuery(document).ready(function() {
-    // initialize jquery ui buttons
-    jQuery( ".advanced-ads-display-condition-set" ).buttonset();
-});
-</script>
 <p class="description"><?php _e( 'Choose where to display the ad and where to hide it.', ADVADS_SLUG ); ?></p>
 <div id="advanced-ad-conditions-enable">
 <?php $conditions_enabled = (empty($ad->conditions['enabled'])) ? 0 : 1; ?>
@@ -51,7 +45,7 @@ jQuery(document).ready(function() {
                             <td><input type="text" name="advanced_ad[conditions][<?php echo $_key; ?>][include]" value="<?php if ( isset($ad->conditions[$_key]['include']) ) { echo $ad->conditions[$_key]['include']; } ?>"/></td>
                             <td><input type="text" name="advanced_ad[conditions][<?php echo $_key; ?>][exclude]" value="<?php if ( isset($ad->conditions[$_key]['exclude']) ) { echo $ad->conditions[$_key]['exclude']; } ?>"/></td>
                     <?php elseif ( $_condition['type'] == 'radio' ) : ?>
-                            <td class="advanced-ads-display-condition-set">
+                            <td class="advanced-ads-display-condition-set advads-buttonset">
                                 <input type="radio" name="advanced_ad[conditions][<?php
 									echo $_key; ?>]" id="advanced-ads-display-condition-<?php
 									echo $_key; ?>-1" value="1" <?php if ( ! isset($ad->conditions[$_key]) || $ad->conditions[$_key] ) { checked( 1 ); } ?>/>

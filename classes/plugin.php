@@ -86,7 +86,7 @@ class Advanced_Ads_Plugin {
 		// remove default ad group menu item // -TODO only for admin
 		add_action( 'admin_menu', array( $this, 'remove_taxonomy_menu_item' ) );
 		// load widgets
-		add_action( 'widgets_init', array( $this, 'advads_widget_init' ) );
+		add_action( 'widgets_init', array( $this, 'widget_init' ) );
 	}
 
 	/**
@@ -121,8 +121,8 @@ class Advanced_Ads_Plugin {
 		}
 	}
 
-	public function advads_widget_init() {
-		register_widget( 'Advads_Widget' );
+	public function widget_init() {
+		register_widget( 'Advanced_Ads_Widget' );
 	}
 
 	/**
@@ -343,7 +343,23 @@ class Advanced_Ads_Plugin {
 	 */
 	public function internal_options() {
 		if ( ! isset( $this->internal_options ) ) {
-			$this->internal_options = get_option( ADVADS_SLUG . '-internal', array() );
+		    $defaults = array(
+			'version' => ADVADS_VERSION,
+			'installed' => time(), // when was this installed
+		    );
+		    $this->internal_options = get_option( ADVADS_SLUG . '-internal', array() );
+
+		    // save defaults
+		    if($this->internal_options === array()){
+			$this->internal_options = $defaults;
+			$this->update_internal_options($this->internal_options);
+		    }
+
+		    // for versions installed prior to 1.5.3 set installed date for now
+		    if( ! isset( $this->internal_options['installed'] )){
+			$this->internal_options['installed'] = time();
+			$this->update_internal_options($this->internal_options);
+		    }
 		}
 
 		return $this->internal_options;

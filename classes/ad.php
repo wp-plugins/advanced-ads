@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Advanced Ads.
+ * Advanced Ads Ad.
  *
- * @package   Advads_Ad
+ * @package   Advanced_Ads_Ad
  * @author    Thomas Maier <thomas.maier@webgilde.com>
  * @license   GPL-2.0+
  * @link      http://webgilde.com
@@ -13,10 +13,20 @@
 /**
  * an ad object
  *
- * @package Advads_Ad
+ * @package Advanced_Ads_Ad
+ * @author  Thomas Maier <thomas.maier@webgilde.com>
+ * @deprecated since version 1.5.3 (May 6th 2015)
+ */
+class Advads_Ad extends Advanced_Ads_Ad {
+
+}
+/**
+ * an ad object
+ *
+ * @package Advanced_Ads_Ad
  * @author  Thomas Maier <thomas.maier@webgilde.com>
  */
-class Advads_Ad {
+class Advanced_Ads_Ad {
 
 	/**
 	 * id of the post type for this ad
@@ -145,7 +155,7 @@ class Advads_Ad {
 		if ( isset($types[$this->type]) ){
 			$this->type_obj = $types[$this->type];
 		} else {
-			$this->type_obj = new Advads_Ad_Type_Abstract;
+			$this->type_obj = new Advanced_Ads_Ad_Type_Abstract;
 		}
 		$this->width = $this->options( 'width' );
 		$this->height = $this->options( 'height' );
@@ -509,13 +519,41 @@ class Advads_Ad {
 	 */
 	public function can_display_by_visitor(){
 
+	    // check old "visitor" and new "visitors" conditions
+		if ( ( empty($this->options['visitors']) ||
+				! is_array( $this->options['visitors'] ) )
+			&& ( empty($this->options['visitor']) ||
+				! is_array( $this->options['visitor'] )
+			    )) { return true; }
+
+		if ( isset( $this->options['visitors'] ) && is_array( $this->options['visitors'] ) ) {
+
+		    $visitor_conditions = $this->options['visitors'];
+
+		    foreach( $visitor_conditions as $_condition ) {
+			$result = Advanced_Ads_Visitor_Conditions::frontend_check( $_condition );
+			if( ! $result ) {
+			    // return false only, if the next condition doesn’t have an OR operator
+			    $next = next( $visitor_conditions );
+			    if( ! isset( $next['connector'] ) || $next['connector'] !== 'or' ) {
+				return false;
+			    }
+			}
+		    }
+		}
+
+		/**
+		 * "old" visitor conditions
+		 *
+		 * @deprecated since version 1.5.4
+		 */
+
 		if ( empty($this->options['visitor']) ||
 				! is_array( $this->options['visitor'] ) ) { return true; }
-
 		$visitor_conditions = $this->options( 'visitor' );
 
 		// check mobile condition
-		if ( ! empty($visitor_conditions['mobile']) ){
+		if ( isset($visitor_conditions['mobile']) ){
 			switch ( $visitor_conditions['mobile'] ){
 				case 'only' :
 					if ( ! wp_is_mobile() ) { return false; }
@@ -630,6 +668,10 @@ class Advads_Ad {
 
 		// load ad type specific content filter
 		$output = $this->type_obj->prepare_output( $this );
+		// don’t deliver anything, if main ad content is empty
+		if( $output == '' ) {
+		    return;
+		}
 
 		// filter to manipulate the output before the wrapper is added
 		$output = apply_filters( 'advanced-ads-output-inside-wrapper', $output, $this );
