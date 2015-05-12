@@ -6,7 +6,7 @@
  * @filesource includes/class-ajax-callbacks.php ::load_ad_parameters_metabox
  * @filesource classes/ad-type-content.php :: renter_parameters()
  */
-?>
+do_action( 'advanced-ads-ad-params-before', $ad, $types ); ?>
 <div id="advanced-ads-ad-parameters">
     <?php $type = (isset($types[$ad->type])) ? $types[$ad->type] : current( $types );
 		$type->render_parameters( $ad );

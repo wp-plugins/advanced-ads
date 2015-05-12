@@ -516,10 +516,19 @@ class Advanced_Ads_Admin {
 		} else {
 			$ad->set_option( 'output', array() );
 		}
+		/**
+		 * deprecated since introduction of "visitors" in 1.5.4
+		 */
 		if ( isset($_POST['advanced_ad']['visitor']) ) {
 			$ad->set_option( 'visitor', $_POST['advanced_ad']['visitor'] );
 		} else {
 			$ad->set_option( 'visitor', array() );
+		}
+		// visitor conditions
+		if ( isset($_POST['advanced_ad']['visitors']) ) {
+			$ad->set_option( 'visitors', $_POST['advanced_ad']['visitors'] );
+		} else {
+			$ad->set_option( 'visitors', array() );
 		}
 		// save size
 		$ad->width = 0;
@@ -1012,7 +1021,7 @@ class Advanced_Ads_Admin {
 				'link'         => 'http://webgilde.com/en/ad-optimization/',
 				'url'          => 'http://webgilde.com/en/ad-optimization/feed/',
 				'title'        => __( 'From the ad optimization universe', ADVADS_SLUG ),
-				'items'        => 3,
+				'items'        => 2,
 				'show_summary' => 0,
 				'show_author'  => 0,
 				'show_date'    => 0,
@@ -1043,6 +1052,21 @@ class Advanced_Ads_Admin {
 				$version = $advads_plugin_data['Version'];
 				echo '<p><a href="'.ADVADS_URL.'" target="_blank" title="'.
 					__( 'plugin manual and homepage', ADVADS_SLUG ).'">Advanced Ads</a> '. $version .'</p>';
+			}
+
+			$notice_options = Advanced_Ads_Admin_Notices::get_instance()->options();
+			$_notice = 'nl_first_steps';
+			if ( ! isset($notice_options['closed'][ $_notice ] ) ) {
+				?><div class="advads-admin-notice">
+				    <p><button type="button" class="button-primary advads-notices-button-subscribe" data-notice="<?php echo $_notice ?>"><?php _e('Get the tutorial via email', ADVADS_SLUG); ?></button></p>
+				</div><?php
+			}
+
+			$_notice = 'nl_adsense';
+			if ( ! isset($notice_options['closed'][ $_notice ] ) ) {
+				?><div class="advads-admin-notice">
+				    <p><button type="button" class="button-primary advads-notices-button-subscribe" data-notice="<?php echo $_notice ?>"><?php _e('Get AdSense tips via email', ADVADS_SLUG); ?></button></p>
+				</div><?php
 			}
 
 			// rss feed

@@ -519,13 +519,41 @@ class Advanced_Ads_Ad {
 	 */
 	public function can_display_by_visitor(){
 
+	    // check old "visitor" and new "visitors" conditions
+		if ( ( empty($this->options['visitors']) ||
+				! is_array( $this->options['visitors'] ) )
+			&& ( empty($this->options['visitor']) ||
+				! is_array( $this->options['visitor'] )
+			    )) { return true; }
+
+		if ( isset( $this->options['visitors'] ) && is_array( $this->options['visitors'] ) ) {
+
+		    $visitor_conditions = $this->options['visitors'];
+
+		    foreach( $visitor_conditions as $_condition ) {
+			$result = Advanced_Ads_Visitor_Conditions::frontend_check( $_condition );
+			if( ! $result ) {
+			    // return false only, if the next condition doesn’t have an OR operator
+			    $next = next( $visitor_conditions );
+			    if( ! isset( $next['connector'] ) || $next['connector'] !== 'or' ) {
+				return false;
+			    }
+			}
+		    }
+		}
+
+		/**
+		 * "old" visitor conditions
+		 *
+		 * @deprecated since version 1.5.4
+		 */
+
 		if ( empty($this->options['visitor']) ||
 				! is_array( $this->options['visitor'] ) ) { return true; }
-
 		$visitor_conditions = $this->options( 'visitor' );
 
 		// check mobile condition
-		if ( ! empty($visitor_conditions['mobile']) ){
+		if ( isset($visitor_conditions['mobile']) ){
 			switch ( $visitor_conditions['mobile'] ){
 				case 'only' :
 					if ( ! wp_is_mobile() ) { return false; }

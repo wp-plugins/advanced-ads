@@ -24,6 +24,7 @@ return array(
     'Advanced_Ads_Placements' => $baseDir . '/classes/ad_placements.php',
     'Advanced_Ads_Plugin' => $baseDir . '/classes/plugin.php',
     'Advanced_Ads_Select' => $baseDir . '/classes/ad-select.php',
+    'Advanced_Ads_Visitor_Conditions' => $baseDir . '/classes/visitor-conditions.php',
     'Advanced_Ads_Widget' => $baseDir . '/classes/widget.php',
     'Composer\\Installers\\AglInstaller' => $vendorDir . '/composer/installers/src/Composer/Installers/AglInstaller.php',
     'Composer\\Installers\\AimeosInstaller' => $vendorDir . '/composer/installers/src/Composer/Installers/AimeosInstaller.php',

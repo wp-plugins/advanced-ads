@@ -42,10 +42,10 @@ class Advanced_Ads_Overview_Widgets_Callbacks {
 		// abort if not on the overview page
 		if ( ! isset($screen->id) || $screen->id !== 'toplevel_page_advanced-ads' ) { return; }
 
-		add_meta_box('advads_overview_news', __( 'News and Tutorials', ADVADS_SLUG ),
-		array('Advanced_Ads_Admin', 'dashboard_widget_function'), $screen->id, 'normal', 'high');
-		add_meta_box('advads_overview_ads', __( 'My Ads', ADVADS_SLUG ),
-		array('Advanced_Ads_Overview_Widgets_Callbacks', 'render_ad_widget'), $screen->id, 'normal', 'high');
+		add_meta_box('advads_overview_news', __( 'Tips and Tutorials', ADVADS_SLUG ),
+		array('Advanced_Ads_Overview_Widgets_Callbacks', 'render_subscribe'), $screen->id, 'normal', 'high');
+		add_meta_box('advads_overview_addon_help', __( 'Setup and Optimization Help', ADVADS_SLUG ),
+		array('Advanced_Ads_Overview_Widgets_Callbacks', 'render_help'), $screen->id, 'normal', 'high');
 		add_meta_box('advads_overview_support', __( 'Manual and Support', ADVADS_SLUG ),
 		array('Advanced_Ads_Overview_Widgets_Callbacks', 'render_support'), $screen->id, 'normal', 'high');
 
@@ -62,20 +62,33 @@ class Advanced_Ads_Overview_Widgets_Callbacks {
 	}
 
 	/**
-	 * ads widget
+	 * subscribe widget
+	 *
+	 * @since 1.5.4
 	 */
-	public static function render_ad_widget(){
+	public static function render_subscribe(){
+
+		$is_subscribed = Advanced_Ads_Admin_Notices::get_instance()->is_subscribed();
+		$options = Advanced_Ads_Admin_Notices::get_instance()->options();
+		$_notice = 'nl_adsense';
+
+		if ( ! isset($options['closed'][ $_notice ] )  && ! $is_subscribed ) {
+			?><div class="advads-admin-notice">
+			    <p><?php _e( 'Learn more about how and <strong>how much you can earn with AdSense</strong> and Advanced Ads from my dedicated newsletter.', ADVADS_SLUG ); ?></p>
+			    <button type="button" class="button-primary advads-notices-button-subscribe" data-notice="<?php echo $_notice ?>"><?php _e('Subscribe me now', ADVADS_SLUG); ?></button>
+			</div><?php
+		}
+
+		$_notice = 'nl_first_steps';
+		if ( ! isset($options['closed'][ $_notice ] ) && ! $is_subscribed  ) {
+			?><div class="advads-admin-notice">
+			    <p><?php _e( 'Get the first steps and more tutorials to your inbox.', ADVADS_SLUG ); ?></p>
+			    <button type="button" class="button-primary advads-notices-button-subscribe" data-notice="<?php echo $_notice ?>"><?php _e('Send it now', ADVADS_SLUG); ?></button>
+			</div><?php
+		}
 
 		$model = Advanced_Ads::get_instance()->get_model();
 		$recent_ads = $model->get_ads();
-
-		?><p class="description"><?php _e( 'Ads are the smallest unit, containing the content or a single ad to be displayed.', ADVADS_SLUG ); ?></p>
-		<p><?php printf( __( 'You have published %d ads.', ADVADS_SLUG ), count( $recent_ads ) );?></p><p><?php
-		printf(__( '<a href="%s">Manage</a> them or <a href="%s">create</a> a new one', ADVADS_SLUG ),
-			'edit.php?post_type='. Advanced_Ads::POST_TYPE_SLUG,
-		'post-new.php?post_type='. Advanced_Ads::POST_TYPE_SLUG);
-		?>
-		</p><?php
 
 		// get next steps
 		self::render_next_steps( $recent_ads );
@@ -108,7 +121,7 @@ class Advanced_Ads_Overview_Widgets_Callbacks {
 
 		// display all options
 		if ( count( $next_steps ) > 0 ){
-			?><h4><?php _e( 'Next steps', ADVADS_SLUG ); ?></h4><?php
+		    ?><br/><h4><?php _e( 'Next steps', ADVADS_SLUG ); ?></h4><?php
 foreach ( $next_steps as $_step ){
 	echo $_step;
 }
@@ -124,9 +137,18 @@ foreach ( $next_steps as $_step ){
             <?php printf( __( '<a href="%s" target="_blank">Manual</a>', ADVADS_SLUG ), ADVADS_URL . 'advancedads/manual/' ); ?></li>
             <li><?php printf( __( 'Ask other users in the <a href="%s" target="_blank">wordpress.org forum</a>', ADVADS_SLUG ), 'http://wordpress.org/plugins/advanced-ads/' ); ?></li>
             <li><?php printf( __( 'Vote for a <a href="%s" target="_blank">feature</a>', ADVADS_SLUG ), ADVADS_URL . 'advancedads/feature-requests/' ); ?></li>
-            <li><?php printf( __( '<a href="%s" target="_blank">Hire the developer</a>', ADVADS_SLUG ), 'http://webgilde.com/en/contact/' ); ?></li>
             <li><?php printf( __( 'Thank the developer with a &#9733;&#9733;&#9733;&#9733;&#9733; review on <a href="%s" target="_blank">wordpress.org</a>', ADVADS_SLUG ), 'https://wordpress.org/support/view/plugin-reviews/advanced-ads' ); ?></li>
         </ul><?php
+	}
+
+	/**
+	 * help widget
+	 */
+	public static function render_help(){
+
+		?><p><?php _e( 'Need help to set up and optimize your ads? Need custom coding on your site? Ask me for a quote.', ADVADS_SLUG ); ?></p>
+		<p><a class="button button-primary" href="mailto:support@wpadvancedads.com?subject=<?php printf( __( 'Help with ads on %s', ADVADS_SLUG ), home_url()); ?>"><?php
+			_e( 'Get an offer', ADVADS_SLUG ); ?></a></p><?php
 	}
 
 	/**

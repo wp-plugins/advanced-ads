@@ -93,15 +93,11 @@ class Advanced_Ads_Placements {
 		// load placements // -TODO use model
 		$placements = Advanced_Ads::get_ad_placements_array();
 
-		// escape slug as slug
-		$new_placement['slug'] = sanitize_title( $new_placement['slug'] );
+		// create slug
+		$new_placement['slug'] = sanitize_title( $new_placement['name'] );
 
-		// check if slug already exists
-		if ( $new_placement['slug'] == '' ) {
-		    return false;
-		}
-
-		if ( isset($placements[$new_placement['slug']]) ) {
+		// check if slug already exists or is empty
+		if ( $new_placement['slug'] === '' || isset( $placements[$new_placement['slug']] ) ) {
 		    return false;
 		}
 

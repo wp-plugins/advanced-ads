@@ -130,7 +130,7 @@ if ( ! empty($ad->conditions['categoryids']['exclude']) ){
 				?><td><?php
 				// display search field if the term limit is reached
 if ( count( $terms ) == $max_terms ) :
-	?><div class="advads-conditions-terms-buttons" title="click to remove"><?php
+	?><div class="advads-conditions-terms-buttons advads-buttonset" title="click to remove"><?php
 
 	// query active terms
 if ( is_array( $checked ) && count( $checked ) ){
@@ -152,7 +152,7 @@ if ( is_array( $checked ) && count( $checked ) ){
 			?>" data-include-type="<?php echo $includetype; ?>" data-group="<?php echo $group; ?>" placeholder="<?php
 				_e( 'term name or id', ADVADS_SLUG ); ?>"/><?php
 					else :
-						?><div class="advads-conditions-terms-buttons"><?php
+						?><div class="advads-conditions-terms-buttons advads-buttonset"><?php
 foreach ( $terms as $_term ) :
 	$field_id = "advads-conditions-terms-$includetype-$group-$_term->term_id";
 	?><input type="checkbox" id="<?php echo $field_id; ?>" name="<?php echo $inputname; ?>" value="<?php echo $_term->term_id; ?>" <?php

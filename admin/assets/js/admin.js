@@ -2,7 +2,7 @@ jQuery( document ).ready(function ($) {
 	"use strict";
 
 	function advads_load_ad_type_parameter_metabox(ad_type) {
-		$( '#advanced-ads-ad-parameters' ).html( '<span class="spinner advads-ad-parameters-spinner"></span>' );
+		$( '#advanced-ads-ad-parameters' ).html( '<span class="spinner advads-ad-parameters-spinner advads-spinner"></span>' );
 		$.ajax({
 			type: 'POST',
 			url: ajaxurl,
@@ -55,8 +55,8 @@ jQuery( document ).ready(function ($) {
 	$( '.advads-conditions-single input[type="checkbox"]' ).each(function () {
 		advads_toggle_single_display_condition_checkbox( this );
 	});
-	// activate buttons
-	$( '.advads-conditions-terms-buttons' ).buttonset();
+	// activate general buttons
+	$( '.advads-buttonset' ).buttonset();
 
 	$( document ).on('click', '.advads-conditions-terms-buttons .button', function (e) {
 		$( this ).remove();
@@ -184,7 +184,7 @@ jQuery( document ).ready(function ($) {
 	 * ADMIN NOTICES
 	 */
 	// close button
-	$('.advads-notices-button-close').click(function(){
+	$(document).on('click', '.advads-notices-button-close', function(){
 	    if(this.dataset.notice === undefined) return;
 	    var messagebox = $(this).parents('.advads-admin-notice');
 
@@ -202,6 +202,7 @@ jQuery( document ).ready(function ($) {
 	$('.advads-notices-button-subscribe').click(function(){
 	    if(this.dataset.notice === undefined) return;
 	    var messagebox = $(this).parents('.advads-admin-notice');
+	    messagebox.find('p').append( '<span class="spinner advads-spinner"></span>' );
 
 	    var query = {
 		action: 'advads-subscribe-notice',

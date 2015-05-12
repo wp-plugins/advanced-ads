@@ -49,6 +49,8 @@ class Advanced_Ads_Admin_Notices {
 		$this->load_notices();
 		// display notices
 		$this->display_notices();
+
+		add_action( 'advanced-ads-ad-params-before', array( $this, 'adsense_tutorial' ), 10, 2 );
 	}
 
 	/**
@@ -119,6 +121,9 @@ class Advanced_Ads_Admin_Notices {
 		if ( isset($internal_options['version']) && ($internal_options['version'] !== ADVADS_VERSION) && $old_version ) {
 			if ( version_compare( $old_version, '1.4.5' ) == -1 ) {
 				$this->notices[] = '1.4.5';
+			}
+			if ( version_compare( $old_version, '1.5.4' ) == -1 ) {
+				$this->notices[] = '1.5.4';
 			}
 		}
 		$new_options['version'] = ADVADS_VERSION;
@@ -200,10 +205,8 @@ class Advanced_Ads_Admin_Notices {
 		if ( $key !== false ) {
 			unset($queue[$key]);
 			// close message with timestamp
-			$closed[$notice] = time();
-		} else {
-			return;
 		}
+		$closed[$notice] = time();
 
 		// update db
 		$options['queue'] = $queue;
@@ -328,23 +331,61 @@ class Advanced_Ads_Admin_Notices {
 	/**
 	 * check if blog is subscribed to the newsletter
 	 */
-	private function is_subscribed() {
+	public function is_subscribed() {
+
+		/**
+		 * respect previous settings
+		 */
 		$options = $this->options();
-		return isset($options['is_subscribed']);
+		if ( isset($options['is_subscribed'] ) ) {
+		    return true;
+		}
+
+		$user_id = get_current_user_id();
+		if( ! $user_id ) {
+		    return true;
+		}
+
+		$subscribed = get_user_meta($user_id, 'advanced-ads-subscribed', true);
+		return $subscribed;
 	}
 
 	/**
 	 * update information that the current user is subscribed
 	 */
 	private function mark_as_subscribed() {
-		$options = $this->options();
-		if ( isset($options['is_subscribed']) ) {
-			return;
-		}
 
-		// update db
-		$options['is_subscribed'] = true;
-		$this->update_options( $options );
+		$user_id = get_current_user_id();
+
+		if( ! $this->is_subscribed() ) {
+		    update_user_meta( $user_id, 'advanced-ads-subscribed', true);
+		}
+	}
+
+	/**
+	 * add AdSense tutorial notice
+	 *
+	 * @param obj $ad ad object
+	 * @param arr $types ad types
+	 */
+	public function adsense_tutorial( $ad, $types = array() ){
+
+	    $options = $this->options();
+	    $_notice = 'nl_adsense';
+
+	    if ( $ad->type !== 'adsense' || isset($options['closed'][ $_notice ] ) ) {
+		return;
+	    }
+
+	    include ADVADS_BASE_PATH . '/admin/includes/notices.php';
+
+	    if ( ! isset( $advanced_ads_admin_notices[ $_notice ] ) ) {
+		return;
+	    }
+
+	    $notice = $advanced_ads_admin_notices[ $_notice ];
+	    $text = $notice['text'];
+	    include ADVADS_BASE_PATH . '/admin/views/notices/inline.php';
 	}
 
 }
