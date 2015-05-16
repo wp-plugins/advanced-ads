@@ -14,7 +14,7 @@
  * see also includes/ad-type-abstract.php for basic object
  *
  */
-class Advads_Ad_Type_Content extends Advads_Ad_Type_Abstract{
+class Advanced_Ads_Ad_Type_Content extends Advanced_Ads_Ad_Type_Abstract{
 
 	/**
 	 * ID - internal type of the ad type

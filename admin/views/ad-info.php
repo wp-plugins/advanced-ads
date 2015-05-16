@@ -2,7 +2,7 @@
     <a onclick="advads_toggle('#advads-ad-info')"><?php _e( 'How to use this Ad?', ADVADS_SLUG ); ?></a>
 </p>
 <div id="advads-ad-info" style="display: none;">
-    <p><?php printf( __( 'How to display the ad directly? Find more help and examples in the <a href="%s" target="_blank">manual</a>', ADVADS_SLUG ), ADVADS_URL . 'advanced-ads/manual/display-ads/' ); ?></p>
+    <p><?php printf( __( 'How to display the ad directly? Find more help and examples in the <a href="%s" target="_blank">manual</a>', ADVADS_SLUG ), ADVADS_URL . 'manual/display-ads/' ); ?></p>
     <h4><?php _e( 'shortcode', ADVADS_SLUG ); ?></h4>
         <p class="description"><?php _e( 'To display an ad in content fields', ADVADS_SLUG ); ?></p>
         <pre><input type="text" onclick="this.select();" value='[the_ad id="<?php echo $post->ID; ?>"]'/></pre>

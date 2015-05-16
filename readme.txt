@@ -3,8 +3,8 @@ Contributors: webzunft
 Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5RRRCEBGN3UT2
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
-Tested up to: 4.2
-Stable tag: 1.5.2.1
+Tested up to: 4.2.2
+Stable tag: 1.5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -174,6 +174,35 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 
 == Changelog ==
 
+= 1.5.5 =
+
+* fixed outdated links to the manual and feature requests
+* added hooks and options to be able to extend ad groups
+
+= 1.5.4.1 =
+
+* hotfix for new visitor conditions not showing up
+
+= 1.5.4 =
+
+* PLEASE READ the [update notice](https://wpadvancedads.com/advanced-ads-1-5-4/) to learn more about the changes on visitor conditions
+* visitor conditions completely rewritten to allow combination of multiple conditions
+* created simpler placement creation
+* reordered Advanced Ads dashboard
+* added AdSense tutorial
+
+= 1.5.3 =
+
+* display all ads of an ad group
+* no ad wrapper is created if the main ad content is empty
+* hide ad meta box on posts and pages for non admins
+* display if ad expired on group overview
+* added tutorial subscription
+* added notices and newsletter logic
+* new hook `advanced-ads-debug-after`
+* updated all class names from "Advads_" to "Advanced_Ads_"
+* updated German translation
+
 = 1.5.2.1 =
 
 * fixed inclusion / exclusion of ads for single posts
@@ -272,7 +301,7 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 
 = 1.4.2 =
 
-* COOL: [vote for and suggest features](http://wpadvancedads.com/advancedads/feature-requests/)
+* COOL: [vote for and suggest features](http://wpadvancedads.com/feature-requests/)
 * switching from an existing plain text ad with AdSense code into the AdSense ad type gets the right options automatically
 * added Advanced Ads Tutorials rss to dashboard widget
 
@@ -289,7 +318,7 @@ Need ad analytics and impression tracking? Try the [tracking add-on](http://wpad
 
 = 1.4.0 =
 
-* COOL: AdSense ad type, [manual](http://wpadvancedads.com/advancedads/manual/ad-types/adsense-ads/)
+* COOL: AdSense ad type, [manual](http://wpadvancedads.com/manual/ad-types/adsense-ads/)
 * added multiple action hooks
 * fix translation of textdomain if the plugin folder is renamed
 * load pro module, if exists
