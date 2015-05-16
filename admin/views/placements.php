@@ -13,12 +13,12 @@
     <?php screen_icon(); ?>
     <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
     <p class="description"><?php _e( 'Placements are physically places in your theme and posts. You can use them if you plan to change ads and ad groups on the same place without the need to change your templates.', ADVADS_SLUG ); ?></p>
-    <p class="description"><?php printf( __( 'See also the manual for more information on <a href="%s">placements</a> and <a href="%s">auto injection</a>.', ADVADS_SLUG ), ADVADS_URL . 'advancedads/manual/placements/', ADVADS_URL . 'advancedads/manual/auto-injection/' ); ?></p>
+    <p class="description"><?php printf( __( 'See also the manual for more information on <a href="%s">placements</a> and <a href="%s">auto injection</a>.', ADVADS_SLUG ), ADVADS_URL . 'manual/placements/', ADVADS_URL . 'manual/auto-injection/' ); ?></p>
 <?php if ( isset($placements) && is_array( $placements ) && count( $placements ) ) : ?>
         <h2><?php _e( 'Placements', ADVADS_SLUG ); ?></h2>
         <a onclick="advads_toggle('#advads-ad-place-display-info')"><?php _e( 'How to use the <i>default</i> Ad Placement?', ADVADS_SLUG ); ?></a>
         <div id="advads-ad-place-display-info" style="display: none;">
-            <p><?php printf( __( 'Examples on how to use the <i>default</i> ad placement? Find more help and examples in the <a href="%s" target="_blank">manual</a>', ADVADS_SLUG ), ADVADS_URL . 'advanced-ads/manual/placements/' ); ?></p>
+            <p><?php printf( __( 'Examples on how to use the <i>default</i> ad placement? Find more help and examples in the <a href="%s" target="_blank">manual</a>', ADVADS_SLUG ), ADVADS_URL . 'manual/placements/' ); ?></p>
             <h4><?php _e( 'shortcode', ADVADS_SLUG ); ?></h4>
             <p class="description"><?php _e( 'To use an ad placement with the ID skyscraper_left in content fields', ADVADS_SLUG ); ?></p>
             <pre><input type="text" onclick="this.select();" style="width: 400px;" value='[the_ad_placement id="skyscraper_left"]'/></pre>

@@ -59,7 +59,7 @@ if ( isset($_REQUEST['message']) && ( $msg = (int) $_REQUEST['message'] ) || iss
     <div id="ajax-response"></div>
     <a onclick="advads_toggle('#advads-ad-group-display-info')"><?php _e( 'How to display an Ad Group?', ADVADS_SLUG ); ?></a>
     <div id="advads-ad-group-display-info" style="display: none;">
-        <p><?php printf( __( 'Examples on how to display an ad group? Find more help and examples in the <a href="%s" target="_blank">manual</a>', ADVADS_SLUG ), ADVADS_URL . 'advanced-ads/manual/ad-groups/' ); ?></p>
+        <p><?php printf( __( 'Examples on how to display an ad group? Find more help and examples in the <a href="%s" target="_blank">manual</a>', ADVADS_SLUG ), ADVADS_URL . 'manual/ad-groups/' ); ?></p>
         <h4><?php _e( 'shortcode', ADVADS_SLUG ); ?></h4>
             <p class="description"><?php _e( 'To display an ad group with the ID 6 in content fields', ADVADS_SLUG ); ?></p>
             <pre><input type="text" onclick="this.select();" style="width: 250px;" value='[the_ad_group id="6"]'/></pre>

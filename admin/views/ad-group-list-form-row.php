@@ -5,7 +5,7 @@
         <label><strong><?php _e( 'Description', ADVADS_SLUG ); ?></strong><input type="text" name="advads-groups[<?php
 			echo $group->id; ?>][description]" value="<?php echo $group->description; ?>"/></label><br/>
         <strong><?php _e( 'Type', ADVADS_SLUG ); ?></strong>
-        <ul><?php foreach ( $this->types as $_type_key => $_type ) :
+        <ul class="advads-ad-group-type"><?php foreach ( $this->types as $_type_key => $_type ) :
 			?><li><label><input type="radio" name="advads-groups[<?php echo $group->id;
 				?>][type]" value="<?php echo $_type_key; ?>" <?php checked( $group->type, $_type_key )?>/><?php
 				echo $_type['title']; ?></label>
@@ -21,6 +21,7 @@
 		</select>
         </label>
         <p class="description"><?php _e( 'Number of ads to display in the block', ADVADS_SLUG ); ?></p>
+	<?php do_action( 'advanced-ads-group-form-options', $group ); ?>
         <h3><?php _e( 'Ads', ADVADS_SLUG ); ?></h3>
         <?php if ( count( $ad_form_rows ) ) : ?>
         <table>

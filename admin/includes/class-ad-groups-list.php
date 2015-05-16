@@ -311,10 +311,15 @@ class Advanced_Ads_Groups_List {
 				// save other attributes
 				$type       = isset($_group['type']) ? $_group['type'] : 'default';
 				$ad_count   = isset($_group['ad_count']) ? $_group['ad_count'] : 1;
-				$atts = array(
+				$options    = isset($_group['options']) ? $_group['options'] : array();
+
+				// allow other add-ons to save their own group attributes
+				$atts = apply_filters( 'advanced-ads-group-save-atts', array(
 					'type' => $type,
-					'ad_count' => $ad_count
-				);
+					'ad_count' => $ad_count,
+					'options' => $options,
+				), $_group);
+
 				$group->save( $atts );
 			}
 		}

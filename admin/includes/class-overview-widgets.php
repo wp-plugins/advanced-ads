@@ -134,9 +134,9 @@ foreach ( $next_steps as $_step ){
 	public static function render_support(){
 		?><ul>
             <li><?php printf( __( '<a href="%s" target="_blank">Plugin Homepage</a>', ADVADS_SLUG ), ADVADS_URL . 'advancedads/' ); ?> –
-            <?php printf( __( '<a href="%s" target="_blank">Manual</a>', ADVADS_SLUG ), ADVADS_URL . 'advancedads/manual/' ); ?></li>
+            <?php printf( __( '<a href="%s" target="_blank">Manual</a>', ADVADS_SLUG ), ADVADS_URL . 'manual/' ); ?></li>
             <li><?php printf( __( 'Ask other users in the <a href="%s" target="_blank">wordpress.org forum</a>', ADVADS_SLUG ), 'http://wordpress.org/plugins/advanced-ads/' ); ?></li>
-            <li><?php printf( __( 'Vote for a <a href="%s" target="_blank">feature</a>', ADVADS_SLUG ), ADVADS_URL . 'advancedads/feature-requests/' ); ?></li>
+            <li><?php printf( __( 'Vote for a <a href="%s" target="_blank">feature</a>', ADVADS_SLUG ), ADVADS_URL . 'feature-requests/' ); ?></li>
             <li><?php printf( __( 'Thank the developer with a &#9733;&#9733;&#9733;&#9733;&#9733; review on <a href="%s" target="_blank">wordpress.org</a>', ADVADS_SLUG ), 'https://wordpress.org/support/view/plugin-reviews/advanced-ads' ); ?></li>
         </ul><?php
 	}

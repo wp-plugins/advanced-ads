@@ -14,7 +14,7 @@ $jquery_ui_buttons = array();
     <ul id="advads-how-it-works">
         <li><?php _e( 'If you want to display the ad everywhere, don\'t do anything here. ', ADVADS_SLUG ); ?></li>
         <li><?php _e( 'The fewer conditions you enter, the better the performance will be.', ADVADS_SLUG ); ?></li>
-        <li><?php printf( __( 'Learn more about display conditions from the <a href="%s" target="_blank">manual</a>.', ADVADS_SLUG ), ADVADS_URL . 'advancedads/manual/display-conditions/' ); ?></li>
+        <li><?php printf( __( 'Learn more about display conditions from the <a href="%s" target="_blank">manual</a>.', ADVADS_SLUG ), ADVADS_URL . 'manual/display-conditions/' ); ?></li>
     </ul>
     <?php
 	// -TODO use model

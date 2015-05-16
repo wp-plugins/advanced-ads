@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.2.2
-Stable tag: 1.5.4.1
+Stable tag: 1.5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -174,6 +174,11 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 
 == Changelog ==
 
+= 1.5.5 =
+
+* fixed outdated links to the manual and feature requests
+* added hooks and options to be able to extend ad groups
+
 = 1.5.4.1 =
 
 * hotfix for new visitor conditions not showing up
@@ -296,7 +301,7 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 
 = 1.4.2 =
 
-* COOL: [vote for and suggest features](http://wpadvancedads.com/advancedads/feature-requests/)
+* COOL: [vote for and suggest features](http://wpadvancedads.com/feature-requests/)
 * switching from an existing plain text ad with AdSense code into the AdSense ad type gets the right options automatically
 * added Advanced Ads Tutorials rss to dashboard widget
 
@@ -313,7 +318,7 @@ Need ad analytics and impression tracking? Try the [tracking add-on](http://wpad
 
 = 1.4.0 =
 
-* COOL: AdSense ad type, [manual](http://wpadvancedads.com/advancedads/manual/ad-types/adsense-ads/)
+* COOL: AdSense ad type, [manual](http://wpadvancedads.com/manual/ad-types/adsense-ads/)
 * added multiple action hooks
 * fix translation of textdomain if the plugin folder is renamed
 * load pro module, if exists

@@ -71,6 +71,13 @@ class Advanced_Ads_Group {
 	public $ad_count = 1;
 
 	/**
+	 * contains other options
+	 *
+	 * @since 1.5.5
+	 */
+	public $options = array();
+
+	/**
 	 * containing ad weights
 	 */
 	private $ad_weights = 0;
@@ -129,6 +136,10 @@ class Advanced_Ads_Group {
 		if(isset($all_groups[$this->id]['ad_count'])){
 		    $this->ad_count = ($all_groups[$this->id]['ad_count'] === 'all' ) ? 'all' : absint( $all_groups[$this->id]['ad_count'] );
 		}
+
+		if(isset($all_groups[$this->id]['options'])){
+		    $this->options = isset( $all_groups[$this->id]['options'] ) ? $all_groups[$this->id]['options'] : array();
+		}
 	}
 
 	/**
@@ -165,8 +176,10 @@ class Advanced_Ads_Group {
 				$ordered_ad_ids = $this->shuffle_ads($ads, $weights);
 		}
 
+		$ordered_ad_ids = apply_filters( 'advanced-ads-group-output-ad-ids', $ordered_ad_ids, $this->type, $ads, $weights );
+
 		// load the ad output
-		$output = '';
+		$output = array();
 		$ads_displayed = 0;
 		foreach ( $ordered_ad_ids as $_ad_id ) {
 		    // +TODO should use ad-selection interface to output actual ad
@@ -174,7 +187,7 @@ class Advanced_Ads_Group {
 			// load the ad object
 			$ad = new Advanced_Ads_Ad( $_ad_id );
 			if ( $ad->can_display() ) {
-				$output .= $ad->output();
+				$output[] = $ad->output();
 				$ads_displayed++;
 				if( $ads_displayed === $this->ad_count ) {
 				    break;
@@ -187,8 +200,10 @@ class Advanced_Ads_Group {
 		$advads = Advanced_Ads::get_instance();
 		$advads->current_ads[] = array('type' => 'group', 'id' => $this->id, 'title' => $this->name);
 
-		// filter again, in case a developer wants to filter group output individually
-		return apply_filters( 'advanced-ads-group-output', $output, $this );
+		// filter grouped ads output
+		$output_string = implode( '', apply_filters( 'advanced-ads-group-output-array', $output, $this ) );
+		// filter final group output
+		return apply_filters( 'advanced-ads-group-output', $output_string, $this );
 	}
 
 	/**
@@ -329,7 +344,7 @@ class Advanced_Ads_Group {
 	 */
 	public function save($args = array()) {
 
-		$defaults = array( 'type' => 'default', 'ad_count' => 1 );
+		$defaults = array( 'type' => 'default', 'ad_count' => 1, 'options' => array() );
 		$args = wp_parse_args($args, $defaults);
 
 		// get global ad group option

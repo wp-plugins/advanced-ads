@@ -12,7 +12,7 @@
  * Plugin Name:       Advanced Ads
  * Plugin URI:        https://wpadvancedads.com
  * Description:       Manage and optimize your ads in WordPress
- * Version:           1.5.4.1
+ * Version:           1.5.5
  * Author:            Thomas Maier
  * Author URI:        http://webgilde.com
  * Text Domain:       advanced-ads
@@ -38,7 +38,7 @@ define( 'ADVADS_BASE_DIR', dirname( plugin_basename( __FILE__ ) ) ); // director
 // general and global slug, e.g. to store options in WP, textdomain
 define( 'ADVADS_SLUG', 'advanced-ads' );
 define( 'ADVADS_URL', 'https://wpadvancedads.com/' );
-define( 'ADVADS_VERSION', '1.5.4.1' );
+define( 'ADVADS_VERSION', '1.5.5' );
 
 /*----------------------------------------------------------------------------*
  * Autoloading, modules and functions
