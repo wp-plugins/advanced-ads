@@ -24,6 +24,9 @@ foreach ( $options as $_options ) :
 	?></tbody></table>
     <input type="hidden" id="advads-visitor-conditions-index" value="<?php echo isset( $options ) ? count( $options ) : 0; ?>"/>
 </div>
+<?php if( ! isset( $options ) || count( $options ) == 0 ) :
+    ?><p><?php _e( 'Visitor conditions limit the number of users who can see your ad. There is no need to set visitor conditions if you want all users to see the ad.', ADVADS_SLUG ); ?></p><?php
+endif; ?>
 <hr/>
 <fieldset>
     <legend><?php _e( 'New condition', ADVADS_SLUG ); ?></legend>

@@ -17,6 +17,22 @@
 /**
 * AD EDIT PAGE
 */
+#advads-ad-info-top { position: relative; top: 0; left: 0; padding: 3em; background: #fff; }
+#advads-ad-info-close { position: absolute; top: 1em; right: 1em; font-size: 2em; color: #666; }
+#advads-ad-info-close:hover { cursor: pointer; color: #000; }
+#advads-ad-info-top h2 { font-weight: bold; color: #0074a2; }
+#advads-ad-info-top div pre input { width: 30em; }
+#advads-ad-info-top .ui-accordion .ui-accordion-header { margin-top: 0; border-radius: 0; }
+#advads-ad-info-top .ui-accordion .ui-accordion-content { border-radius: 0; }
+
+#advads-ad-info { overflow: hidden; margin-bottom: 1em; }
+#advads-ad-info > * { float: left; margin: 0; line-height: 2em; }
+#advads-ad-info pre { float: left; margin: 0; line-height: 2em; }
+#advads-ad-info > label > span { float: left; margin-right: .5em; }
+#advads-ad-info > label + pre { margin-right: .5em; }
+#advads-ad-info > label { margin-left: 1em; }
+#advads-ad-info pre input { background: transparent; }
+
 #ad-main-box { overflow: hidden; }
 .post-type-advanced_ads #poststuff .meta-box-sortables .inside {
 	margin: 0;

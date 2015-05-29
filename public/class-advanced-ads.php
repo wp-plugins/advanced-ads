@@ -25,7 +25,7 @@ class Advanced_Ads {
 	 * @var     string
 	 */
 
-	const VERSION = '1.5.5';
+	const VERSION = '1.5.6';
 
 	/**
 	 * post type slug
@@ -348,10 +348,10 @@ class Advanced_Ads {
 	 * @param str $content post content
 	 */
 	public function inject_content($content = ''){
-		// run only on single pages of public post types
+		// run only within the loop on single pages of public post types
 		$public_post_types = get_post_types( array( 'public' => true, 'publicly_queryable' => true ), 'names', 'or' );
 
-		if ( ! is_singular( $public_post_types ) ) { return $content; }
+		if ( ! is_singular( $public_post_types ) || ! in_the_loop() ) { return $content; }
 
 		$placements = get_option( 'advads-ads-placements', array() );
 		foreach ( $placements as $_placement_id => $_placement ){

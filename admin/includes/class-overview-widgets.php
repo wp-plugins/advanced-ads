@@ -58,6 +58,8 @@ class Advanced_Ads_Overview_Widgets_Callbacks {
 		array('Advanced_Ads_Overview_Widgets_Callbacks', 'render_add_on_sticky'), $screen->id, 'side', 'high');
 		add_meta_box('advads_overview_addon_layer', __( 'PopUps and Layers', ADVADS_SLUG ),
 		array('Advanced_Ads_Overview_Widgets_Callbacks', 'render_add_on_layer'), $screen->id, 'side', 'high');
+		add_meta_box('advads_overview_addon_slider', __( 'Ad Slider', ADVADS_SLUG ),
+		array('Advanced_Ads_Overview_Widgets_Callbacks', 'render_add_on_slider'), $screen->id, 'side', 'high');
 
 	}
 
@@ -201,6 +203,16 @@ foreach ( $next_steps as $_step ){
             <li><?php _e( 'allow users to close the popup', ADVADS_SLUG ); ?></li>
         </ul><p><a class="button button-primary" href="<?php echo ADVADS_URL; ?>add-ons/popup-and-layer-ads/" target="_blank"><?php
 			_e( 'Get the PopUp and Layer add-on', ADVADS_SLUG ); ?></a></p><?php
+	}
+
+	/**
+	 * slider add-on widget
+	 */
+	public static function render_add_on_slider(){
+
+		?><p><?php _e( 'Create a beautiful and simple slider from your ads.', ADVADS_SLUG ); ?></p>
+		<p><a class="button button-primary" href="<?php echo ADVADS_URL; ?>add-ons/slider/" target="_blank"><?php
+			_e( 'Get the Slider add-on', ADVADS_SLUG ); ?></a></p><?php
 	}
 
 }

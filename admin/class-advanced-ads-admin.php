@@ -98,6 +98,7 @@ class Advanced_Ads_Admin {
 		add_action( 'admin_menu', array($this, 'add_plugin_admin_menu') );
 
 		// on post/ad edit screen
+		add_action( 'edit_form_top', array($this, 'edit_form_above_title') );
 		add_action( 'edit_form_after_title', array($this, 'edit_form_below_title') );
 		add_action( 'admin_init', array($this, 'add_meta_boxes') );
 		add_action( 'post_submitbox_misc_actions', array($this, 'add_submit_box_meta') );
@@ -181,6 +182,7 @@ class Advanced_Ads_Admin {
 
 		wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array('jquery', 'jquery-ui-autocomplete'), Advanced_Ads::VERSION );
 		// jquery ui
+		wp_enqueue_script( 'jquery-ui-accordion' );
 		wp_enqueue_script( 'jquery-ui-button' );
 
 		// just register this script for later inclusion on ad group list page
@@ -387,6 +389,21 @@ class Advanced_Ads_Admin {
 			'settings' => '<a href="' . admin_url( 'edit.php?post_type=advanced_ads&page=advanced-ads-settings' ) . '">' . __( 'Settings', ADVADS_SLUG ) . '</a>'
 				), $links
 		);
+	}
+
+	/**
+	 * add information above the ad title
+	 *
+	 * @since 1.5.6
+	 * @param obj $post
+	 */
+	public function edit_form_above_title($post){
+		if ( ! isset($post->post_type) || $post->post_type != $this->post_type ) {
+			return;
+		}
+		$ad = new Advanced_Ads_Ad( $post->ID );
+
+		include ADVADS_BASE_PATH . 'admin/views/ad-info-top.php';
 	}
 
 	/**

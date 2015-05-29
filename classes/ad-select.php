@@ -95,8 +95,12 @@ class Advanced_Ads_Select {
 
 	// internal
 	public function get_ad_by_id($args) {
+		if ( isset($args['override']) ) {
+                        return $args['override'];
+                }
+
 		if ( ! isset($args['id']) || $args['id'] == 0 ) {
-			return isset($args['override']) ? $args['override'] : null;
+			return ;
 		}
 
 		// get ad
