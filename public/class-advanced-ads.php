@@ -25,7 +25,7 @@ class Advanced_Ads {
 	 * @var     string
 	 */
 
-	const VERSION = '1.5.6';
+	const VERSION = '1.6';
 
 	/**
 	 * post type slug
@@ -114,8 +114,8 @@ class Advanced_Ads {
 		// only when not doing ajax
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			Advanced_Ads_Ajax::get_instance();
-                }
-                add_action( 'plugins_loaded', array( $this, 'wp_plugins_loaded' ) );
+		}
+		add_action( 'plugins_loaded', array( $this, 'wp_plugins_loaded' ) );
 	}
 
 	/**
@@ -167,6 +167,9 @@ class Advanced_Ads {
 
 		// register hooks and filters for auto ad injection
 		$this->init_injection( $options );
+
+		// allow add-ons to hook
+		do_action( 'advanced-ads-plugin-loaded' );
 	}
 
 	/**
@@ -321,7 +324,8 @@ class Advanced_Ads {
 		$placements = get_option( 'advads-ads-placements', array() );
 		foreach ( $placements as $_placement_id => $_placement ){
 			if ( isset($_placement['type']) && 'header' == $_placement['type'] ){
-				echo Advanced_Ads_Placements::output( $_placement_id );
+				$_options = isset( $_placement['options'] ) ? $_placement['options'] : array();
+				echo Advanced_Ads_Select::get_instance()->get_ad_by_method( $_placement_id, Advanced_Ads_Select::PLACEMENT, $_options );
 			}
 		}
 	}
@@ -335,7 +339,8 @@ class Advanced_Ads {
 		$placements = get_option( 'advads-ads-placements', array() );
 		foreach ( $placements as $_placement_id => $_placement ){
 			if ( isset($_placement['type']) && 'footer' == $_placement['type'] ){
-				echo Advanced_Ads_Placements::output( $_placement_id );
+				$_options = isset( $_placement['options'] ) ? $_placement['options'] : array();
+				echo Advanced_Ads_Select::get_instance()->get_ad_by_method( $_placement_id, Advanced_Ads_Select::PLACEMENT, $_options );
 			}
 		}
 	}
@@ -351,21 +356,28 @@ class Advanced_Ads {
 		// run only within the loop on single pages of public post types
 		$public_post_types = get_post_types( array( 'public' => true, 'publicly_queryable' => true ), 'names', 'or' );
 
-		if ( ! is_singular( $public_post_types ) || ! in_the_loop() ) { return $content; }
+		// check if admin allows injection in all places
+		$options = $this->plugin->options();
+		if( ! isset( $options['content-injection-everywhere'] ) ){
+		    // check if this is a singular page within the loop
+		    if ( ! is_singular( $public_post_types ) || ! in_the_loop() ) { return $content; }
+		}
 
 		$placements = get_option( 'advads-ads-placements', array() );
 		foreach ( $placements as $_placement_id => $_placement ){
 			if ( empty($_placement['item']) || ! isset($_placement['type']) ) { continue; }
+			$_options = isset( $_placement['options'] ) ? $_placement['options'] : array();
 
 			switch ( $_placement['type'] ) {
 				case 'post_top':
-					$content = Advanced_Ads_Placements::output( $_placement_id ) . $content;
+				    // TODO broken: does not serve placement but serves ad directly
+					$content = Advanced_Ads_Select::get_instance()->get_ad_by_method( $_placement_id, Advanced_Ads_Select::PLACEMENT, $_options ) . $content;
 					break;
 				case 'post_bottom':
-					$content .= Advanced_Ads_Placements::output( $_placement_id );
+					$content .= Advanced_Ads_Select::get_instance()->get_ad_by_method( $_placement_id, Advanced_Ads_Select::PLACEMENT, $_options );
 					break;
 				case 'post_content':
-					$content = Advanced_Ads_Placements::inject_in_content( $_placement_id, $_placement['options'], $content );
+					$content = Advanced_Ads_Placements::inject_in_content( $_placement_id, $_options, $content );
 					break;
 			}
 		}
@@ -406,7 +418,7 @@ class Advanced_Ads {
 	 * @return arr $ad_placements
 	 */
 	static public function get_ad_placements_array(){
-	    return self::get_instance()->get_model()->get_ad_placements_array();
+		return self::get_instance()->get_model()->get_ad_placements_array();
 	}
 
 	/**

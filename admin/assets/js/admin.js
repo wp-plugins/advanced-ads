@@ -177,7 +177,7 @@ jQuery( document ).ready(function ($) {
          */
         // render button sets on settings page
         $(function() {
-            $( ".advads-settings-buttonset" ).buttonset();
+	    $( ".advads-settings-buttonset" ).buttonset();
         });
 
 	/**
@@ -218,6 +218,38 @@ jQuery( document ).ready(function ($) {
 		}
 	    });
 
+	});
+
+	// activate licenses
+	$('.advads-license-activate').click(function(){
+
+	var button = $(this);
+	    if( ! this.dataset.addon ) { return }
+
+	    var query = {
+		action: 'advads-activate-license',
+		addon: this.dataset.addon,
+		pluginname: this.dataset.pluginname,
+		optionslug: this.dataset.optionslug,
+		security: $('#advads-licenses-ajax-referrer').val()
+	    };
+
+	    // show loader
+	    $( '<span class="spinner advads-spinner"></span>' ).insertAfter( button );
+
+	    // send and close message
+	    $.post(ajaxurl, query, function (r) {
+		// remove spinner
+		$('span.spinner').remove();
+
+		if( r === '1' ){
+		    button.siblings('.advads-license-activate-error').remove();
+		    button.fadeOut();
+		    button.siblings('.advads-license-activate-active').fadeIn();
+		} else {
+		    button.next('.advads-license-activate-error').text( r );
+		}
+	    });
 	});
 });
 

@@ -173,7 +173,9 @@ tr:hover .on-hover { display: block; }
 #adsense-ad-param-error { color: red; font-weight: bold; }
 
 /**
-- TABS
+- TABS + SETTINGS
 -*/
 .advads-tab { display: none; }
 .advads-tab.active { display: block; }
+.advads-license-activate-active { color: green; }
+.advads-license-activate-error { color: red; }

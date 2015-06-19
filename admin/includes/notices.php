@@ -25,4 +25,9 @@ $advanced_ads_admin_notices = array(
 	'type' => 'update',
 	'text' => 'With Advanced Ads 1.5.4 the handling of <strong>visitor conditions</strong> became more consistent, flexible, and hopefully easier to use too. Please read this <a href="http://wpadvancedads.com/advanced-ads-1-5-4/" target="_blank">update post</a> to learn if this change should concern you.',
     ),
+    // if users updated from a previous version to 1.5.7
+    '1.6' => array(
+	'type' => 'update',
+	'text' => 'Advanced Ads 1.6 contains important <strong>fixes for ad groups</strong>. Please read the <a href="https://wpadvancedads.com/advanced-ads-1-6/" target="_blank">update post</a>.',
+    ),
 );

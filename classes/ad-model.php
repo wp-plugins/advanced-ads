@@ -3,6 +3,20 @@
 class Advanced_Ads_Model {
 
 	/**
+	 * Cache group for WP Object Cache
+	 *
+	 * @var string
+	 */
+	const OBJECT_CACHE_GROUP = 'advanced-ads';
+
+	/**
+	 * Default time-to-live for WP Object Cache
+	 *
+	 * @var string
+	 */
+	const OBJECT_CACHE_TTL = 720; // 12 Minutes
+
+	/**
 	 *
 	 * @var wpdb
 	 */

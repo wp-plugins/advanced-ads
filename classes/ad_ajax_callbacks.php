@@ -27,6 +27,7 @@ class Advanced_Ads_Ad_Ajax_Callbacks {
                 add_action( 'wp_ajax_advads-terms-search', array( $this, 'search_terms' ) );
                 add_action( 'wp_ajax_advads-close-notice', array( $this, 'close_notice' ) );
                 add_action( 'wp_ajax_advads-subscribe-notice', array( $this, 'subscribe' ) );
+                add_action( 'wp_ajax_advads-activate-license', array( $this, 'activate_license' ) );
 	}
 
 	/**
@@ -142,4 +143,22 @@ class Advanced_Ads_Ad_Ajax_Callbacks {
 	    echo Advanced_Ads_Admin_Notices::get_instance()->subscribe($_POST['notice']);
             die();
         }
+
+	/**
+	 * activate license of an add-on
+	 *
+	 * @since 1.5.7
+	 */
+	public function activate_license(){
+
+
+	    // check nonce
+	    check_ajax_referer( 'advads_ajax_license_nonce', 'security' );
+
+	    if ( !isset( $_POST['addon'] ) || $_POST['addon'] === '' ) { die(); }
+
+	    echo Advanced_Ads_Admin::get_instance()->activate_license( $_POST['addon'], $_POST['pluginname'], $_POST['optionslug'] );
+
+	    die();
+	}
 }

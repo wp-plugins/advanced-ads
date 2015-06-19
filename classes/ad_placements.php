@@ -200,48 +200,68 @@ class Advanced_Ads_Placements {
 	 * return content of a placement
 	 *
 	 * @since 1.1.0
-	 * @param string $id slug of the display
+	 * @param string $id   slug of the display
+	 * @param array  $args optional arguments (passed to child)
 	 */
-	public static function output($id = '') {
+	public static function output( $id = '', $args = array() ) {
 		// get placement data for the slug
 		if ( $id == '' ) {
-			return; }
-
-		$placements = get_option( 'advads-ads-placements', array() );
-
-		if ( isset($placements[$id]['item']) ) {
-			$_item = explode( '_', $placements[$id]['item'] );
-
-			if ( isset($_item[1]) ) {
-				$_item_id = absint( $_item[1] ); }
-			elseif (empty($_item_id))
-				return;
-
-			// return either ad or group content
-			if ( $_item[0] == 'ad' ) {
-				// add the placement to the global output array
-				$advads = Advanced_Ads::get_instance();
-				$advads->current_ads[] = array('type' => 'placement', 'id' => $id, 'title' => $placements[$id]['name']);
-
-				// create class from placement id, but not, if header injection
-				if ( isset($placements[$id]['type']) && $placements[$id]['type'] == 'header' ){
-					$ad_args = array();
-				} else {
-					$class = 'advads-' . $id;
-					$ad_args = array('output' => array('class' => array($class)));
-				}
-
-				return Advanced_Ads_Select::get_instance()->get_ad_by_method( $_item_id, 'id', $ad_args );
-			} elseif ( $_item[0] == 'group' ) {
-				// add the placement to the global output array
-				$advads = Advanced_Ads::get_instance();
-				$advads->current_ads[] = array('type' => 'placement', 'id' => $id, 'title' => $placements[$id]['name']);
-
-				return Advanced_Ads_Select::get_instance()->get_ad_by_method( $_item_id, 'group' );
-			}
+			return;
 		}
 
-		return;
+		$placements = Advanced_Ads::get_ad_placements_array();
+
+		if ( isset( $placements[ $id ]['item'] ) && $placements[ $id ]['item'] !== '' ) {
+			$_item = explode( '_', $placements[ $id ]['item'] );
+
+			if ( ! isset( $_item[1] ) || empty( $_item[1] ) ) {
+				return ;
+			}
+
+			// inject options
+			if ( isset( $placements[ $id ]['options'] ) && is_array( $placements[ $id ]['options'] ) ) {
+				foreach ( $placements[ $id ]['options'] as $_k => $_v ) {
+					if ( ! isset( $args[ $_k ] ) ) {
+						$args[ $_k ] = $_v;
+					}
+				}
+			}
+			// return either ad or group content
+			switch ( $_item[0] ) {
+				case 'ad':
+				case Advanced_Ads_Select::AD:
+					// create class from placement id (not if header injection)
+					if ( ! isset( $placements[ $id ]['type'] ) || $placements[ $id ]['type'] !== 'header' ) {
+						if ( ! isset( $args['output'] ) ) {
+							$args['output'] = array();
+						}
+						if ( ! isset( $args['output']['class'] ) ) {
+							$args['output']['class'] = array();
+						}
+						$class = 'advads-' . $id;
+						if ( ! in_array( $class, $args['output']['class'] ) ) {
+							$args['output']['class'][] = $class;
+						}
+					}
+
+					// fix method id
+					$_item[0] = Advanced_Ads_Select::AD;
+					break;
+
+				// avoid loops (programmatical error)
+				case Advanced_Ads_Select::PLACEMENT:
+					return;
+
+				case Advanced_Ads_Select::GROUP:
+				default:
+			}
+
+			// add the placement to the global output array
+			$advads = Advanced_Ads::get_instance();
+			$advads->current_ads[] = array('type' => 'placement', 'id' => $id, 'title' => $placements[ $id ]['name']);
+
+			return Advanced_Ads_Select::get_instance()->get_ad_by_method( (int) $_item[1], $_item[0], $args );
+		}
 	}
 
 	/**
@@ -255,17 +275,16 @@ class Advanced_Ads_Placements {
 	 * @link inspired by http://www.wpbeginner.com/wp-tutorials/how-to-insert-ads-within-your-post-content-in-wordpress/
 	 */
 	public static function &inject_in_content($placement_id, $options, &$content) {
-
 		/*
-         * hot-fixed to support some tags under idealised conditions.
-         * this does ignore:
-         * - autop() messups
-         * - nesting of any kind
-         * - non-valid XHTML (i.e. wild HTML)
-         *
-         * 'after' is experimental as the concept requires DOM and is not fully deterministic across implementations.
-         * it falls back to 'before' n+1-th element or 'after' closing tag of the n-th.
-         */
+		 * hot-fixed to support some tags under idealised conditions.
+		 * this does ignore:
+		 * - autop() messups
+		 * - nesting of any kind
+		 * - non-valid XHTML (i.e. wild HTML)
+		 *
+		 * 'after' is experimental as the concept requires DOM and is not fully deterministic across implementations.
+		 * it falls back to 'before' n+1-th element or 'after' closing tag of the n-th.
+		 */
 		$tag = isset($options['tag']) ? $options['tag'] : 'p';
 		$position = isset($options['position']) ? $options['position'] : 'after';
 		$paragraph_id = isset($options['index']) ? $options['index'] : 1;
@@ -299,7 +318,7 @@ class Advanced_Ads_Placements {
 		}
 
 		if ( isset($insertAt) ) {
-			$ad_content = Advanced_Ads_Placements::output( $placement_id );
+			$ad_content = Advanced_Ads_Select::get_instance()->get_ad_by_method( $placement_id, 'placement', $options );
 			if ( $insertAt === false ) {
 				$content .= $ad_content; // fallback: end-of-content
 			} else {

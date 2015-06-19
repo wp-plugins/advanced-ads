@@ -87,6 +87,10 @@ class Advanced_Ads_Plugin {
 		add_action( 'admin_menu', array( $this, 'remove_taxonomy_menu_item' ) );
 		// load widgets
 		add_action( 'widgets_init', array( $this, 'widget_init' ) );
+
+		// update add-ons
+		add_action( 'admin_init', array($this, 'add_on_updater'), 1 );
+
 	}
 
 	/**
@@ -380,4 +384,48 @@ class Advanced_Ads_Plugin {
 		$this->internal_options = $options;
 		update_option( ADVADS_SLUG . '-internal', $options );
 	}
+
+	/*
+         * add-on updater
+	 *
+	 * @since 1.5.7
+         *
+         */
+        public function add_on_updater(){
+
+	    /**
+	     * list of registered add ons
+	     * contains:
+	     *	    name
+	     *	    version
+	     *	    path
+	     *	    options_slug
+	     *	    short option slug (=key)
+	     */
+	    $add_ons = apply_filters( 'advanced-ads-add-ons', array() );
+
+	    if( $add_ons === array() ) {
+		return;
+	    }
+
+	    foreach( $add_ons as $_add_on_key => $_add_on ){
+		    // check status
+		    if(get_option($_add_on['options_slug'] . '-license-status', false) !== 'valid') {
+			return;
+		    }
+
+		    // retrieve our license key from the DB
+		    $licenses = get_option(ADVADS_SLUG . '-licenses', array());
+		    $license_key = isset($licenses[$_add_on_key]) ? $licenses[$_add_on_key] : '';
+
+		    // setup the updater
+		    new EDD_SL_Plugin_Updater( ADVADS_URL, $_add_on['path'], array(
+			    'version' 	=> $_add_on['version'],
+			    'license' 	=> $license_key,
+			    'item_name' => $_add_on['name'],
+			    'author' 	=> 'Thomas Maier'
+			)
+		    );
+	    }
+        }
 }

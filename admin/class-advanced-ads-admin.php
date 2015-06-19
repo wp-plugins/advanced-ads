@@ -456,13 +456,11 @@ class Advanced_Ads_Admin {
 
 		$ad = new Advanced_Ads_Ad( $post->ID );
 
-		$time_adj = current_time( 'timestamp' );
-
-		$curr_day    = ( ! empty($ad->expiry_date)) ? date( 'd', $ad->expiry_date ) : gmdate( 'd', $time_adj );
-		$curr_month  = ( ! empty($ad->expiry_date)) ? date( 'm', $ad->expiry_date ) : gmdate( 'm', $time_adj );
-		$curr_year   = ( ! empty($ad->expiry_date)) ? date( 'Y', $ad->expiry_date ) : gmdate( 'Y', $time_adj );
-
-		$enabled = ( ! empty($ad->expiry_date)) ? 1 : 0;
+		// get time set for ad or current timestamp (both GMT)
+		$time_adj = $ad->expiry_date ? $ad->expiry_date : time();
+		$time_adj = gmdate( 'Y-m-d H:i:s', $time_adj );
+		list($curr_year, $curr_month, $curr_day) = explode('-', get_date_from_gmt( $time_adj, 'Y-m-d' ) );
+		$enabled = 1 - empty($ad->expiry_date);
 
 		include ADVADS_BASE_PATH . 'admin/views/ad-submitbox-meta.php';
 	}
@@ -575,7 +573,10 @@ class Advanced_Ads_Admin {
 			$year   = absint( $_POST['advanced_ad']['expiry_date']['year'] );
 			$month  = absint( $_POST['advanced_ad']['expiry_date']['month'] );
 			$day    = absint( $_POST['advanced_ad']['expiry_date']['day'] );
-			$ad->expiry_date = mktime( 0, 0, 0, $month, $day, $year );
+			// as PHP 5.2 has not reliable 'u' option need to calculate timestamps this way
+			$gmDate = get_gmt_from_date("$year-$month-$day 00:00:00", 'Y-m-d');
+			list( $year, $month, $day ) = explode( '-', $gmDate );
+			$ad->expiry_date = gmmktime(0, 0, 0, $month, $day, $year);
 		} else {
 			$ad->expiry_date = 0;
 		}
@@ -706,6 +707,14 @@ class Advanced_Ads_Admin {
 				$hook,
 				'advanced_ads_setting_section'
 			);
+			// add setting fields for content injection protection
+			add_settings_field(
+				'content-injection-everywhere',
+				__( 'Unlimited ad injection', ADVADS_SLUG ),
+				array($this, 'render_settings_content_injection_everywhere'),
+				$hook,
+				'advanced_ads_setting_section'
+			);
 			// add setting fields for content injection priority
 			add_settings_field(
 				'content-injection-priority',
@@ -751,6 +760,8 @@ class Advanced_Ads_Admin {
 	 */
 		public function render_settings_licenses_section_callback(){
 			echo '<p>'. __( 'Enter license keys for our powerful <a href="'.ADVADS_URL.'add-ons/" target="_blank">add-ons</a>.', ADVADS_SLUG ) .'</p>';
+			// nonce field
+			echo '<input type="hidden" id="advads-licenses-ajax-referrer" value="' . wp_create_nonce( "advads_ajax_license_nonce" ) . '"/>';
 		}
 
 		/**
@@ -809,6 +820,20 @@ class Advanced_Ads_Admin {
 			echo '<input id="advanced-ads-advanced-js" type="checkbox" value="1" name="'.ADVADS_SLUG.'[advanced-js]" '.checked( $checked, 1, false ).'>';
 			echo '<p class="description">'. sprintf( __( 'Only enable this if you can and want to use the advanced JavaScript functions described <a href="%s">here</a>.', ADVADS_SLUG ), ADVADS_URL . 'javascript-functions/' ) .'</p>';
 		}
+
+	/**
+	 * render setting for content injection protection
+	 *
+	 * @since 1.4.1
+	 */
+	public function render_settings_content_injection_everywhere(){
+		$options = Advanced_Ads::get_instance()->options();
+		$everywhere = ( isset($options['content-injection-everywhere']) ) ? true : false;
+
+		echo '<input id="advanced-ads-injection-everywhere" type="checkbox" value="true" name="'.ADVADS_SLUG.'[content-injection-everywhere]" '.checked( $everywhere, true, false ).'>';
+		echo '<p class="description">'. __( 'Some plugins and themes trigger ad injection where it shouldn’t happen. Therefore, Advanced Ads ignores injected placements on non-singular pages and outside the loop. However, this can cause problems with some themes. You can enable this option if you don’t see ads or want to enable ad injections on archive pages AT YOUR OWN RISK.', ADVADS_SLUG ) .'</p>';
+
+	}
 
 		/**
 	 * render setting for content injection priority
@@ -1145,5 +1170,46 @@ class Advanced_Ads_Admin {
 	    if( current_user_can('manage_options') ){
 		$this->notices = Advanced_Ads_Admin_Notices::get_instance();
 	    }
+	}
+
+	/**
+	 * save license key
+	 *
+	 * @since 1.2.0
+	 * @param string $addon string with addon identifier
+	 */
+	public function activate_license( $addon = '', $plugin_name = '', $options_slug = '' ) {
+
+		if ( '' === $addon || '' === $plugin_name || '' === $options_slug ) {
+			return __( 'Error while trying to register the license. Please contact support.', ADVADS_SLUG );
+		}
+
+		$licenses = get_option(ADVADS_SLUG . '-licenses', array());
+		$license_key = isset($licenses[$addon]) ? $licenses[$addon] : '';
+		if ( '' == $license_key ) {
+			return __( 'Please enter and save a valid license key first.', ADVADS_SLUG );
+		}
+
+		$api_params = array(
+			'edd_action'=> 'activate_license',
+			'license' 	=> $license_key,
+			'item_name' => urlencode( $plugin_name ),
+			'url'       => home_url()
+		);
+		$response = wp_remote_get( add_query_arg( $api_params, ADVADS_URL ) );
+		if ( is_wp_error( $response ) ) {
+			return wp_remote_retrieve_body( $response );
+		}
+
+		$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+		// save license status
+		update_option($options_slug . '-license-status', $license_data->license, false);
+
+		// display activation problem
+		if( !empty( $license_data->error )) {
+		    return sprintf( __('License is invalid. Reason: %s'), $license_data->error);
+		}
+
+		return 1;
 	}
 }

@@ -125,6 +125,9 @@ class Advanced_Ads_Admin_Notices {
 			if ( version_compare( $old_version, '1.5.4' ) == -1 ) {
 				$this->notices[] = '1.5.4';
 			}
+			if ( version_compare( $old_version, '1.6' ) == -1 ) {
+				$this->notices[] = '1.6';
+			}
 		}
 		$new_options['version'] = ADVADS_VERSION;
 

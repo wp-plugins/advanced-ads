@@ -172,7 +172,7 @@ class Advanced_Ads_Ad {
 		// set wrapper conditions
 		$this->wrapper = apply_filters( 'advanced-ads-set-wrapper', $this->wrapper, $this );
 		// add unique wrapper id, if options given
-		if ( is_array( $this->wrapper ) && $this->wrapper !== array() && ! isset($this->wrapper['id']) ){
+		if ( is_array( $this->wrapper ) && $this->wrapper !== array() && ! isset( $this->wrapper['id'] ) ){
 			// create unique id if not yet given
 			$this->wrapper['id'] = $this->create_wrapper_id();
 		}
@@ -186,8 +186,9 @@ class Advanced_Ads_Ad {
 	 * @since 1.0.0
 	 * @todo check against default values
 	 */
-	public function options($field = ''){
+	public function options( $field = '', $default = null ) {
 		// retrieve options, if not given yet
+		// -TODO may execute multiple times (if empty); bad design and risk to access unintialised data with direct access to $this->options property.
 		if ( $this->options === array() ) {
 			// load arguments given on ad load
 			$this->options = $this->args;
@@ -201,11 +202,15 @@ class Advanced_Ads_Ad {
 		// return specific option
 		if ( $field != '' ) {
 			if ( isset($this->options[$field]) ) {
-				return $this->options[$field]; }
+				return $this->options[$field];
+			}
 		} else { // return all options
 			if ( ! empty($this->options) ) {
-				return $this->options; }
+				return $this->options;
+			}
 		}
+
+		return $default;
 	}
 
 	/**
@@ -264,9 +269,7 @@ class Advanced_Ads_Ad {
 			return false;
 		}
 
-		if ( ! $this->can_display_by_conditions()
-				|| ! $this->can_display_by_visitor()
-				|| ! $this->can_display_by_expiry_date() ) {
+		if ( ! $this->can_display_by_visitor() || ! $this->can_display_by_expiry_date() ) {
 			return false;
 		}
 
@@ -274,241 +277,6 @@ class Advanced_Ads_Ad {
 		$can_display = apply_filters( 'advanced-ads-can-display', true, $this );
 
 		return $can_display;
-	}
-
-	/**
-	 * check display conditions
-	 *
-	 * @since 1.1.0 moved here from can_display()
-	 * @return bool $can_display true if can be displayed in frontend
-	 */
-	public function can_display_by_conditions(){
-            // use $wp_the_query to check the original query and not custom queries
-		global $post, $wp_the_query;
-
-		$query = $wp_the_query->get_queried_object();
-
-		if ( empty($this->options['conditions']) ||
-				! is_array( $this->options['conditions'] ) ) { return true; }
-
-		// display ad if conditions are explicitely disabled
-		if ( isset($this->options['conditions']['enabled']) && ! $this->options['conditions']['enabled'] ) { return true; }
-
-		$conditions = $this->options['conditions'];
-		foreach ( $conditions as $_cond_key => $_cond_value ) {
-			switch ( $_cond_key ){
-				// check for post ids
-				case 'postids' :
-					if ( $wp_the_query->is_singular() && empty($_cond_value['all']) ){
-						// this check is deprecated: included posts
-						if ( ! empty($_cond_value['include']) ){
-							if ( is_string( $_cond_value['include'] ) ){
-								$post_ids = explode( ',', $_cond_value['include'] );
-							} else {
-								$post_ids = $_cond_value['include'];
-							}
-							if ( is_array( $post_ids )
-									&& isset($post->ID)
-									&& ! in_array( $post->ID, $post_ids ) ) {
-									return false; }
-						}
-						// included posts
-						if ( ! empty($_cond_value['method']) && 'include' == $_cond_value['method'] ){
-    						    $post_ids = $_cond_value['ids'];
-						    if ( is_array( $post_ids ) && isset($post->ID) && ! in_array( $post->ID, $post_ids ) ){
-							    return false;
-						    }
-						}
-						// this check is deprecated: excluded posts
-						if ( ! empty($_cond_value['exclude']) ){
-							if ( is_string( $_cond_value['exclude'] ) ){
-								$post_ids = explode( ',', $_cond_value['exclude'] );
-							} else {
-								$post_ids = $_cond_value['exclude'];
-							}
-							if ( is_array( $post_ids ) && isset($post->ID) && in_array( $post->ID, $post_ids ) ){
-								return false;
-							}
-						}
-						// excluded posts
-						if ( ! empty($_cond_value['method']) && 'exclude' == $_cond_value['method'] ){
-    						    $post_ids = $_cond_value['ids'];
-						    if ( is_array( $post_ids ) && isset($post->ID) && in_array( $post->ID, $post_ids ) ){
-							    return false;
-						    }
-						}
-					}
-				break;
-				// check for category ids
-				case 'categoryids' :
-					// included
-					if ( $wp_the_query->is_singular() && empty($_cond_value['all']) ){
-						// get all taxonomies of the post
-						$term_ids = $this->get_object_terms( $post->ID );
-
-						if ( ! empty($_cond_value['include']) ){
-							if ( is_string( $_cond_value['include'] ) ){
-								$category_ids = explode( ',', $_cond_value['include'] );
-							} else {
-								$category_ids = $_cond_value['include'];
-							}
-
-							// check if currently in a post (not post page, but also posts in loops)
-							if ( is_array( $category_ids ) && isset($post->ID)
-								&& ! count( array_intersect( $category_ids, $term_ids ) ) ) { // is there any taxonomy the same?
-									return false;
-							}
-						}
-						// check for excluded category ids
-						if ( ! empty($_cond_value['exclude']) ){
-							if ( is_string( $_cond_value['exclude'] ) ){
-								$category_ids = explode( ',', $_cond_value['exclude'] );
-							} else {
-								$category_ids = $_cond_value['exclude'];
-							}
-							// check if currently in a post (not post page, but also posts in loops)
-							if ( is_array( $category_ids ) && isset($post->ID)
-								&& count( array_intersect( $category_ids, $term_ids ) ) ) { // is there any taxonomy the same
-									// being only in one excluded category is enough to not display the ad
-									return false;
-							}
-						}
-					}
-				break;
-				// check for included category archive ids
-				// @link http://codex.wordpress.org/Conditional_Tags#A_Category_Page
-				case 'categoryarchiveids' :
-					if ( isset($query->term_id) && $wp_the_query->is_archive() && empty($_cond_value['all']) ){
-						if ( ! empty($_cond_value['include']) ){
-							if ( is_string( $_cond_value['include'] ) ){
-								$category_ids = explode( ',', $_cond_value['include'] );
-							} else {
-								$category_ids = $_cond_value['include'];
-							}
-							if ( is_array( $category_ids ) && ! in_array( $query->term_id, $category_ids ) ) {
-								return false; }
-						}
-						// check for excluded category archive ids
-						if ( ! empty($_cond_value['exclude']) ){
-							if ( is_string( $_cond_value['exclude'] ) ){
-								$category_ids = explode( ',', $_cond_value['exclude'] );
-							} else {
-								$category_ids = $_cond_value['exclude'];
-							}
-							if ( is_array( $category_ids ) && in_array( $query->term_id, $category_ids ) ) {
-								return false; }
-						}
-					}
-				break;
-				// check for included post types
-				case 'posttypes' :
-					// display everywhere, if include not set (= all is checked)
-					// TODO remove condition check for string; deprecated since 1.2.2
-					if ( empty($_cond_value['all']) ){
-						if ( ! empty($_cond_value['include']) ){
-							if ( is_string( $_cond_value['include'] ) ){
-								$post_types = explode( ',', $_cond_value['include'] );
-							} else {
-								$post_types = $_cond_value['include'];
-							}
-							// check if currently in a post (not post page, but also posts in loops)
-							if ( is_array( $post_types ) && ! in_array( get_post_type(), $post_types ) ) {
-								return false;
-							}
-						}
-						// check for excluded post types
-						// TODO remove in a later version, deprecated since 1.2.2
-						if ( ! empty($_cond_value['exclude']) ){
-							$post_types = explode( ',', $_cond_value['exclude'] );
-							// check if currently in a post (not post page, but also posts in loops)
-							if ( is_array( $post_types ) && in_array( get_post_type(), $post_types ) ) {
-								return false;
-							}
-						}
-					}
-				break;
-				// check is_front_page
-				// @link https://codex.wordpress.org/Conditional_Tags#The_Front_Page
-				case 'is_front_page' :
-					if ( $_cond_value == 0 && $wp_the_query->is_front_page()) {
-						return false; }
-				break;
-				// check is_singular
-				// @link https://codex.wordpress.org/Conditional_Tags#A_Post_Type
-				case 'is_singular' :
-					if ( $_cond_value == 0 && $wp_the_query->is_singular() ) {
-						return false; }
-				break;
-				// check is_archive
-				// @link https://codex.wordpress.org/Conditional_Tags#Any_Archive_Page
-				case 'is_archive' :
-					if ( $_cond_value == 0 && $wp_the_query->is_archive() ) {
-						return false; }
-				break;
-				// check is_search
-				// @link https://codex.wordpress.org/Conditional_Tags#A_Search_Result_Page
-				case 'is_search' :
-					if ( $_cond_value == 0 && $wp_the_query->is_search() ) {
-						return false; }
-				break;
-				// check is_404
-				// @link https://codex.wordpress.org/Conditional_Tags#A_404_Not_Found_Page
-				case 'is_404' :
-					if ( $_cond_value == 0 && $wp_the_query->is_404() ) {
-						return false; }
-				break;
-				// check is_attachment
-				// @link https://codex.wordpress.org/Conditional_Tags#An_Attachment
-				case 'is_attachment' :
-					if ( $_cond_value == 0 && $wp_the_query->is_attachment() ) {
-						return false; }
-				break;
-				// check !is_main_query
-				// @link https://codex.wordpress.org/Function_Reference/is_main_query
-				case 'is_main_query' :
-					if ( $_cond_value == 0 && !is_main_query() ) {
-						return false; }
-				break;
-			}
-		}
-
-		return true;
-	}
-
-	/**
-	 * get all terms of a specific post or post type
-	 *
-	 * @param int $post_id id of the post
-	 * @return arr $out ids of terms this post belongs to
-	 */
-	private function get_object_terms($post_id = 0){
-
-		$post_id = absint( $post_id );
-		if ( ! $post_id ) { return array(); }
-
-		// get post by post id
-		$post = get_post( $post_id );
-
-		// get post type by post
-		$post_type = $post->post_type;
-
-		// get post type taxonomies
-		$taxonomies = get_object_taxonomies( $post_type, 'objects' );
-
-		$term_ids = array();
-		foreach ( $taxonomies as $taxonomy_slug => $taxonomy ){
-
-			// get the terms related to post
-			$terms = get_the_terms( $post->ID, $taxonomy_slug );
-
-			if ( ! empty( $terms ) ) {
-				foreach ( $terms as $term ) {
-					$term_ids[] = $term->term_id;
-				}
-			}
-		}
-
-		return $term_ids;
 	}
 
 	/**
@@ -575,20 +343,15 @@ class Advanced_Ads_Ad {
 	 */
 	public function can_display_by_expiry_date(){
 
-		if ( !isset($this->options['expiry_date']) ) { return true; }
+		// if expiry_date is not set null is returned
+		$ad_expiry_date = (int) $this->options( 'expiry_date' );
 
-		$ad_expiry_date = absint($this->options( 'expiry_date' ));
+		if ( $ad_expiry_date <= 0 ) {
+			return true;
+		}
 
-		if ( $ad_expiry_date == 0 ) { return true; }
-
-		// create blog specific timestamp
-		// TODO this is broken: use get_date_from_gmt()
-		$blog_expiry_date = time() + ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS );
-
-		// check blog time against current time
-		if ( $blog_expiry_date >= $ad_expiry_date ) { return false; }
-
-		return true;
+		// check blog time against current time (GMT)
+		return $ad_expiry_date > time();
 	}
 
 	/**
@@ -621,8 +384,7 @@ class Advanced_Ads_Ad {
 		// filter to manipulate options or add more to be saved
 		$options = apply_filters( 'advanced-ads-save-options', $options, $this );
 
-                update_post_meta( $this->id, self::$options_meta_field, $options );
-
+		update_post_meta( $this->id, self::$options_meta_field, $options );
 	}
 
 	/**
@@ -664,7 +426,7 @@ class Advanced_Ads_Ad {
 	 * @param string $content ad content
 	 * @param obj $ad ad object
 	 */
-	public function prepare_frontend_output(){
+	public function prepare_frontend_output() {
 
 		// load ad type specific content filter
 		$output = $this->type_obj->prepare_output( $this );

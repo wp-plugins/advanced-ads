@@ -3,12 +3,12 @@
 require_once(ADVADS_BASE_PATH . 'admin/includes/class-display-condition-callbacks.php');
 $types = Advanced_Ads::get_instance()->ad_types;
 $jquery_ui_buttons = array();
+$conditions_enabled = isset( $ad->conditions['enabled'] ) && $ad->conditions['enabled'];
 ?>
 <p class="description"><?php _e( 'Choose where to display the ad and where to hide it.', ADVADS_SLUG ); ?></p>
 <div id="advanced-ad-conditions-enable">
-<?php $conditions_enabled = (empty($ad->conditions['enabled'])) ? 0 : 1; ?>
-    <label><input type="radio" name="advanced_ad[conditions][enabled]" value="0" <?php checked( $conditions_enabled, 0 ); ?>/><?php _e( 'Display ad everywhere', ADVADS_SLUG ); ?></label>
-    <label><input type="radio" name="advanced_ad[conditions][enabled]" value="1" <?php checked( $conditions_enabled, 1 ); ?>/><?php _e( 'Set display conditions', ADVADS_SLUG ); ?></label>
+    <input id="advads-condition-display-disabled" type="radio" name="advanced_ad[conditions][enabled]" value="0" <?php checked( ! $conditions_enabled ); ?>/><label for="advads-condition-display-disabled"><?php _e( 'Display ad everywhere', ADVADS_SLUG ); ?></label>
+    <input id="advads-condition-display-enabled" type="radio" name="advanced_ad[conditions][enabled]" value="1" <?php checked( $conditions_enabled ); ?>/><label for="advads-condition-display-enabled"><?php _e( 'Set display conditions', ADVADS_SLUG ); ?></label>
 </div>
 <div id="advanced-ad-conditions">
     <ul id="advads-how-it-works">
