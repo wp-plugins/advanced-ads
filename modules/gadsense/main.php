@@ -11,7 +11,7 @@ if ( class_exists( 'Advanced_Ads', false ) ) {
 	 * "content" key must match the id
 	 */
 	function advads_add_ad_type_adsense($types) {
-		$types['adsense'] = new Advads_Ad_Type_Adsense();
+		$types['adsense'] = new Advanced_Ads_Ad_Type_Adsense();
 		return $types;
 	}
 

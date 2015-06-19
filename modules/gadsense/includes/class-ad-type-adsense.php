@@ -14,7 +14,7 @@
  * see also includes/class-ad-type-abstract.php for basic object
  *
  */
-class Advads_Ad_Type_Adsense extends Advads_Ad_Type_Abstract {
+class Advanced_Ads_Ad_Type_Adsense extends Advanced_Ads_Ad_Type_Abstract {
 
 	/**
 	 * ID - internal type of the ad type
@@ -189,7 +189,7 @@ class Advads_Ad_Type_Adsense extends Advads_Ad_Type_Abstract {
 		$output .= 'data-ad-slot="' . $slot_id . '" ' . "\n";
 		$output .= 'data-ad-format="auto"></ins>' . "\n";
 		$output .= '<script> ' . "\n";
-		$output .= '(adsbygoogle = window.adsbygoogle || []).push({}); ' . "\n";
+		$output .= apply_filters( 'advanced-ads-gadsense-responsive-adsbygoogle', '(adsbygoogle = window.adsbygoogle || []).push({}); ' . "\n");
 		$output .= '</script>' . "\n";
 	}
 

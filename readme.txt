@@ -3,8 +3,8 @@ Contributors: webzunft
 Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5RRRCEBGN3UT2
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
-Tested up to: 4.2
-Stable tag: 1.5.2.1
+Tested up to: 4.2.2
+Stable tag: 1.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -111,7 +111,8 @@ Localizations: English, German, Italien, Portuguese
 > * Tracking – ad tracking and statistics – [more](https://wpadvancedads.com/add-ons/tracking/)
 > * Responsive Ads – create mobile ads or ads for specific browser sizes - [Demo](https://wpadvancedads.com/add-ons/responsive-ads/)
 > * Sticky Ads – increase click rates with fixed, sticky, and anchor ads - [Demo](https://wpadvancedads.com/sticky-ads/demo/)
-> * PopUp and Layer Ads – display ads and other content in layers and popups - [Demo](https://wpadvancedads.com/add-ons/layer-ads/)
+> * PopUp and Layer Ads – display ads and other content in layers and popups - [Demo](https://wpadvancedads.com/add-ons/popup-and-layer-ads/)
+> * Slider – create a simple slider from your ads – [more](https://wpadvancedads.com/add-ons/slider/)
 
 == Installation ==
 
@@ -173,6 +174,71 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 3. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.6 =
+
+THIS IS A MAJOR UPDATE, PLEASE HELP ME WITH YOUR BUG REPORTS
+
+[Update post](https://wpadvancedads.com/advanced-ads-1-6)
+
+Changes you can test:
+
+* fixed ordered ad groups displaying ads with 0 ad weight
+* fixed order of ad groups to deliver ad with highest weight first
+* added option to allow ad injections on archive pages and outside the loop
+* minor layout fix for update button after selecting rich content ad type
+* fixed timestamp issues using GMT only now (might shift old ad expiry timestamps by timezone offset)
+
+Changes under the hood:
+
+* allow to cache groups when persistend object cache is available
+* pass placement options to underlying ad/ group
+* allow to exchange loaded ad ids for ajax callback
+* fix override option for ad select
+* wp query is now prepared as ad argument on selection
+* moved query based display conditions to own module
+* fixed ajax request parser
+* actually serve placement on injection (and allow to use placement arguments)
+* `advanced-ads-ajax-ad-select-init` action when ad is going to be selected by ajax call
+* provide action when plugin was loaded
+
+= 1.5.6 =
+
+* check out the new [Slider add-on](https://wpadvancedads.com/add-ons/slider/)
+* please [vote for your preferred support channel](http://webgilde.com/en/how-would-you-like-to-get-help/)
+* display usage help after an ad was published
+* fixed AdSense ads counting when injected outside the loop
+* added better explanation for visitor conditions
+* updated German translation
+
+= 1.5.5 =
+
+* fixed outdated links to the manual and feature requests
+* added hooks and options to be able to extend ad groups
+
+= 1.5.4.1 =
+
+* hotfix for new visitor conditions not showing up
+
+= 1.5.4 =
+
+* PLEASE READ the [update notice](https://wpadvancedads.com/advanced-ads-1-5-4/) to learn more about the changes on visitor conditions
+* visitor conditions completely rewritten to allow combination of multiple conditions
+* created simpler placement creation
+* reordered Advanced Ads dashboard
+* added AdSense tutorial
+
+= 1.5.3 =
+
+* display all ads of an ad group
+* no ad wrapper is created if the main ad content is empty
+* hide ad meta box on posts and pages for non admins
+* display if ad expired on group overview
+* added tutorial subscription
+* added notices and newsletter logic
+* new hook `advanced-ads-debug-after`
+* updated all class names from "Advads_" to "Advanced_Ads_"
+* updated German translation
 
 = 1.5.2.1 =
 
@@ -272,7 +338,7 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 
 = 1.4.2 =
 
-* COOL: [vote for and suggest features](http://wpadvancedads.com/advancedads/feature-requests/)
+* COOL: [vote for and suggest features](http://wpadvancedads.com/feature-requests/)
 * switching from an existing plain text ad with AdSense code into the AdSense ad type gets the right options automatically
 * added Advanced Ads Tutorials rss to dashboard widget
 
@@ -289,7 +355,7 @@ Need ad analytics and impression tracking? Try the [tracking add-on](http://wpad
 
 = 1.4.0 =
 
-* COOL: AdSense ad type, [manual](http://wpadvancedads.com/advancedads/manual/ad-types/adsense-ads/)
+* COOL: AdSense ad type, [manual](http://wpadvancedads.com/manual/ad-types/adsense-ads/)
 * added multiple action hooks
 * fix translation of textdomain if the plugin folder is renamed
 * load pro module, if exists

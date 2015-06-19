@@ -14,7 +14,7 @@
  * see also includes/ad-type-abstract.php for basic object
  *
  */
-class Advads_Ad_Type_Content extends Advads_Ad_Type_Abstract{
+class Advanced_Ads_Ad_Type_Content extends Advanced_Ads_Ad_Type_Abstract{
 
 	/**
 	 * ID - internal type of the ad type
@@ -63,13 +63,13 @@ class Advads_Ad_Type_Content extends Advads_Ad_Type_Abstract{
 			?><p><?php _e( 'Please <strong>save the ad</strong> before changing it to the content type.', ADVADS_SLUG ); ?></p><?php
 			$status = get_post_status( $ad->id );
 if ( 'publish' != $status && 'future' != $status && 'pending' != $status ) { ?>
-                <input <?php if ( 'private' == $status ) { ?>style="display:none"<?php } ?> type="submit" name="save" id="save-post" value="<?php esc_attr_e( 'Save Draft' ); ?>" class="button" />
+                <input <?php if ( 'private' == $status ) { ?>style="display:none"<?php } ?> type="submit" name="save" id="save-post" value="<?php esc_attr_e( 'Save Draft' ); ?>" class="button button-primary" />
                 <?php } else {
 		?><input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Update' ) ?>" />
 		<input name="save" type="submit" class="button button-primary button-large" id="publish" accesskey="p" value="<?php esc_attr_e( 'Update' ) ?>" /><?php
 }
 if ( ! empty($ad->content) ) : ?><textarea id="advads-ad-content-plain" style="display:none;" cols="1" rows="1" name="advanced_ad[content]"><?php
-echo $ad->content; ?></textarea><br class="clear"/><?php endif;
+echo $ad->content; ?></textarea><?php endif;
 		} else {
 			$args = array(
 				'textarea_name' => 'advanced_ad[content]',
@@ -77,7 +77,7 @@ echo $ad->content; ?></textarea><br class="clear"/><?php endif;
 				'drag_drop_upload' => true
 			);
 			wp_editor( $content, 'advanced-ad-parameters-content', $args );
-		}
+		} ?><br class="clear"/><?php
 	}
 
 	/**

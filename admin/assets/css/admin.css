@@ -17,6 +17,22 @@
 /**
 * AD EDIT PAGE
 */
+#advads-ad-info-top { position: relative; top: 0; left: 0; padding: 3em; background: #fff; }
+#advads-ad-info-close { position: absolute; top: 1em; right: 1em; font-size: 2em; color: #666; }
+#advads-ad-info-close:hover { cursor: pointer; color: #000; }
+#advads-ad-info-top h2 { font-weight: bold; color: #0074a2; }
+#advads-ad-info-top div pre input { width: 30em; }
+#advads-ad-info-top .ui-accordion .ui-accordion-header { margin-top: 0; border-radius: 0; }
+#advads-ad-info-top .ui-accordion .ui-accordion-content { border-radius: 0; }
+
+#advads-ad-info { overflow: hidden; margin-bottom: 1em; }
+#advads-ad-info > * { float: left; margin: 0; line-height: 2em; }
+#advads-ad-info pre { float: left; margin: 0; line-height: 2em; }
+#advads-ad-info > label > span { float: left; margin-right: .5em; }
+#advads-ad-info > label + pre { margin-right: .5em; }
+#advads-ad-info > label { margin-left: 1em; }
+#advads-ad-info pre input { background: transparent; }
+
 #ad-main-box { overflow: hidden; }
 .post-type-advanced_ads #poststuff .meta-box-sortables .inside {
 	margin: 0;
@@ -65,9 +81,11 @@
 .post-type-advanced_ads #ad-display-box .advads-conditions-terms-buttons .button { margin: 0 -1px .3em 0; padding: 0 .5em; background: #f7f7f7; height: 22px; line-height: 22px; color: #555; border: 1px solid #ccc; border-radius: 0; font-family: inherit; }
 .post-type-advanced_ads #ad-display-box .advads-conditions-terms-buttons label span { margin: 0; padding: 0; line-height: 22px; }
 
-.post-type-advanced_ads #ad-display-box .advads-conditions-terms-buttons .ui-state-active,
-.post-type-advanced_ads #ad-display-box .advads-conditions-terms-buttons .button,
-.post-type-advanced_ads #ad-display-box .advanced-ads-display-condition-set .ui-button.ui-state-active { border-color: #0074a2; background: #2ea2cc; color: #fff; box-shadow: none; }
+.advads-buttonset label span { margin: 0; padding: 0; }
+
+.advads-buttonset .ui-state-active,
+.advads-buttonset .button,
+.advads-buttonset .ui-button.ui-state-active { border-color: #0074a2; background: #2ea2cc; color: #fff; box-shadow: none; }
 
 #ad-display-box .advads-conditions-terms-show-search { height: 22px; line-height: 22px; font-weight: bold; font-size: 1.5em; }
 .advads-conditions-terms-show-search + .description { display: none; }
@@ -87,6 +105,17 @@
 .post-type-advanced_ads #advanced-ad-output-margin label + label { margin-left: 1em; }
 
 .advads-debug-output legend { text-decoration: underline; cursor: pointer; }
+
+#advads-visitor-conditions select,
+#advads-visitor-conditions input { margin: 0; padding: 3px; }
+#advads-visitor-conditions label { float: left; }
+#advads-visitor-conditions select { margin-left: 1em; }
+#advads-visitor-conditions tbody tr:first-child { display: none; }
+#advads-visitor-conditions td { padding: 0 5px; position: relative; top: 0; left: 0; }
+#advads-visitor-conditions td hr { float: right; width: 80%;}
+#advads-visitor-conditions td.advads-visitor-conditions-operator-or > hr { display: none; }
+#advads-visitor-conditions-new .advads-buttonset label { text-transform: uppercase; }
+#advads-visitor-conditions-new .advads-buttonset { float: left; }
 
 /**
  AD GROUP LIST
@@ -112,10 +141,12 @@
 .advads-placements-new-form select { display: inline-block; min-width: 10em; }
 .advads-placements-new-form label { display: inline-block; width: 10em; }
 .advads-placements-new-form input { display: inline-block; }
-.advads-placements-table { min-width: 80%; }
-.advads-placements-table thead tr { background: #fff; }
-.advads-placements-table tbody tr:nth-child(even) { background: #fff; }
+.advads-placements-table { min-width: 80%; border-collapse: collapse; background: #fff; }
+.advads-placements-table tbody tr:nth-child(4n+1) { background: none repeat scroll 0 0 #f9f9f9; }
+.advads-placements-table tbody tr { border-top: 1px solid #f1f1f1; }
 .advads-placements-table th { margin: 0; padding: 10px; text-align: left; vertical-align: top; }
+.advads-placements-table.widefat tbody th { font-weight: bold; }
+.advads-placements-table th span { font-weight: normal; }
 .advads-placements-table td { margin: 0; padding: 10px; text-align: left; vertical-align: top; }
 .advads-placements-table-options { text-align: right; }
 .advads-placement-options input, .advads-placement-options select { background: transparent; }
@@ -129,7 +160,10 @@
 .advads-box { margin-bottom: 20px; padding: 10px; background: #fff; border: solid 1px; }
 .on-hover { display: none; }
 tr:hover .on-hover { display: block; }
-.advads-admin-notices .button-primary { float: right; margin-bottom: 0.5em; }
+.advads-admin-notice .button-primary { margin-left: 1em; }
+.advads-admin-notice-inline { padding: 1px 12px; border: 1px solid #0074a2; border-left-width: 4px; }
+.advads-admin-notice-inline p { margin: 0.5em 0; padding: 2px; }
+.advads-spinner { float: none; visibility: visible; }
 
 /**
 - GOOGLE ADSENSE MODULE
@@ -139,7 +173,9 @@ tr:hover .on-hover { display: block; }
 #adsense-ad-param-error { color: red; font-weight: bold; }
 
 /**
-- TABS
+- TABS + SETTINGS
 -*/
 .advads-tab { display: none; }
 .advads-tab.active { display: block; }
+.advads-license-activate-active { color: green; }
+.advads-license-activate-error { color: red; }
