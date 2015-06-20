@@ -268,10 +268,15 @@ class Advanced_Ads_Module_Display_By_Query {
                 // check is_attachment
                 // @link https://codex.wordpress.org/Conditional_Tags#An_Attachment
                 case 'is_attachment' :
+                    if ( $_cond_value == 0 && isset( $query[ $_cond_key ] ) && $query[ $_cond_key ] ) {
+                        return false;
+                    }
+                    break;
                 // check !is_main_query
                 // @link https://codex.wordpress.org/Function_Reference/is_main_query
                 case 'is_main_query' :
-                    if ( $_cond_value == 0 && isset( $query[ $_cond_key ] ) && $query[ $_cond_key ] ) {
+                    // the usage is reversed for this: if this is not main query reject when off
+                    if ( $_cond_value == 0 && isset( $query[ $_cond_key ] ) && ! $query[ $_cond_key ] ) {
                         return false;
                     }
                     break;

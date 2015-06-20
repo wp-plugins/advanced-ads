@@ -665,7 +665,7 @@ class Advanced_Ads_Admin {
 			// register settings
 			register_setting( ADVADS_SLUG, ADVADS_SLUG, array($this, 'sanitize_settings') );
 			// register license settings
-			register_setting( ADVADS_SLUG . '-licenses', ADVADS_SLUG . '-licenses' );
+			register_setting( ADVADS_SLUG . '-licenses', ADVADS_SLUG . '-licenses', array( $this, 'sanitize_license_keys' ) );
 
 			// general settings section
 			add_settings_section(
@@ -884,6 +884,28 @@ class Advanced_Ads_Admin {
 		public function sanitize_settings($options){
 
 			// sanitize whatever option one wants to sanitize
+
+			return $options;
+		}
+
+		/**
+		 * sanitize add-on license keys array
+		 *  most important is to not remove a key even if the add-on is temporarily disabled
+		 *
+		 * @since 1.6.1
+		 * @param array $options all the options (license keys)
+		 */
+		public function sanitize_license_keys( $options ){
+
+			// get existing license keys
+			$licenses = get_option( ADVADS_SLUG . '-licenses', array() );
+
+			// merge existing with new license key to prevent accidental removal
+			if( is_array( $options ) ){
+			    $options = array_merge( $licenses, $options );
+			} else {
+			    $options = $licenses;
+			}
 
 			return $options;
 		}
@@ -1208,6 +1230,9 @@ class Advanced_Ads_Admin {
 		// display activation problem
 		if( !empty( $license_data->error )) {
 		    return sprintf( __('License is invalid. Reason: %s'), $license_data->error);
+		} else {
+		    // save license value time
+		    update_option($options_slug . '-license-expires', $license_data->expires, false);
 		}
 
 		return 1;

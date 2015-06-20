@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.2.2
-Stable tag: 1.6
+Stable tag: 1.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -175,6 +175,13 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 
 == Changelog ==
 
+= 1.6.1 =
+
+* fix secondary query condition (this was revered in 1.6)
+* fix wrong constant displaying errors on add-on license page
+* display license expire date for add-ons
+* prevent accidental removal of license keys
+
 = 1.6 =
 
 THIS IS A MAJOR UPDATE, PLEASE HELP ME WITH YOUR BUG REPORTS
@@ -188,6 +195,7 @@ Changes you can test:
 * added option to allow ad injections on archive pages and outside the loop
 * minor layout fix for update button after selecting rich content ad type
 * fixed timestamp issues using GMT only now (might shift old ad expiry timestamps by timezone offset)
+* load adsense script with every ad request
 
 Changes under the hood:
 
