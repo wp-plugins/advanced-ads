@@ -2,7 +2,7 @@
 /**
  * Advanced Ads Widget
  *
- * @package   Advads_Widget
+ * @package   Advanced_Ads_Widget
  * @author    Thomas Maier <thomas.maier@webgilde.com>
  * @license   GPL-2.0+
  * @link      http://webgilde.com
@@ -13,7 +13,7 @@
  * Ad widget
  *
  */
-class Advads_Widget extends WP_Widget {
+class Advanced_Ads_Widget extends WP_Widget {
 
 	function __construct() {
 		$widget_ops = array('classname' => 'advads_widget', 'description' => __( 'Display Ads and Ad Groups.', ADVADS_SLUG ));

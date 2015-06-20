@@ -28,6 +28,14 @@ class Advanced_Ads_Admin {
 	protected static $instance = null;
 
 	/**
+	 * Instance of admin notice class.
+	 *
+	 * @since    1.5.2
+	 * @var      object
+	 */
+	protected $notices = null;
+
+	/**
 	 * Slug of the settings page
 	 *
 	 * @since    1.0.0
@@ -67,7 +75,7 @@ class Advanced_Ads_Admin {
 	 */
 	private function __construct() {
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			new Advads_Ad_Ajax_Callbacks;
+			new Advanced_Ads_Ad_Ajax_Callbacks;
 		} else {
 			add_action( 'plugins_loaded', array( $this, 'wp_plugins_loaded' ) );
 		}
@@ -90,6 +98,7 @@ class Advanced_Ads_Admin {
 		add_action( 'admin_menu', array($this, 'add_plugin_admin_menu') );
 
 		// on post/ad edit screen
+		add_action( 'edit_form_top', array($this, 'edit_form_above_title') );
 		add_action( 'edit_form_after_title', array($this, 'edit_form_below_title') );
 		add_action( 'admin_init', array($this, 'add_meta_boxes') );
 		add_action( 'post_submitbox_misc_actions', array($this, 'add_submit_box_meta') );
@@ -112,9 +121,6 @@ class Advanced_Ads_Admin {
 		add_action( 'admin_init', array('Advanced_Ads_Placements', 'update_placements') );
 
 		// check for update logic
-		add_action( 'admin_init', array($this, 'update_version_logic') );
-
-		// admin notices
 		add_action( 'admin_notices', array($this, 'admin_notices') );
 
 		// Add an action link pointing to the options page.
@@ -129,8 +135,8 @@ class Advanced_Ads_Admin {
 		add_action( 'wp_dashboard_setup', array($this, 'add_dashboard_widget') );
 
 		// set 1 column layout on overview page as user and page option
-		add_filter( 'screen_layout_columns', array('AdvAds_Overview_Widgets_Callbacks', 'one_column_overview_page') );
-		add_filter( 'get_user_option_screen_layout_toplevel_page_advanced', array( 'AdvAds_Overview_Widgets_Callbacks', 'one_column_overview_page_user') );
+		add_filter( 'screen_layout_columns', array('Advanced_Ads_Overview_Widgets_Callbacks', 'one_column_overview_page') );
+		add_filter( 'get_user_option_screen_layout_toplevel_page_advanced', array( 'Advanced_Ads_Overview_Widgets_Callbacks', 'one_column_overview_page_user') );
 	}
 
 	/**
@@ -176,21 +182,12 @@ class Advanced_Ads_Admin {
 
 		wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array('jquery', 'jquery-ui-autocomplete'), Advanced_Ads::VERSION );
 		// jquery ui
+		wp_enqueue_script( 'jquery-ui-accordion' );
 		wp_enqueue_script( 'jquery-ui-button' );
 
 		// just register this script for later inclusion on ad group list page
 		wp_register_script( 'inline-edit-group-ads', plugins_url( 'assets/js/inline-edit-group-ads.js', __FILE__ ), array('jquery'), Advanced_Ads::VERSION );
 
-	}
-
-	/**
-	* display admin notices
-	 *
-	 * @since 1.2.1
-	*/
-	public function admin_notices()
-	{
-		// removed ad injection notice in version 1.3.18
 	}
 
 	/**
@@ -239,7 +236,7 @@ class Advanced_Ads_Admin {
 		$screen = get_current_screen();
 
 		// set up overview widgets
-		AdvAds_Overview_Widgets_Callbacks::setup_overview_widgets( $screen );
+		Advanced_Ads_Overview_Widgets_Callbacks::setup_overview_widgets( $screen );
 
 		// convert from vertical order to horizontal
 		$screen->add_option( 'layout_columns', 1 );
@@ -395,6 +392,21 @@ class Advanced_Ads_Admin {
 	}
 
 	/**
+	 * add information above the ad title
+	 *
+	 * @since 1.5.6
+	 * @param obj $post
+	 */
+	public function edit_form_above_title($post){
+		if ( ! isset($post->post_type) || $post->post_type != $this->post_type ) {
+			return;
+		}
+		$ad = new Advanced_Ads_Ad( $post->ID );
+
+		include ADVADS_BASE_PATH . 'admin/views/ad-info-top.php';
+	}
+
+	/**
 	 * add information about the ad below the ad title
 	 *
 	 * @since 1.1.0
@@ -404,7 +416,7 @@ class Advanced_Ads_Admin {
 		if ( ! isset($post->post_type) || $post->post_type != $this->post_type ) {
 			return;
 		}
-		$ad = new Advads_Ad( $post->ID );
+		$ad = new Advanced_Ads_Ad( $post->ID );
 
 		include ADVADS_BASE_PATH . 'admin/views/ad-info.php';
 	}
@@ -442,15 +454,13 @@ class Advanced_Ads_Admin {
 
 		if ( $post->post_type !== Advanced_Ads::POST_TYPE_SLUG ) { return; }
 
-		$ad = new Advads_Ad( $post->ID );
+		$ad = new Advanced_Ads_Ad( $post->ID );
 
-		$time_adj = current_time( 'timestamp' );
-
-		$curr_day    = ( ! empty($ad->expiry_date)) ? date( 'd', $ad->expiry_date ) : gmdate( 'd', $time_adj );
-		$curr_month  = ( ! empty($ad->expiry_date)) ? date( 'm', $ad->expiry_date ) : gmdate( 'm', $time_adj );
-		$curr_year   = ( ! empty($ad->expiry_date)) ? date( 'Y', $ad->expiry_date ) : gmdate( 'Y', $time_adj );
-
-		$enabled = ( ! empty($ad->expiry_date)) ? 1 : 0;
+		// get time set for ad or current timestamp (both GMT)
+		$time_adj = $ad->expiry_date ? $ad->expiry_date : time();
+		$time_adj = gmdate( 'Y-m-d H:i:s', $time_adj );
+		list($curr_year, $curr_month, $curr_day) = explode('-', get_date_from_gmt( $time_adj, 'Y-m-d' ) );
+		$enabled = 1 - empty($ad->expiry_date);
 
 		include ADVADS_BASE_PATH . 'admin/views/ad-submitbox-meta.php';
 	}
@@ -464,7 +474,7 @@ class Advanced_Ads_Admin {
 	 * @todo move ad initialization to main function and just global it
 	 */
 	public function markup_meta_boxes($post, $box) {
-		$ad = new Advads_Ad( $post->ID );
+		$ad = new Advanced_Ads_Ad( $post->ID );
 
 		switch ( $box['id'] ) {
 			case 'ad-main-box':
@@ -510,8 +520,8 @@ class Advanced_Ads_Admin {
 		}
 
 		// get ad object
-		$ad = new Advads_Ad( $post_id );
-		if ( ! $ad instanceof Advads_Ad ) {
+		$ad = new Advanced_Ads_Ad( $post_id );
+		if ( ! $ad instanceof Advanced_Ads_Ad ) {
 			return;
 		}
 
@@ -521,10 +531,19 @@ class Advanced_Ads_Admin {
 		} else {
 			$ad->set_option( 'output', array() );
 		}
+		/**
+		 * deprecated since introduction of "visitors" in 1.5.4
+		 */
 		if ( isset($_POST['advanced_ad']['visitor']) ) {
 			$ad->set_option( 'visitor', $_POST['advanced_ad']['visitor'] );
 		} else {
 			$ad->set_option( 'visitor', array() );
+		}
+		// visitor conditions
+		if ( isset($_POST['advanced_ad']['visitors']) ) {
+			$ad->set_option( 'visitors', $_POST['advanced_ad']['visitors'] );
+		} else {
+			$ad->set_option( 'visitors', array() );
 		}
 		// save size
 		$ad->width = 0;
@@ -554,7 +573,10 @@ class Advanced_Ads_Admin {
 			$year   = absint( $_POST['advanced_ad']['expiry_date']['year'] );
 			$month  = absint( $_POST['advanced_ad']['expiry_date']['month'] );
 			$day    = absint( $_POST['advanced_ad']['expiry_date']['day'] );
-			$ad->expiry_date = mktime( 0, 0, 0, $month, $day, $year );
+			// as PHP 5.2 has not reliable 'u' option need to calculate timestamps this way
+			$gmDate = get_gmt_from_date("$year-$month-$day 00:00:00", 'Y-m-d');
+			list( $year, $month, $day ) = explode( '-', $gmDate );
+			$ad->expiry_date = gmmktime(0, 0, 0, $month, $day, $year);
 		} else {
 			$ad->expiry_date = 0;
 		}
@@ -643,7 +665,7 @@ class Advanced_Ads_Admin {
 			// register settings
 			register_setting( ADVADS_SLUG, ADVADS_SLUG, array($this, 'sanitize_settings') );
 			// register license settings
-			register_setting( ADVADS_SLUG . '-licenses', ADVADS_SLUG . '-licenses' );
+			register_setting( ADVADS_SLUG . '-licenses', ADVADS_SLUG . '-licenses', array( $this, 'sanitize_license_keys' ) );
 
 			// general settings section
 			add_settings_section(
@@ -685,6 +707,14 @@ class Advanced_Ads_Admin {
 				$hook,
 				'advanced_ads_setting_section'
 			);
+			// add setting fields for content injection protection
+			add_settings_field(
+				'content-injection-everywhere',
+				__( 'Unlimited ad injection', ADVADS_SLUG ),
+				array($this, 'render_settings_content_injection_everywhere'),
+				$hook,
+				'advanced_ads_setting_section'
+			);
 			// add setting fields for content injection priority
 			add_settings_field(
 				'content-injection-priority',
@@ -698,6 +728,14 @@ class Advanced_Ads_Admin {
 				'block-bots',
 				__( 'Hide ads from bots', ADVADS_SLUG ),
 				array($this, 'render_settings_block_bots'),
+				$hook,
+				'advanced_ads_setting_section'
+			);
+			// opt out from internal notices
+			add_settings_field(
+				'disable-notices',
+				__( 'Disable notices', ADVADS_SLUG ),
+				array($this, 'render_settings_disabled_notices'),
 				$hook,
 				'advanced_ads_setting_section'
 			);
@@ -722,6 +760,8 @@ class Advanced_Ads_Admin {
 	 */
 		public function render_settings_licenses_section_callback(){
 			echo '<p>'. __( 'Enter license keys for our powerful <a href="'.ADVADS_URL.'add-ons/" target="_blank">add-ons</a>.', ADVADS_SLUG ) .'</p>';
+			// nonce field
+			echo '<input type="hidden" id="advads-licenses-ajax-referrer" value="' . wp_create_nonce( "advads_ajax_license_nonce" ) . '"/>';
 		}
 
 		/**
@@ -781,6 +821,20 @@ class Advanced_Ads_Admin {
 			echo '<p class="description">'. sprintf( __( 'Only enable this if you can and want to use the advanced JavaScript functions described <a href="%s">here</a>.', ADVADS_SLUG ), ADVADS_URL . 'javascript-functions/' ) .'</p>';
 		}
 
+	/**
+	 * render setting for content injection protection
+	 *
+	 * @since 1.4.1
+	 */
+	public function render_settings_content_injection_everywhere(){
+		$options = Advanced_Ads::get_instance()->options();
+		$everywhere = ( isset($options['content-injection-everywhere']) ) ? true : false;
+
+		echo '<input id="advanced-ads-injection-everywhere" type="checkbox" value="true" name="'.ADVADS_SLUG.'[content-injection-everywhere]" '.checked( $everywhere, true, false ).'>';
+		echo '<p class="description">'. __( 'Some plugins and themes trigger ad injection where it shouldn’t happen. Therefore, Advanced Ads ignores injected placements on non-singular pages and outside the loop. However, this can cause problems with some themes. You can enable this option if you don’t see ads or want to enable ad injections on archive pages AT YOUR OWN RISK.', ADVADS_SLUG ) .'</p>';
+
+	}
+
 		/**
 	 * render setting for content injection priority
 	 *
@@ -804,8 +858,21 @@ class Advanced_Ads_Admin {
 			$checked = ( ! empty($options['block-bots'])) ? 1 : 0;
 
 			echo '<input id="advanced-ads-block-bots" type="checkbox" value="1" name="'.ADVADS_SLUG.'[block-bots]" '.checked( $checked, 1, false ).'>';
-			echo '<p class="description">'. sprintf( __( 'Hide ads from crawlers, bots and empty user agents. Also prevents counting impressions for bots when using the <a href="%s" target="_blank">Tracking Add-On</a>.', ADVADS_SLUG ), ADVADS_URL . 'add-ons/ad-tracking/' ) .'<br/>'
+			echo '<p class="description">'. sprintf( __( 'Hide ads from crawlers, bots and empty user agents. Also prevents counting impressions for bots when using the <a href="%s" target="_blank">Tracking Add-On</a>.', ADVADS_SLUG ), ADVADS_URL . 'add-ons/tracking/' ) .'<br/>'
 						. __( 'Disabling this option only makes sense if your ads contain content you want to display to bots (like search engines) or your site is cached and bots could create a cached version without the ads.', ADVADS_SLUG ) . '</p>';
+		}
+
+		/**
+	 * render setting to disable notices
+	 *
+	 * @since 1.5.3
+	 */
+		public function render_settings_disabled_notices(){
+			$options = Advanced_Ads::get_instance()->options();
+			$checked = ( ! empty($options['disable-notices'])) ? 1 : 0;
+
+			echo '<input id="advanced-ads-disabled-notices" type="checkbox" value="1" name="'.ADVADS_SLUG.'[disable-notices]" '.checked( $checked, 1, false ).'>';
+			echo '<p class="description">'. __( 'Disable all internal notices like tips, tutorials and email newsletters but not critical update notices. Disabling notices is recommended if you run multiple blogs with Advanced Ads already..', ADVADS_SLUG ) . '</p>';
 		}
 
 		/**
@@ -817,6 +884,28 @@ class Advanced_Ads_Admin {
 		public function sanitize_settings($options){
 
 			// sanitize whatever option one wants to sanitize
+
+			return $options;
+		}
+
+		/**
+		 * sanitize add-on license keys array
+		 *  most important is to not remove a key even if the add-on is temporarily disabled
+		 *
+		 * @since 1.6.1
+		 * @param array $options all the options (license keys)
+		 */
+		public function sanitize_license_keys( $options ){
+
+			// get existing license keys
+			$licenses = get_option( ADVADS_SLUG . '-licenses', array() );
+
+			// merge existing with new license key to prevent accidental removal
+			if( is_array( $options ) ){
+			    $options = array_merge( $licenses, $options );
+			} else {
+			    $options = $licenses;
+			}
 
 			return $options;
 		}
@@ -872,7 +961,7 @@ class Advanced_Ads_Admin {
 	 */
 		public function  ad_list_columns_content($column_name, $ad_id) {
 			if ( $column_name == 'ad_details' ) {
-				$ad = new Advads_Ad( $ad_id );
+				$ad = new Advanced_Ads_Ad( $ad_id );
 
 				// load ad type title
 				$types = Advanced_Ads::get_instance()->ad_types;
@@ -897,6 +986,10 @@ class Advanced_Ads_Admin {
 	 * @param string $post_type current post type
 	 */
 		public function add_post_meta_box($post_type = ''){
+		    // don’t display for non admins
+		    if( ! current_user_can('manage_options') ) {
+			return;
+		    }
 			// get public post types
 			$public_post_types = get_post_types( array('public' => true, 'publicly_queryable' => true), 'names', 'or' );
 
@@ -938,6 +1031,10 @@ class Advanced_Ads_Admin {
 	 * @param int $post_id The ID of the post being saved.
 	*/
 		public function save_post_meta_box( $post_id ) {
+
+			if( ! current_user_can('manage_options') ) {
+			    return;
+			}
 
 			// check nonce
 			if ( ! isset( $_POST['advads_post_meta_box_nonce'] ) ) {
@@ -988,7 +1085,7 @@ class Advanced_Ads_Admin {
 				'link'         => 'http://webgilde.com/en/ad-optimization/',
 				'url'          => 'http://webgilde.com/en/ad-optimization/feed/',
 				'title'        => __( 'From the ad optimization universe', ADVADS_SLUG ),
-				'items'        => 3,
+				'items'        => 2,
 				'show_summary' => 0,
 				'show_author'  => 0,
 				'show_date'    => 0,
@@ -1019,6 +1116,21 @@ class Advanced_Ads_Admin {
 				$version = $advads_plugin_data['Version'];
 				echo '<p><a href="'.ADVADS_URL.'" target="_blank" title="'.
 					__( 'plugin manual and homepage', ADVADS_SLUG ).'">Advanced Ads</a> '. $version .'</p>';
+			}
+
+			$notice_options = Advanced_Ads_Admin_Notices::get_instance()->options();
+			$_notice = 'nl_first_steps';
+			if ( ! isset($notice_options['closed'][ $_notice ] ) ) {
+				?><div class="advads-admin-notice">
+				    <p><button type="button" class="button-primary advads-notices-button-subscribe" data-notice="<?php echo $_notice ?>"><?php _e('Get the tutorial via email', ADVADS_SLUG); ?></button></p>
+				</div><?php
+			}
+
+			$_notice = 'nl_adsense';
+			if ( ! isset($notice_options['closed'][ $_notice ] ) ) {
+				?><div class="advads-admin-notice">
+				    <p><button type="button" class="button-primary advads-notices-button-subscribe" data-notice="<?php echo $_notice ?>"><?php _e('Get AdSense tips via email', ADVADS_SLUG); ?></button></p>
+				</div><?php
 			}
 
 			// rss feed
@@ -1071,50 +1183,58 @@ class Advanced_Ads_Admin {
 			}
 		}
 
-		/**
-	 * checks needed when the plugin was updated
+	/**
+	 * initiate the admin notices class
 	 *
-	 * @since 1.4.5
+	 * @since 1.5.3
 	 */
-		public function update_version_logic(){
-			$plugin = Advanced_Ads_Plugin::get_instance();
-			$options = $plugin->internal_options();
-			$user_options = $plugin->options();
+	public function admin_notices(){
+	    if( current_user_can('manage_options') ){
+		$this->notices = Advanced_Ads_Admin_Notices::get_instance();
+	    }
+	}
 
-			$new_options = $options;
+	/**
+	 * save license key
+	 *
+	 * @since 1.2.0
+	 * @param string $addon string with addon identifier
+	 */
+	public function activate_license( $addon = '', $plugin_name = '', $options_slug = '' ) {
 
-			// check, if current notices were deleted
-			// TODO: there is probably a better hook for that
-			if ( isset( $_GET['advads-remove-notices'] ) ) {
-				// TODO could as well use internal options instead of $_SESSION
-				// get options and clear the notices option
-				$new_options['version_notices'] = array();
-				if ( isset($_SESSION['advanced_ads_version_notices'] ) ) {
-					unset( $_SESSION['advanced_ads_version_notices'] );
-				}
-			}
-
-			// use an artifical older version for updates on installed plugins before the notice logic was invented
-			if ( ! isset( $options['version'] ) && $user_options !== array() ){
-				$old_version = '1.4.4';
-			} else {
-				// set empty version for new installations
-				$old_version = 0;
-			}
-			$version = Advanced_Ads::VERSION;
-			$updated_versions = isset( $new_options['version_notices'] ) ? $new_options['version_notices'] : array();
-
-			// handle update notices
-			new AdvAds_Admin_Notices( $old_version, $version, $updated_versions );
-
-			$new_options['version'] = $version;
-			if ( isset( $_SESSION['advanced_ads_version_notices'] ) ) {
-				$new_options['version_notices'] = $_SESSION['advanced_ads_version_notices'];
-			}
-
-			// save options, if version information changed
-			if ( $options !== $new_options ) {
-				$plugin->update_internal_options( $new_options );
-			}
+		if ( '' === $addon || '' === $plugin_name || '' === $options_slug ) {
+			return __( 'Error while trying to register the license. Please contact support.', ADVADS_SLUG );
 		}
+
+		$licenses = get_option(ADVADS_SLUG . '-licenses', array());
+		$license_key = isset($licenses[$addon]) ? $licenses[$addon] : '';
+		if ( '' == $license_key ) {
+			return __( 'Please enter and save a valid license key first.', ADVADS_SLUG );
+		}
+
+		$api_params = array(
+			'edd_action'=> 'activate_license',
+			'license' 	=> $license_key,
+			'item_name' => urlencode( $plugin_name ),
+			'url'       => home_url()
+		);
+		$response = wp_remote_get( add_query_arg( $api_params, ADVADS_URL ) );
+		if ( is_wp_error( $response ) ) {
+			return wp_remote_retrieve_body( $response );
+		}
+
+		$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+		// save license status
+		update_option($options_slug . '-license-status', $license_data->license, false);
+
+		// display activation problem
+		if( !empty( $license_data->error )) {
+		    return sprintf( __('License is invalid. Reason: %s'), $license_data->error);
+		} else {
+		    // save license value time
+		    update_option($options_slug . '-license-expires', $license_data->expires, false);
+		}
+
+		return 1;
+	}
 }

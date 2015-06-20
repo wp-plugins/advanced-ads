@@ -3,7 +3,7 @@
 /**
  * Advanced Ads
  *
- * @package   Advads_Ad_Group
+ * @package   Advanced_Ads_Group
  * @author    Thomas Maier <thomas.maier@webgilde.com>
  * @license   GPL-2.0+
  * @link      http://webgilde.com
@@ -13,10 +13,10 @@
 /**
  * an ad group object
  *
- * @package Advads_Ad_Group
+ * @package Advanced_Ads_Group
  * @author  Thomas Maier <thomas.maier@webgilde.com>
  */
-class Advads_Ad_Group {
+class Advanced_Ads_Group {
 
 	/**
 	 * default ad group weight
@@ -30,8 +30,8 @@ class Advads_Ad_Group {
 
 	/**
 	 * group type
-         *
-         * @since 1.4.8
+	 *
+	 * @since 1.4.8
 	 */
 	public $type = 'default';
 
@@ -70,6 +70,20 @@ class Advads_Ad_Group {
 	 */
 	public $ad_count = 1;
 
+	/**$slug
+	 * contains other options
+	 *
+	 * @since 1.5.5
+	 */
+	public $options = array();
+
+	/**
+	 * Optional arguments passed to ads.
+	 *
+	 * @var array
+	 */
+	protected $ad_args = array();
+
 	/**
 	 * containing ad weights
 	 */
@@ -84,31 +98,36 @@ class Advads_Ad_Group {
 	 * init ad group object
 	 *
 	 * @since 1.0.0
-	 * @param int|obj $group either id of the ad group (= taxonomy id) or term object
+	 * @param int|obj $group   either id of the ad group (= taxonomy id) or term object
+	 * @param array   $ad_args optional arguments passed to ads
 	 */
-	public function __construct($group) {
+	public function __construct( $group, $ad_args = array() ) {
 
 		$this->taxonomy = Advanced_Ads::AD_GROUP_TAXONOMY;
 
 		$group = get_term( $group, $this->taxonomy );
-		if ( $group == null || is_wp_error($group) ) { return; }
+		if ( $group == null || is_wp_error( $group ) ) {
+			return;
+		}
 
-		$this->load( $group );
+		$this->load( $group, $ad_args );
 	}
 
 	/**
 	 * load additional ad group properties
 	 *
 	 * @since 1.4.8
-     * @param int $id group id
-     * @param obj $group wp term object
+	 * @param int   $id      group id
+	 * @param obj   $group   wp term object
+	 * @param array $ad_args optional arguments passed to ads
 	 */
-	private function load($group) {
+	private function load( $group, $ad_args ) {
 		$this->id = $group->term_id;
 		$this->name = $group->name;
 		$this->slug = $group->slug;
 		$this->description = $group->description;
 		$this->post_type = Advanced_Ads::POST_TYPE_SLUG;
+		$this->ad_args = $ad_args;
 
 		$this->load_additional_attributes();
 	}
@@ -118,16 +137,21 @@ class Advads_Ad_Group {
 	 *
 	 * @since 1.4.8
 	 */
-	protected function load_additional_attributes(){
+	protected function load_additional_attributes() {
+		// -TODO should abstract (i.e. only call once per request)
 		$all_groups = get_option( 'advads-ad-groups', array() );
 
-		if(isset($all_groups[$this->id]['type'])){
-			$this->type = $all_groups[$this->id]['type'];
+		if ( isset( $all_groups[ $this->id ]['type'] ) ) {
+			$this->type = $all_groups[ $this->id ]['type'];
 		}
 
 		// get ad count; default is 1
-		if(isset($all_groups[$this->id]['ad_count'])){
-			$this->ad_count = (int) $all_groups[$this->id]['ad_count'];
+		if ( isset( $all_groups[ $this->id ]['ad_count'] ) ) {
+			$this->ad_count = $all_groups[ $this->id ]['ad_count'] === 'all' ? 'all' : (int) $all_groups[ $this->id ]['ad_count'];
+		}
+
+		if ( isset( $all_groups[ $this->id ]['options'] ) ) {
+			$this->options = isset( $all_groups[ $this->id ]['options'] ) ? $all_groups[ $this->id ]['options'] : array();
 		}
 	}
 
@@ -139,11 +163,15 @@ class Advads_Ad_Group {
 	 */
 	public function output(){
 
-		if(!$this->id) return;
+		if ( ! $this->id ) {
+			return;
+		}
 
 		// load ads
 		$ads = $this->load_all_ads();
-		if ( $ads === array() ) { return; }
+		if ( $ads === array() ) {
+			return;
+		}
 
 		// get ad weights serving as an order here
 		$weights = $this->get_ad_weights();
@@ -156,37 +184,52 @@ class Advads_Ad_Group {
 			$weights = $this->ad_weights;
 		}
 
+				// remove ads with 0 ad weight
+		foreach( $weights as $_ad_id => $_ad_weight ){
+			if( $_ad_weight === 0 ){
+				unset( $weights[ $_ad_id ] );
+			}
+		}
+
 		// order ads based on group type
 		switch($this->type){
 			case 'ordered' :
+				// order to highest weight first
+				arsort( $weights );
 				$ordered_ad_ids = array_keys($weights);
 				break;
 			default : // default
 				$ordered_ad_ids = $this->shuffle_ads($ads, $weights);
 		}
 
+		$ordered_ad_ids = apply_filters( 'advanced-ads-group-output-ad-ids', $ordered_ad_ids, $this->type, $ads, $weights );
+
 		// load the ad output
-		$output = '';
+		$output = array();
 		$ads_displayed = 0;
+		$ad_select = Advanced_Ads_Select::get_instance();
 		foreach ( $ordered_ad_ids as $_ad_id ) {
-		    // +TODO should use ad-selection interface to output actual ad
-		    //    .. might break context otherwise or cause hard to detect issues
 			// load the ad object
-			$ad = new Advads_Ad( $_ad_id );
-			if ( $ad->can_display() ) {
-				$output .= $ad->output();
+			$ad = $ad_select->get_ad_by_method( $_ad_id, Advanced_Ads_Select::AD, $this->ad_args );
+			if ( $ad !== null ) {
+				$output[] = $ad;
 				$ads_displayed++;
-				if($ads_displayed === $this->ad_count) break;
+				// break the loop when maximum ads are reached
+				if( $ads_displayed === $this->ad_count ) {
+					break;
+				}
 			}
-			// break the loop when maximum ads are reached
 		}
 
 		// add the group to the global output array
 		$advads = Advanced_Ads::get_instance();
 		$advads->current_ads[] = array('type' => 'group', 'id' => $this->id, 'title' => $this->name);
 
-		// filter again, in case a developer wants to filter group output individually
-		return apply_filters( 'advanced-ads-group-output', $output, $this );
+		// filter grouped ads output
+		$output_string = implode( '', apply_filters( 'advanced-ads-group-output-array', $output, $this ) );
+
+		// filter final group output
+		return apply_filters( 'advanced-ads-group-output', $output_string, $this );
 	}
 
 	/**
@@ -206,27 +249,43 @@ class Advads_Ad_Group {
 	 *
 	 * @since 1.0.0
 	 * @update 1.1.0 load only public ads
+	 * @update allow to cache groups for few minutes
 	 * @return arr $ads array with ad (post) objects
 	 */
 	private function load_all_ads() {
 
-            if(!$this->id) return array();
+		if ( ! $this->id ) {
+			return array();
+		}
 
+		// reset
+		$this->ads = array();
+
+		// much more complex than needed: one of the three queries is not needed and the last query gets slow quiet fast
 		$args = array(
 			'post_type' => $this->post_type,
 			'post_status' => 'publish',
 			'posts_per_page' => -1,
 			'taxonomy' => $this->taxonomy,
 			'term' => $this->slug,
-			'orderby' => 'id'
+			'orderby' => 'id' // might want to avoid sorting as not needed for most calls and fast in PHP; slight I/O blocking concern
 		);
-		$ads = new WP_Query( $args );
 
-		if ( $ads->have_posts() ) {
-			return $this->ads = $this->add_post_ids( $ads->posts );
+		$found = false;
+		$key = 'ad_group_all_ads_' . $this->post_type . '_' . $this->taxonomy . '_' . $this->slug;
+		$ads = wp_cache_get( $key, Advanced_Ads_Model::OBJECT_CACHE_GROUP, false, $found );
+		if ( $found ) {
+			$this->ads = $ads;
 		} else {
-			return $this->ads = array();
+			$ads = new WP_Query( $args );
+
+			if ( $ads->have_posts() ) {
+				$this->ads = $this->add_post_ids( $ads->posts );
+				wp_cache_set( $key, $this->ads, Advanced_Ads_Model::OBJECT_CACHE_GROUP, Advanced_Ads_Model::OBJECT_CACHE_TTL);
+			}
 		}
+
+		return $this->ads;
 	}
 
 	/**
@@ -327,7 +386,7 @@ class Advads_Ad_Group {
 	 */
 	public function save($args = array()) {
 
-		$defaults = array( 'type' => 'default', 'ad_count' => 1 );
+		$defaults = array( 'type' => 'default', 'ad_count' => 1, 'options' => array() );
 		$args = wp_parse_args($args, $defaults);
 
 		// get global ad group option

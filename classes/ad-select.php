@@ -17,6 +17,11 @@
  */
 class Advanced_Ads_Select {
 
+	const PLACEMENT = 'placement';
+	const GROUP = 'group';
+	const AD = 'id'; // alias of self::ID
+	const ID = 'id';
+
 	protected $methods;
 
 	private function __construct() {}
@@ -48,9 +53,9 @@ class Advanced_Ads_Select {
 	{
 		if ( ! isset($this->methods) ) {
 			$methods = array(
-				'id' => array( $this, 'get_ad_by_id' ),
-				'group' => array( $this, 'get_ad_by_group' ),
-				'placement' => array( $this, 'get_ad_by_placement' ),
+				self::AD => array( $this, 'get_ad_by_id' ),
+				self::GROUP => array( $this, 'get_ad_by_group' ),
+				self::PLACEMENT => array( $this, 'get_ad_by_placement' ),
 			);
 
 			$this->methods = apply_filters( 'advanced-ads-ad-select-methods', $methods );
@@ -71,8 +76,8 @@ class Advanced_Ads_Select {
 	{
 		$args = (array) $args;
 
-		if ( ! isset($args['method']) ) $args['method'] = $method;
-		if ( ! isset($args['id']) ) $args['id'] = $id;
+		if ( $id || ! isset( $args['id'] ) ) $args['id'] = $id;
+		$args['method'] = $method;
 
 		$args = apply_filters( 'advanced-ads-ad-select-args', $args );
 
@@ -95,12 +100,15 @@ class Advanced_Ads_Select {
 
 	// internal
 	public function get_ad_by_id($args) {
+		if ( isset($args['override']) ) {
+			return $args['override'];
+		}
 		if ( ! isset($args['id']) || $args['id'] == 0 ) {
-			return isset($args['override']) ? $args['override'] : null;
+			return ;
 		}
 
 		// get ad
-		$ad = new Advads_Ad( (int) $args['id'], $args );
+		$ad = new Advanced_Ads_Ad( (int) $args['id'], $args );
 
 		// check conditions
 		if ( $ad->can_display() ) {
@@ -110,22 +118,30 @@ class Advanced_Ads_Select {
 
 	// internal
 	public function get_ad_by_group($args) {
+		if ( isset($args['override']) ) {
+			return $args['override'];
+		}
 		if ( ! isset($args['id']) || $args['id'] == 0 ) {
-			return isset($args['override']) ? $args['override'] : null;
+			return;
 		}
 
 		// get ad
-		$adgroup = new Advads_Ad_Group( (int) $args['id'] );
+		$id = (int) $args['id'];
+		$adgroup = new Advanced_Ads_Group( $id, $args );
 		return $adgroup->output();
 	}
 
 	// internal
 	public function get_ad_by_placement($args) {
+		if ( isset($args['override']) ) {
+			return $args['override'];
+		}
 		if ( ! isset($args['id']) || $args['id'] == '' ) {
-			return isset($args['override']) ? $args['override'] : null;
+			return ;
 		}
 
 		// get placement content
-		return Advanced_Ads_Placements::output( $args['id'] );
+		$id = $args['id'];
+		return Advanced_Ads_Placements::output( $id, $args );
 	}
 }

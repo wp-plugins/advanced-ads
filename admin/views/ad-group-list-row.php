@@ -11,7 +11,7 @@
             <label><?php _e( 'template', ADVADS_SLUG ); ?>
                 <code><input type="text" onclick="this.select();" value="the_ad_group(<?php echo $group->id; ?>);"/></code>
             </label>
-            <p><?php printf( __( 'Learn more about using groups in the <a href="%s" target="_blank">manual</a>.', ADVADS_SLUG ), ADVADS_URL . 'advanced-ads/manual/ad-groups/' ); ?></p>
+            <p><?php printf( __( 'Learn more about using groups in the <a href="%s" target="_blank">manual</a>.', ADVADS_SLUG ), ADVADS_URL . 'manual/ad-groups/' ); ?></p>
         </div>
     </td>
     <td>

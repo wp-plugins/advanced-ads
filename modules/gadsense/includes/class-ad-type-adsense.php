@@ -14,7 +14,7 @@
  * see also includes/class-ad-type-abstract.php for basic object
  *
  */
-class Advads_Ad_Type_Adsense extends Advads_Ad_Type_Abstract {
+class Advanced_Ads_Ad_Type_Adsense extends Advanced_Ads_Ad_Type_Abstract {
 
 	/**
 	 * ID - internal type of the ad type
@@ -134,8 +134,8 @@ class Advads_Ad_Type_Adsense extends Advads_Ad_Type_Abstract {
 
 		if ( ! isset($content->unitType) || empty($pub_id) ) {
 			return $output; }
+		// deprecated since the adsbygoogle.js file is now always loaded
 		if ( ! isset($gadsense['google_loaded']) || ! $gadsense['google_loaded'] ) {
-			$output .= '<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>' . "\n";
 			$gadsense['google_loaded'] = true;
 		}
 
@@ -151,6 +151,7 @@ class Advads_Ad_Type_Adsense extends Advads_Ad_Type_Abstract {
 		}
 
 		if ( 'responsive' != $content->unitType ) {
+			$output .= '<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>' . "\n";
 			$output .= '<ins class="adsbygoogle" ';
 			$output .= 'style="display:inline-block;width:' . $ad->width . 'px;height:' . $ad->height . 'px;" ' . "\n";
 			$output .= 'data-ad-client="ca-' . $pub_id . '" ' . "\n";
@@ -188,8 +189,9 @@ class Advads_Ad_Type_Adsense extends Advads_Ad_Type_Abstract {
 		$output .= 'data-ad-client="ca-' . $pub_id . '" ' . "\n";
 		$output .= 'data-ad-slot="' . $slot_id . '" ' . "\n";
 		$output .= 'data-ad-format="auto"></ins>' . "\n";
+		$output .= '<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>' . "\n";
 		$output .= '<script> ' . "\n";
-		$output .= '(adsbygoogle = window.adsbygoogle || []).push({}); ' . "\n";
+		$output .= apply_filters( 'advanced-ads-gadsense-responsive-adsbygoogle', '(adsbygoogle = window.adsbygoogle || []).push({}); ' . "\n");
 		$output .= '</script>' . "\n";
 	}
 
