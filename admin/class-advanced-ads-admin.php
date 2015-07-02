@@ -175,18 +175,39 @@ class Advanced_Ads_Admin {
 	 */
 	public function enqueue_admin_scripts() {
 
-		global $post;
-		if ( ! isset($this->plugin_screen_hook_suffix) && isset($post) && Advanced_Ads::POST_TYPE_SLUG != $post->type ) {
-			return;
+		// global js script
+		wp_enqueue_script( $this->plugin_slug . '-admin-global-script', plugins_url( 'assets/js/admin-global.js', __FILE__ ), array('jquery'), Advanced_Ads::VERSION );
+
+		/**
+		 * only include on
+		 * * advads settings pages
+		 * * ad post type
+		 * * ad groups
+		 * * ad placements
+		 * * ad overview
+		 */
+
+		$screen = get_current_screen();
+		//echo $screen->id;
+		if( !isset( $screen->id ) ) {
+		    return;
 		}
 
-		wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array('jquery', 'jquery-ui-autocomplete'), Advanced_Ads::VERSION );
-		// jquery ui
-		wp_enqueue_script( 'jquery-ui-accordion' );
-		wp_enqueue_script( 'jquery-ui-button' );
+		if( $screen->id === 'advanced-ads_page_advanced-ads-groups' || // ad groups
+		    $screen->id === 'edit-advanced_ads' || // ads overview
+		    $screen->id === 'advanced_ads' || // ad edit page
+		    $screen->id === 'advanced-ads_page_advanced-ads-placements' || // placements
+		    $screen->id === 'advanced-ads_page_advanced-ads-settings' || // settings
+		    $screen->id === 'toplevel_page_advanced-ads' // overview
+			){
+		    wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array('jquery', 'jquery-ui-autocomplete'), Advanced_Ads::VERSION );
+		    // jquery ui
+		    wp_enqueue_script( 'jquery-ui-accordion' );
+		    wp_enqueue_script( 'jquery-ui-button' );
 
-		// just register this script for later inclusion on ad group list page
-		wp_register_script( 'inline-edit-group-ads', plugins_url( 'assets/js/inline-edit-group-ads.js', __FILE__ ), array('jquery'), Advanced_Ads::VERSION );
+		    // just register this script for later inclusion on ad group list page
+		    wp_register_script( 'inline-edit-group-ads', plugins_url( 'assets/js/inline-edit-group-ads.js', __FILE__ ), array('jquery'), Advanced_Ads::VERSION );
+		}
 
 	}
 
@@ -524,6 +545,9 @@ class Advanced_Ads_Admin {
 		if ( ! $ad instanceof Advanced_Ads_Ad ) {
 			return;
 		}
+
+		// filter to allow change of submitted ad settings
+		$_POST['advanced_ad'] = apply_filters( 'advanced-ads-ad-settings-pre-save', $_POST['advanced_ad'] );
 
 		$ad->type = $_POST['advanced_ad']['type'];
 		if ( isset($_POST['advanced_ad']['output']) ) {
@@ -1072,6 +1096,10 @@ class Advanced_Ads_Admin {
 	 * @since 1.3.12
 	 */
 		public function add_dashboard_widget(){
+			// display dashboard widget only to authors and higher roles
+			if( ! current_user_can('publish_posts') ) {
+			        return;
+			}
 			add_meta_box( 'advads_dashboard_widget', __( 'Ads Dashboard', ADVADS_SLUG ), array($this, 'dashboard_widget_function'), 'dashboard', 'side', 'high' );
 		}
 
