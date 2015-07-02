@@ -35,6 +35,8 @@ class Advanced_Ads_Visitor_Conditions {
 			'check' => array( 'Advanced_Ads_Visitor_Conditions', 'check_mobile' ) // callback for frontend check
 			),
 	    ));
+
+	    ksort( $this->conditions );
 	}
 
 	/**
@@ -117,6 +119,48 @@ class Advanced_Ads_Visitor_Conditions {
 		    <option value="is_higher" <?php selected( 'is_higher', $operator ); ?>><?php _e( 'equal or higher', ADVADS_SLUG ); ?></option>
 		    <option value="is_lower" <?php selected( 'is_lower', $operator ); ?>><?php _e( 'equal or lower', ADVADS_SLUG ); ?></option>
 		</select></label><input type="number" name="<?php echo $name; ?>[value]" value="<?php echo absint( $value ); ?>"/></p><?php
+	}
+
+	/**
+	 * callback to display the any condition based on a number
+	 *
+	 * @param arr $options options of the condition
+	 * @param int $index index of the condition
+	 */
+	static function metabox_string( $options, $index = 0 ){
+
+	    if ( ! isset ( $options['type'] ) || '' === $options['type'] ) { return; }
+
+	    $type_options = self::get_instance()->conditions;
+
+	    if ( ! isset( $type_options[ $options['type'] ] ) ) {
+		    return;
+	    }
+
+	    // form name basis
+	    $name = self::FORM_NAME . '[' . $index . ']';
+
+	    // options
+	    $value = isset( $options['value'] ) ? $options['value'] : '';
+	    $operator = isset( $options['operator'] ) ? $options['operator'] : 'contains';
+	    $connector = isset( $options['connector'] ) ? $options['connector'] : 'and';
+
+	    ?><p>
+		<input type="hidden" name="<?php echo $name; ?>[type]" value="<?php echo $options['type']; ?>"/>
+		<input type="hidden" name="<?php echo $name; ?>[connector]" value="<?php echo $connector; ?>"/>
+		<label><?php echo $type_options[ $options['type'] ]['label'];
+		?><select name="<?php echo $name; ?>[operator]">
+		    <option value="contain" <?php selected( 'contain', $operator ); ?>><?php _e( 'contains', ADVADS_SLUG ); ?></option>
+		    <option value="start" <?php selected( 'start', $operator ); ?>><?php _e( 'starts with', ADVADS_SLUG ); ?></option>
+		    <option value="end" <?php selected( 'end', $operator ); ?>><?php _e( 'ends with', ADVADS_SLUG ); ?></option>
+		    <option value="match" <?php selected( 'match', $operator ); ?>><?php _e( 'matches', ADVADS_SLUG ); ?></option>
+		    <option value="regex" <?php selected( 'regex', $operator ); ?>><?php _e( 'matches regex', ADVADS_SLUG ); ?></option>
+		    <option value="contain_not" <?php selected( 'contain_not', $operator ); ?>><?php _e( 'does not contain', ADVADS_SLUG ); ?></option>
+		    <option value="start_not" <?php selected( 'start_not', $operator ); ?>><?php _e( 'does not start with', ADVADS_SLUG ); ?></option>
+		    <option value="end_not" <?php selected( 'end_not', $operator ); ?>><?php _e( 'does not end with', ADVADS_SLUG ); ?></option>
+		    <option value="match_not" <?php selected( 'match_not', $operator ); ?>><?php _e( 'does not match', ADVADS_SLUG ); ?></option>
+		    <option value="regex_not" <?php selected( 'regex_not', $operator ); ?>><?php _e( 'does not match regex', ADVADS_SLUG ); ?></option>
+		</select></label><input type="text" name="<?php echo $name; ?>[value]" value="<?php echo $value; ?>"/></p><?php
 	}
 
 	/**

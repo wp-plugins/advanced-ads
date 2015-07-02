@@ -218,7 +218,8 @@ class Advanced_Ads_Groups_List {
 			'post_type' => $this->post_type,
 			'post_status' => array('publish', 'pending', 'future', 'private'),
 			'taxonomy' => $group->taxonomy,
-			'term' => $group->slug
+			'term' => $group->slug,
+			'posts_per_page' => -1
 		);
 		return $ads = new WP_Query( $args );
 	}
