@@ -85,7 +85,7 @@
 
 .advads-buttonset .ui-state-active,
 .advads-buttonset .button,
-.advads-buttonset .ui-button.ui-state-active { border-color: #0074a2; background: #2ea2cc; color: #fff; box-shadow: none; }
+.advads-buttonset .ui-button.ui-state-active { border-color: #0074a2 !important; background: #2ea2cc !important; color: #fff !important; box-shadow: none; }
 
 #ad-display-box .advads-conditions-terms-show-search { height: 22px; line-height: 22px; font-weight: bold; font-size: 1.5em; }
 .advads-conditions-terms-show-search + .description { display: none; }
@@ -179,3 +179,8 @@ tr:hover .on-hover { display: block; }
 .advads-tab.active { display: block; }
 .advads-license-activate-active { color: green; }
 .advads-license-activate-error { color: red; }
+
+/**
+- GENERAL
+-*/
+.advads-error-message { color: red; }
