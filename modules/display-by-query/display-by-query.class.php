@@ -50,7 +50,7 @@ class Advanced_Ads_Module_Display_By_Query {
                 $args['wp_the_query'] = array();
             }
             $query = $wp_the_query->get_queried_object();
-            if ( ! isset( $args['wp_the_query']['term_id'] ) && $query ) {
+            if ( ! isset( $args['wp_the_query']['term_id'] ) && isset( $query->term_id ) ) {
                 $args['wp_the_query']['term_id'] = $query->term_id;
             }
 
