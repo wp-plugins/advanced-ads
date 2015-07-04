@@ -51,8 +51,8 @@ jQuery( document ).ready(function ($) {
 	// toggle single display condition checkboxes that have a counterpart
 	$( document ).on('click', '.advads-conditions-single input[type="checkbox"]', function () {
 		    advads_toggle_single_display_condition_checkbox( this );
-		    // update buttons
-		    // $( '.advads-conditions-terms-buttons' ).button( 'refresh' );
+		    // update buttons when main conditions get unchecked
+		    //$( '.advads-conditions-terms-buttons' ).button( 'refresh' );
 	});
 	// toggle single display condition checkboxes that have a counterpart on load
 	$( '.advads-conditions-single input[type="checkbox"]' ).each(function () {
@@ -337,6 +337,8 @@ function advads_toggle_single_display_conditions(checkbox) {
 	if (jQuery( checkbox ).is( ':checked' )) {
 		jQuery( checkbox ).parents( '.advanced-ad-display-condition' ).find( '.advads-conditions-single' ).addClass( 'disabled' ).find( 'input' ).attr( 'disabled', 'disabled' );
 	} else {
+		// activate buttonsets
+		jQuery( checkbox ).parents( '.advanced-ad-display-condition' ).find( '.advads-conditions-single' ).buttonset();
 		jQuery( checkbox ).parents( '.advanced-ad-display-condition' ).find( '.advads-conditions-single' ).removeClass( 'disabled' ).find( 'input' ).removeAttr( 'disabled' );
 	}
 }

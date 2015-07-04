@@ -29,10 +29,16 @@ class Advanced_Ads_Visitor_Conditions {
 	    // register conditions
 	    $this->conditions = apply_filters( 'advanced-ads-visitor-conditions', array(
 			'mobile' => array( // type of the condition
-			'label' => __( 'mobile device', ADVADS_SLUG ),
-			'description' => __( 'Display ads only on mobile devices or hide them.', ADVADS_SLUG ),
-			'metabox' => array( 'Advanced_Ads_Visitor_Conditions', 'metabox_is_or_not' ), // callback to generate the metabox
-			'check' => array( 'Advanced_Ads_Visitor_Conditions', 'check_mobile' ) // callback for frontend check
+				'label' => __( 'mobile device', ADVADS_SLUG ),
+				'description' => __( 'Display ads only on mobile devices or hide them.', ADVADS_SLUG ),
+				'metabox' => array( 'Advanced_Ads_Visitor_Conditions', 'metabox_is_or_not' ), // callback to generate the metabox
+				'check' => array( 'Advanced_Ads_Visitor_Conditions', 'check_mobile' ) // callback for frontend check
+			),
+			'loggedin' => array(
+				'label' => __( 'logged in visitor', ADVADS_SLUG ),
+				'description' => __( 'Whether the visitor has to be logged in or not in order to see the ads.', ADVADS_SLUG ),
+				'metabox' => array( 'Advanced_Ads_Visitor_Conditions', 'metabox_is_or_not' ), // callback to generate the metabox
+				'check' => array( 'Advanced_Ads_Visitor_Conditions', 'check_logged_in' ) // callback for frontend check
 			),
 	    ));
 
@@ -208,6 +214,119 @@ class Advanced_Ads_Visitor_Conditions {
 	    }
 
 	    return true;
+	}
+
+	/**
+	 * check mobile visitor condition in frontend
+	 *
+	 * @since 1.6.3
+	 * @param arr $options options of the condition
+	 * @return bool true if can be displayed
+	 */
+	static function check_logged_in( $options = array() ){
+
+	    if ( ! isset( $options['operator'] ) ) {
+			return true;
+	    }
+
+	    switch ( $options['operator'] ){
+		    case 'is' :
+			    if ( ! is_user_logged_in() ) { return false; }
+			    break;
+		    case 'is_not' :
+			    if ( is_user_logged_in() ) { return false; }
+			    break;
+	    }
+
+	    return true;
+	}
+
+	/**
+	 * helper for check with strings
+	 *
+	 * @since 1.6.3
+	 * @param str $string string that is going to be checked
+	 * @return bool true if ad can be displayed
+	 */
+	static function helper_check_string( $string = '', $options = array() ){
+
+		if ( ! isset( $options['operator'] ) || ! isset( $options['value'] ) || '' === $options['value'] ){
+			return true;
+		}
+
+		$operator = $options['operator'];
+		$value = $options['value'];
+
+		// check length of url
+		if( $operator !== 'regex' && $operator !== 'regex_not' ){
+			if ( strlen( $value ) > strlen( $string ) ) {
+				return false;
+			}
+		}
+
+		// check the condition by mode and bool
+		$condition = true;
+		switch ( $operator ){
+			// referrer contains string on any position
+			case 'contain' :
+				$condition = strpos( $string, $value ) !== false;
+				break;
+
+			// referrer does not contain string on any position
+			case 'contain_not' :
+				$condition = strpos( $string, $value ) === false;
+				break;
+
+			// referrer starts with the string
+			case 'start' :
+				// -TODO should allow a (locale aware) case insensitive comparision
+				$condition = strpos( $string, $value ) === 0;
+				break;
+			// referrer does not start with the string
+			case 'start_not' :
+				// -TODO should allow a (locale aware) case insensitive comparision
+				$condition = strpos( $string, $value ) !== 0;
+				break;
+			// referrer ends with the string
+			case 'end' :
+				// check if string is longer than referrer
+				$strlen = strlen( $string );
+				$vallen = strlen( $value );
+
+				$condition = substr_compare( $string, $value, $strlen - $vallen, $vallen, true ) === 0;
+				break;
+			// referrer does not end with the string
+			case 'end_not' :
+				// check if string is longer than referrer
+				$strlen = strlen( $string );
+				$vallen = strlen( $value );
+
+				$condition = substr_compare( $string, $value, $strlen - $vallen, $vallen, true ) !== 0;
+				break;
+
+			// referrer is equal to the string
+			case 'match' :
+				// -TODO should allow a (locale aware) case insensitive comparision
+				// strings do match, but should not or not match but should
+				$condition = $value === $string;
+				break;
+			// referrer is not equal to the string
+			case 'match_not' :
+				// -TODO should allow a (locale aware) case insensitive comparision
+				// strings do match, but should not or not match but should
+				$condition = $value !== $string;
+				break;
+			// string is a regular expression
+			case 'regex' :
+				$condition = preg_match( $value, $string );
+				break;
+			// string is not a regular expression
+			case 'regex_not' :
+				$condition = ! preg_match( $value, $string );
+				break;
+		}
+
+		return $condition;
 	}
 }
 

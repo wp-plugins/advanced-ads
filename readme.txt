@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.2.2
-Stable tag: 1.6.2.1
+Stable tag: 1.6.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,6 +33,7 @@ choose between different ad types that enable you to:
 * display images and image banners
 * use shortcodes (to also deliver ads from other ad plugins)
 * create content rich ad with the tinymc editor
+* flash files including a fallback – included in [Pro](https://wpadvancedads.com/add-ons/advanced-ads-pro/)
 
 = display ads =
 
@@ -70,7 +71,9 @@ global conditions
 
 display ads by conditions based on the visitor
 
-* display ads on all devices, mobile only or exclude mobile users
+* display or hide ads for mobile visitors
+* display or hide ads for logged in visitors
+* display or hide ads based on previously visited website (referrer) – included in [Pro](https://wpadvancedads.com/add-ons/advanced-ads-pro/)
 * hide all ads from logged in users based on their role
 * display ads by exact browser width with the [Responsive add-on](https://wpadvancedads.com/add-ons/responsive-ads/)
 
@@ -174,6 +177,12 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 3. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.6.3 =
+
+* added visitor condition to check for logged in visitors
+* fixed display conditions buttons
+* updated German translation
 
 = 1.6.2.1 =
 
