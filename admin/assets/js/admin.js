@@ -45,18 +45,19 @@ jQuery( document ).ready(function ($) {
 		advads_toggle_single_display_conditions( this );
 	});
 
+	// activate general buttons
+	$( '.advads-buttonset' ).buttonset();
+
 	// toggle single display condition checkboxes that have a counterpart
 	$( document ).on('click', '.advads-conditions-single input[type="checkbox"]', function () {
-				advads_toggle_single_display_condition_checkbox( this );
-				// update buttons
-				$( '.advads-conditions-terms-buttons label' ).button( 'refresh' );
+		    advads_toggle_single_display_condition_checkbox( this );
+		    // update buttons when main conditions get unchecked
+		    //$( '.advads-conditions-terms-buttons' ).button( 'refresh' );
 	});
 	// toggle single display condition checkboxes that have a counterpart on load
 	$( '.advads-conditions-single input[type="checkbox"]' ).each(function () {
 		advads_toggle_single_display_condition_checkbox( this );
 	});
-	// activate general buttons
-	$( '.advads-buttonset' ).buttonset();
 
 	$( document ).on('click', '.advads-conditions-terms-buttons .button', function (e) {
 		$( this ).remove();
@@ -175,55 +176,11 @@ jQuery( document ).ready(function ($) {
         /**
          * SETTINGS PAGE
          */
-        // render button sets on settings page
-        $(function() {
-	    $( ".advads-settings-buttonset" ).buttonset();
-        });
-
-	/**
-	 * ADMIN NOTICES
-	 */
-	// close button
-	$(document).on('click', '.advads-notices-button-close', function(){
-	    if(this.dataset.notice === undefined) return;
-	    var messagebox = $(this).parents('.advads-admin-notice');
-
-	    var query = {
-		action: 'advads-close-notice',
-		notice: this.dataset.notice
-	    };
-	    // send and close message
-	    $.post(ajaxurl, query, function (r) {
-		messagebox.fadeOut();
-	    });
-
-	});
-	// autoresponder button
-	$('.advads-notices-button-subscribe').click(function(){
-	    if(this.dataset.notice === undefined) return;
-	    var messagebox = $(this).parents('.advads-admin-notice');
-	    messagebox.find('p').append( '<span class="spinner advads-spinner"></span>' );
-
-	    var query = {
-		action: 'advads-subscribe-notice',
-		notice: this.dataset.notice
-	    };
-	    // send and close message
-	    $.post(ajaxurl, query, function (r) {
-		if(r === '1'){
-		    messagebox.fadeOut();
-		} else {
-		    messagebox.find('p').html(r);
-		    messagebox.removeClass('updated').addClass('error');
-		}
-	    });
-
-	});
 
 	// activate licenses
 	$('.advads-license-activate').click(function(){
 
-	var button = $(this);
+	    var button = $(this);
 	    if( ! this.dataset.addon ) { return }
 
 	    var query = {
@@ -380,6 +337,8 @@ function advads_toggle_single_display_conditions(checkbox) {
 	if (jQuery( checkbox ).is( ':checked' )) {
 		jQuery( checkbox ).parents( '.advanced-ad-display-condition' ).find( '.advads-conditions-single' ).addClass( 'disabled' ).find( 'input' ).attr( 'disabled', 'disabled' );
 	} else {
+		// activate buttonsets
+		jQuery( checkbox ).parents( '.advanced-ad-display-condition' ).find( '.advads-conditions-single' ).buttonset();
 		jQuery( checkbox ).parents( '.advanced-ad-display-condition' ).find( '.advads-conditions-single' ).removeClass( 'disabled' ).find( 'input' ).removeAttr( 'disabled' );
 	}
 }
