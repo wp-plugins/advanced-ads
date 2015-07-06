@@ -8,11 +8,17 @@ $advanced_ads_admin_notices = array(
 	'type' => 'update',
 	'text' => 'Advanced Ads 1.4.5 changes the behavior of some display conditions. Please read this <a href="http://wpadvancedads.com/advanced-ads-1-4-5/" target="_blank">update post</a> to learn if this change should concern you.',
     ),
-    // newsletter after activation
+    // email tutorial
     'nl_first_steps' => array(
 	'type' => 'subscribe',
 	'text' => __( 'Thank you for activating <strong>Advanced Ads</strong>. Would you like to receive the first steps via email?', ADVADS_SLUG ),
 	'confirm_text' => __( 'Yes, send it', ADVADS_SLUG )
+    ),
+    // free add-ons
+    'nl_free_addons' => array(
+	'type' => 'subscribe',
+	'text' => __( 'Thank you for using <strong>Advanced Ads</strong>. Stay informed and receive <strong>2 free add-ons</strong> for joining the newsletter.', ADVADS_SLUG ),
+	'confirm_text' => __( 'Add me now', ADVADS_SLUG )
     ),
     // adsense newsletter group
     'nl_adsense' => array(

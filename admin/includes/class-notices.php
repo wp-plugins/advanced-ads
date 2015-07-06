@@ -149,9 +149,9 @@ class Advanced_Ads_Admin_Notices {
 		$closed = isset($options['closed']) ? $options['closed'] : array();
 		$queue = isset($options['queue']) ? $options['queue'] : array();
 
-		// offer email tutorial right after activation
-		if ( ! $this->is_subscribed() && ( ! in_array( 'nl_first_steps', $queue ) && $activation < $now && ! isset($closed['nl_first_steps'])) ) {
-			$this->notices[] = 'nl_first_steps';
+		// offer free add-ons if not yet subscribed
+		if ( ! $this->is_subscribed() && ! in_array( 'nl_free_addons', $queue )) {
+			$this->notices[] = 'nl_free_addons';
 		}
 	}
 

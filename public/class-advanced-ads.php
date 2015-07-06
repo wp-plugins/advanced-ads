@@ -18,14 +18,6 @@
  * @author  Thomas Maier <thomas.maier@webgilde.com>
  */
 class Advanced_Ads {
-	/**
-	 * Plugin version, used for cache-busting of style and script file references and update notices
-	 *
-	 * @since   1.0.0
-	 * @var     string
-	 */
-
-	const VERSION = '1.6.1';
 
 	/**
 	 * post type slug
