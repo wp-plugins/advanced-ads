@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Advanved Ads\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
 "POT-Creation-Date: 2015-01-27 16:47+0100\n"
-"POT-Revision-Date: Fri Jul 03 2015 23:56:30 GMT+0200 (CEST)\n"
+"POT-Revision-Date: Sun Jul 05 2015 20:20:05 GMT+0200 (CEST)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thomas Maier <post@webzunft.de>\n"
 "Language-Team: webgilde <thomas.maier@webgilde.com>\n"
@@ -555,203 +555,235 @@ msgid "Manual and Support"
 msgstr ""
 
 #: ../admin/includes/class-overview-widgets.php:53
-msgid "Tracking and Stats"
+msgid "Advanced Ads Pro"
 msgstr ""
 
 #: ../admin/includes/class-overview-widgets.php:55
-msgid "Responsive and Mobile ads"
+msgid "Tracking and Stats"
 msgstr ""
 
 #: ../admin/includes/class-overview-widgets.php:57
-msgid "Sticky ads"
+msgid "Responsive and Mobile ads"
 msgstr ""
 
 #: ../admin/includes/class-overview-widgets.php:59
-msgid "PopUps and Layers"
+msgid "Sticky ads"
 msgstr ""
 
 #: ../admin/includes/class-overview-widgets.php:61
+msgid "PopUps and Layers"
+msgstr ""
+
+#: ../admin/includes/class-overview-widgets.php:63
 msgid "Ad Slider"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:79 ../admin/includes/notices.php:20
-msgid ""
-"Learn more about how and <strong>how much you can earn with AdSense</strong> "
-"and Advanced Ads from my dedicated newsletter."
+#: ../admin/includes/class-overview-widgets.php:81
+msgid "Get 2 <strong>free add-ons</strong> for joining the newsletter."
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:80 ../admin/includes/notices.php:
-#: 21 ../admin/views/notices/inline.php:3 ../admin/views/notices/subscribe.php:3
+#: ../admin/includes/class-overview-widgets.php:82
+msgid "Join now"
+msgstr ""
+
+#: ../admin/includes/class-overview-widgets.php:89
+msgid ""
+"Learn more about how and <strong>how much you can earn with AdSense</strong> "
+"and Advanced Ads from the dedicated newsletter group."
+msgstr ""
+
+#: ../admin/includes/class-overview-widgets.php:90 ../admin/includes/notices.php:
+#: 27 ../admin/views/notices/inline.php:3 ../admin/views/notices/subscribe.php:3
 msgid "Subscribe me now"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:87
+#: ../admin/includes/class-overview-widgets.php:97
 msgid "Get the first steps and more tutorials to your inbox."
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:88
+#: ../admin/includes/class-overview-widgets.php:98
 msgid "Send it now"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:111
+#: ../admin/includes/class-overview-widgets.php:121
 msgid "Create your first ad"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:114
+#: ../admin/includes/class-overview-widgets.php:124
 msgid ""
 "Ad Groups contain ads and are currently used to rotate multiple ads on a "
 "single spot."
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:116
+#: ../admin/includes/class-overview-widgets.php:126
 msgid "Create your first group"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:119
+#: ../admin/includes/class-overview-widgets.php:129
 msgid "Ad Placements are the best way to manage where to display ads and groups."
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:121
+#: ../admin/includes/class-overview-widgets.php:131
 msgid "Create your first placement"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:126
+#: ../admin/includes/class-overview-widgets.php:136
 msgid "Next steps"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:138
+#: ../admin/includes/class-overview-widgets.php:148
 #, php-format
 msgid "<a href=\"%s\" target=\"_blank\">Plugin Homepage</a>"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:139
+#: ../admin/includes/class-overview-widgets.php:149
 #, php-format
 msgid "<a href=\"%s\" target=\"_blank\">Manual</a>"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:140
+#: ../admin/includes/class-overview-widgets.php:150
 #, php-format
 msgid "Ask other users in the <a href=\"%s\" target=\"_blank\">wordpress.org forum</a>"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:141
+#: ../admin/includes/class-overview-widgets.php:151
 #, php-format
 msgid "Vote for a <a href=\"%s\" target=\"_blank\">feature</a>"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:142
+#: ../admin/includes/class-overview-widgets.php:152
 #, php-format
 msgid ""
 "Thank the developer with a &#9733;&#9733;&#9733;&#9733;&#9733; review on <a "
 "href=\"%s\" target=\"_blank\">wordpress.org</a>"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:151
+#: ../admin/includes/class-overview-widgets.php:161
 msgid ""
 "Need help to set up and optimize your ads? Need custom coding on your site? "
 "Ask me for a quote."
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:152
+#: ../admin/includes/class-overview-widgets.php:162
 #, php-format
 msgid "Help with ads on %s"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:153
+#: ../admin/includes/class-overview-widgets.php:163
 msgid "Get an offer"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:161
-msgid "Track the impressions of and clicks on your ads."
+#: ../admin/includes/class-overview-widgets.php:171
+msgid "Ad management for advanced websites."
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:162
-msgid "2 methods to count impressions"
+#: ../admin/includes/class-overview-widgets.php:172
+msgid "Cache-busting"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:163
-msgid "beautiful stats for all or single ads"
+#: ../admin/includes/class-overview-widgets.php:173
+msgid "Advanced visitor conditions"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:164
-msgid "get stats for predefined and custom persiods"
-msgstr ""
-
-#: ../admin/includes/class-overview-widgets.php:165
-msgid "group stats by day, week or month"
-msgstr ""
-
-#: ../admin/includes/class-overview-widgets.php:167
-msgid "Get the Tracking add-on"
-msgstr ""
-
-#: ../admin/includes/class-overview-widgets.php:175
-msgid "Display ads based on the size of your visitor’s browser or device."
+#: ../admin/includes/class-overview-widgets.php:174
+msgid "Flash ads with fallback"
 msgstr ""
 
 #: ../admin/includes/class-overview-widgets.php:176
+msgid "Get Pro"
+msgstr ""
+
+#: ../admin/includes/class-overview-widgets.php:184
+msgid "Track the impressions of and clicks on your ads."
+msgstr ""
+
+#: ../admin/includes/class-overview-widgets.php:185
+msgid "2 methods to count impressions"
+msgstr ""
+
+#: ../admin/includes/class-overview-widgets.php:186
+msgid "beautiful stats for all or single ads"
+msgstr ""
+
+#: ../admin/includes/class-overview-widgets.php:187
+msgid "get stats for predefined and custom persiods"
+msgstr ""
+
+#: ../admin/includes/class-overview-widgets.php:188
+msgid "group stats by day, week or month"
+msgstr ""
+
+#: ../admin/includes/class-overview-widgets.php:190
+msgid "Get the Tracking add-on"
+msgstr ""
+
+#: ../admin/includes/class-overview-widgets.php:198
+msgid "Display ads based on the size of your visitor’s browser or device."
+msgstr ""
+
+#: ../admin/includes/class-overview-widgets.php:199
 msgid "set a range (from … to …) pixels for the browser size"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:177
+#: ../admin/includes/class-overview-widgets.php:200
 msgid "set custom sizes for AdSense responsive ads"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:178
+#: ../admin/includes/class-overview-widgets.php:201
 msgid "list all ads by their responsive settings"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:180
+#: ../admin/includes/class-overview-widgets.php:203
 msgid "Get the Responsive add-on"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:188 ../admin/views/ad-info-top.
+#: ../admin/includes/class-overview-widgets.php:211 ../admin/views/ad-info-top.
 #: php:30
 msgid ""
 "Fix ads to the browser while users are scrolling and create best performing "
 "anchor ads."
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:189
+#: ../admin/includes/class-overview-widgets.php:212
 msgid "position ads that don’t scroll with the screen"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:190
+#: ../admin/includes/class-overview-widgets.php:213
 msgid "build anchor ads not only on mobile devices"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:192 ../admin/views/ad-info-top.
+#: ../admin/includes/class-overview-widgets.php:215 ../admin/views/ad-info-top.
 #: php:32
 msgid "Get the Sticky add-on"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:200 ../admin/views/ad-info-top.
+#: ../admin/includes/class-overview-widgets.php:223 ../admin/views/ad-info-top.
 #: php:37
 msgid "Display content and ads in layers and popups on custom events."
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:201
+#: ../admin/includes/class-overview-widgets.php:224
 msgid "display a popup after a user interaction like scrolling"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:202
+#: ../admin/includes/class-overview-widgets.php:225
 msgid "optional backgroup overlay"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:203
+#: ../admin/includes/class-overview-widgets.php:226
 msgid "allow users to close the popup"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:205 ../admin/views/ad-info-top.
+#: ../admin/includes/class-overview-widgets.php:228 ../admin/views/ad-info-top.
 #: php:39
 msgid "Get the PopUp and Layer add-on"
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:213
+#: ../admin/includes/class-overview-widgets.php:236
 msgid "Create a beautiful and simple slider from your ads."
 msgstr ""
 
-#: ../admin/includes/class-overview-widgets.php:215
+#: ../admin/includes/class-overview-widgets.php:238
 msgid "Get the Slider add-on"
 msgstr ""
 
@@ -763,6 +795,22 @@ msgstr ""
 
 #: ../admin/includes/notices.php:15
 msgid "Yes, send it"
+msgstr ""
+
+#: ../admin/includes/notices.php:20
+msgid ""
+"Thank you for using <strong>Advanced Ads</strong>. Stay informed and receive "
+"<strong>2 free add-ons</strong> for joining the newsletter."
+msgstr ""
+
+#: ../admin/includes/notices.php:21
+msgid "Add me now"
+msgstr ""
+
+#: ../admin/includes/notices.php:26
+msgid ""
+"Learn more about how and <strong>how much you can earn with AdSense</strong> "
+"and Advanced Ads from my dedicated newsletter."
 msgstr ""
 
 #: ../admin/views/ad-display-metabox.php:8
@@ -1189,21 +1237,21 @@ msgid ""
 "<a href=\"%s\" target=\"_blank\">Responsive add-on</a>."
 msgstr ""
 
-#: ../admin/views/ad-visitor-metabox.php:105
+#: ../admin/views/ad-visitor-metabox.php:106
 msgid ""
 "The visitor conditions below are deprecated. Please use the new version of "
 "visitor conditions to replace it."
 msgstr ""
 
-#: ../admin/views/ad-visitor-metabox.php:111
+#: ../admin/views/ad-visitor-metabox.php:112
 msgid "Display on all devices"
 msgstr ""
 
-#: ../admin/views/ad-visitor-metabox.php:115
+#: ../admin/views/ad-visitor-metabox.php:116
 msgid "only on mobile devices"
 msgstr ""
 
-#: ../admin/views/ad-visitor-metabox.php:119
+#: ../admin/views/ad-visitor-metabox.php:120
 msgid "not on mobile devices"
 msgstr ""
 
@@ -1570,63 +1618,63 @@ msgstr ""
 msgid "Whether the visitor has to be logged in or not in order to see the ads."
 msgstr ""
 
-#: ../classes/visitor-conditions.php:90
+#: ../classes/visitor-conditions.php:87
 msgid "is"
 msgstr ""
 
-#: ../classes/visitor-conditions.php:91
+#: ../classes/visitor-conditions.php:88
 msgid "is not"
 msgstr ""
 
-#: ../classes/visitor-conditions.php:124
+#: ../classes/visitor-conditions.php:120
 msgid "equal"
 msgstr ""
 
-#: ../classes/visitor-conditions.php:125
+#: ../classes/visitor-conditions.php:121
 msgid "equal or higher"
 msgstr ""
 
-#: ../classes/visitor-conditions.php:126
+#: ../classes/visitor-conditions.php:122
 msgid "equal or lower"
 msgstr ""
 
-#: ../classes/visitor-conditions.php:159
+#: ../classes/visitor-conditions.php:154
 msgid "contains"
 msgstr ""
 
-#: ../classes/visitor-conditions.php:160
+#: ../classes/visitor-conditions.php:155
 msgid "starts with"
 msgstr ""
 
-#: ../classes/visitor-conditions.php:161
+#: ../classes/visitor-conditions.php:156
 msgid "ends with"
 msgstr ""
 
-#: ../classes/visitor-conditions.php:162
+#: ../classes/visitor-conditions.php:157
 msgid "matches"
 msgstr ""
 
-#: ../classes/visitor-conditions.php:163
+#: ../classes/visitor-conditions.php:158
 msgid "matches regex"
 msgstr ""
 
-#: ../classes/visitor-conditions.php:164
+#: ../classes/visitor-conditions.php:159
 msgid "does not contain"
 msgstr ""
 
-#: ../classes/visitor-conditions.php:165
+#: ../classes/visitor-conditions.php:160
 msgid "does not start with"
 msgstr ""
 
-#: ../classes/visitor-conditions.php:166
+#: ../classes/visitor-conditions.php:161
 msgid "does not end with"
 msgstr ""
 
-#: ../classes/visitor-conditions.php:167
+#: ../classes/visitor-conditions.php:162
 msgid "does not match"
 msgstr ""
 
-#: ../classes/visitor-conditions.php:168
+#: ../classes/visitor-conditions.php:163
 msgid "does not match regex"
 msgstr ""
 

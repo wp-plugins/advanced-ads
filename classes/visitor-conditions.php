@@ -81,15 +81,13 @@ class Advanced_Ads_Visitor_Conditions {
 	    $operator = isset( $options['operator'] ) ? $options['operator'] : 'is';
 	    $connector = isset( $options['connector'] ) ? $options['connector'] : 'and';
 
-	    ?><p>
-		<input type="hidden" name="<?php echo $name; ?>[type]" value="<?php echo $options['type']; ?>"/>
+	    ?><input type="hidden" name="<?php echo $name; ?>[type]" value="<?php echo $options['type']; ?>"/>
 		<input type="hidden" name="<?php echo $name; ?>[connector]" value="<?php echo $connector; ?>"/>
-		<label><?php
-		    echo $type_options[ $options['type'] ]['label'];
-		?><select name="<?php echo $name; ?>[operator]">
+		<select name="<?php echo $name; ?>[operator]">
 		<option value="is" <?php selected( 'is', $operator ); ?>><?php _e( 'is' ); ?></option>
 		<option value="is_not" <?php selected( 'is_not', $operator ); ?>><?php _e( 'is not' ); ?></option>
-	    </select></label></p><?php
+	    </select>
+	    <p class="description"><?php echo $type_options[ $options['type'] ]['description']; ?></p><?php
 	}
 
 	/**
@@ -116,15 +114,14 @@ class Advanced_Ads_Visitor_Conditions {
 	    $operator = isset( $options['operator'] ) ? $options['operator'] : 'is_equal';
 	    $connector = isset( $options['connector'] ) ? $options['connector'] : 'and';
 
-	    ?><p>
-		<input type="hidden" name="<?php echo $name; ?>[type]" value="<?php echo $options['type']; ?>"/>
+	    ?><input type="hidden" name="<?php echo $name; ?>[type]" value="<?php echo $options['type']; ?>"/>
 		<input type="hidden" name="<?php echo $name; ?>[connector]" value="<?php echo $connector; ?>"/>
-		<label><?php echo $type_options[ $options['type'] ]['label'];
 		?><select name="<?php echo $name; ?>[operator]">
 		    <option value="is_equal" <?php selected( 'is_equal', $operator ); ?>><?php _e( 'equal', ADVADS_SLUG ); ?></option>
 		    <option value="is_higher" <?php selected( 'is_higher', $operator ); ?>><?php _e( 'equal or higher', ADVADS_SLUG ); ?></option>
 		    <option value="is_lower" <?php selected( 'is_lower', $operator ); ?>><?php _e( 'equal or lower', ADVADS_SLUG ); ?></option>
-		</select></label><input type="number" name="<?php echo $name; ?>[value]" value="<?php echo absint( $value ); ?>"/></p><?php
+		</select><input type="number" name="<?php echo $name; ?>[value]" value="<?php echo absint( $value ); ?>"/>
+	    <p class="description"><?php echo $type_options[ $options['type'] ]['description']; ?></p><?php
 	}
 
 	/**
@@ -151,11 +148,9 @@ class Advanced_Ads_Visitor_Conditions {
 	    $operator = isset( $options['operator'] ) ? $options['operator'] : 'contains';
 	    $connector = isset( $options['connector'] ) ? $options['connector'] : 'and';
 
-	    ?><p>
-		<input type="hidden" name="<?php echo $name; ?>[type]" value="<?php echo $options['type']; ?>"/>
+	    ?><input type="hidden" name="<?php echo $name; ?>[type]" value="<?php echo $options['type']; ?>"/>
 		<input type="hidden" name="<?php echo $name; ?>[connector]" value="<?php echo $connector; ?>"/>
-		<label><?php echo $type_options[ $options['type'] ]['label'];
-		?><select name="<?php echo $name; ?>[operator]">
+		<select name="<?php echo $name; ?>[operator]">
 		    <option value="contain" <?php selected( 'contain', $operator ); ?>><?php _e( 'contains', ADVADS_SLUG ); ?></option>
 		    <option value="start" <?php selected( 'start', $operator ); ?>><?php _e( 'starts with', ADVADS_SLUG ); ?></option>
 		    <option value="end" <?php selected( 'end', $operator ); ?>><?php _e( 'ends with', ADVADS_SLUG ); ?></option>
@@ -166,7 +161,8 @@ class Advanced_Ads_Visitor_Conditions {
 		    <option value="end_not" <?php selected( 'end_not', $operator ); ?>><?php _e( 'does not end with', ADVADS_SLUG ); ?></option>
 		    <option value="match_not" <?php selected( 'match_not', $operator ); ?>><?php _e( 'does not match', ADVADS_SLUG ); ?></option>
 		    <option value="regex_not" <?php selected( 'regex_not', $operator ); ?>><?php _e( 'does not match regex', ADVADS_SLUG ); ?></option>
-		</select></label><input type="text" name="<?php echo $name; ?>[value]" value="<?php echo $value; ?>"/></p><?php
+		</select><input type="text" name="<?php echo $name; ?>[value]" value="<?php echo $value; ?>"/>
+	    <p class="description"><?php echo $type_options[ $options['type'] ]['description']; ?></p><?php
 	}
 
 	/**

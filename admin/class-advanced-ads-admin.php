@@ -162,7 +162,7 @@ class Advanced_Ads_Admin {
 	 * @since     1.0.0
 	 */
 	public function enqueue_admin_styles() {
-		wp_enqueue_style( $this->plugin_slug . '-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), Advanced_Ads::VERSION );
+		wp_enqueue_style( $this->plugin_slug . '-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), ADVADS_VERSION );
 		wp_enqueue_style( 'jquery-style', '//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css' );
 	}
 
@@ -176,7 +176,7 @@ class Advanced_Ads_Admin {
 	public function enqueue_admin_scripts() {
 
 		// global js script
-		wp_enqueue_script( $this->plugin_slug . '-admin-global-script', plugins_url( 'assets/js/admin-global.js', __FILE__ ), array('jquery'), Advanced_Ads::VERSION );
+		wp_enqueue_script( $this->plugin_slug . '-admin-global-script', plugins_url( 'assets/js/admin-global.js', __FILE__ ), array('jquery'), ADVADS_VERSION );
 
 		/**
 		 * only include on
@@ -200,13 +200,13 @@ class Advanced_Ads_Admin {
 		    $screen->id === 'advanced-ads_page_advanced-ads-settings' || // settings
 		    $screen->id === 'toplevel_page_advanced-ads' // overview
 			){
-		    wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array('jquery', 'jquery-ui-autocomplete'), Advanced_Ads::VERSION );
+		    wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array('jquery', 'jquery-ui-autocomplete'), ADVADS_VERSION );
 		    // jquery ui
 		    wp_enqueue_script( 'jquery-ui-accordion' );
 		    wp_enqueue_script( 'jquery-ui-button' );
 
 		    // just register this script for later inclusion on ad group list page
-		    wp_register_script( 'inline-edit-group-ads', plugins_url( 'assets/js/inline-edit-group-ads.js', __FILE__ ), array('jquery'), Advanced_Ads::VERSION );
+		    wp_register_script( 'inline-edit-group-ads', plugins_url( 'assets/js/inline-edit-group-ads.js', __FILE__ ), array('jquery'), ADVADS_VERSION );
 		}
 
 	}

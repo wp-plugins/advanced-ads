@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.2.2
-Stable tag: 1.6.3
+Stable tag: 1.6.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -73,8 +73,8 @@ display ads by conditions based on the visitor
 
 * display or hide ads for mobile visitors
 * display or hide ads for logged in visitors
-* display or hide ads based on previously visited website (referrer) – included in [Pro](https://wpadvancedads.com/add-ons/advanced-ads-pro/)
 * hide all ads from logged in users based on their role
+* advanced visitor conditions: previous visited url (referrer), user capability, browser language, browser and device, url parameters included in [Pro](https://wpadvancedads.com/add-ons/advanced-ads-pro/)
 * display ads by exact browser width with the [Responsive add-on](https://wpadvancedads.com/add-ons/responsive-ads/)
 
 = ad injection =
@@ -177,6 +177,15 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 3. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.6.4 =
+
+COOL: newsletter subscribers now receive 2 free add-ons
+
+* changed newsletter subscription text
+* display description of visitor conditions, if selected
+* minor fix to display conditions ui
+* updated German translation
 
 = 1.6.3 =
 

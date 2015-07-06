@@ -338,7 +338,7 @@ function advads_toggle_single_display_conditions(checkbox) {
 		jQuery( checkbox ).parents( '.advanced-ad-display-condition' ).find( '.advads-conditions-single' ).addClass( 'disabled' ).find( 'input' ).attr( 'disabled', 'disabled' );
 	} else {
 		// activate buttonsets
-		jQuery( checkbox ).parents( '.advanced-ad-display-condition' ).find( '.advads-conditions-single' ).buttonset();
+		jQuery( checkbox ).parents( '.advanced-ad-display-condition' ).find( '.advads-conditions-single.advads-buttonset' ).buttonset();
 		jQuery( checkbox ).parents( '.advanced-ad-display-condition' ).find( '.advads-conditions-single' ).removeClass( 'disabled' ).find( 'input' ).removeAttr( 'disabled' );
 	}
 }
