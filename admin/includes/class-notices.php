@@ -150,7 +150,7 @@ class Advanced_Ads_Admin_Notices {
 		$queue = isset($options['queue']) ? $options['queue'] : array();
 
 		// offer free add-ons if not yet subscribed
-		if ( ! $this->is_subscribed() && ! in_array( 'nl_free_addons', $queue )) {
+		if ( ! $this->is_subscribed() && ! isset( $queue['nl_free_addons'] ) && ! isset( $closed['nl_free_addons'] )) {
 			$this->notices[] = 'nl_free_addons';
 		}
 	}
