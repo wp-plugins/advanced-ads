@@ -23,6 +23,17 @@ if ( $is_responsive ) {
             <?php _e( 'Ad Slot ID', ADVADS_SLUG ); ?>&nbsp;:&nbsp;
             <input type="text" name="unit-code" id="unit-code" value="<?php echo $unit_code; ?>" />
         </label>
+	<input type="hidden" name="advanced_ad[output][adsense-pub-id]" id="advads-adsense-pub-id" value="" />
+	<?php if( $pub_id ) : ?>
+	    <p><?php printf(__( 'Publisher ID: %s', ADVADS_SLUG ), $pub_id ); ?></p>
+	    <?php endif; ?>
+	    <?php if( $pub_id_errors ) : ?>
+		<p><span class="advads-error-message">
+		    <?php echo $pub_id_errors; ?>
+		</span><?php
+		printf(__( 'Please <a href="%s" target="_blank">change it here</a>.', ADVADS_SLUG ), admin_url( 'admin.php?page=advanced-ads-settings#top#adsense' ));
+		?></p>
+	    <?php endif; ?>
         <label>
             <?php _e( 'Type', ADVADS_SLUG ); ?>&nbsp;:&nbsp;
             <select name="unit-type" id="unit-type">

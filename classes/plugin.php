@@ -99,7 +99,7 @@ class Advanced_Ads_Plugin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-		// wp_enqueue_style( $this->get_plugin_slug() . '-plugin-styles', plugins_url('assets/css/public.css', __FILE__), array(), Advanced_Ads::VERSION);
+		// wp_enqueue_style( $this->get_plugin_slug() . '-plugin-styles', plugins_url('assets/css/public.css', __FILE__), array(), ADVADS_VERSION);
 	}
 
 	/**
@@ -118,10 +118,10 @@ class Advanced_Ads_Plugin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-		// wp_enqueue_script( $this->get_plugin_slug() . '-plugin-script', plugins_url('assets/js/public.js', __FILE__), array('jquery'), Advanced_Ads::VERSION);
+		// wp_enqueue_script( $this->get_plugin_slug() . '-plugin-script', plugins_url('assets/js/public.js', __FILE__), array('jquery'), ADVADS_VERSION);
 		$options = $this->options();
 		if ( ! empty($options['advanced-js']) ){
-			wp_enqueue_script( $this->get_plugin_slug() . '-advanced-js', ADVADS_BASE_URL . 'public/assets/js/advanced.js', array( 'jquery' ), Advanced_Ads::VERSION );
+			wp_enqueue_script( $this->get_plugin_slug() . '-advanced-js', ADVADS_BASE_URL . 'public/assets/js/advanced.js', array( 'jquery' ), ADVADS_VERSION );
 		}
 	}
 
