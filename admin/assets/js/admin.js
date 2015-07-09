@@ -1,6 +1,4 @@
 jQuery( document ).ready(function ($) {
-	"use strict";
-
 	function advads_load_ad_type_parameter_metabox(ad_type) {
 		$( '#advanced-ads-ad-parameters' ).html( '<span class="spinner advads-ad-parameters-spinner advads-spinner"></span>' );
 		$.ajax({

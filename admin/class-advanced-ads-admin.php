@@ -220,7 +220,7 @@ class Advanced_Ads_Admin {
 
 		// add main menu item with overview page
 		add_menu_page(
-			__( 'Overview', ADVADS_SLUG ), __( 'Advanced Ads', ADVADS_SLUG ), 'manage_options', $this->plugin_slug, array($this, 'display_overview_page'), 'dashicons-chart-line', '58.74'
+			__( 'Overview', ADVADS_SLUG ), 'Advanced Ads', 'manage_options', $this->plugin_slug, array($this, 'display_overview_page'), 'dashicons-chart-line', '58.74'
 		);
 
 		add_submenu_page(
@@ -617,8 +617,13 @@ class Advanced_Ads_Admin {
 		 *
 		 * @see wp-admin/edit-form-advanced.php
 		 */
-		public function ad_update_messages(array $messages){
+		public function ad_update_messages($messages = array()){
 			$post = get_post();
+
+			// added to hide error message caused by third party code that uses post_updated_messages filter wrong
+			if( ! is_array( $messages )){
+			    return $messages;
+			}
 
 			$messages[Advanced_Ads::POST_TYPE_SLUG] = array(
 		0  => '', // Unused. Messages start at index 1.
@@ -688,8 +693,6 @@ class Advanced_Ads_Admin {
 
 			// register settings
 			register_setting( ADVADS_SLUG, ADVADS_SLUG, array($this, 'sanitize_settings') );
-			// register license settings
-			register_setting( ADVADS_SLUG . '-licenses', ADVADS_SLUG . '-licenses', array( $this, 'sanitize_license_keys' ) );
 
 			// general settings section
 			add_settings_section(
@@ -699,13 +702,20 @@ class Advanced_Ads_Admin {
 				$hook
 			);
 
-			// licenses section
-			add_settings_section(
-				'advanced_ads_settings_license_section',
-				__( 'Licenses', ADVADS_SLUG ),
-				array($this, 'render_settings_licenses_section_callback'),
-				'advanced-ads-settings-license-page'
-			);
+			// licenses section only for main blog
+			if( is_main_site( get_current_blog_id() ) ){
+			    // register license settings
+			    register_setting( ADVADS_SLUG . '-licenses', ADVADS_SLUG . '-licenses', array( $this, 'sanitize_license_keys' ) );
+
+			    add_settings_section(
+				    'advanced_ads_settings_license_section',
+				    __( 'Licenses', ADVADS_SLUG ),
+				    array($this, 'render_settings_licenses_section_callback'),
+				    'advanced-ads-settings-license-page'
+			    );
+
+			    add_filter( 'advanced-ads-setting-tabs', array( $this, 'license_tab') );
+			}
 
 			// add setting fields to disable ads
 			add_settings_field(
@@ -766,6 +776,23 @@ class Advanced_Ads_Admin {
 
 			// hook for additional settings from add-ons
 			do_action( 'advanced-ads-settings-init', $hook );
+		}
+
+		/**
+		 * add license tab
+		 *
+		 * arr $tabs setting tabs
+		 */
+		public function license_tab( array $tabs ){
+
+			$tabs['licenses'] = array(
+				'page' => 'advanced-ads-settings-license-page',
+				'group' => ADVADS_SLUG . '-licenses',
+				'tabid' => 'licenses',
+				'title' => __( 'Licenses', ADVADS_SLUG )
+			);
+
+			return $tabs;
 		}
 
 		/**
