@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.2.2
-Stable tag: 1.6.1
+Stable tag: 1.6.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,6 +33,7 @@ choose between different ad types that enable you to:
 * display images and image banners
 * use shortcodes (to also deliver ads from other ad plugins)
 * create content rich ad with the tinymc editor
+* flash files including a fallback – included in [Pro](https://wpadvancedads.com/add-ons/advanced-ads-pro/)
 
 = display ads =
 
@@ -70,8 +71,10 @@ global conditions
 
 display ads by conditions based on the visitor
 
-* display ads on all devices, mobile only or exclude mobile users
+* display or hide ads for mobile visitors
+* display or hide ads for logged in visitors
 * hide all ads from logged in users based on their role
+* advanced visitor conditions: previous visited url (referrer), user capability, browser language, browser and device, url parameters included in [Pro](https://wpadvancedads.com/add-ons/advanced-ads-pro/)
 * display ads by exact browser width with the [Responsive add-on](https://wpadvancedads.com/add-ons/responsive-ads/)
 
 = ad injection =
@@ -174,6 +177,46 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 3. Choose from various conditions where and where not to display your ad.
 
 == Changelog ==
+
+= 1.6.5 =
+
+* removed "use strict" from js
+* hide error message caused by third party code that uses post_updated_messages filter wrong
+* hide licenses tab on non-main-blogs on multisites
+* made plugin name untranslatable
+
+= 1.6.4.1 =
+
+* fixed free-add-on notice not closing forever
+
+= 1.6.4 =
+
+COOL: newsletter subscribers now receive 2 free add-ons
+
+* changed newsletter subscription text
+* display description of visitor conditions, if selected
+* minor fix to display conditions ui
+* updated German translation
+
+= 1.6.3 =
+
+* added visitor condition to check for logged in visitors
+* fixed display conditions buttons
+* updated German translation
+
+= 1.6.2.1 =
+
+* added missing files to repository
+
+= 1.6.2 =
+
+* display dashboard widget only to authors and higher roles
+* include admin javascript file only on pages which need it
+* no need to save AdSense publisher ID separately anymore
+* added warning if AdSense publisher ID has wrong format
+* list more than 10 ads from a group on the group overview page
+* active settings and conditions are now blue
+* clear object cache when saving an ad (thanks to pete-sch)
 
 = 1.6.1 =
 

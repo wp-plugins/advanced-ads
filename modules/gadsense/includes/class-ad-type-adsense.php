@@ -65,7 +65,13 @@ class Advanced_Ads_Ad_Type_Adsense extends Advanced_Ads_Ad_Type_Abstract {
 		);
 
 		$db = Gadsense_Data::get_instance();
-		$pub_id = $db->get_adsense_id();
+		$pub_id = trim( $db->get_adsense_id() );
+
+		// check pub_id for errors
+		$pub_id_errors = false;
+		if( $pub_id !== '' && 0 !== strpos( $pub_id, 'pub-' )){
+			$pub_id_errors = __( 'The Publisher ID has an incorrect format. (must start with "pub-")', ADVADS_SLUG );
+		}
 
 		if ( ! empty($content) ) {
 			$json_content = $content;

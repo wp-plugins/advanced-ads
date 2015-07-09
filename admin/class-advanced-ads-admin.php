@@ -162,7 +162,7 @@ class Advanced_Ads_Admin {
 	 * @since     1.0.0
 	 */
 	public function enqueue_admin_styles() {
-		wp_enqueue_style( $this->plugin_slug . '-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), Advanced_Ads::VERSION );
+		wp_enqueue_style( $this->plugin_slug . '-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), ADVADS_VERSION );
 		wp_enqueue_style( 'jquery-style', '//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css' );
 	}
 
@@ -175,18 +175,39 @@ class Advanced_Ads_Admin {
 	 */
 	public function enqueue_admin_scripts() {
 
-		global $post;
-		if ( ! isset($this->plugin_screen_hook_suffix) && isset($post) && Advanced_Ads::POST_TYPE_SLUG != $post->type ) {
-			return;
+		// global js script
+		wp_enqueue_script( $this->plugin_slug . '-admin-global-script', plugins_url( 'assets/js/admin-global.js', __FILE__ ), array('jquery'), ADVADS_VERSION );
+
+		/**
+		 * only include on
+		 * * advads settings pages
+		 * * ad post type
+		 * * ad groups
+		 * * ad placements
+		 * * ad overview
+		 */
+
+		$screen = get_current_screen();
+		//echo $screen->id;
+		if( !isset( $screen->id ) ) {
+		    return;
 		}
 
-		wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array('jquery', 'jquery-ui-autocomplete'), Advanced_Ads::VERSION );
-		// jquery ui
-		wp_enqueue_script( 'jquery-ui-accordion' );
-		wp_enqueue_script( 'jquery-ui-button' );
+		if( $screen->id === 'advanced-ads_page_advanced-ads-groups' || // ad groups
+		    $screen->id === 'edit-advanced_ads' || // ads overview
+		    $screen->id === 'advanced_ads' || // ad edit page
+		    $screen->id === 'advanced-ads_page_advanced-ads-placements' || // placements
+		    $screen->id === 'advanced-ads_page_advanced-ads-settings' || // settings
+		    $screen->id === 'toplevel_page_advanced-ads' // overview
+			){
+		    wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array('jquery', 'jquery-ui-autocomplete'), ADVADS_VERSION );
+		    // jquery ui
+		    wp_enqueue_script( 'jquery-ui-accordion' );
+		    wp_enqueue_script( 'jquery-ui-button' );
 
-		// just register this script for later inclusion on ad group list page
-		wp_register_script( 'inline-edit-group-ads', plugins_url( 'assets/js/inline-edit-group-ads.js', __FILE__ ), array('jquery'), Advanced_Ads::VERSION );
+		    // just register this script for later inclusion on ad group list page
+		    wp_register_script( 'inline-edit-group-ads', plugins_url( 'assets/js/inline-edit-group-ads.js', __FILE__ ), array('jquery'), ADVADS_VERSION );
+		}
 
 	}
 
@@ -199,7 +220,7 @@ class Advanced_Ads_Admin {
 
 		// add main menu item with overview page
 		add_menu_page(
-			__( 'Overview', ADVADS_SLUG ), __( 'Advanced Ads', ADVADS_SLUG ), 'manage_options', $this->plugin_slug, array($this, 'display_overview_page'), 'dashicons-chart-line', '58.74'
+			__( 'Overview', ADVADS_SLUG ), 'Advanced Ads', 'manage_options', $this->plugin_slug, array($this, 'display_overview_page'), 'dashicons-chart-line', '58.74'
 		);
 
 		add_submenu_page(
@@ -525,6 +546,9 @@ class Advanced_Ads_Admin {
 			return;
 		}
 
+		// filter to allow change of submitted ad settings
+		$_POST['advanced_ad'] = apply_filters( 'advanced-ads-ad-settings-pre-save', $_POST['advanced_ad'] );
+
 		$ad->type = $_POST['advanced_ad']['type'];
 		if ( isset($_POST['advanced_ad']['output']) ) {
 			$ad->set_option( 'output', $_POST['advanced_ad']['output'] );
@@ -593,8 +617,13 @@ class Advanced_Ads_Admin {
 		 *
 		 * @see wp-admin/edit-form-advanced.php
 		 */
-		public function ad_update_messages(array $messages){
+		public function ad_update_messages($messages = array()){
 			$post = get_post();
+
+			// added to hide error message caused by third party code that uses post_updated_messages filter wrong
+			if( ! is_array( $messages )){
+			    return $messages;
+			}
 
 			$messages[Advanced_Ads::POST_TYPE_SLUG] = array(
 		0  => '', // Unused. Messages start at index 1.
@@ -664,8 +693,6 @@ class Advanced_Ads_Admin {
 
 			// register settings
 			register_setting( ADVADS_SLUG, ADVADS_SLUG, array($this, 'sanitize_settings') );
-			// register license settings
-			register_setting( ADVADS_SLUG . '-licenses', ADVADS_SLUG . '-licenses', array( $this, 'sanitize_license_keys' ) );
 
 			// general settings section
 			add_settings_section(
@@ -675,13 +702,20 @@ class Advanced_Ads_Admin {
 				$hook
 			);
 
-			// licenses section
-			add_settings_section(
-				'advanced_ads_settings_license_section',
-				__( 'Licenses', ADVADS_SLUG ),
-				array($this, 'render_settings_licenses_section_callback'),
-				'advanced-ads-settings-license-page'
-			);
+			// licenses section only for main blog
+			if( is_main_site( get_current_blog_id() ) ){
+			    // register license settings
+			    register_setting( ADVADS_SLUG . '-licenses', ADVADS_SLUG . '-licenses', array( $this, 'sanitize_license_keys' ) );
+
+			    add_settings_section(
+				    'advanced_ads_settings_license_section',
+				    __( 'Licenses', ADVADS_SLUG ),
+				    array($this, 'render_settings_licenses_section_callback'),
+				    'advanced-ads-settings-license-page'
+			    );
+
+			    add_filter( 'advanced-ads-setting-tabs', array( $this, 'license_tab') );
+			}
 
 			// add setting fields to disable ads
 			add_settings_field(
@@ -742,6 +776,23 @@ class Advanced_Ads_Admin {
 
 			// hook for additional settings from add-ons
 			do_action( 'advanced-ads-settings-init', $hook );
+		}
+
+		/**
+		 * add license tab
+		 *
+		 * arr $tabs setting tabs
+		 */
+		public function license_tab( array $tabs ){
+
+			$tabs['licenses'] = array(
+				'page' => 'advanced-ads-settings-license-page',
+				'group' => ADVADS_SLUG . '-licenses',
+				'tabid' => 'licenses',
+				'title' => __( 'Licenses', ADVADS_SLUG )
+			);
+
+			return $tabs;
 		}
 
 		/**
@@ -1072,6 +1123,10 @@ class Advanced_Ads_Admin {
 	 * @since 1.3.12
 	 */
 		public function add_dashboard_widget(){
+			// display dashboard widget only to authors and higher roles
+			if( ! current_user_can('publish_posts') ) {
+			        return;
+			}
 			add_meta_box( 'advads_dashboard_widget', __( 'Ads Dashboard', ADVADS_SLUG ), array($this, 'dashboard_widget_function'), 'dashboard', 'side', 'high' );
 		}
 
