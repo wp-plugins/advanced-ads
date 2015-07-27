@@ -28,28 +28,34 @@ class Advanced_Ads_Placements {
 	public static function get_placement_types() {
 		$types = array(
 			'default' => array(
-				'title' => __( 'default', ADVADS_SLUG ),
-				'description' => __( 'Manual placement.', ADVADS_SLUG ),
+				'title' => __( 'Manual Placement', ADVADS_SLUG ),
+				'description' => __( 'Manual placement to use as function or shortcode.', ADVADS_SLUG ),
+				'image' => ADVADS_BASE_URL . 'admin/assets/img/placements/manual.png'
 				),
 			'header' => array(
-				'title' => __( 'header', ADVADS_SLUG ),
-				'description' => __( 'Injected in Header (before closing </head> Tag, often not visible).', ADVADS_SLUG ),
+				'title' => __( 'Header Code', ADVADS_SLUG ),
+				'description' => __( 'Injected in Header (before closing &lt;/head&gt; Tag, often not visible).', ADVADS_SLUG ),
+				'image' => ADVADS_BASE_URL . 'admin/assets/img/placements/header.png'
 				),
 			'footer' => array(
-				'title' => __( 'footer', ADVADS_SLUG ),
-				'description' => __( 'Injected in Footer (before closing </body> Tag).', ADVADS_SLUG ),
+				'title' => __( 'Footer Code', ADVADS_SLUG ),
+				'description' => __( 'Injected in Footer (before closing &lt;/body&gt; Tag).', ADVADS_SLUG ),
+				'image' => ADVADS_BASE_URL . 'admin/assets/img/placements/footer.png'
 				),
 			'post_top' => array(
-				'title' => __( 'before post', ADVADS_SLUG ),
+				'title' => __( 'Before Content', ADVADS_SLUG ),
 				'description' => __( 'Injected before the post content.', ADVADS_SLUG ),
+				'image' => ADVADS_BASE_URL . 'admin/assets/img/placements/content-before.png'
 				),
 			'post_bottom' => array(
-				'title' => __( 'after post', ADVADS_SLUG ),
+				'title' => __( 'After Content', ADVADS_SLUG ),
 				'description' => __( 'Injected after the post content.', ADVADS_SLUG ),
+				'image' => ADVADS_BASE_URL . 'admin/assets/img/placements/content-after.png'
 				),
 			'post_content' => array(
-				'title' => __( 'post content', ADVADS_SLUG ),
+				'title' => __( 'Post Content', ADVADS_SLUG ),
 				'description' => __( 'Injected into the post content. You can choose the paragraph after which the ad content is displayed.', ADVADS_SLUG ),
+				'image' => ADVADS_BASE_URL . 'admin/assets/img/placements/content-within.png'
 				),
 		);
 		return apply_filters( 'advanced-ads-placement-types', $types );
@@ -97,8 +103,8 @@ class Advanced_Ads_Placements {
 		$new_placement['slug'] = sanitize_title( $new_placement['name'] );
 
 		// check if slug already exists or is empty
-		if ( $new_placement['slug'] === '' || isset( $placements[$new_placement['slug']] ) ) {
-		    return false;
+		if ( $new_placement['slug'] === '' || isset( $placements[$new_placement['slug']]) || !isset( $new_placement['type'] ) ) {
+			return false;
 		}
 
 		// make sure only allowed types are being saved
@@ -110,7 +116,8 @@ class Advanced_Ads_Placements {
 		// add new place to all placements
 		$placements[$new_placement['slug']] = array(
 			'type' => $new_placement['type'],
-			'name' => $new_placement['name']
+			'name' => $new_placement['name'],
+			'item' => $new_placement['item']
 		);
 
 		// save array
@@ -145,6 +152,8 @@ class Advanced_Ads_Placements {
 				$placements[$_placement_slug]['options'] = $_placement['options'];
 				if ( isset($placements[$_placement_slug]['options']['index']) ) {
 					$placements[$_placement_slug]['options']['index'] = absint( $placements[$_placement_slug]['options']['index'] ); }
+			} else {
+				$placements[$_placement_slug]['options'] = array();
 			}
 		}
 

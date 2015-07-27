@@ -131,6 +131,7 @@
 .advads-ad-group-list-ads span { float: right; }
 .advads-group-row .row-actions a { cursor: pointer; }
 .advads-group-row .advads-usage { margin-top: 1em; }
+.advads-usage code { padding: 0; background: none; }
 .advads-group-row code { background: none; }
 .advads-ad-group-form > td { border-bottom: 1px solid; }
 .advads-ad-group-form label { display: inline-block; margin-bottom: 1em; }
@@ -140,9 +141,14 @@
 /**
  AD PLACEMENTS
 */
-.advads-placements-new-form select { display: inline-block; min-width: 10em; }
-.advads-placements-new-form label { display: inline-block; width: 10em; }
-.advads-placements-new-form input { display: inline-block; }
+.advads-new-placement-types { background: #ccc; overflow: hidden; }
+.advads-placement-description { display: none; }
+.advads-placements-new-form .advads-placement-type { position: relative; top: 0; left: 0; float: left; }
+.advads-placements-new-form .advads-placement-type .ui-button { background: none; border-radius: 0; }
+.advads-placements-new-form .advads-placement-type .ui-button-text { padding: 0; }
+.advads-placements-new-form .advads-placement-type .ui-button-text img { margin-top: 10px; max-width: 100%; }
+.advads-placements-new-form .advads-placement-type label { display: inline-block; width: 140px; text-align: center; border: 0; padding: 10px; }
+.advads-placements-new-form .advads-placement-type label .description { padding: 10px; }
 .advads-placements-table { min-width: 80%; border-collapse: collapse; background: #fff; }
 .advads-placements-table tbody tr:nth-child(4n+1) { background: none repeat scroll 0 0 #f9f9f9; }
 .advads-placements-table tbody tr { border-top: 1px solid #f1f1f1; }
@@ -150,6 +156,9 @@
 .advads-placements-table.widefat tbody th { font-weight: bold; }
 .advads-placements-table th span { font-weight: normal; }
 .advads-placements-table td { margin: 0; padding: 10px; text-align: left; vertical-align: top; }
+.advads-placements-table img { height: 50px; }
+.advads-placements-table .usage-link { cursor: pointer; }
+.advads-placements-table .advads-usage input { width: 100%; }
 .advads-placements-table-options { text-align: right; }
 .advads-placement-options input, .advads-placement-options select { background: transparent; }
 .advads-placements-table-options input[type="number"] { width: 3em; }

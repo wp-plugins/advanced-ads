@@ -96,6 +96,11 @@ class Advanced_Ads_Ad_Type_Adsense extends Advanced_Ads_Ad_Type_Abstract {
 				}
 			}
 		}
+
+		if( '' === trim( $pub_id ) && '' !== trim( $unit_code ) ){
+			$pub_id_errors = __( 'Your AdSense Publisher ID is missing.', ADVADS_SLUG );
+		}
+
 		$default_template = GADSENSE_BASE_PATH . 'admin/views/adsense-ad-parameters.php';
 		/**
 		 * Inclusion of other UI template is done here. The content is passed in order to allow the inclusion of different

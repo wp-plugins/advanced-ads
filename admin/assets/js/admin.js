@@ -152,6 +152,16 @@ jQuery( document ).ready(function ($) {
 				usagediv.show();
 			}
 		});
+		// display ad groups usage
+		$( '.advads-placements-table .usage-link' ).click(function(e){
+			e.preventDefault();
+			var usagediv = $( this ).next( '.advads-usage' );
+			if(usagediv.is( ':visible' )){
+				usagediv.hide();
+			} else {
+				usagediv.show();
+			}
+		});
 		// menu tabs
 		$( '#advads-tabs' ).find( 'a' ).click(function () {
 			$( '#advads-tabs' ).find( 'a' ).removeClass( 'nav-tab-active' );
@@ -205,6 +215,18 @@ jQuery( document ).ready(function ($) {
 		    button.next('.advads-license-activate-error').text( r );
 		}
 	    });
+	});
+
+	/**
+         * PLACEMENTS
+         */
+
+	 // show image tooltips
+	var advads_tooltips = $( ".advads-placements-new-form" ).tooltip({
+		items: "img",
+		content: function() {
+			return $( this ).parents('.advads-placement-type').find( '.advads-placement-description' ).html();
+		}
 	});
 });
 

@@ -116,7 +116,7 @@ class Advanced_Ads_Visitor_Conditions {
 
 	    ?><input type="hidden" name="<?php echo $name; ?>[type]" value="<?php echo $options['type']; ?>"/>
 		<input type="hidden" name="<?php echo $name; ?>[connector]" value="<?php echo $connector; ?>"/>
-		?><select name="<?php echo $name; ?>[operator]">
+		<select name="<?php echo $name; ?>[operator]">
 		    <option value="is_equal" <?php selected( 'is_equal', $operator ); ?>><?php _e( 'equal', ADVADS_SLUG ); ?></option>
 		    <option value="is_higher" <?php selected( 'is_higher', $operator ); ?>><?php _e( 'equal or higher', ADVADS_SLUG ); ?></option>
 		    <option value="is_lower" <?php selected( 'is_lower', $operator ); ?>><?php _e( 'equal or lower', ADVADS_SLUG ); ?></option>
@@ -314,11 +314,20 @@ class Advanced_Ads_Visitor_Conditions {
 				break;
 			// string is a regular expression
 			case 'regex' :
-				$condition = preg_match( $value, $string );
+				// check regular expression first
+				if( @preg_match( $value, null ) === false ){
+					Advanced_Ads::log( "Advanced Ads: regular expression '$value' in visitor condition is broken." );
+				} else {
+					$condition = preg_match( $value, $string );
+				}
 				break;
 			// string is not a regular expression
 			case 'regex_not' :
-				$condition = ! preg_match( $value, $string );
+				if( @preg_match( $value, null ) === false ){
+					Advanced_Ads::log( "Advanced Ads: regular expression '$value' in visitor condition is broken." );
+				} else {
+					! $condition = preg_match( $value, $string );
+				}
 				break;
 		}
 

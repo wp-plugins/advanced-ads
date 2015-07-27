@@ -24,7 +24,7 @@ class Gadsense_Admin {
 	public function ad_details_column($size, $the_ad) {
 		if ( 'adsense' == $the_ad->type ) {
 			$content = json_decode( $the_ad->content );
-			if ( 'responsive' == $content->unitType ) { $size = __( 'Responsive', ADVADS_SLUG ); }
+			if ( $content && 'responsive' == $content->unitType ) { $size = __( 'Responsive', ADVADS_SLUG ); }
 		}
 		return $size;
 	}

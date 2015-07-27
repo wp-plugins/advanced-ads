@@ -6,7 +6,8 @@ if( $expires ){
     $expires_time = strtotime( $expires );
     $days_left = ( $expires_time - time() ) / DAY_IN_SECONDS;
     if( $days_left <= 0 ){
-	$errortext = sprintf(__( 'Your license expired. Please visit <a href="%s" target="_blank">the plugin page</a> to renew it.', ADVADS_SLUG ), ADVADS_URL );
+	$plugin_url = isset( $plugin_url ) ? $plugin_url : ADVADS_URL;
+	$errortext = sprintf(__( 'Your license expired. Please visit <a href="%s" target="_blank">the plugin page</a> to renew it.', ADVADS_SLUG ), $plugin_url );
 	$expired = true;
     }
 };

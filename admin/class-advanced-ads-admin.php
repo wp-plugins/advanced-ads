@@ -79,6 +79,10 @@ class Advanced_Ads_Admin {
 		} else {
 			add_action( 'plugins_loaded', array( $this, 'wp_plugins_loaded' ) );
 		}
+		// registering custom columns needs to work with and without DOING_AJAX
+		add_filter( 'manage_advanced_ads_posts_columns', array($this, 'ad_list_columns_head') ); // extra column
+		add_filter( 'manage_advanced_ads_posts_custom_column', array($this, 'ad_list_columns_content'), 10, 2 ); // extra column
+
 	}
 
 	public function wp_plugins_loaded() {
@@ -112,8 +116,6 @@ class Advanced_Ads_Admin {
 
 		// handling (ad) lists
 		add_filter( 'request', array($this, 'ad_list_request') ); // order ads by title, not ID
-		add_filter( 'manage_advanced_ads_posts_columns', array($this, 'ad_list_columns_head') ); // extra column
-		add_filter( 'manage_advanced_ads_posts_custom_column', array($this, 'ad_list_columns_content'), 10, 2 ); // extra column
 
 		// settings handling
 		add_action( 'admin_init', array($this, 'settings_init') );
@@ -163,7 +165,9 @@ class Advanced_Ads_Admin {
 	 */
 	public function enqueue_admin_styles() {
 		wp_enqueue_style( $this->plugin_slug . '-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), ADVADS_VERSION );
-		wp_enqueue_style( 'jquery-style', '//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css' );
+		// jQuery ui smoothness style 1.11.4
+		wp_enqueue_style( $this->plugin_slug . '-jquery-ui-styles', plugins_url( 'assets/jquery-ui/jquery-ui.min.css', __FILE__ ), array(), '1.11.4' );
+		//wp_enqueue_style( 'jquery-style', '//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css' );
 	}
 
 	/**
@@ -178,37 +182,47 @@ class Advanced_Ads_Admin {
 		// global js script
 		wp_enqueue_script( $this->plugin_slug . '-admin-global-script', plugins_url( 'assets/js/admin-global.js', __FILE__ ), array('jquery'), ADVADS_VERSION );
 
-		/**
-		 * only include on
-		 * * advads settings pages
-		 * * ad post type
-		 * * ad groups
-		 * * ad placements
-		 * * ad overview
-		 */
-
-		$screen = get_current_screen();
-		//echo $screen->id;
-		if( !isset( $screen->id ) ) {
-		    return;
-		}
-
-		if( $screen->id === 'advanced-ads_page_advanced-ads-groups' || // ad groups
-		    $screen->id === 'edit-advanced_ads' || // ads overview
-		    $screen->id === 'advanced_ads' || // ad edit page
-		    $screen->id === 'advanced-ads_page_advanced-ads-placements' || // placements
-		    $screen->id === 'advanced-ads_page_advanced-ads-settings' || // settings
-		    $screen->id === 'toplevel_page_advanced-ads' // overview
-			){
+		if( self::screen_belongs_to_advanced_ads() ){
 		    wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array('jquery', 'jquery-ui-autocomplete'), ADVADS_VERSION );
 		    // jquery ui
 		    wp_enqueue_script( 'jquery-ui-accordion' );
 		    wp_enqueue_script( 'jquery-ui-button' );
+		    wp_enqueue_script( 'jquery-ui-tooltip' );
 
 		    // just register this script for later inclusion on ad group list page
 		    wp_register_script( 'inline-edit-group-ads', plugins_url( 'assets/js/inline-edit-group-ads.js', __FILE__ ), array('jquery'), ADVADS_VERSION );
 		}
 
+	}
+
+	/**
+	 * check if the current screen belongs to Advanced Ads
+	 *
+	 * @since 1.6.6
+	 * @return bool true if screen belongs to Advanced Ads
+	 */
+	static function screen_belongs_to_advanced_ads(){
+
+		$screen = get_current_screen();
+		//echo $screen->id;
+		if( !isset( $screen->id ) ) {
+			return false;
+		}
+
+		$advads_pages = apply_filters( 'advanced-ads-dashboard-screens', array(
+			'advanced-ads_page_advanced-ads-groups', // ad groups
+			'edit-advanced_ads', // ads overview
+			'advanced_ads', // ad edit page
+			'advanced-ads_page_advanced-ads-placements', // placements
+			'advanced-ads_page_advanced-ads-settings', // settings
+			'toplevel_page_advanced-ads', // overview
+		));
+
+		if( in_array( $screen->id, $advads_pages )){
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -282,6 +296,7 @@ class Advanced_Ads_Admin {
 	public function display_placements_page() {
 		$placement_types = Advanced_Ads_Placements::get_placement_types();
 		$placements = Advanced_Ads::get_ad_placements_array(); // -TODO use model
+		$items = Advanced_Ads_Placements::items_for_select();
 		// load ads and groups for select field
 
 		// display view
@@ -936,6 +951,8 @@ class Advanced_Ads_Admin {
 
 			// sanitize whatever option one wants to sanitize
 
+			$options = apply_filters( 'advanced-ads-sanitize-settings', $options );
+
 			return $options;
 		}
 
@@ -961,28 +978,28 @@ class Advanced_Ads_Admin {
 			return $options;
 		}
 
-		/**
+	/**
 	 * add heading for extra column of ads list
 	 * remove the date column
 	 *
 	 * @since 1.3.3
-	 * @param arr $defaults
+	 * @param arr $columns
 	 */
-		public function ad_list_columns_head($defaults){
+	public function ad_list_columns_head( $columns ){
 
-			$offset = array_search( 'title', array_keys( $defaults ) ) + 1;
-
-			$defaults = array_merge(
-				array_slice( $defaults, 0, $offset ),
-				array('ad_details' => __( 'Ad Details', ADVADS_SLUG )),
-				array_slice( $defaults, $offset, null )
-			);
-
-			// remove the date
-			unset($defaults['date']);
-
-			return $defaults;
+		$new_columns = array();
+		foreach( $columns as $key => $value ) {
+			$new_columns[ $key ] = $value;
+			if ( $key == 'title' ){
+				$new_columns[ 'ad_details' ] = __( 'Ad Details', ADVADS_SLUG );
+			}
 		}
+
+		// remove the date
+		unset( $new_columns[ 'date' ] );
+
+		return $new_columns;
+	}
 
 		/**
 	 * order ads by title on ads list
@@ -990,18 +1007,18 @@ class Advanced_Ads_Admin {
 	 * @since 1.3.18
 	 * @param arr $vars array with request vars
 	 */
-		public function ad_list_request($vars){
+	public function ad_list_request($vars){
 
-			// order ads by title on ads list
-			if ( is_admin() && empty( $vars['orderby'] ) && $this->post_type == $vars['post_type'] ) {
-				$vars = array_merge( $vars, array(
-					'orderby' => 'title',
-					'order' => 'ASC'
-				) );
-			}
-
-			return $vars;
+		// order ads by title on ads list
+		if ( is_admin() && empty( $vars['orderby'] ) && $this->post_type == $vars['post_type'] ) {
+			$vars = array_merge( $vars, array(
+				'orderby' => 'title',
+				'order' => 'ASC'
+			) );
 		}
+
+		return $vars;
+	}
 
 		/**
 	 * display ad details in ads list
@@ -1010,27 +1027,27 @@ class Advanced_Ads_Admin {
 	 * @param string $column_name name of the column
 	 * @param int $ad_id id of the ad
 	 */
-		public function  ad_list_columns_content($column_name, $ad_id) {
-			if ( $column_name == 'ad_details' ) {
-				$ad = new Advanced_Ads_Ad( $ad_id );
+	public function  ad_list_columns_content($column_name, $ad_id) {
+		if ( $column_name == 'ad_details' ) {
+			$ad = new Advanced_Ads_Ad( $ad_id );
 
-				// load ad type title
-				$types = Advanced_Ads::get_instance()->ad_types;
-				$type = ( ! empty($types[$ad->type]->title)) ? $types[$ad->type]->title : 0;
+			// load ad type title
+			$types = Advanced_Ads::get_instance()->ad_types;
+			$type = ( ! empty($types[$ad->type]->title)) ? $types[$ad->type]->title : 0;
 
-				// load ad size
-				$size = 0;
-				if ( ! empty($ad->width) || ! empty($ad->height) ) {
-					$size = sprintf( '%d x %d', $ad->width, $ad->height );
-				}
-
-				$size = apply_filters( 'advanced-ads-list-ad-size', $size, $ad );
-
-				include ADVADS_BASE_PATH . 'admin/views/ad-list-details-column.php';
+			// load ad size
+			$size = 0;
+			if ( ! empty($ad->width) || ! empty($ad->height) ) {
+				$size = sprintf( '%d x %d', $ad->width, $ad->height );
 			}
-		}
 
-		/**
+			$size = apply_filters( 'advanced-ads-list-ad-size', $size, $ad );
+
+			include ADVADS_BASE_PATH . 'admin/views/ad-list-details-column.php';
+		}
+	}
+
+	/**
 	 * add a meta box to post type edit screens with ad settings
 	 *
 	 * @since 1.3.10
