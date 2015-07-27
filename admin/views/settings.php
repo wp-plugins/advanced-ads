@@ -10,12 +10,6 @@ $setting_tabs = apply_filters('advanced-ads-setting-tabs', array(
 		'group' => ADVADS_SLUG,
 		'tabid' => 'general',
 		'title' => __( 'General', ADVADS_SLUG )
-	),
-	'licenses' => array(
-		'page' => 'advanced-ads-settings-license-page',
-		'group' => ADVADS_SLUG . '-licenses',
-		'tabid' => 'licenses',
-		'title' => __( 'Licenses', ADVADS_SLUG )
 	)
 ));
 ?><div class="wrap">

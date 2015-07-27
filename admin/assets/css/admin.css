@@ -85,7 +85,7 @@
 
 .advads-buttonset .ui-state-active,
 .advads-buttonset .button,
-.advads-buttonset .ui-button.ui-state-active { border-color: #0074a2; background: #2ea2cc; color: #fff; box-shadow: none; }
+.advads-buttonset .ui-button.ui-state-active { border-color: #0074a2 !important; background: #2ea2cc !important; color: #fff !important; box-shadow: none; }
 
 #ad-display-box .advads-conditions-terms-show-search { height: 22px; line-height: 22px; font-weight: bold; font-size: 1.5em; }
 .advads-conditions-terms-show-search + .description { display: none; }
@@ -109,10 +109,12 @@
 #advads-visitor-conditions select,
 #advads-visitor-conditions input { margin: 0; padding: 3px; }
 #advads-visitor-conditions label { float: left; }
-#advads-visitor-conditions select { margin-left: 1em; }
 #advads-visitor-conditions tbody tr:first-child { display: none; }
 #advads-visitor-conditions td { padding: 0 5px; position: relative; top: 0; left: 0; }
-#advads-visitor-conditions td hr { float: right; width: 80%;}
+#advads-visitor-conditions td hr { float: right; width: 85%;}
+#advads-visitor-conditions td:nth-child(2) { padding-top: 0.5em; vertical-align: top; font-weight: bold; }
+.advads-visitor-conditions-connector-and,
+.advads-visitor-conditions-connector-or { text-transform: uppercase; }
 #advads-visitor-conditions td.advads-visitor-conditions-operator-or > hr { display: none; }
 #advads-visitor-conditions-new .advads-buttonset label { text-transform: uppercase; }
 #advads-visitor-conditions-new .advads-buttonset { float: left; }
@@ -129,6 +131,7 @@
 .advads-ad-group-list-ads span { float: right; }
 .advads-group-row .row-actions a { cursor: pointer; }
 .advads-group-row .advads-usage { margin-top: 1em; }
+.advads-usage code { padding: 0; background: none; }
 .advads-group-row code { background: none; }
 .advads-ad-group-form > td { border-bottom: 1px solid; }
 .advads-ad-group-form label { display: inline-block; margin-bottom: 1em; }
@@ -138,9 +141,14 @@
 /**
  AD PLACEMENTS
 */
-.advads-placements-new-form select { display: inline-block; min-width: 10em; }
-.advads-placements-new-form label { display: inline-block; width: 10em; }
-.advads-placements-new-form input { display: inline-block; }
+.advads-new-placement-types { background: #ccc; overflow: hidden; }
+.advads-placement-description { display: none; }
+.advads-placements-new-form .advads-placement-type { position: relative; top: 0; left: 0; float: left; }
+.advads-placements-new-form .advads-placement-type .ui-button { background: none; border-radius: 0; }
+.advads-placements-new-form .advads-placement-type .ui-button-text { padding: 0; }
+.advads-placements-new-form .advads-placement-type .ui-button-text img { margin-top: 10px; max-width: 100%; }
+.advads-placements-new-form .advads-placement-type label { display: inline-block; width: 140px; text-align: center; border: 0; padding: 10px; }
+.advads-placements-new-form .advads-placement-type label .description { padding: 10px; }
 .advads-placements-table { min-width: 80%; border-collapse: collapse; background: #fff; }
 .advads-placements-table tbody tr:nth-child(4n+1) { background: none repeat scroll 0 0 #f9f9f9; }
 .advads-placements-table tbody tr { border-top: 1px solid #f1f1f1; }
@@ -148,6 +156,9 @@
 .advads-placements-table.widefat tbody th { font-weight: bold; }
 .advads-placements-table th span { font-weight: normal; }
 .advads-placements-table td { margin: 0; padding: 10px; text-align: left; vertical-align: top; }
+.advads-placements-table img { height: 50px; }
+.advads-placements-table .usage-link { cursor: pointer; }
+.advads-placements-table .advads-usage input { width: 100%; }
 .advads-placements-table-options { text-align: right; }
 .advads-placement-options input, .advads-placement-options select { background: transparent; }
 .advads-placements-table-options input[type="number"] { width: 3em; }
@@ -179,3 +190,8 @@ tr:hover .on-hover { display: block; }
 .advads-tab.active { display: block; }
 .advads-license-activate-active { color: green; }
 .advads-license-activate-error { color: red; }
+
+/**
+- GENERAL
+-*/
+.advads-error-message { color: red; }

@@ -128,6 +128,9 @@ class Advanced_Ads_Admin_Notices {
 			if ( version_compare( $old_version, '1.6' ) == -1 ) {
 				$this->notices[] = '1.6';
 			}
+			if ( version_compare( $old_version, '1.6.6' ) == -1 ) {
+				$this->notices[] = '1.6.6';
+			}
 		}
 		$new_options['version'] = ADVADS_VERSION;
 
@@ -149,9 +152,32 @@ class Advanced_Ads_Admin_Notices {
 		$closed = isset($options['closed']) ? $options['closed'] : array();
 		$queue = isset($options['queue']) ? $options['queue'] : array();
 
-		// offer email tutorial right after activation
-		if ( ! $this->is_subscribed() && ( ! in_array( 'nl_first_steps', $queue ) && $activation < $now && ! isset($closed['nl_first_steps'])) ) {
-			$this->notices[] = 'nl_first_steps';
+		// offer free add-ons if not yet subscribed
+		if ( ! $this->is_subscribed() && ! in_array( 'nl_free_addons', $queue ) && ! isset( $closed['nl_free_addons'] )) {
+			$this->notices[] = 'nl_free_addons';
+		}
+
+		if( Advanced_Ads_Admin::screen_belongs_to_advanced_ads() ){
+			// check license keys
+
+			if ( Advanced_Ads_Plugin::check_licenses_invalid() && ! in_array( 'license_invalid', $queue )) {
+				$this->notices[] = 'license_invalid';
+			} else {
+				$this->remove_from_queue( 'license_invalid' );
+			}
+
+			// check expiring licenses
+			if ( Advanced_Ads_Plugin::check_licenses_expire() && ! in_array( 'license_expires', $queue )) {
+				$this->notices[] = 'license_expires';
+			} else {
+				$this->remove_from_queue( 'license_expires' );
+			}
+			// check expired licenses
+			if ( Advanced_Ads_Plugin::check_licenses_expired() && ! in_array( 'license_expired', $queue )) {
+				$this->notices[] = 'license_expired';
+			} else {
+				$this->remove_from_queue( 'license_expired' );
+			}
 		}
 	}
 
@@ -249,6 +275,14 @@ class Advanced_Ads_Admin_Notices {
 				case 'subscribe' :
 					include ADVADS_BASE_PATH . '/admin/views/notices/subscribe.php';
 				break;
+				case 'plugin_error' :
+					// only display on plugin pages
+					if( Advanced_Ads_Admin::screen_belongs_to_advanced_ads() ){
+						include ADVADS_BASE_PATH . '/admin/views/notices/plugin_error.php';
+					} else {
+						continue 2; // continue with next foreach loop
+					}
+				break;
 				default :
 					include ADVADS_BASE_PATH . '/admin/views/notices/error.php';
 			}
@@ -296,7 +330,7 @@ class Advanced_Ads_Admin_Notices {
 	 * @param string $notice slug of the subscription notice to send the correct reply
 	 */
 	public function subscribe($notice) {
-		if ( ! isset($notice) ) {
+		if ( ! isset( $notice ) ) {
 			return;
 		}
 
@@ -304,12 +338,12 @@ class Advanced_Ads_Admin_Notices {
 		$user = wp_get_current_user();
 
 		if ( $user->user_email == '' ) {
-			return sprintf( __( 'You don’t seem to have an email address. Please add one to your <a href="%s">WordPress profile</a>', ADVADS_SLUG ), get_edit_user_link() );
+			return sprintf( __( 'You don’t seem to have an email address. Please use <a href="%s" target="_blank">this form</a> to sign up.', ADVADS_SLUG ), 'http://eepurl.com/bk4z4P' );
 		}
 
 		$data = array(
-	    'email' => $user->user_email,
-	    'notice' => $notice
+			'email' => $user->user_email,
+			'notice' => $notice
 		);
 
 		$result = wp_remote_post('https://wpadvancedads.com/remote/subscribe.php?source=plugin', array(
@@ -327,7 +361,7 @@ class Advanced_Ads_Admin_Notices {
 			// mark as subscribed and move notice from quere
 			$this->mark_as_subscribed();
 			$this->remove_from_queue( $notice );
-			return true;
+			return sprintf(__( 'Please check your email (%s) for the confirmation message. If you didn’t receive one or want to use another email address then please use <a href="%s" target="_blank">this form</a> to sign up.', ADVADS_SLUG ), $user->user_email, 'http://eepurl.com/bk4z4P' );
 		}
 	}
 
@@ -390,5 +424,4 @@ class Advanced_Ads_Admin_Notices {
 	    $text = $notice['text'];
 	    include ADVADS_BASE_PATH . '/admin/views/notices/inline.php';
 	}
-
 }

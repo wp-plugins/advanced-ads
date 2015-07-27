@@ -18,7 +18,7 @@ class Advanced_Ads_Widget extends WP_Widget {
 	function __construct() {
 		$widget_ops = array('classname' => 'advads_widget', 'description' => __( 'Display Ads and Ad Groups.', ADVADS_SLUG ));
 		$control_ops = array();
-		parent::__construct( 'advads_ad_widget', __( 'Advanced Ads', ADVADS_SLUG ), $widget_ops, $control_ops );
+		parent::__construct( 'advads_ad_widget','Advanced Ads', $widget_ops, $control_ops );
 	}
 
 	function widget($args, $instance) {
