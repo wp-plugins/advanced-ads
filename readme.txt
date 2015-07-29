@@ -3,8 +3,8 @@ Contributors: webzunft
 Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5RRRCEBGN3UT2
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
-Tested up to: 4.2.2
-Stable tag: 1.6.6
+Tested up to: 4.2.3
+Stable tag: 1.6.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -181,6 +181,12 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 4. Placements that let you inject ads anywhere into your site without coding (6 in Advanced Ads + 9 through add-ons)
 
 == Changelog ==
+
+= 1.6.6.1 =
+
+* removed link to no-longer-existing manual page
+* the option to close internal notices now also hides update messages
+* fixed broken html on placement page
 
 = 1.6.6 =
 

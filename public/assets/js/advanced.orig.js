@@ -24,6 +24,37 @@ advads = {
 		return false;
 	},
 	/**
+	 * increase a cookie with an integer value by 1
+	 *
+	 * @param {str} name of the cookie
+	 * @param {int} exdays days until cookie expires
+	 */
+	count_up: function( name, exdays ){
+		var num = 1;
+
+		// check if cookie exists and get the value
+		if(this.cookie_exists( name )){
+			num = num + parseInt( this.get_cookie( name ) );
+		}
+		this.set_cookie( name, num );
+	},
+	/**
+	 * return true, if cookie exists
+	 * return false, if not
+	 * if not exists, create it
+	 * use case: to check if something already happened in this page impression
+	 *
+	 * @param {type} name
+	 * @returns {unresolved}
+	 */
+	set_cookie_exists: function( name ){
+		if( get_cookie(name) ){
+		    return true;
+		}
+		set_cookie( name, '', 0 );
+		return false;
+	},
+	/**
 	 * get a cookie value
 	 *
 	 * @param {str} name of the cookie

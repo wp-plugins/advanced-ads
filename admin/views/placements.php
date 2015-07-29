@@ -13,7 +13,7 @@
     <?php screen_icon(); ?>
     <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
     <p class="description"><?php _e( 'Placements are physically places in your theme and posts. You can use them if you plan to change ads and ad groups on the same place without the need to change your templates.', ADVADS_SLUG ); ?></p>
-    <p class="description"><?php printf( __( 'See also the manual for more information on <a href="%s">placements</a> and <a href="%s">auto injection</a>.', ADVADS_SLUG ), ADVADS_URL . 'manual/placements/', ADVADS_URL . 'manual/auto-injection/' ); ?></p>
+    <p class="description"><?php printf( __( 'See also the manual for more information on <a href="%s">placements</a>.', ADVADS_SLUG ), ADVADS_URL . 'manual/placements/' ); ?></p>
 <?php if ( isset($placements) && is_array( $placements ) && count( $placements ) ) : ?>
         <h2><?php _e( 'Placements', ADVADS_SLUG ); ?></h2>
         <form method="POST" action="">
@@ -136,7 +136,7 @@ endif;
 		    </div><?php
 		endforeach; };
 		?></div>
-	<div class="clear"/><br/>
+	<div class="clear"></div><br/>
 	<h3>2. <?php _e( 'Choose a Name', ADVADS_SLUG ); ?></h3>
 	<p class="description"><?php _e( 'The name of the placement is only visible to you. Tip: choose a descriptive one, e.g. <em>Below Post Headline</em>.', ADVADS_SLUG ); ?></p>
         <p><input name="advads[placement][name]" type="text" value="" placeholder="<?php _e( 'Placement Name', ADVADS_SLUG ); ?>"/></p>

@@ -938,7 +938,7 @@ class Advanced_Ads_Admin {
 			$checked = ( ! empty($options['disable-notices'])) ? 1 : 0;
 
 			echo '<input id="advanced-ads-disabled-notices" type="checkbox" value="1" name="'.ADVADS_SLUG.'[disable-notices]" '.checked( $checked, 1, false ).'>';
-			echo '<p class="description">'. __( 'Disable all internal notices like tips, tutorials and email newsletters but not critical update notices. Disabling notices is recommended if you run multiple blogs with Advanced Ads already..', ADVADS_SLUG ) . '</p>';
+			echo '<p class="description">'. __( 'Disable internal notices like tips, tutorials, email newsletters and update notices. Disabling notices is recommended if you run multiple blogs with Advanced Ads already.', ADVADS_SLUG ) . '</p>';
 		}
 
 		/**

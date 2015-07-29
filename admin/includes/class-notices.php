@@ -84,11 +84,13 @@ class Advanced_Ads_Admin_Notices {
 		$this->notices = isset($options['queue']) ? $options['queue'] : array();
 		$notices_before = $this->notices;
 
-		// handle version notices
-		$this->register_version_notices();
+		// check license notices
+		$this->register_license_notices();
 
 		// don’t check non-critical notices if they are disabled
 		if ( ! isset($plugin_options['disable-notices']) ) {
+			// handle version notices
+			$this->register_version_notices();
 			// check other notices
 			$this->check_notices();
 		}
@@ -156,8 +158,17 @@ class Advanced_Ads_Admin_Notices {
 		if ( ! $this->is_subscribed() && ! in_array( 'nl_free_addons', $queue ) && ! isset( $closed['nl_free_addons'] )) {
 			$this->notices[] = 'nl_free_addons';
 		}
+	}
+
+	/**
+	 * register license key notices
+	 */
+	public function register_license_notices(){
 
 		if( Advanced_Ads_Admin::screen_belongs_to_advanced_ads() ){
+
+			$options = $this->options();
+			$queue = isset($options['queue']) ? $options['queue'] : array();
 			// check license keys
 
 			if ( Advanced_Ads_Plugin::check_licenses_invalid() && ! in_array( 'license_invalid', $queue )) {
