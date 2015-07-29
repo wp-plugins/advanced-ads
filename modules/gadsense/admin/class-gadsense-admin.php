@@ -18,12 +18,13 @@ class Gadsense_Admin {
 		add_action( 'admin_print_scripts', array($this, 'print_scripts') );
 		add_action( 'admin_init', array($this, 'init') );
 		add_filter( 'advanced-ads-list-ad-size', array($this, 'ad_details_column'), 10, 2 );
+		add_filter( 'advanced-ads-ad-settings-pre-save', array($this, 'sanitize_ad_settings') );
 	}
 
 	public function ad_details_column($size, $the_ad) {
 		if ( 'adsense' == $the_ad->type ) {
 			$content = json_decode( $the_ad->content );
-			if ( 'responsive' == $content->unitType ) { $size = __( 'Responsive', ADVADS_SLUG ); }
+			if ( $content && 'responsive' == $content->unitType ) { $size = __( 'Responsive', ADVADS_SLUG ); }
 		}
 		return $size;
 	}
@@ -42,8 +43,7 @@ class Gadsense_Admin {
 					pubId : '<?php echo $pub_id; ?>',
 					msg : {
 						unknownAd : '<?php esc_attr_e( "The ad details couldn't be retrieved from the ad code", ADVADS_SLUG ); ?>',
-						pubIdMismatch : '<?php _e( 'Warning : The AdSense account from this code does not match the one set with the Advanced Ads Plugin. This ad might cause troubles when used in the front end.', ADVADS_SLUG ); ?>',
-						missingPubId : '<?php _e( 'Warning : You have not yet entered an AdSense account ID. The plugin won’t work without that', ADVADS_SLUG ); ?>',
+						pubIdMismatch : '<?php _e( 'Warning : The AdSense account from this code does not match the one set with the Advanced Ads Plugin. This ad might cause troubles when used in the front end.', ADVADS_SLUG ); ?>'
 					}
 				};
 			</script>
@@ -280,5 +280,35 @@ class Gadsense_Admin {
 
             return $tabs;
         }
+
+	/**
+	 * sanitize ad settings
+	 *  save publisher id from new ad unit if not given in main options
+	 *
+	 * @since 1.6.2
+	 * @param arr $ad_settings_post
+	 * @return arr $ad_settings_post
+	 */
+	public function sanitize_ad_settings( array $ad_settings_post ){
+
+	    // check ad type
+	    if( ! isset( $ad_settings_post['type'] ) ||  'adsense' !== $ad_settings_post['type'] ){
+		return $ad_settings_post;
+	    }
+
+	    // save AdSense publisher ID if given and remove it from options
+	    if ( ! empty($ad_settings_post['output']['adsense-pub-id']) ) {
+		    // get options
+		    $adsense_options = get_option( 'advanced-ads-adsense', array() );
+		    $adsense_options['adsense-id'] = $ad_settings_post['output']['adsense-pub-id'];
+
+		    // save adsense options including publisher id
+		    update_option( 'advanced-ads-adsense', $adsense_options );
+
+	    }
+	    unset( $ad_settings_post['output']['adsense-pub-id'] );
+
+	    return $ad_settings_post;
+	}
 
 }

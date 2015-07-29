@@ -59,6 +59,9 @@ class Advanced_Ads_Ajax {
 			$content = $selector->get_ad_by_method( $id, $method, $arguments );
 			$adIds = array_slice( $advads->current_ads, $l ); // ads loaded by this request
 
+			// TODO: find another filter name; maybe don’t load whole ad again
+			$content = apply_filters( 'advanced-ads-output-inside-wrapper', $content, new Advanced_Ads_Ad($id) );
+
 			$response = array( 'status' => 'success', 'item' => $content, 'id' => $id, 'method' => $method, 'ads' => $adIds );
 		} else {
 			// report error
