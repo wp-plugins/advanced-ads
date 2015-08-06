@@ -18,14 +18,6 @@
  * @author  Thomas Maier <thomas.maier@webgilde.com>
  */
 class Advanced_Ads {
-	/**
-	 * Plugin version, used for cache-busting of style and script file references and update notices
-	 *
-	 * @since   1.0.0
-	 * @var     string
-	 */
-
-	const VERSION = '1.6.1';
 
 	/**
 	 * post type slug
@@ -293,7 +285,7 @@ class Advanced_Ads {
 	 * @since 1.0.0
 	 * @link http://www.smashingmagazine.com/2011/03/08/ten-things-every-wordpress-plugin-developer-should-know/
 	 */
-	public function log($message) {
+	static function log($message) {
 		if ( true === WP_DEBUG ) {
 			if ( is_array( $message ) || is_object( $message ) ) {
 				error_log( 'Advanced Ads Error following:', ADVADS_SLUG );
@@ -364,6 +356,11 @@ class Advanced_Ads {
 		}
 
 		$placements = get_option( 'advads-ads-placements', array() );
+
+		if( ! apply_filters( 'advanced-ads-can-inject-into-content', true, $content, $placements )){
+			return $content;
+		}
+
 		foreach ( $placements as $_placement_id => $_placement ){
 			if ( empty($_placement['item']) || ! isset($_placement['type']) ) { continue; }
 			$_options = isset( $_placement['options'] ) ? $_placement['options'] : array();

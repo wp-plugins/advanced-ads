@@ -18,21 +18,28 @@ class Advanced_Ads_Widget extends WP_Widget {
 	function __construct() {
 		$widget_ops = array('classname' => 'advads_widget', 'description' => __( 'Display Ads and Ad Groups.', ADVADS_SLUG ));
 		$control_ops = array();
-		parent::__construct( 'advads_ad_widget', __( 'Advanced Ads', ADVADS_SLUG ), $widget_ops, $control_ops );
+		parent::__construct( 'advads_ad_widget','Advanced Ads', $widget_ops, $control_ops );
 	}
 
 	function widget($args, $instance) {
 		/** This filter is documented in wp-includes/default-widgets.php */
 		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'], $instance, $this->id_base );
 
+
 		extract( $args );
 		$item_id = empty($instance['item_id']) ? '' : $instance['item_id'];
 		$title = empty($instance['title']) ? '' : $instance['title'];
+
+		$output = self::output( $item_id );
+		if( $output == '' ){
+		    return;
+		}
+
 		echo $before_widget;
 		if ( ! empty( $title ) ) {
 			echo $before_title . $title . $after_title;
 		}
-		echo self::output( $item_id );
+		echo $output;
 		echo $after_widget;
 	}
 
