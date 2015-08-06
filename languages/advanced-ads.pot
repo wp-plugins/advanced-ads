@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Advanved Ads\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
 "POT-Creation-Date: 2015-01-27 16:47+0100\n"
-"POT-Revision-Date: Wed Jul 29 2015 10:08:26 GMT+0200 (CEST)\n"
+"POT-Revision-Date: Wed Aug 05 2015 21:16:46 GMT+0200 (CEST)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thomas Maier <post@webzunft.de>\n"
 "Language-Team: webgilde <thomas.maier@webgilde.com>\n"
@@ -29,14 +29,14 @@ msgid "Overview"
 msgstr ""
 
 #: ../admin/class-advanced-ads-admin.php:241 ../admin/class-advanced-ads-admin.
-#: php:241 ../admin/views/ad-group-list-form-row.php:25 ../admin/views/ad-group-
-#: list-header.php:5 ../admin/views/placements.php:71 ../admin/views/placements.
-#: php:155 ../classes/widget.php:66 ../public/class-advanced-ads.php:548
+#: php:241 ../admin/views/ad-group-list-form-row.php:27 ../admin/views/ad-group-
+#: list-header.php:5 ../admin/views/placements.php:77 ../admin/views/placements.
+#: php:165 ../classes/widget.php:73 ../public/class-advanced-ads.php:548
 msgid "Ads"
 msgstr ""
 
-#: ../admin/class-advanced-ads-admin.php:245 ../admin/views/placements.php:64 ..
-#: /admin/views/placements.php:148 ../classes/widget.php:59
+#: ../admin/class-advanced-ads-admin.php:245 ../admin/views/placements.php:70 ..
+#: /admin/views/placements.php:158 ../classes/widget.php:66
 msgid "Ad Groups"
 msgstr ""
 
@@ -237,14 +237,21 @@ msgstr ""
 msgid "Choose the lowest role a user must have in order to not see any ads."
 msgstr ""
 
-#: ../admin/class-advanced-ads-admin.php:887
-#, php-format
+#: ../admin/class-advanced-ads-admin.php:888
 msgid ""
-"Only enable this if you can and want to use the advanced JavaScript "
-"functions described <a href=\"%s\">here</a>."
+"<strong>notice: </strong>the file is currently enabled by an add-on that "
+"needs it."
 msgstr ""
 
-#: ../admin/class-advanced-ads-admin.php:900
+#: ../admin/class-advanced-ads-admin.php:891
+#, php-format
+msgid ""
+"Enable advanced JavaScript functions (<a href=\"%s\" target=\"_blank\">here</a>)."
+" Some features and add-ons might override this setting if they need features "
+"from this file."
+msgstr ""
+
+#: ../admin/class-advanced-ads-admin.php:904
 msgid ""
 "Some plugins and themes trigger ad injection where it shouldn’t happen. "
 "Therefore, Advanced Ads ignores injected placements on non-singular pages "
@@ -253,13 +260,13 @@ msgid ""
 "on archive pages AT YOUR OWN RISK."
 msgstr ""
 
-#: ../admin/class-advanced-ads-admin.php:914
+#: ../admin/class-advanced-ads-admin.php:918
 msgid ""
 "Play with this value in order to change the priority of the injected ads "
 "compared to other auto injected elements in the post content."
 msgstr ""
 
-#: ../admin/class-advanced-ads-admin.php:927
+#: ../admin/class-advanced-ads-admin.php:931
 #, php-format
 msgid ""
 "Hide ads from crawlers, bots and empty user agents. Also prevents counting "
@@ -267,66 +274,66 @@ msgid ""
 "Add-On</a>."
 msgstr ""
 
-#: ../admin/class-advanced-ads-admin.php:928
+#: ../admin/class-advanced-ads-admin.php:932
 msgid ""
 "Disabling this option only makes sense if your ads contain content you want "
 "to display to bots (like search engines) or your site is cached and bots "
 "could create a cached version without the ads."
 msgstr ""
 
-#: ../admin/class-advanced-ads-admin.php:941
+#: ../admin/class-advanced-ads-admin.php:945
 msgid ""
 "Disable internal notices like tips, tutorials, email newsletters and update "
 "notices. Disabling notices is recommended if you run multiple blogs with "
 "Advanced Ads already."
 msgstr ""
 
-#: ../admin/class-advanced-ads-admin.php:994
+#: ../admin/class-advanced-ads-admin.php:998
 msgid "Ad Details"
 msgstr ""
 
-#: ../admin/class-advanced-ads-admin.php:1068
+#: ../admin/class-advanced-ads-admin.php:1072
 msgid "Ad Settings"
 msgstr ""
 
-#: ../admin/class-advanced-ads-admin.php:1147 ../admin/views/overview.php:23
+#: ../admin/class-advanced-ads-admin.php:1151 ../admin/views/overview.php:23
 msgid "Ads Dashboard"
 msgstr ""
 
-#: ../admin/class-advanced-ads-admin.php:1159
+#: ../admin/class-advanced-ads-admin.php:1163
 msgid "From the ad optimization universe"
 msgstr ""
 
-#: ../admin/class-advanced-ads-admin.php:1168
+#: ../admin/class-advanced-ads-admin.php:1172
 msgid "Advanced Ads Tutorials"
 msgstr ""
 
-#: ../admin/class-advanced-ads-admin.php:1179
+#: ../admin/class-advanced-ads-admin.php:1183
 #, php-format
 msgid "%d ads – <a href=\"%s\">manage</a> - <a href=\"%s\">new</a>"
 msgstr ""
 
-#: ../admin/class-advanced-ads-admin.php:1190
+#: ../admin/class-advanced-ads-admin.php:1194
 msgid "plugin manual and homepage"
 msgstr ""
 
-#: ../admin/class-advanced-ads-admin.php:1197
+#: ../admin/class-advanced-ads-admin.php:1201
 msgid "Get the tutorial via email"
 msgstr ""
 
-#: ../admin/class-advanced-ads-admin.php:1204
+#: ../admin/class-advanced-ads-admin.php:1208
 msgid "Get AdSense tips via email"
 msgstr ""
 
-#: ../admin/class-advanced-ads-admin.php:1278
+#: ../admin/class-advanced-ads-admin.php:1282
 msgid "Error while trying to register the license. Please contact support."
 msgstr ""
 
-#: ../admin/class-advanced-ads-admin.php:1284
+#: ../admin/class-advanced-ads-admin.php:1288
 msgid "Please enter and save a valid license key first."
 msgstr ""
 
-#: ../admin/class-advanced-ads-admin.php:1304
+#: ../admin/class-advanced-ads-admin.php:1308
 #, php-format
 msgid "License is invalid. Reason: %s"
 msgstr ""
@@ -357,7 +364,7 @@ msgid "up to %d ads displayed"
 msgstr ""
 
 #: ../admin/includes/class-ad-groups-list.php:187 ../admin/views/ad-group-list-
-#: form-row.php:34
+#: form-row.php:36
 msgid "No ads assigned"
 msgstr ""
 
@@ -936,25 +943,25 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: ../admin/views/ad-group-list-form-row.php:15
-msgid "Number of ads"
+#: ../admin/views/ad-group-list-form-row.php:16
+msgid "Number of visible ads"
 msgstr ""
 
-#: ../admin/views/ad-group-list-form-row.php:20
+#: ../admin/views/ad-group-list-form-row.php:21
 msgctxt "option to display all ads in an ad groups"
 msgid "all"
 msgstr ""
 
-#: ../admin/views/ad-group-list-form-row.php:23
-msgid "Number of ads to display in the block"
+#: ../admin/views/ad-group-list-form-row.php:24
+msgid "Number of ads that are visible at the same time"
 msgstr ""
 
-#: ../admin/views/ad-group-list-form-row.php:28 ../public/class-advanced-ads.php:
+#: ../admin/views/ad-group-list-form-row.php:30 ../public/class-advanced-ads.php:
 #: 549
 msgid "Ad"
 msgstr ""
 
-#: ../admin/views/ad-group-list-form-row.php:29
+#: ../admin/views/ad-group-list-form-row.php:31
 msgid "weight"
 msgstr ""
 
@@ -967,12 +974,12 @@ msgid "Details"
 msgstr ""
 
 #: ../admin/views/ad-group-list-row.php:8 ../admin/views/ad-group.php:63 ..
-#: /admin/views/ad-info.php:3 ../admin/views/placements.php:49
+#: /admin/views/ad-info.php:3 ../admin/views/placements.php:55
 msgid "shortcode"
 msgstr ""
 
 #: ../admin/views/ad-group-list-row.php:11 ../admin/views/ad-group.php:66 ..
-#: /admin/views/placements.php:52
+#: /admin/views/placements.php:58
 msgid "template"
 msgstr ""
 
@@ -1150,7 +1157,7 @@ msgstr ""
 msgid "- default -"
 msgstr ""
 
-#: ../admin/views/ad-output-metabox.php:7 ../admin/views/placements.php:43
+#: ../admin/views/ad-output-metabox.php:7 ../admin/views/placements.php:49
 msgid "default"
 msgstr ""
 
@@ -1319,80 +1326,91 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: ../admin/views/placements.php:48
+#: ../admin/views/placements.php:40
+#, php-format
+msgid ""
+"Placement type \"%s\" is missing and was reset to \"default\".<br/>Please check "
+"if the responsible add-on is activated."
+msgstr ""
+
+#: ../admin/views/placements.php:54
 msgid "show usage"
 msgstr ""
 
-#: ../admin/views/placements.php:60
+#: ../admin/views/placements.php:66
 msgid "Item"
 msgstr ""
 
-#: ../admin/views/placements.php:62 ../admin/views/placements.php:146
+#: ../admin/views/placements.php:68 ../admin/views/placements.php:156
 msgid "--not selected--"
 msgstr ""
 
-#: ../admin/views/placements.php:82
+#: ../admin/views/placements.php:88
 msgid "Inject"
 msgstr ""
 
-#: ../admin/views/placements.php:83
+#: ../admin/views/placements.php:89
 msgid "after"
 msgstr ""
 
-#: ../admin/views/placements.php:83
+#: ../admin/views/placements.php:89
 msgid "before"
 msgstr ""
 
-#: ../admin/views/placements.php:107
+#: ../admin/views/placements.php:109
+msgid "start counting from bottom"
+msgstr ""
+
+#: ../admin/views/placements.php:117
 msgid "remove placement"
 msgstr ""
 
-#: ../admin/views/placements.php:113
+#: ../admin/views/placements.php:123
 msgid "Save Placements"
 msgstr ""
 
-#: ../admin/views/placements.php:115
+#: ../admin/views/placements.php:125
 msgid "Create a new placement"
 msgstr ""
 
-#: ../admin/views/placements.php:116
+#: ../admin/views/placements.php:126
 msgid "New Placement"
 msgstr ""
 
-#: ../admin/views/placements.php:122
+#: ../admin/views/placements.php:132
 msgid "Choose a placement type"
 msgstr ""
 
-#: ../admin/views/placements.php:123
+#: ../admin/views/placements.php:133
 #, php-format
 msgid ""
 "Placement types define where the ad is going to be displayed. Learn more "
 "about the different types from the <a href=\"%s\">manual</a>"
 msgstr ""
 
-#: ../admin/views/placements.php:140
+#: ../admin/views/placements.php:150
 msgid "Choose a Name"
 msgstr ""
 
-#: ../admin/views/placements.php:141
+#: ../admin/views/placements.php:151
 msgid ""
 "The name of the placement is only visible to you. Tip: choose a descriptive "
 "one, e.g. <em>Below Post Headline</em>."
 msgstr ""
 
-#: ../admin/views/placements.php:142
+#: ../admin/views/placements.php:152
 msgid "Placement Name"
 msgstr ""
 
-#: ../admin/views/placements.php:143
+#: ../admin/views/placements.php:153
 msgid "Choose the Ad or Group"
 msgstr ""
 
-#: ../admin/views/placements.php:144
+#: ../admin/views/placements.php:154
 msgid "The ad or group that should be displayed."
 msgstr ""
 
-#: ../admin/views/placements.php:163
+#: ../admin/views/placements.php:173
 msgid "Save New Placement"
 msgstr ""
 
@@ -1710,11 +1728,11 @@ msgstr ""
 msgid "Display Ads and Ad Groups."
 msgstr ""
 
-#: ../classes/widget.php:51
+#: ../classes/widget.php:58
 msgid "Title:"
 msgstr ""
 
-#: ../classes/widget.php:57
+#: ../classes/widget.php:64
 msgid "--empty--"
 msgstr ""
 

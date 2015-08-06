@@ -68,24 +68,24 @@ class Advanced_Ads_Placements {
 	*/
 	static function update_placements(){
 
-	    // check user permissions
-	    if(!current_user_can('manage_options')){
+		// check user permissions
+		if(!current_user_can('manage_options')){
 		return;
-	    }
-	    remove_query_arg('message');
+		}
+		remove_query_arg('message');
 
-	    if ( isset($_POST['advads']['placement']) && check_admin_referer( 'advads-placement', 'advads_placement' ) ){
+		if ( isset($_POST['advads']['placement']) && check_admin_referer( 'advads-placement', 'advads_placement' ) ){
 		$success = self::save_new_placement( $_POST['advads']['placement'] );
-	    }
-	    // save placement data
-	    if ( isset($_POST['advads']['placements']) && check_admin_referer( 'advads-placement', 'advads_placement' )){
+		}
+		// save placement data
+		if ( isset($_POST['advads']['placements']) && check_admin_referer( 'advads-placement', 'advads_placement' )){
 		$success = self::save_placements( $_POST['advads']['placements'] );
-	    }
+		}
 
-	    if(isset($success)){
+		if(isset($success)){
 		$message = $success ? 'updated' : 'error';
 		wp_redirect( add_query_arg(array('message' => $message)) );
-	    }
+		}
 	}
 
 	/**
@@ -284,57 +284,94 @@ class Advanced_Ads_Placements {
 	 * @link inspired by http://www.wpbeginner.com/wp-tutorials/how-to-insert-ads-within-your-post-content-in-wordpress/
 	 */
 	public static function &inject_in_content($placement_id, $options, &$content) {
-		/*
-		 * hot-fixed to support some tags under idealised conditions.
-		 * this does ignore:
-		 * - autop() messups
-		 * - nesting of any kind
-		 * - non-valid XHTML (i.e. wild HTML)
-		 *
-		 * 'after' is experimental as the concept requires DOM and is not fully deterministic across implementations.
-		 * it falls back to 'before' n+1-th element or 'after' closing tag of the n-th.
-		 */
-		$tag = isset($options['tag']) ? $options['tag'] : 'p';
-		$position = isset($options['position']) ? $options['position'] : 'after';
-		$paragraph_id = isset($options['index']) ? $options['index'] : 1;
-		$offset = 0;
-		$insertAt = null;
+		// parse document as DOM (fragment - having only a part of an actual post given)
+		// -TODO may want to verify the wpcharset is supported by server (mb_list_encodings)
+		// -TODO mb extension might not be available for really old hosts
+		// prevent messages from dom parser
+		$wpCharset = get_bloginfo('charset');
+		$content = mb_convert_encoding($content, 'HTML-ENTITIES', $wpCharset);
 
-		// sanitise
-		$tag = preg_quote( strtolower( $tag ), '`' );
-		$before = $position !== 'after';
-		$paragraph_id = max( 1, (int) $paragraph_id );
-
-		// detect n-th tag
-		$matches = array();
-		while ( 1 === preg_match( "`<$tag(?=[ >/])(?:[^>]+/>|.+?(?:</$tag\s*>|(?=<$tag(?=[ >/])|$)))`Ssi", $content, $matches, PREG_OFFSET_CAPTURE, $offset ) ) {
-			$offset = $matches[0][1];
-
-			// skip empty
-			// -TODO should only ignore whitespaces, not all special chars
-			if ( '' === preg_replace( '/&[a-z0-9#]+;|\s+/i', '', strip_tags( htmlspecialchars( $matches[0][0] ) ) ) ) {
-				continue;
-			}
-
-			$paragraph_id--;
-			if ( $paragraph_id <= 0 ) {
-				$insertAt = $before ? $offset : $offset + strlen( $matches[0][0] );
-				break;
-			}
-
-			// start at next offset
-			$offset += strlen( $matches[0][0] );
+		$dom = new DOMDocument('1.0', $wpCharset);
+		// may loose some fragments or add autop-like code
+		libxml_use_internal_errors(true); // avoid notices and warnings - html is most likely malformed
+		$success = $dom->loadHtml('<!DOCTYPE html><html><meta http-equiv="Content-Type" content="text/html; charset=' . $wpCharset . '" /><body>' . $content);
+		libxml_use_internal_errors(false);
+		if ($success !== true) {
+			// -TODO handle cases were dom-parsing failed (at least inform user)
+			return $content;
 		}
 
-		if ( isset($insertAt) ) {
-			$ad_content = Advanced_Ads_Select::get_instance()->get_ad_by_method( $placement_id, 'placement', $options );
-			if ( $insertAt === false ) {
-				$content .= $ad_content; // fallback: end-of-content
-			} else {
-				$content = substr( $content, 0, $insertAt ) . $ad_content . substr( $content, $insertAt );
-			}
+		// parse arguments
+		$tag = isset($options['tag']) ? $options['tag'] : 'p';
+		$tag = preg_replace('/[^a-z0-9]/i', '', $tag); // simplify tag
 
-			return $content;
+		// only has before and after
+		$before = isset($options['position']) && $options['position'] === 'before';
+		$paragraph_id = isset($options['index']) ? $options['index'] : 1;
+		$paragraph_id = max( 1, (int) $paragraph_id );
+		$paragraph_select_from_bottom = isset($options['start_from_bottom']) && $options['start_from_bottom'];
+
+		// select positions
+		$xpath = new DOMXPath($dom);
+		$items = $xpath->query('/html/body/' . $tag);
+		$offset = null;
+
+		// filter empty tags from items
+		$paragraphs = array();
+		$whitespaces = json_decode('"\t\n\r \u00A0"');
+		foreach ($items as $item) {
+			if ( isset($item->textContent) && trim($item->textContent, $whitespaces) !== '' ) {
+				$paragraphs[] = $item;
+			}
+		}
+
+		$paragraph_count = count($paragraphs);
+		if ($paragraph_count >= $paragraph_id) {
+			$offset = $paragraph_select_from_bottom ? $paragraph_count - $paragraph_id : $paragraph_id - 1;
+			$adContent = Advanced_Ads_Select::get_instance()->get_ad_by_method( $placement_id, 'placement', $options );
+
+			// convert HTML to XML!
+			$adDom = new DOMDocument('1.0', $wpCharset);
+			libxml_use_internal_errors(true);
+			$adDom->loadHtml('<!DOCTYPE html><html><meta http-equiv="Content-Type" content="text/html; charset=' . $wpCharset . '" /><body>' . $adContent);
+			$adNode = $adDom->lastChild->lastChild; // >html>body
+			libxml_use_internal_errors(false);
+			$adContent = $adDom->saveXML($adNode);
+			$adContent = substr($adContent, 6, -7);
+			$adNode = $dom->createDocumentFragment();
+			$adNode->appendXML($adContent);
+
+			// inject
+			if ($before) {
+				$refNode = $paragraphs[$offset];
+				$refNode->parentNode->insertBefore($adNode, $refNode);
+			} else {
+				// append before next node or as last child to body
+				$refNode = $paragraphs[$offset]->nextSibling;
+				if (isset($refNode)) {
+					$refNode->parentNode->insertBefore($adNode, $refNode);
+				} else {
+					// append to body; -TODO using here that we only select direct children of the body tag
+					$paragraphs[$offset]->parentNode->appendChild($adNode);
+				}
+			}
+		}
+
+		// convert to text-representation
+		$content = $dom->saveHTML();
+		// remove head and tail (required for dom parser but unwanted for content)
+		$content = substr($content, stripos($content, '<body>') + 6);
+		$content = str_replace(array('</body>', '</html>'), '', $content);
+
+		// no fall-back desired: if there are too few paragraphs do nothing
+
+		// fix shortcode quotes (malformed by backend editor)
+		$matches = array();
+		if (0 < preg_match_all('/\[[^]]+\]/Siu', $content, $matches, PREG_OFFSET_CAPTURE) && isset($matches[0])) {
+			foreach ($matches[0] as $match) {
+				$offset = $match[1];
+				$content = substr($content, 0, $offset) . str_replace(array('“', '″', '&#8220;', '&quote;', '&#8243;'), '"', $match[0]) . substr($content, $offset + strlen($match[0]));
+			}
 		}
 
 		return $content;

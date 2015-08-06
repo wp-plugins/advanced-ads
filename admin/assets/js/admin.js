@@ -122,8 +122,14 @@ jQuery( document ).ready(function ($) {
 			},
 			close: function( event, ui ) {
 				$( '#advads-display-conditions-individual-post' ).val( '' );
-			}
-		});
+			},
+		})
+		.autocomplete( "instance" )._renderItem = function( ul, item ) {
+		    ul.addClass( "advads-conditions-postids-autocomplete-suggestions" );
+		    return $( "<li>" )
+		      .append( "<span class='left'>" + item.label + "</span><span class='right'>" + item.info + "</span>" )
+		      .appendTo( ul );
+		};
 	};
 
 	// remove individual posts from the display conditions post list
@@ -292,7 +298,8 @@ function advads_post_search(query, callback) {
 			r.map(function(element, index){
 				results[index] = {
 					label: element.title,
-					value: element.ID
+					value: element.ID,
+					info: element.info
 				};
 			});
 		}

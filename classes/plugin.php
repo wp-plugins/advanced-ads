@@ -120,7 +120,8 @@ class Advanced_Ads_Plugin {
 	public function enqueue_scripts() {
 		// wp_enqueue_script( $this->get_plugin_slug() . '-plugin-script', plugins_url('assets/js/public.js', __FILE__), array('jquery'), ADVADS_VERSION);
 		$options = $this->options();
-		if ( ! empty($options['advanced-js']) ){
+		$activated_js = apply_filters( 'advanced-ads-activate-advanced-js', isset( $options['advanced-js'] ) );
+		if ( $activated_js ){
 			wp_enqueue_script( $this->get_plugin_slug() . '-advanced-js', ADVADS_BASE_URL . 'public/assets/js/advanced.js', array( 'jquery' ), ADVADS_VERSION );
 		}
 	}

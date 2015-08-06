@@ -435,7 +435,7 @@ class Advanced_Ads_Ad {
 		$output = $this->type_obj->prepare_output( $this );
 		// don’t deliver anything, if main ad content is empty
 		if( $output == '' ) {
-		    return;
+			return;
 		}
 
 		// filter to manipulate the output before the wrapper is added

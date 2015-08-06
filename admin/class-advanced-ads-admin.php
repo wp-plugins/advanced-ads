@@ -883,8 +883,12 @@ class Advanced_Ads_Admin {
 			$options = Advanced_Ads::get_instance()->options();
 			$checked = ( ! empty($options['advanced-js'])) ? 1 : 0;
 
+			// display notice if js file was overridden
+			if( ! $checked && apply_filters( 'advanced-ads-activate-advanced-js', $checked ) ){
+				echo '<p>' . __( '<strong>notice: </strong>the file is currently enabled by an add-on that needs it.', ADVADS_SLUG ) . '</p>';
+			}
 			echo '<input id="advanced-ads-advanced-js" type="checkbox" value="1" name="'.ADVADS_SLUG.'[advanced-js]" '.checked( $checked, 1, false ).'>';
-			echo '<p class="description">'. sprintf( __( 'Only enable this if you can and want to use the advanced JavaScript functions described <a href="%s">here</a>.', ADVADS_SLUG ), ADVADS_URL . 'javascript-functions/' ) .'</p>';
+			echo '<p class="description">'. sprintf( __( 'Enable advanced JavaScript functions (<a href="%s" target="_blank">here</a>). Some features and add-ons might override this setting if they need features from this file.', ADVADS_SLUG ), ADVADS_URL . 'javascript-functions/' ) .'</p>';
 		}
 
 	/**

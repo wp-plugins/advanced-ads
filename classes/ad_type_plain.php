@@ -67,7 +67,7 @@ class Advanced_Ads_Ad_Type_Plain extends Advanced_Ads_Ad_Type_Abstract{
 		?><p class="description"><?php _e( 'Insert plain text or code into this field.', ADVADS_SLUG ); ?></p>
         <textarea id="advads-ad-content-plain" cols="40" rows="10" name="advanced_ad[content]"><?php echo $content; ?></textarea>
         <input type="hidden" name="advanced_ad[output][allow_php]" value="0"/>
-        <label><input type="checkbox" name="advanced_ad[output][allow_php]" value="1" <?php checked( 1, $allow_php ); ?>/><?php _e( 'Execute PHP code (wrapped in <code>&lt;?php ?&gt;</code>)', ADVADS_SLUG ); ?></label>
+        <label class="advads-ad-allow-php"><input type="checkbox" name="advanced_ad[output][allow_php]" value="1" <?php checked( 1, $allow_php ); ?>/><?php _e( 'Execute PHP code (wrapped in <code>&lt;?php ?&gt;</code>)', ADVADS_SLUG ); ?></label>
         <?php
 	}
 

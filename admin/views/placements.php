@@ -28,11 +28,17 @@
                 </thead>
                 <tbody>
     <?php foreach ( $placements as $_placement_slug => $_placement ) :
-			$_placement['type'] = ( ! empty($_placement['type'])) ? $_placement['type'] : 'default';
-		?>
-                        <tr>
+			$type_missing = false;
+			if( empty($_placement['type']) || ! isset( $placement_types[$_placement['type']] )) {
+				$missed_type = $_placement['type'];
+				$_placement['type'] = 'default';
+				$type_missing = true;
+			}
+		?><tr>
                             <td><?php
-				if( isset($_placement['type'] )) :
+				if( $type_missing ) :  // type is not given
+				    ?><p class="advads-error-message"><?php printf(__( 'Placement type "%s" is missing and was reset to "default".<br/>Please check if the responsible add-on is activated.', ADVADS_SLUG ), $missed_type ); ?></p><?php
+				elseif( isset($_placement['type'] )) :
 				    if( isset( $placement_types[$_placement['type']]['image'] )) :
 					    ?><img src="<?php echo $placement_types[$_placement['type']]['image'];
 					    ?>" title="<?php echo $placement_types[$_placement['type']]['title']; ?>"/><?php
@@ -97,6 +103,10 @@
                                             <option value="<?php echo $_tag_key; ?>" <?php if ( isset($_placement['options']['tag']) ) { selected( $_placement['options']['tag'], $_tag_key ); } ?>><?php echo $_tag; ?></option>
                                             <?php endforeach; ?>
                                         </select>
+
+					<p><label><input type="checkbox" name="advads[placements][<?php echo $_placement_slug; ?>][options][start_from_bottom]" value="1" <?php
+					if (isset($_placement['options']['start_from_bottom'])) { checked( $_placement['options']['start_from_bottom'], 1); }
+					?>/><?php _e( 'start counting from bottom', ADVADS_SLUG ); ?></label></p>
                                         </div><?php
 										break;
 								endswitch;

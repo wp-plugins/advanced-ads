@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 3.5, PHP 5.3
 Tested up to: 4.2.3
-Stable tag: 1.6.6.1
+Stable tag: 1.6.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -181,6 +181,23 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 4. Placements that let you inject ads anywhere into your site without coding (6 in Advanced Ads + 9 through add-ons)
 
 == Changelog ==
+
+= 1.6.7 =
+
+*features*
+
+* allow to inject ads into content starting from bottom
+* prevent ad injection into lower-level paragraphs (e.g. into tables or containers)
+* hide ad widget when the content is empty
+* show post type or date when searching an individual post display condition
+
+*fixes and maintenance*
+
+* fix placement types images not showing up completely
+* warn if any used placement type is missing
+* added `advads-ad-allow-php` class to php-setting of plain text
+* added `advanced-ads-activate-advanced-js` filter to allow add-ons to attach advanced js file without bothering the user
+* updated German translation
 
 = 1.6.6.1 =
 
