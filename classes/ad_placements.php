@@ -284,6 +284,13 @@ class Advanced_Ads_Placements {
 	 * @link inspired by http://www.wpbeginner.com/wp-tutorials/how-to-insert-ads-within-your-post-content-in-wordpress/
 	 */
 	public static function &inject_in_content($placement_id, $options, &$content) {
+		// test ad is emtpy
+		$whitespaces = json_decode('"\t\n\r \u00A0"');
+		$adContent = Advanced_Ads_Select::get_instance()->get_ad_by_method( $placement_id, 'placement', $options );
+		if ( trim( $adContent, $whitespaces ) === '' ) {
+			return $content;
+		}
+
 		// parse document as DOM (fragment - having only a part of an actual post given)
 		// -TODO may want to verify the wpcharset is supported by server (mb_list_encodings)
 		// -TODO mb extension might not be available for really old hosts
@@ -318,7 +325,6 @@ class Advanced_Ads_Placements {
 
 		// filter empty tags from items
 		$paragraphs = array();
-		$whitespaces = json_decode('"\t\n\r \u00A0"');
 		foreach ($items as $item) {
 			if ( isset($item->textContent) && trim($item->textContent, $whitespaces) !== '' ) {
 				$paragraphs[] = $item;
@@ -328,7 +334,6 @@ class Advanced_Ads_Placements {
 		$paragraph_count = count($paragraphs);
 		if ($paragraph_count >= $paragraph_id) {
 			$offset = $paragraph_select_from_bottom ? $paragraph_count - $paragraph_id : $paragraph_id - 1;
-			$adContent = Advanced_Ads_Select::get_instance()->get_ad_by_method( $placement_id, 'placement', $options );
 
 			// convert HTML to XML!
 			$adDom = new DOMDocument('1.0', $wpCharset);
