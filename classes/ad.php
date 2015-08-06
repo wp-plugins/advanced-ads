@@ -367,6 +367,9 @@ class Advanced_Ads_Ad {
 		$where = array('ID' => $this->id);
 		$wpdb->update( $wpdb->posts, array( 'post_content' => $content ), $where );
 
+		// clean post from object cache
+		clean_post_cache( $this->id );
+
 		// sanitize conditions
 		// see sanitize_conditions function for example on using this filter
 		$conditions = self::sanitize_conditions_on_save( $this->conditions );
@@ -432,7 +435,7 @@ class Advanced_Ads_Ad {
 		$output = $this->type_obj->prepare_output( $this );
 		// don’t deliver anything, if main ad content is empty
 		if( $output == '' ) {
-		    return;
+			return;
 		}
 
 		// filter to manipulate the output before the wrapper is added
