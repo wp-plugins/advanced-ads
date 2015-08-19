@@ -235,6 +235,11 @@ class Advanced_Ads_Placements {
 					}
 				}
 			}
+
+			// options
+			$options = Advanced_Ads::get_instance()->options();
+			$prefix = isset( $options['id-prefix'] ) ? $options['id-prefix'] : 'advads-';
+
 			// return either ad or group content
 			switch ( $_item[0] ) {
 				case 'ad':
@@ -247,7 +252,7 @@ class Advanced_Ads_Placements {
 						if ( ! isset( $args['output']['class'] ) ) {
 							$args['output']['class'] = array();
 						}
-						$class = 'advads-' . $id;
+						$class = $prefix . $id;
 						if ( ! in_array( $class, $args['output']['class'] ) ) {
 							$args['output']['class'][] = $class;
 						}
@@ -293,7 +298,6 @@ class Advanced_Ads_Placements {
 
 		// parse document as DOM (fragment - having only a part of an actual post given)
 		// -TODO may want to verify the wpcharset is supported by server (mb_list_encodings)
-		// -TODO mb extension might not be available for really old hosts
 		// prevent messages from dom parser
 		$wpCharset = get_bloginfo('charset');
 		$content = mb_convert_encoding($content, 'HTML-ENTITIES', $wpCharset);
@@ -322,6 +326,15 @@ class Advanced_Ads_Placements {
 		$xpath = new DOMXPath($dom);
 		$items = $xpath->query('/html/body/' . $tag);
 		$offset = null;
+
+		// if there are to few (one or less) items at this level test nesting
+		if ($items->length < 2) {
+			$items = $xpath->query('/html/body/*/' . $tag);
+		}
+		// try third level as last resort
+		if ($items->length < 2) {
+			$items = $xpath->query('/html/body/*/*/' . $tag);
+		}
 
 		// filter empty tags from items
 		$paragraphs = array();

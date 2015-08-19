@@ -39,6 +39,15 @@ class Advanced_Ads_Plugin {
 	 */
 	protected $internal_options;
 
+	/**
+	 * default prefix of selectors (id, class) in the frontend
+	 * can be changed by options
+	 * 
+	 * @var Advanced_Ads_Plugin
+	 */
+	const DEFAULT_FRONTEND_PREFIX = 'advads-';
+
+
 	private function __construct() {
 		register_activation_hook( dirname( __FILE__ ), array( $this, 'activate' ) );
 		register_deactivation_hook( dirname( __FILE__ ), array( $this, 'deactivate' ) );

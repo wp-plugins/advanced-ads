@@ -16,15 +16,25 @@
 class Advanced_Ads_Widget extends WP_Widget {
 
 	function __construct() {
-		$widget_ops = array('classname' => 'advads_widget', 'description' => __( 'Display Ads and Ad Groups.', ADVADS_SLUG ));
+
+		$options = Advanced_Ads_Plugin::get_instance()->options();
+
+		$prefix = isset( $options['id-prefix'] ) ? $options['id-prefix'] : 'advads_';
+		$classname = $prefix . 'widget';
+
+		$widget_ops = array('classname' => $classname, 'description' => __( 'Display Ads and Ad Groups.', ADVADS_SLUG ));
 		$control_ops = array();
-		parent::__construct( 'advads_ad_widget','Advanced Ads', $widget_ops, $control_ops );
+
+		// TODO: make default of prefix2 identical to prefix; for now we need it to not lose the existing widgets
+		$prefix2 = isset( $options['id-prefix'] ) ? $options['id-prefix'] : 'advads_ad_';
+		$base_id = $prefix2 . 'widget';
+
+		parent::__construct( $base_id,'Advanced Ads', $widget_ops, $control_ops );
 	}
 
 	function widget($args, $instance) {
 		/** This filter is documented in wp-includes/default-widgets.php */
 		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'], $instance, $this->id_base );
-
 
 		extract( $args );
 		$item_id = empty($instance['item_id']) ? '' : $instance['item_id'];

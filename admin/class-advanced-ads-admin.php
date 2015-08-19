@@ -788,6 +788,14 @@ class Advanced_Ads_Admin {
 				$hook,
 				'advanced_ads_setting_section'
 			);
+			// opt out from internal notices
+			add_settings_field(
+				'id-prefix',
+				__( 'ID prefix', ADVADS_SLUG ),
+				array($this, 'render_settings_id_prefix'),
+				$hook,
+				'advanced_ads_setting_section'
+			);
 
 			// hook for additional settings from add-ons
 			do_action( 'advanced-ads-settings-init', $hook );
@@ -943,6 +951,23 @@ class Advanced_Ads_Admin {
 
 			echo '<input id="advanced-ads-disabled-notices" type="checkbox" value="1" name="'.ADVADS_SLUG.'[disable-notices]" '.checked( $checked, 1, false ).'>';
 			echo '<p class="description">'. __( 'Disable internal notices like tips, tutorials, email newsletters and update notices. Disabling notices is recommended if you run multiple blogs with Advanced Ads already.', ADVADS_SLUG ) . '</p>';
+		}
+
+		/**
+		* render setting for id prefix
+		*
+		* @since 1.6.8
+		*/
+		public function render_settings_id_prefix(){
+			$options = Advanced_Ads::get_instance()->options();
+
+			$prefix = ( isset($options['id-prefix'])) ? esc_attr( $options['id-prefix'] ) : Advanced_Ads_Plugin::DEFAULT_FRONTEND_PREFIX;
+			if( ! isset($options['id-prefix']) ){
+			    echo '<p class="advads-error-message">'. __( 'Please check your widgets after saving this page. The original id and class prefix changed and custom css rules must be rewritten.', ADVADS_SLUG ) .'</p>';
+			}
+
+			echo '<input id="advanced-ads-id-prefix" type="text" value="' .$prefix .'" name="'.ADVADS_SLUG.'[id-prefix]" />';
+			echo '<p class="description">'. __( 'Prefix of class or id attributes in the frontend. Change it if you don’t want <strong>ad blockers</strong> to mark these blocks as ads.<br/>You might need to <strong>re-create your widgets and rewrite css rules afterwards</strong>.', ADVADS_SLUG ) .'</p>';
 		}
 
 		/**

@@ -14,7 +14,7 @@ $setting_tabs = apply_filters('advanced-ads-setting-tabs', array(
 ));
 ?><div class="wrap">
     <?php screen_icon(); ?>
-    <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
+    <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
     <?php settings_errors(); ?>
     <h2 class="nav-tab-wrapper" id="advads-tabs">
         <?php foreach ( $setting_tabs as $_setting_tab_id => $_setting_tab ) : ?>

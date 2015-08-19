@@ -11,7 +11,7 @@
 	endif; ?>
 <?php endif; ?>
     <?php screen_icon(); ?>
-    <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
+    <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
     <p class="description"><?php _e( 'Placements are physically places in your theme and posts. You can use them if you plan to change ads and ad groups on the same place without the need to change your templates.', ADVADS_SLUG ); ?></p>
     <p class="description"><?php printf( __( 'See also the manual for more information on <a href="%s">placements</a>.', ADVADS_SLUG ), ADVADS_URL . 'manual/placements/' ); ?></p>
 <?php if ( isset($placements) && is_array( $placements ) && count( $placements ) ) : ?>
@@ -29,7 +29,7 @@
                 <tbody>
     <?php foreach ( $placements as $_placement_slug => $_placement ) :
 			$type_missing = false;
-			if( empty($_placement['type']) || ! isset( $placement_types[$_placement['type']] )) {
+			if( isset( $_placement['type'] ) && ! isset( $placement_types[$_placement['type']] )) {
 				$missed_type = $_placement['type'];
 				$_placement['type'] = 'default';
 				$type_missing = true;
@@ -50,7 +50,8 @@
 				endif;
 				?></td>
                             <td><?php echo $_placement['name']; ?><br/>
-				<?php if( 'default' === $_placement['type']) :
+				<?php if( ! isset( $_placement['type'] ) || 'default' === $_placement['type']) :
+				    $_placement['type'] = 'default';
 				    ?><a class="usage-link"><?php _e( 'show usage', ADVADS_SLUG ); ?></a><div class="hidden advads-usage">
 				    <label><?php _e( 'shortcode', ADVADS_SLUG ); ?>
 					<code><input type="text" onclick="this.select();" value='[the_ad_placement id="<?php echo $_placement_slug; ?>"]'/></code>

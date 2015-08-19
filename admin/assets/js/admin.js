@@ -124,9 +124,9 @@ jQuery( document ).ready(function ($) {
 				$( '#advads-display-conditions-individual-post' ).val( '' );
 			},
 		})
-		.autocomplete( "instance" )._renderItem = function( ul, item ) {
+		.autocomplete().data("ui-autocomplete")._renderItem = function( ul, item ) {
 		    ul.addClass( "advads-conditions-postids-autocomplete-suggestions" );
-		    return $( "<li>" )
+		    return $( "<li></li>" )
 		      .append( "<span class='left'>" + item.label + "</span><span class='right'>" + item.info + "</span>" )
 		      .appendTo( ul );
 		};

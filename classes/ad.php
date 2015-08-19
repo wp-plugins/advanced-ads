@@ -656,6 +656,9 @@ class Advanced_Ads_Ad {
 	 * @return string $id random id string
 	 */
 	private function create_wrapper_id(){
-		return 'advads-' . mt_rand();
+		$options = Advanced_Ads::get_instance()->options();
+		$prefix = isset( $options['id-prefix'] ) ? $options['id-prefix'] : 'advads-';
+
+		return $prefix . mt_rand();
 	}
 }
