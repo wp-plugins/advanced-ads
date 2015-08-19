@@ -10,17 +10,11 @@ $setting_tabs = apply_filters('advanced-ads-setting-tabs', array(
 		'group' => ADVADS_SLUG,
 		'tabid' => 'general',
 		'title' => __( 'General', ADVADS_SLUG )
-	),
-	'licenses' => array(
-		'page' => 'advanced-ads-settings-license-page',
-		'group' => ADVADS_SLUG . '-licenses',
-		'tabid' => 'licenses',
-		'title' => __( 'Licenses', ADVADS_SLUG )
 	)
 ));
 ?><div class="wrap">
     <?php screen_icon(); ?>
-    <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
+    <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
     <?php settings_errors(); ?>
     <h2 class="nav-tab-wrapper" id="advads-tabs">
         <?php foreach ( $setting_tabs as $_setting_tab_id => $_setting_tab ) : ?>

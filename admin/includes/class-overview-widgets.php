@@ -50,6 +50,8 @@ class Advanced_Ads_Overview_Widgets_Callbacks {
 		array('Advanced_Ads_Overview_Widgets_Callbacks', 'render_support'), $screen->id, 'normal', 'high');
 
 		// add widgets for pro add ons
+		add_meta_box('advads_overview_addon_pro', __( 'Advanced Ads Pro', ADVADS_SLUG ),
+		array('Advanced_Ads_Overview_Widgets_Callbacks', 'render_add_on_pro'), $screen->id, 'side', 'high');
 		add_meta_box('advads_overview_addon_tracking', __( 'Tracking and Stats', ADVADS_SLUG ),
 		array('Advanced_Ads_Overview_Widgets_Callbacks', 'render_add_on_tracking'), $screen->id, 'side', 'high');
 		add_meta_box('advads_overview_addon_responsive', __( 'Responsive and Mobile ads', ADVADS_SLUG ),
@@ -72,11 +74,19 @@ class Advanced_Ads_Overview_Widgets_Callbacks {
 
 		$is_subscribed = Advanced_Ads_Admin_Notices::get_instance()->is_subscribed();
 		$options = Advanced_Ads_Admin_Notices::get_instance()->options();
-		$_notice = 'nl_adsense';
 
-		if ( ! isset($options['closed'][ $_notice ] )  && ! $is_subscribed ) {
+		$_notice = 'nl_free_addons';
+		if ( ! isset($options['closed'][ $_notice ] ) && ! $is_subscribed ) {
 			?><div class="advads-admin-notice">
-			    <p><?php _e( 'Learn more about how and <strong>how much you can earn with AdSense</strong> and Advanced Ads from my dedicated newsletter.', ADVADS_SLUG ); ?></p>
+			    <p><?php _e( 'Get 2 <strong>free add-ons</strong> for joining the newsletter.', ADVADS_SLUG ); ?></p>
+			    <button type="button" class="button-primary advads-notices-button-subscribe" data-notice="<?php echo $_notice ?>"><?php _e('Join now', ADVADS_SLUG); ?></button>
+			</div><?php
+		}
+
+		$_notice = 'nl_adsense';
+		if ( ! isset($options['closed'][ $_notice ] ) ) {
+			?><div class="advads-admin-notice">
+			    <p><?php _e( 'Learn more about how and <strong>how much you can earn with AdSense</strong> and Advanced Ads from the dedicated newsletter group.', ADVADS_SLUG ); ?></p>
 			    <button type="button" class="button-primary advads-notices-button-subscribe" data-notice="<?php echo $_notice ?>"><?php _e('Subscribe me now', ADVADS_SLUG); ?></button>
 			</div><?php
 		}
@@ -151,6 +161,19 @@ foreach ( $next_steps as $_step ){
 		?><p><?php _e( 'Need help to set up and optimize your ads? Need custom coding on your site? Ask me for a quote.', ADVADS_SLUG ); ?></p>
 		<p><a class="button button-primary" href="mailto:support@wpadvancedads.com?subject=<?php printf( __( 'Help with ads on %s', ADVADS_SLUG ), home_url()); ?>"><?php
 			_e( 'Get an offer', ADVADS_SLUG ); ?></a></p><?php
+	}
+
+	/**
+	 * pro add-on widget
+	 */
+	public static function render_add_on_pro(){
+
+		?><p><?php _e( 'Ad management for advanced websites.', ADVADS_SLUG ); ?></p><ul class='list'>
+            <li><?php _e( 'Cache-busting', ADVADS_SLUG ); ?></li>
+            <li><?php _e( 'Advanced visitor conditions', ADVADS_SLUG ); ?></li>
+            <li><?php _e( 'Flash ads with fallback', ADVADS_SLUG ); ?></li>
+        </ul><p><a class="button button-primary" href="<?php echo ADVADS_URL; ?>add-ons/advanced-ads-pro/" target="_blank"><?php
+			_e( 'Get Pro', ADVADS_SLUG ); ?></a></p><?php
 	}
 
 	/**
