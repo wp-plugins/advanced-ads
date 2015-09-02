@@ -84,7 +84,7 @@ class Advanced_Ads_Display_Condition_Callbacks {
 
 		?><h4><label class="advads-conditions-all"><input type="checkbox" name="advanced_ad[conditions][categoryids][all]" value="1" <?php checked( $_all, 1 ); ?>><?php
 		_e( 'Display for all <strong>categories, tags and taxonomies</strong>.', ADVADS_SLUG ); ?></label></h4><?php
-		?><div class="advads-conditions-single"><h5 class="header"><?php _e( 'Display here', ADVADS_SLUG ); ?></h5><p class="description"><?php _e( 'Choose terms from public categories, tags and other taxonomies a post must belong to in order to have ads.', ADVADS_SLUG ); ?></p>
+		?><div class="advads-conditions-single advads-buttonset"><h5 class="header"><?php _e( 'Display here', ADVADS_SLUG ); ?></h5><p class="description"><?php _e( 'Choose terms from public categories, tags and other taxonomies a post must belong to in order to have ads.', ADVADS_SLUG ); ?></p>
                 <table><?php
 				self::_display_taxonomy_term_list( $_includes, 'include', 'advanced_ad[conditions][categoryids][include][]', 'categoryids' );
 		?></table><?php
@@ -196,7 +196,7 @@ foreach ( $terms as $_term ) :
 			?><h4><label class="advads-conditions-all"><input type="checkbox" name="advanced_ad[conditions][categoryarchiveids][all]" value="1" <?php checked( $_all, 1 ); ?>><?php
 		_e( 'Display on all <strong>category archive pages</strong>.', ADVADS_SLUG ); ?></label></h4><?php
 		$taxonomies = get_taxonomies( array('public' => true, 'publicly_queryable' => true), 'objects', 'or' );
-		?><div class="advads-conditions-single"><table>
+		?><div class="advads-conditions-single advads-buttonset"><table>
                 <p class="description"><?php _e( 'Choose the terms from public categories, tags and other taxonomies on which\'s archive page ads can appear', ADVADS_SLUG ); ?></p>
                 <table><?php
 					self::_display_taxonomy_term_list( $_includes, 'include', 'advanced_ad[conditions][categoryarchiveids][include][]', 'categoryarchiveids' );

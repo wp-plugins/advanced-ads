@@ -39,6 +39,15 @@ class Advanced_Ads_Plugin {
 	 */
 	protected $internal_options;
 
+	/**
+	 * default prefix of selectors (id, class) in the frontend
+	 * can be changed by options
+	 *
+	 * @var Advanced_Ads_Plugin
+	 */
+	const DEFAULT_FRONTEND_PREFIX = 'advads-';
+
+
 	private function __construct() {
 		register_activation_hook( dirname( __FILE__ ), array( $this, 'activate' ) );
 		register_deactivation_hook( dirname( __FILE__ ), array( $this, 'deactivate' ) );
@@ -99,7 +108,7 @@ class Advanced_Ads_Plugin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-		// wp_enqueue_style( $this->get_plugin_slug() . '-plugin-styles', plugins_url('assets/css/public.css', __FILE__), array(), Advanced_Ads::VERSION);
+		// wp_enqueue_style( $this->get_plugin_slug() . '-plugin-styles', plugins_url('assets/css/public.css', __FILE__), array(), ADVADS_VERSION);
 	}
 
 	/**
@@ -118,10 +127,11 @@ class Advanced_Ads_Plugin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-		// wp_enqueue_script( $this->get_plugin_slug() . '-plugin-script', plugins_url('assets/js/public.js', __FILE__), array('jquery'), Advanced_Ads::VERSION);
+		// wp_enqueue_script( $this->get_plugin_slug() . '-plugin-script', plugins_url('assets/js/public.js', __FILE__), array('jquery'), ADVADS_VERSION);
 		$options = $this->options();
-		if ( ! empty($options['advanced-js']) ){
-			wp_enqueue_script( $this->get_plugin_slug() . '-advanced-js', ADVADS_BASE_URL . 'public/assets/js/advanced.js', array( 'jquery' ), Advanced_Ads::VERSION );
+		$activated_js = apply_filters( 'advanced-ads-activate-advanced-js', isset( $options['advanced-js'] ) );
+		if ( $activated_js ){
+			wp_enqueue_script( $this->get_plugin_slug() . '-advanced-js', ADVADS_BASE_URL . 'public/assets/js/advanced.js', array( 'jquery' ), ADVADS_VERSION );
 		}
 	}
 
@@ -409,9 +419,19 @@ class Advanced_Ads_Plugin {
 	    }
 
 	    foreach( $add_ons as $_add_on_key => $_add_on ){
+
+		    // check if a license expired over time
+		    $expiry_date = get_option($_add_on['options_slug'] . '-license-expires', false);
+		    $now = time();
+		    if( $expiry_date && strtotime( $expiry_date ) < $now ){
+			    // remove license status
+			    delete_option( $_add_on['options_slug'] . '-license-status' );
+			    continue;
+		    }
+
 		    // check status
-		    if(get_option($_add_on['options_slug'] . '-license-status', false) !== 'valid') {
-			return;
+		    if( get_option($_add_on['options_slug'] . '-license-status', false) !== 'valid' ) {
+			    continue;
 		    }
 
 		    // retrieve our license key from the DB
@@ -419,13 +439,139 @@ class Advanced_Ads_Plugin {
 		    $license_key = isset($licenses[$_add_on_key]) ? $licenses[$_add_on_key] : '';
 
 		    // setup the updater
-		    new EDD_SL_Plugin_Updater( ADVADS_URL, $_add_on['path'], array(
-			    'version' 	=> $_add_on['version'],
-			    'license' 	=> $license_key,
-			    'item_name' => $_add_on['name'],
-			    'author' 	=> 'Thomas Maier'
-			)
-		    );
+		    if( $license_key ){
+			    new EDD_SL_Plugin_Updater( ADVADS_URL, $_add_on['path'], array(
+				    'version' 	=> $_add_on['version'],
+				    'license' 	=> $license_key,
+				    'item_name' => $_add_on['name'],
+				    'author' 	=> 'Thomas Maier'
+				)
+			    );
+		    }
 	    }
         }
+
+	/**
+	 * check if license keys are missing or invalid
+	 *
+	 * @since 1.6.6
+	 * @return true if there are missing licenses
+	 */
+	static function check_licenses_invalid(){
+
+	    $add_ons = apply_filters( 'advanced-ads-add-ons', array() );
+
+	    if( $add_ons === array() ) {
+		    return false;
+	    }
+
+	    foreach( $add_ons as $_add_on_key => $_add_on ){
+		    $status = get_option($_add_on['options_slug'] . '-license-status', false);
+
+		    // don’t check if license is valid
+		    if( $status === 'valid' ) {
+			    continue;
+		    }
+
+		    // retrieve our license key from the DB
+		    $licenses = get_option(ADVADS_SLUG . '-licenses', array());
+
+		    $license_key = isset($licenses[$_add_on_key]) ? $licenses[$_add_on_key] : false;
+
+		    if( ! $license_key || $status !== 'valid' ){
+			    return true;
+		    }
+	    }
+
+	    return false;
+	}
+
+	/**
+	 * check if license keys are going to expire within next 14 days
+	 *
+	 * @since 1.6.6
+	 * @return true if there are expiring licenses
+	 */
+	static function check_licenses_expire(){
+
+	    $add_ons = apply_filters( 'advanced-ads-add-ons', array() );
+
+	    if( $add_ons === array() ) {
+		    return false;
+	    }
+
+	    $now = time();
+
+	    foreach( $add_ons as $_add_on_key => $_add_on ){
+		    // don’t display error for invalid licenses
+		    if( get_option($_add_on['options_slug'] . '-license-status', false) === 'invalid' ) {
+			    continue;
+		    }
+
+		    $expiry_date = get_option($_add_on['options_slug'] . '-license-expires', false);
+
+		    if( $expiry_date ){
+			    $expiry_date_t = strtotime( $expiry_date );
+			    $in_two_weeks = time() + ( WEEK_IN_SECONDS * 2) ;
+			    // check if expiry date is within next comming 2 weeks
+			    if( $expiry_date_t < $in_two_weeks && $expiry_date_t >= $now ){
+				    return true;
+			    }
+
+		    }
+	    }
+
+	    return false;
+	}
+
+	/**
+	 * check if license keys are already expired
+	 *
+	 * @since 1.6.6
+	 * @return true if there are expired licenses
+	 */
+	static function check_licenses_expired(){
+
+	    $add_ons = apply_filters( 'advanced-ads-add-ons', array() );
+
+	    if( $add_ons === array() ) {
+		    return false;
+	    }
+
+	    $now = time();
+
+	    foreach( $add_ons as $_add_on_key => $_add_on ){
+		    // don’t display error for invalid licenses
+		    if( get_option($_add_on['options_slug'] . '-license-status', false) === 'invalid' ) {
+			    continue;
+		    }
+
+		    $expiry_date = get_option($_add_on['options_slug'] . '-license-expires', false);
+
+		    if( $expiry_date && strtotime( $expiry_date ) < $now ){
+			    return true;
+		    }
+	    }
+
+	    return false;
+	}
+
+	/**
+	 * get prefix used for frontend elements
+	 *
+	 * @since 1.6.8.2
+	 */
+	public function get_frontend_prefix(){
+		$options = $this->options();
+
+		// get previously option if new one doesn’t exist yet
+		if( !isset( $options['front-prefix'] ) ){
+			$prefix = ( isset($options['id-prefix'])) ? esc_attr( $options['id-prefix'] ) : Advanced_Ads_Plugin::DEFAULT_FRONTEND_PREFIX;
+		} else {
+			$prefix = $options['front-prefix'];
+		}
+
+		return $prefix;
+	}
+
 }

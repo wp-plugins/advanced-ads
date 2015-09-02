@@ -18,14 +18,6 @@
  * @author  Thomas Maier <thomas.maier@webgilde.com>
  */
 class Advanced_Ads {
-	/**
-	 * Plugin version, used for cache-busting of style and script file references and update notices
-	 *
-	 * @since   1.0.0
-	 * @var     string
-	 */
-
-	const VERSION = '1.6.1';
 
 	/**
 	 * post type slug
@@ -170,6 +162,9 @@ class Advanced_Ads {
 
 		// allow add-ons to hook
 		do_action( 'advanced-ads-plugin-loaded' );
+
+		// manipulate sidebar widget
+		add_filter( 'dynamic_sidebar_params', array( $this, 'manipulate_widget_output' ) );
 	}
 
 	/**
@@ -293,7 +288,7 @@ class Advanced_Ads {
 	 * @since 1.0.0
 	 * @link http://www.smashingmagazine.com/2011/03/08/ten-things-every-wordpress-plugin-developer-should-know/
 	 */
-	public function log($message) {
+	static function log($message) {
 		if ( true === WP_DEBUG ) {
 			if ( is_array( $message ) || is_object( $message ) ) {
 				error_log( 'Advanced Ads Error following:', ADVADS_SLUG );
@@ -364,6 +359,11 @@ class Advanced_Ads {
 		}
 
 		$placements = get_option( 'advads-ads-placements', array() );
+
+		if( ! apply_filters( 'advanced-ads-can-inject-into-content', true, $content, $placements )){
+			return $content;
+		}
+
 		foreach ( $placements as $_placement_id => $_placement ){
 			if ( empty($_placement['item']) || ! isset($_placement['type']) ) { continue; }
 			$_options = isset( $_placement['options'] ) ? $_placement['options'] : array();
@@ -527,6 +527,7 @@ class Advanced_Ads {
 		);
 
 		$args = array(
+			'public'	    => false,
 			'hierarchical'      => true,
 			'labels'            => $labels,
 			'show_ui'           => true,
@@ -578,5 +579,26 @@ class Advanced_Ads {
 		);
 
 		return apply_filters( 'advanced-ads-post-type-params', $post_type_params );
+	}
+
+	/**
+	 * manipulate output of ad widget
+	 *
+	 * @since 1.6.8.2
+	 * @param arr $params widget and sidebar params
+	 */
+	public function manipulate_widget_output( $params = array() ){
+
+		    if( $params[0]['widget_name'] === 'Advanced Ads' ){
+
+			    $options = $this->plugin->options();
+			    // hide id by default (when options are empty) or when option is enabled
+			    if( $options === array() || ( isset( $options['remove-widget-id'] ) && $options['remove-widget-id'] ) ){
+				    $pattern = '#\s(id)=("|\')[^"^\']+("|\')#';
+				    $params[0]['before_widget'] = preg_replace( $pattern, '', $params[0]['before_widget']);
+			    }
+		    }
+
+	    return $params;
 	}
 }
