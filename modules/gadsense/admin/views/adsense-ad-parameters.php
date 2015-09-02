@@ -5,61 +5,68 @@ if ( ! defined( 'WPINC' ) ) {
 $is_responsive = ('responsive' == $unit_type) ? true : false;
 $use_manual_css = ('manual' == $unit_resize) ? true : false;
 if ( $is_responsive ) {
-	?>
-	<style type="text/css">
-		#advanced-ads-ad-parameters-size {
-			display: none;
-		}
-	</style>
-	<?php
+    echo '<style type="text/css"> #advanced-ads-ad-parameters-size {display: none;}	</style>';
 }
+
+$use_paste_code = true;
+$use_paste_code = apply_filters( 'advanced-ads-gadsense-use-pastecode', $use_paste_code );
+
+$db = Gadsense_Data::get_instance();
+$sizing_array = $db->get_responsive_sizing();
+
 ?>
 <div id="adsense-new-add-div-default">
     <input type="hidden" id="advads-ad-content-adsense" name="advanced_ad[content]" value="<?php echo esc_attr( $json_content ); ?>" />
     <input type="hidden" name="unit_id" id="unit_id" value="<?php echo esc_attr( $unit_id ); ?>" />
-    <?php printf( __( '<a class="button" href="#" id="%s">Copy&Paste existing ad code</a>', ADVADS_SLUG ), 'show-pastecode-div' ); ?>
-            <p id="adsense-ad-param-error"></p>
-        <label>
-            <?php _e( 'Ad Slot ID', ADVADS_SLUG ); ?>&nbsp;:&nbsp;
-            <input type="text" name="unit-code" id="unit-code" value="<?php echo $unit_code; ?>" />
-        </label>
+    <?php
+    if ( $use_paste_code ) {
+	echo '<a class="button" href="#" id="show-pastecode-div">' . __( 'Copy&Paste existing ad code', ADVADS_SLUG ) . '</a>';
+    }
+    ?>
+    <p id="adsense-ad-param-error"></p>
+    <?php ob_start(); ?>
+    <label>
+        <?php _e( 'Ad Slot ID', ADVADS_SLUG ); ?>&nbsp;:&nbsp;<input type="text" name="unit-code" id="unit-code" value="<?php echo $unit_code; ?>" />
+    </label>
+    <?php
+    $unit_code_markup = ob_get_clean();
+    echo apply_filters( 'advanced-ads-gadsense-unit-code-markup', $unit_code_markup, $unit_code );
+    ?>
 	<input type="hidden" name="advanced_ad[output][adsense-pub-id]" id="advads-adsense-pub-id" value="" />
 	<?php if( $pub_id ) : ?>
 	    <p><?php printf(__( 'Publisher ID: %s', ADVADS_SLUG ), $pub_id ); ?></p>
-	    <?php endif; ?>
-	    <?php if( $pub_id_errors ) : ?>
-		<p><span class="advads-error-message">
-		    <?php echo $pub_id_errors; ?>
-		</span><?php
-		printf(__( 'Please <a href="%s" target="_blank">change it here</a>.', ADVADS_SLUG ), admin_url( 'admin.php?page=advanced-ads-settings#top#adsense' ));
-		?></p>
-	    <?php endif; ?>
-        <label>
+    <?php endif; ?>
+    <?php if( $pub_id_errors ) : ?>
+		<p>
+            <span class="advads-error-message">
+                <?php echo $pub_id_errors; ?>
+            </span>
+            <?php printf(__( 'Please <a href="%s" target="_blank">change it here</a>.', ADVADS_SLUG ), admin_url( 'admin.php?page=advanced-ads-settings#top#adsense' )); ?>
+        </p>
+    <?php endif; ?>
+        <label id="unit-type-block">
             <?php _e( 'Type', ADVADS_SLUG ); ?>&nbsp;:&nbsp;
             <select name="unit-type" id="unit-type">
                 <option value="normal" <?php selected( $unit_type, 'normal' ); ?>><?php _e( 'Normal', ADVADS_SLUG ); ?></option>
                 <option value="responsive" <?php selected( $unit_type, 'responsive' ); ?>><?php _e( 'Responsive', ADVADS_SLUG ); ?></option>
             </select>
         </label>
-        <?php if ( ! defined( 'AAR_SLUG' ) ) : ?>
-            <p><?php printf( __( 'Use the <a href="%s" target="_blank">Responsive add-on</a> in order to define the exact creative for each browser width.', ADVADS_SLUG ), ADVADS_URL . 'add-ons/responsive-ads/' ); ?></p>
-        <?php else : ?>
+    <?php if ( ! defined( 'AAR_SLUG' ) ) : ?>
+        <p><?php printf( __( 'Use the <a href="%s" target="_blank">Responsive add-on</a> in order to define the exact creative for each browser width.', ADVADS_SLUG ), ADVADS_URL . 'add-ons/responsive-ads/' ); ?></p>
+    <?php else : ?>
         <br />
-        <?php endif; ?>
-		<?php
-			$db = Gadsense_Data::get_instance();
-			$sizing_array = $db->get_responsive_sizing();
-		?>
-		<label <?php if ( ! $is_responsive || 2 > count( $sizing_array ) ) { echo 'style="display: none;"'; } ?> id="resize-block"><br />
-			<?php _e( 'Resizing', ADVADS_SLUG ); ?>&nbsp;:&nbsp;
-			<select name="ad-resize-type" id="ad-resize-type">
-			<?php foreach ( $sizing_array as $key => $desc ) : ?>
-				<option value="<?php echo $key; ?>" <?php selected( $key, $unit_resize ); ?>><?php echo $desc; ?></option>
-			<?php endforeach; ?>
-			</select>
-		</label>
+    <?php endif; ?>
+    <label <?php if ( ! $is_responsive || 2 > count( $sizing_array ) ) { echo 'style="display: none;"'; } ?> id="resize-block"><br />
+        <?php _e( 'Resizing', ADVADS_SLUG ); ?>&nbsp;:&nbsp;
+        <select name="ad-resize-type" id="ad-resize-type">
+        <?php foreach ( $sizing_array as $key => $desc ) : ?>
+            <option value="<?php echo $key; ?>" <?php selected( $key, $unit_resize ); ?>><?php echo $desc; ?></option>
+        <?php endforeach; ?>
+        </select>
+    </label>
 	<?php do_action( 'advanced-ads-gadsense-extra-ad-param', $extra_params, $content ); ?>
 </div><!-- #adsense-new-add-div-default -->
+<?php if ( $use_paste_code ) : ?>
 <div id="pastecode-div" style="display: none;">
 	<div id="pastecode-container">
 		<h3><?php _e( 'Copy the ad code from your AdSense account and paste it in the area below', ADVADS_SLUG ); ?></h3>
@@ -70,3 +77,4 @@ if ( $is_responsive ) {
 		<div id="pastecode-msg"></div>
 	</div>
 </div><!-- #pastecode-div -->
+<?php endif;

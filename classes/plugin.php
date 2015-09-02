@@ -42,7 +42,7 @@ class Advanced_Ads_Plugin {
 	/**
 	 * default prefix of selectors (id, class) in the frontend
 	 * can be changed by options
-	 * 
+	 *
 	 * @var Advanced_Ads_Plugin
 	 */
 	const DEFAULT_FRONTEND_PREFIX = 'advads-';
@@ -555,4 +555,23 @@ class Advanced_Ads_Plugin {
 
 	    return false;
 	}
+
+	/**
+	 * get prefix used for frontend elements
+	 *
+	 * @since 1.6.8.2
+	 */
+	public function get_frontend_prefix(){
+		$options = $this->options();
+
+		// get previously option if new one doesn’t exist yet
+		if( !isset( $options['front-prefix'] ) ){
+			$prefix = ( isset($options['id-prefix'])) ? esc_attr( $options['id-prefix'] ) : Advanced_Ads_Plugin::DEFAULT_FRONTEND_PREFIX;
+		} else {
+			$prefix = $options['front-prefix'];
+		}
+
+		return $prefix;
+	}
+
 }

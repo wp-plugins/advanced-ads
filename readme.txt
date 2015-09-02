@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 4.2, PHP 5.3
 Tested up to: 4.3
-Stable tag: 1.6.8
+Stable tag: 1.6.8.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ Manage and optimize your ads in WordPress as easy as creating posts. Including s
 
 Advanced Ads is a simple ad manager made by a publisher for publishers. Based on my experience delivering millions of ads per month I built this plugin as a powerful, but light weight solution to not only manage and serve ads in WordPress, but to test and optimize them as well.
 
-Learn more on the [plugin homepage](https://wpadvancedads.com).
+[Full Feature List](https://wpadvancedads.com/features/).
 
 = create and manage ads =
 
@@ -102,6 +102,10 @@ There is an ad type dedicated to Google AdSense that supports:
 * automatic limit 3 AdSense ads according to AdSense terms of service (can be disabled)
 * assistant for exact sizes of responsive ads with the [Responsive add-on](https://wpadvancedads.com/add-ons/responsive-ads/)
 
+= ad blocker =
+
+* basic features to prevent ad blocks from being removed by AdBlock and co
+
 = based on WordPress standards =
 
 * integrated into WordPress using standards like custom post types, taxonomies and hooks
@@ -109,7 +113,7 @@ There is an ad type dedicated to Google AdSense that supports:
 
 Learn more on the [plugin homepage](https://wpadvancedads.com).
 
-Localizations: English, German, Italien, Portuguese
+Localizations: English, German, Dutch, Italian, Portuguese
 
 > <strong>Add-Ons</strong>
 >
@@ -181,6 +185,26 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 4. Placements that let you inject ads anywhere into your site without coding (6 in Advanced Ads + 9 through add-ons)
 
 == Changelog ==
+
+= 1.6.8.3 =
+
+* Hoe vet is dat!? – added Dutch translation
+* fix selecting placement type in IE 11
+* fix errors with content injection when mbstring extension is missing on the server
+
+= 1.6.8.2 =
+
+* added introduction page with first steps
+* optimized error handling in placement form
+* added option to remove the public id from widgets completely
+* rewritten dismiss buttons of notices based on new WP standard
+
+= 1.6.8.1 =
+
+* added menu page to get support from within your dashboard
+* stricter control of ad group archives not being public
+* fix: content-injection requires more than one item per level for p-tags only
+* updated German translation
 
 = 1.6.8 =
 

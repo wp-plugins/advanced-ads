@@ -17,7 +17,7 @@
 <?php if ( isset($placements) && is_array( $placements ) && count( $placements ) ) : ?>
         <h2><?php _e( 'Placements', ADVADS_SLUG ); ?></h2>
         <form method="POST" action="">
-            <table class="widefat advads-placements-table">
+            <table class="widefat advads-placements-table striped">
                 <thead>
                     <tr>
                         <th><?php _e( 'Type', ADVADS_SLUG ); ?></th>
@@ -108,7 +108,10 @@
 					<p><label><input type="checkbox" name="advads[placements][<?php echo $_placement_slug; ?>][options][start_from_bottom]" value="1" <?php
 					if (isset($_placement['options']['start_from_bottom'])) { checked( $_placement['options']['start_from_bottom'], 1); }
 					?>/><?php _e( 'start counting from bottom', ADVADS_SLUG ); ?></label></p>
-                                        </div><?php
+                                        </div>
+					<?php if( ! function_exists( 'mb_convert_encoding' ) ) : ?>
+					<p><span class="advads-error-message"><?php _e( 'Important Notice', ADVADS_SLUG ); ?>: </span><?php _e( 'Your server is missing an extension. This might break the content injection.<br/>Ignore this warning if everything works fine or else ask your hosting provider to enable <em>mbstring</em>.', ADVADS_SLUG ); ?></p>
+					   <?php endif;
 										break;
 								endswitch;
 								do_action( 'advanced-ads-placement-options-after', $_placement_slug, $_placement );
@@ -129,7 +132,7 @@
 	<?php do_action( 'advanced-ads-placements-list-after', $placements );
 endif;
 
-    ?><form method="POST" action="" class="advads-placements-new-form"<?php if ( isset($placements) && count( $placements ) ) echo ' style="display: none;"' ; ?>>
+    ?><form method="POST" action="" onsubmit="return advads_validate_placement_form();" class="advads-placements-new-form"<?php if ( isset($placements) && count( $placements ) ) echo ' style="display: none;"' ; ?>>
 	<h3>1. <?php _e( 'Choose a placement type', ADVADS_SLUG ); ?></h3>
 	<p class="description"><?php printf(__( 'Placement types define where the ad is going to be displayed. Learn more about the different types from the <a href="%s">manual</a>', ADVADS_SLUG ), ADVADS_URL . 'manual/placements/' ); ?></p>
 	<div class= "advads-new-placement-types advads-buttonset">
@@ -147,10 +150,13 @@ endif;
 		    </div><?php
 		endforeach; };
 		?></div>
-	<div class="clear"></div><br/>
+	<div class="clear"></div>
+	<p class="advads-error-message advads-placement-type-error"><?php _e( 'Please select a placement type.', ADVADS_SLUG ); ?></p>
+	<br/>
 	<h3>2. <?php _e( 'Choose a Name', ADVADS_SLUG ); ?></h3>
 	<p class="description"><?php _e( 'The name of the placement is only visible to you. Tip: choose a descriptive one, e.g. <em>Below Post Headline</em>.', ADVADS_SLUG ); ?></p>
-        <p><input name="advads[placement][name]" type="text" value="" placeholder="<?php _e( 'Placement Name', ADVADS_SLUG ); ?>"/></p>
+        <p><input name="advads[placement][name]" class="advads-new-placement-name" type="text" value="" placeholder="<?php _e( 'Placement Name', ADVADS_SLUG ); ?>"/></p>
+	<p class="advads-error-message advads-placement-name-error"><?php _e( 'Please enter a name for your placement.', ADVADS_SLUG ); ?></p>
 	<h3>3. <?php _e( 'Choose the Ad or Group', ADVADS_SLUG ); ?></h3>
 	<p class="description"><?php _e( 'The ad or group that should be displayed.', ADVADS_SLUG ); ?></p>
 	<p><select name="advads[placement][item]">

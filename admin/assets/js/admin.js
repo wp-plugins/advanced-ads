@@ -389,3 +389,24 @@ function advads_toggle_single_display_condition_checkbox(checkbox) {
 				jQuery( 'label[for="' + counterpart.attr( 'id' ) + '"]' ).removeClass( 'ui-state-disabled' );
 	}
 }
+
+/**
+ * validate placement form on submit
+ */
+function advads_validate_placement_form(){
+	// check if placement type was selected
+	if( ! jQuery('.advads-placement-type input:checked').length){
+		jQuery('.advads-placement-type-error').show();
+		return false;
+	} else {
+		jQuery('.advads-placement-type-error').hide();
+	}
+	// check if placement name was entered
+	if( jQuery('.advads-new-placement-name').val() == '' ){
+		jQuery('.advads-placement-name-error').show();
+		return false;
+	} else {
+		jQuery('.advads-placement-name-error').hide();
+	}
+	return true;
+}

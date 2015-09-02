@@ -19,14 +19,14 @@ class Advanced_Ads_Widget extends WP_Widget {
 
 		$options = Advanced_Ads_Plugin::get_instance()->options();
 
-		$prefix = isset( $options['id-prefix'] ) ? $options['id-prefix'] : 'advads_';
+		$prefix = Advanced_Ads_Plugin::get_instance()->get_frontend_prefix();
 		$classname = $prefix . 'widget';
 
 		$widget_ops = array('classname' => $classname, 'description' => __( 'Display Ads and Ad Groups.', ADVADS_SLUG ));
 		$control_ops = array();
 
-		// TODO: make default of prefix2 identical to prefix; for now we need it to not lose the existing widgets
-		$prefix2 = isset( $options['id-prefix'] ) ? $options['id-prefix'] : 'advads_ad_';
+		// deprecated to keep previously changed prefixed working
+		$prefix2 = ( isset( $options['id-prefix'] ) && $options['id-prefix'] !== '' ) ? $options['id-prefix'] : 'advads_ad_';
 		$base_id = $prefix2 . 'widget';
 
 		parent::__construct( $base_id,'Advanced Ads', $widget_ops, $control_ops );

@@ -154,6 +154,10 @@ class Advanced_Ads_Admin_Notices {
 		$closed = isset($options['closed']) ? $options['closed'] : array();
 		$queue = isset($options['queue']) ? $options['queue'] : array();
 
+		// register intro message
+		if( $options === array() && ! in_array( 'nl_intro', $queue ) && ! isset( $closed['nl_intro'] ) ){
+			$this->notices[] = 'nl_intro';
+		}
 		// offer free add-ons if not yet subscribed
 		if ( ! $this->is_subscribed() && ! in_array( 'nl_free_addons', $queue ) && ! isset( $closed['nl_free_addons'] )) {
 			$this->notices[] = 'nl_free_addons';
@@ -283,6 +287,9 @@ class Advanced_Ads_Admin_Notices {
 			}
 
 			switch ( $type ) {
+				case 'info' :
+					include ADVADS_BASE_PATH . '/admin/views/notices/info.php';
+				break;
 				case 'subscribe' :
 					include ADVADS_BASE_PATH . '/admin/views/notices/subscribe.php';
 				break;

@@ -16,7 +16,6 @@ class Gadsense_Admin {
 
 		add_action( 'admin_enqueue_scripts', array($this, 'enqueue_scripts') );
 		add_action( 'admin_print_scripts', array($this, 'print_scripts') );
-		add_action( 'admin_init', array($this, 'init') );
 		add_filter( 'advanced-ads-list-ad-size', array($this, 'ad_details_column'), 10, 2 );
 		add_filter( 'advanced-ads-ad-settings-pre-save', array($this, 'sanitize_ad_settings') );
 	}
@@ -49,56 +48,6 @@ class Gadsense_Admin {
 			</script>
 			<?php
 		}
-	}
-
-	public function init() {
-		if ( isset($_POST['gadsense-nonce']) ) {
-			$this->form_treatment();
-		}
-		$this->nonce = wp_create_nonce( 'gadsense_nonce' );
-
-		// admin notices
-		if ( isset($_COOKIE['gadsense_admin_notice']) ) {
-			// passing the actual message by cookie would enable an injection
-			if ( $_COOKIE['gadsense_admin_notice'] > 0 ) {
-				// error
-				$msg = __( 'The Publisher ID has an incorrect format. (must start with "pub-")', ADVADS_SLUG );
-				$css = 'error';
-			} else {
-				// success
-				$msg = __( 'Data updated', ADVADS_SLUG );
-				$css = 'updated';
-			}
-			$this->notice = array(
-				'msg' => $msg,
-				'class' => $css,
-			);
-			setcookie( 'gadsense_admin_notice', null, -1 );
-		}
-	}
-
-	public function form_treatment() {
-		if ( 1 === wp_verify_nonce( $_POST['gadsense-nonce'], 'gadsense_nonce' ) ) {
-			switch ( $_POST['gadsense-form-name'] ) {
-				case 'cred-form' :
-					$id = strtolower( trim( wp_unslash( $_POST['adsense-id'] ) ) );
-					$limit = (isset($_POST['limit-per-page']))? true : false;
-					$isError = false;
-					if ( 0 === strpos( $id, 'pub-' ) ) {
-						$this->data->set_adsense_id( $id );
-						$this->data->set_limit_per_page( $limit );
-					} else {
-						$isError = true;
-					}
-					setcookie( 'gadsense_admin_notice', (string) (int) $isError, time() + 900 ); // only display for 15 minutes
-					break;
-				default :
-			}
-		}
-
-		// redirect
-		wp_redirect( $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING'] );
-		die();
 	}
 
 	public function enqueue_scripts() {

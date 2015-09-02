@@ -39,6 +39,7 @@ $setting_tabs = apply_filters('advanced-ads-setting-tabs', array(
 		?>
     <ul>
         <li><a href="/wp-admin/admin.php?page=advanced-ads-debug"><?php _e( 'Debug Page', ADVADS_SLUG ); ?></a></li>
+        <li><a href="/wp-admin/admin.php?page=advanced-ads-intro"><?php _e( 'Welcome Page', ADVADS_SLUG ); ?></a></li>
         <li><a href="http://wordpress.org/plugins/advanced-ads/" title="<?php _e( 'Advanced Ads on WordPress.org', ADVADS_SLUG ); ?>"><?php _e( 'Advanced Ads on wp.org', ADVADS_SLUG ); ?></a></li>
         <li><a href="http://webgilde.com" title="<?php _e( 'the company behind Advanced Ads', ADVADS_SLUG ); ?>"><?php _e( 'webgilde GmbH', ADVADS_SLUG ); ?></a></li>
     </ul>

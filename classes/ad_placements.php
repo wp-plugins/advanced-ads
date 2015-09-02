@@ -237,8 +237,7 @@ class Advanced_Ads_Placements {
 			}
 
 			// options
-			$options = Advanced_Ads::get_instance()->options();
-			$prefix = isset( $options['id-prefix'] ) ? $options['id-prefix'] : 'advads-';
+			$prefix = Advanced_Ads_Plugin::get_instance()->get_frontend_prefix();
 
 			// return either ad or group content
 			switch ( $_item[0] ) {
@@ -300,7 +299,16 @@ class Advanced_Ads_Placements {
 		// -TODO may want to verify the wpcharset is supported by server (mb_list_encodings)
 		// prevent messages from dom parser
 		$wpCharset = get_bloginfo('charset');
-		$content = mb_convert_encoding($content, 'HTML-ENTITIES', $wpCharset);
+		// check if mbstring exists
+		if ( ! function_exists( 'mb_convert_encoding' ) ) {
+			if ( $wpCharset === "UTF-8" ) {
+				$content = htmlspecialchars_decode( htmlentities( $content, ENT_COMPAT, $wpCharset, false ) );
+			} else {
+				return $content;
+			}
+		} else {
+			$content = mb_convert_encoding( $content, 'HTML-ENTITIES', $wpCharset );
+		}
 
 		$dom = new DOMDocument('1.0', $wpCharset);
 		// may loose some fragments or add autop-like code
@@ -327,14 +335,16 @@ class Advanced_Ads_Placements {
 		$items = $xpath->query('/html/body/' . $tag);
 		$offset = null;
 
-		// if there are to few (one or less) items at this level test nesting
-		if ($items->length < 2) {
+		// if there are to few items at this level test nesting
+		$itemLimit = $tag === 'p' ? 2 : 1;
+		if ($items->length < $itemLimit) {
 			$items = $xpath->query('/html/body/*/' . $tag);
 		}
 		// try third level as last resort
-		if ($items->length < 2) {
+		if ($items->length < $itemLimit) {
 			$items = $xpath->query('/html/body/*/*/' . $tag);
 		}
+
 
 		// filter empty tags from items
 		$paragraphs = array();

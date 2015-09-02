@@ -162,6 +162,9 @@ class Advanced_Ads {
 
 		// allow add-ons to hook
 		do_action( 'advanced-ads-plugin-loaded' );
+
+		// manipulate sidebar widget
+		add_filter( 'dynamic_sidebar_params', array( $this, 'manipulate_widget_output' ) );
 	}
 
 	/**
@@ -524,6 +527,7 @@ class Advanced_Ads {
 		);
 
 		$args = array(
+			'public'	    => false,
 			'hierarchical'      => true,
 			'labels'            => $labels,
 			'show_ui'           => true,
@@ -575,5 +579,26 @@ class Advanced_Ads {
 		);
 
 		return apply_filters( 'advanced-ads-post-type-params', $post_type_params );
+	}
+
+	/**
+	 * manipulate output of ad widget
+	 *
+	 * @since 1.6.8.2
+	 * @param arr $params widget and sidebar params
+	 */
+	public function manipulate_widget_output( $params = array() ){
+
+		    if( $params[0]['widget_name'] === 'Advanced Ads' ){
+
+			    $options = $this->plugin->options();
+			    // hide id by default (when options are empty) or when option is enabled
+			    if( $options === array() || ( isset( $options['remove-widget-id'] ) && $options['remove-widget-id'] ) ){
+				    $pattern = '#\s(id)=("|\')[^"^\']+("|\')#';
+				    $params[0]['before_widget'] = preg_replace( $pattern, '', $params[0]['before_widget']);
+			    }
+		    }
+
+	    return $params;
 	}
 }

@@ -216,6 +216,8 @@ class Advanced_Ads_Admin {
 			'advanced-ads_page_advanced-ads-placements', // placements
 			'advanced-ads_page_advanced-ads-settings', // settings
 			'toplevel_page_advanced-ads', // overview
+			'admin_page_advanced-ads-debug', // debug
+			'admin_page_advanced-ads-intro', // intro
 		));
 
 		if( in_array( $screen->id, $advads_pages )){
@@ -255,6 +257,14 @@ class Advanced_Ads_Admin {
 		);
 		add_submenu_page(
 			null, __( 'Advanced Ads Debugging', ADVADS_SLUG ), __( 'Debug', ADVADS_SLUG ), 'manage_options', $this->plugin_slug . '-debug', array($this, 'display_plugin_debug_page')
+		);
+		// intro page
+		add_submenu_page(
+			null, __( 'Advanced Ads Intro', ADVADS_SLUG ), __( 'Advanced Ads Intro', ADVADS_SLUG ), 'manage_options', $this->plugin_slug . '-intro', array($this, 'display_plugin_intro_page')
+		);
+		// add support page
+		add_submenu_page(
+			$this->plugin_slug, __( 'Support', ADVADS_SLUG ), __( 'Support', ADVADS_SLUG ), 'manage_options', $this->plugin_slug . '-support', array($this, 'display_support_page')
 		);
 
 		// allows extensions to insert sub menu pages
@@ -315,6 +325,54 @@ class Advanced_Ads_Admin {
 		$ad_placements = Advanced_Ads::get_ad_placements_array(); // -TODO use model
 
 		include ADVADS_BASE_PATH . 'admin/views/debug.php';
+	}
+
+	/**
+	 * Render intro page
+	 *
+	 * @since    1.6.8.2
+	 */
+	public function display_plugin_intro_page() {
+		// load array with ads by condition
+
+		// remove intro message from queue
+		Advanced_Ads_Admin_Notices::get_instance()->remove_from_queue('nl_intro');
+
+		include ADVADS_BASE_PATH . 'admin/views/intro.php';
+	}
+
+	/**
+	 * Render the support page
+	 *
+	 * @since    1.6.8.1
+	 */
+	public function display_support_page() {
+		// process email
+
+		$mail_sent = false;
+		global $current_user;
+		$user = wp_get_current_user();
+
+		$email = $user->user_email !== '' ? $user->user_email : '';
+		$name = $user->first_name !== '' ? $user->first_name . ' ' . $user->last_name : $user->user_login;
+		$message = '';
+
+		if( isset( $_POST['advads_support']['email'] ) ){
+
+			$email = trim( $_POST['advads_support']['email'] );
+			$name = trim( $_POST['advads_support']['name'] );
+			$message = trim( $_POST['advads_support']['message'] );
+			if( '' !== $email ){
+				$headers = 'From: '. $name .' <' . $email . '>' . "\r\n";
+				$content = $message;
+				$content .= "\r\n\r\n Name: " . $name;
+				$content .= "\r\n URL: " . home_url();
+
+				$mail_sent = wp_mail( 'support@wpadvancedads.com', 'Support for ' . home_url(), $content, $headers );
+			}
+		}
+
+		include ADVADS_BASE_PATH . 'admin/views/support.php';
 	}
 
 	/**
@@ -790,9 +848,17 @@ class Advanced_Ads_Admin {
 			);
 			// opt out from internal notices
 			add_settings_field(
-				'id-prefix',
+				'front-prefix',
 				__( 'ID prefix', ADVADS_SLUG ),
-				array($this, 'render_settings_id_prefix'),
+				array($this, 'render_settings_front_prefix'),
+				$hook,
+				'advanced_ads_setting_section'
+			);
+			// remove id from widgets
+			add_settings_field(
+				'remove-widget-id',
+				__( 'Remove Widget ID', ADVADS_SLUG ),
+				array($this, 'render_settings_remove_widget_id'),
 				$hook,
 				'advanced_ads_setting_section'
 			);
@@ -954,20 +1020,46 @@ class Advanced_Ads_Admin {
 		}
 
 		/**
-		* render setting for id prefix
+		* render setting for frontend prefix
 		*
 		* @since 1.6.8
 		*/
-		public function render_settings_id_prefix(){
+		public function render_settings_front_prefix(){
 			$options = Advanced_Ads::get_instance()->options();
 
-			$prefix = ( isset($options['id-prefix'])) ? esc_attr( $options['id-prefix'] ) : Advanced_Ads_Plugin::DEFAULT_FRONTEND_PREFIX;
-			if( ! isset($options['id-prefix']) ){
-			    echo '<p class="advads-error-message">'. __( 'Please check your widgets after saving this page. The original id and class prefix changed and custom css rules must be rewritten.', ADVADS_SLUG ) .'</p>';
+			// deprecated: keeps widgets working that previously received an id based on the front-prefix
+			if( !isset( $options['front-prefix'] ) ){
+				$prefix = ( isset($options['id-prefix'])) ? esc_attr( $options['id-prefix'] ) : Advanced_Ads_Plugin::DEFAULT_FRONTEND_PREFIX;
+			} else {
+				$prefix = $options['front-prefix'];
+			}
+			$old_prefix = ( isset($options['id-prefix'])) ? esc_attr( $options['id-prefix'] ) : '';
+
+			echo '<input id="advanced-ads-front-prefix" type="text" value="' .$prefix .'" name="'.ADVADS_SLUG.'[front-prefix]" />';
+			// deprecated
+			echo '<input type="hidden" value="' .$old_prefix .'" name="'.ADVADS_SLUG.'[id-prefix]" />';
+			echo '<p class="description">'. __( 'Prefix of class or id attributes in the frontend. Change it if you don’t want <strong>ad blockers</strong> to mark these blocks as ads.<br/>You might need to <strong>rewrite css rules afterwards</strong>.', ADVADS_SLUG ) .'</p>';
+		}
+
+		/**
+		* render setting to remove the id from advanced ads widgets
+		*
+		* @since 1.6.8.2
+		*/
+		public function render_settings_remove_widget_id(){
+			$options = Advanced_Ads::get_instance()->options();
+
+			// is true by default if no options where previously set
+			if( ! isset($options['remove-widget-id']) && $options !== array() ){
+			    $remove = false;
+			} elseif( $options === array() ){
+			    $remove = true;
+			} else {
+			    $remove = true;
 			}
 
-			echo '<input id="advanced-ads-id-prefix" type="text" value="' .$prefix .'" name="'.ADVADS_SLUG.'[id-prefix]" />';
-			echo '<p class="description">'. __( 'Prefix of class or id attributes in the frontend. Change it if you don’t want <strong>ad blockers</strong> to mark these blocks as ads.<br/>You might need to <strong>re-create your widgets and rewrite css rules afterwards</strong>.', ADVADS_SLUG ) .'</p>';
+			echo '<input id="advanced-ads-remove-widget-id" type="checkbox" ' . checked( $remove, true, false ) . ' name="'.ADVADS_SLUG.'[remove-widget-id]" />';
+			echo '<p class="description">'. __( 'Remove the ID attribute from widgets in order to not make them an easy target of ad blockers.', ADVADS_SLUG ) .'</p>';
 		}
 
 		/**

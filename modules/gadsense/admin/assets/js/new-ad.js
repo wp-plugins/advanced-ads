@@ -68,11 +68,11 @@
 			if ('undefined' != typeof(adByGoogle.attr( 'data-ad-client' ))) {
 				theAd.pubId = adByGoogle.attr( 'data-ad-client' ).substr( 3 );
 			}
-			if ('' != theAd.slotId && '' != theAd.pubId) {
+			if (undefined !== theAd.slotId && '' != theAd.pubId) {
 				theAd.display = adByGoogle.css( 'display' );
 				theAd.format = adByGoogle.attr( 'data-ad-format' );
 				theAd.style = adByGoogle.attr( 'style' );
-
+                
 				if ('undefined' == typeof(theAd.format) && -1 != theAd.style.indexOf( 'width' )) {
 					/* normal ad */
 					theAd.type = 'normal';

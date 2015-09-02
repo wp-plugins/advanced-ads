@@ -7,17 +7,17 @@ jQuery( document ).ready(function () {
 	 * ADMIN NOTICES
 	 */
 	// close button
-	jQuery(document).on('click', '.advads-notices-button-close', function(){
-	    if(this.dataset.notice === undefined) return;
+	jQuery(document).on('click', '.advads-admin-notice button.notice-dismiss', function(){
 	    var messagebox = jQuery(this).parents('.advads-admin-notice');
+	    if( messagebox.attr('data-notice') === undefined) return;
 
 	    var query = {
 		action: 'advads-close-notice',
-		notice: this.dataset.notice
+		notice: messagebox.attr('data-notice')
 	    };
-	    // send and close message
+	    // send query
 	    jQuery.post(ajaxurl, query, function (r) {
-		messagebox.fadeOut();
+		// messagebox.fadeOut();
 	    });
 
 	});
@@ -37,7 +37,10 @@ jQuery( document ).ready(function () {
 		    messagebox.fadeOut();
 		} else {
 		    messagebox.find('p').html(r);
-		    messagebox.removeClass('updated').addClass('error');
+		    // don’t change class on intro page
+		    if( ! jQuery('.admin_page_advanced-ads-intro').length ){
+			    messagebox.removeClass('updated').addClass('error');
+		    }
 		}
 	    });
 

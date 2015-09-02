@@ -9,6 +9,11 @@ $advanced_ads_admin_notices = array(
 	'text' => 'Advanced Ads 1.4.5 changes the behavior of some display conditions. Please read this <a href="http://wpadvancedads.com/advanced-ads-1-4-5/" target="_blank">update post</a> to learn if this change should concern you.',
     ),
     // email tutorial
+    'nl_intro' => array(
+	'type' => 'info',
+	'text' => sprintf(__( 'Advanced Ads successfully installed. Take a look at the <a href="%s">First Steps</a>.', ADVADS_SLUG ), admin_url( 'admin.php?page=advanced-ads-intro' )),
+    ),
+    // email tutorial
     'nl_first_steps' => array(
 	'type' => 'subscribe',
 	'text' => __( 'Thank you for activating <strong>Advanced Ads</strong>. Would you like to receive the first steps via email?', ADVADS_SLUG ),
