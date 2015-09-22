@@ -41,7 +41,10 @@ class Advanced_Ads_Ajax {
 		$methods = $selector->get_methods();
 		$method = isset( $_REQUEST['ad_method'] ) ? (string) $_REQUEST['ad_method'] : null;
 		$id = isset( $_REQUEST['ad_id'] ) ? (string) $_REQUEST['ad_id'] : null;
-		$arguments = isset( $_REQUEST['ad_args'] ) ? (array) $_REQUEST['ad_args'] : array();
+		$arguments = isset( $_REQUEST['ad_args'] ) ? $_REQUEST['ad_args'] : array();
+		if (is_string($arguments)) {
+			$arguments = json_decode($arguments, true);
+		}
 		$adIds = isset( $_REQUEST['ad_ids'] ) ? $_REQUEST['ad_ids'] : null;
 		if ( is_string( $adIds ) ) {
 			$adIds = json_decode( $adIds, true );
