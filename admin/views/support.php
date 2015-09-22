@@ -45,9 +45,7 @@
 	foreach( $messages as $_message ) :
 	?><div class="message error"><p><?php echo $_message; ?></p></div><?php
 	endforeach;
-    endif;
-
-    Advanced_Ads_Checks::ad_blocker_notice(); ?>
+    endif; ?>
     <h2><?php _e( 'Contact', ADVADS_SLUG ); ?></h2>
     <p><?php printf(__( 'Please search the manual for a solution and take a look at <a href="%s" target="_blank">Ads not showing up?</a> before contacting me for help.', ADVADS_SLUG ), ADVADS_URL . 'manual/ads-not-showing-up/' ); ?></p>
     <form action="" method="post">
