@@ -20,7 +20,7 @@ do_action( "{$taxonomy}_pre_edit_form", $tag, $taxonomy );
 ?>
 
 <div class="wrap">
-    <h2><?php echo $tax->labels->edit_item; ?></h2>
+    <h1><?php echo $tax->labels->edit_item; ?></h1>
     <div id="ajax-response"></div>
     <form name="editgroup" id="editgroup" method="post" action="<?php echo Advanced_Ads_Admin::group_page_url(); ?>" class="validate"<?php do_action( $taxonomy . '_term_edit_form_tag' ); ?>>
         <input type="hidden" name="action" value="editedgroup" />

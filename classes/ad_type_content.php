@@ -106,9 +106,12 @@ echo $ad->content; ?></textarea><?php endif;
 	public function prepare_output($ad){
 
 		// apply functions normally running through the_content filter
-		// the_content filter not used here because it created an infinite loop (ads within ads)
+		// the_content filter is not used here because it created an infinite loop (ads within ads for "before content" and other auto injections)
+		// maybe the danger is not here yet, but changing it to use the_content filter changes a lot
 
-		$output = wptexturize( $ad->content );
+		$output = $ad->content;
+
+		$output = wptexturize( $output );
 		$output = convert_smilies( $output );
 		$output = convert_chars( $output );
 		$output = wpautop( $output );

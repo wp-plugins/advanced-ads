@@ -23,7 +23,7 @@ if ( wp_is_mobile() ) {
 $title = __( 'Ads Dashboard', ADVADS_SLUG );
 
 ?><div class="wrap">
-    <h2><?php echo esc_html( $title ); ?></h2>
+    <h1><?php echo esc_html( $title ); ?></h1>
 
     <div id="dashboard-widgets-wrap">
     <?php wp_dashboard(); ?>
