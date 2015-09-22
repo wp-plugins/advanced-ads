@@ -236,6 +236,11 @@ class Advanced_Ads_Placements {
 				}
 			}
 
+			// inject placement type
+			if ( isset( $placements[ $id ]['type'] ) ) {
+				$args[ 'placement_type' ] = $placements[ $id ]['type'];
+			}
+
 			// options
 			$prefix = Advanced_Ads_Plugin::get_instance()->get_frontend_prefix();
 
