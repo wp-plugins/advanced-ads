@@ -45,6 +45,11 @@ jQuery( document ).ready(function ($) {
 
 	// activate general buttons
 	$( '.advads-buttonset' ).buttonset();
+	// activate accordions
+	$( ".advads-accordion" ).accordion({
+	    active: false,
+	    collapsible: true,
+	});
 
 	// toggle single display condition checkboxes that have a counterpart
 	$( document ).on('click', '.advads-conditions-single input[type="checkbox"]', function () {
@@ -228,8 +233,8 @@ jQuery( document ).ready(function ($) {
          */
 
 	 // show image tooltips
-	var advads_tooltips = $( ".advads-placements-new-form" ).tooltip({
-		items: "img",
+	var advads_tooltips = $( ".advads-placements-new-form .advads-placement-type" ).tooltip({
+		items: "span",
 		content: function() {
 			return $( this ).parents('.advads-placement-type').find( '.advads-placement-description' ).html();
 		}

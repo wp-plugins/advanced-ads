@@ -127,6 +127,13 @@
 #advads-visitor-conditions td.advads-visitor-conditions-operator-or > hr { display: none; }
 #advads-visitor-conditions-new .advads-buttonset label { text-transform: uppercase; }
 #advads-visitor-conditions-new .advads-buttonset { float: left; }
+#advads-exp-timestampdiv { padding-top: 5px; line-height: 23px; }
+#advads-exp-timestampdiv p { margin: 8px 0 6px; }
+#advads-exp-timestampdiv input { border-width: 1px; border-style: solid; }
+#advads-exp-timestampdiv select { height: 21px; line-height: 14px; padding: 0; vertical-align: top; font-size: 12px; }
+#advads-exp-aa, #advads-exp-jj, #advads-exp-hh, #advads-exp-mn { padding: 1px; font-size: 12px; }
+#advads-exp-jj, #advads-exp-hh, #advads-exp-mn { width: 2em; }
+#advads-exp-aa { width: 3.4em; }
 
 /**
  AD GROUP LIST
@@ -161,6 +168,9 @@
 .advads-placements-new-form .advads-error-message { display: none; }
 .advads-placements-table { min-width: 80%; border-collapse: collapse; background: #fff; }
 .advads-placements-table tbody tr { border-top: 1px solid #f1f1f1; }
+.advads-placements-table tbody tr td:first-child { width: 70px; }
+.advads-placements-table tbody tr td:nth-child(2) { width: 100px; }
+.advads-placements-table tbody tr td:nth-child(4) { width: 70px; }
 .advads-placements-table th { margin: 0; padding: 10px; text-align: left; vertical-align: top; }
 .advads-placements-table.widefat tbody th { font-weight: bold; }
 .advads-placements-table th span { font-weight: normal; }
@@ -199,6 +209,11 @@ tr:hover .on-hover { display: block; }
 .advads-tab.active { display: block; }
 .advads-license-activate-active { color: green; }
 .advads-license-activate-error { color: red; }
+
+/**
+- SUPPORT PAGE
+-*/
+.advads-support-form textarea { width: 25em; height: 10em; }
 
 /**
 - GENERAL

@@ -1,6 +1,6 @@
 <?php
 
-class Gadsense_Data {
+class Advanced_Ads_AdSense_Data {
 
 	private static $instance;
 
@@ -35,6 +35,10 @@ class Gadsense_Data {
                 $options['limit-per-page'] = '';
             }
 
+            if ( !isset($options['page-level-enabled']) ) {
+                $options['page-level-enabled'] = false;
+            }
+
 		$this->options = $options;
 
 		// Resizing method for responsive ads
@@ -46,6 +50,9 @@ class Gadsense_Data {
         /**
 	 * GETTERS
 	 */
+	public function get_options() {
+		return $this->options;
+	}
 	public function get_adsense_id() {
 		return trim($this->options['adsense-id']);
 	}

@@ -219,5 +219,126 @@ advads = {
 		// half window width minus half element width
 		var left = ( jQuery(window).width() / 2 ) - ( parseInt( el.css('width')) / 2 );
 		el.css('left', left + 'px');
+	},
+	/**
+	 * center element vertically on the screen
+	 *
+	 * @param {str} element selector
+	 */
+	center_vertically: function( element ){
+		var el = jQuery(element);
+		// half window height minus half element height
+		var left = ( jQuery(window).height() / 2 ) - ( parseInt( el.css('height')) / 2 );
+		el.css('top', left + 'px');
+	},
+	/**
+	 * close an ad and add a cookie
+	 *
+	 * @param {str} element selector
+	 */
+	close: function( element ){
+		var wrapper = jQuery(element);
+		// remove the ad
+		wrapper.remove();
 	}
+
 };
+// highlight elements in frontend, if local storage variable is set
+jQuery(document).ready(function(){
+    // only trigger if local storage is available
+    if( localStorage.getItem('advads_frontend_picker') ) {
+	var advads_picker_cur, advads_picker_overlay = jQuery("<div id='advads-picker-overlay'>"),
+	    advads_picker_no = [document.body, document.documentElement, document];
+	    advads_picker_overlay.css({position: 'absolute', border: 'solid 2px #428bca',
+		backgroundColor: 'rgba(66,139,202,0.5)', boxSizing: 'border-box',
+		zIndex: 1000000, pointerEvents: 'none'}).prependTo('body');
+	jQuery(document).mousemove(function(e) {
+	    if (e.target === advads_picker_cur) {
+		return;
+	    }
+
+	    if (~advads_picker_no.indexOf(e.target)) {
+		advads_picker_cur = null;
+		advads_picker_overlay.hide();
+		return;
+	    }
+
+	    var target = jQuery(e.target),
+		offset = target.offset(),
+		width = target.outerWidth(),
+		height = target.outerHeight();
+
+	    advads_picker_cur = e.target;
+
+	    advads_picker_overlay.css({
+		top: offset.top,
+		left: offset.left,
+		width: width,
+		height: height
+	    }).show();
+	    // log path
+	    console.log( jQuery( advads_picker_cur ).getPath());
+
+	});
+	// save on click
+	jQuery(document).click(function(e) {
+		//console.log( advads_picker_cur );
+		var path = jQuery( advads_picker_cur ).getPath();
+		localStorage.setItem( 'advads_frontend_element', path );
+		// console.log( jQuery( advads_picker_cur ).getPath() );
+		window.location = localStorage.getItem('advads_prev_url');
+	});
+    };
+});
+/*
+derrived from jQuery-GetPath v0.01, by Dave Cardwell. (2007-04-27)
+http://davecardwell.co.uk/javascript/jquery/plugins/jquery-getpath/
+Usage:
+var path = $('#foo').getPath();
+*/
+
+jQuery.fn.extend({
+	getPath: function( path, depth ) {
+		// The first time this function is called, path won't be defined.
+		if ( typeof path === 'undefined' ) path = '';
+		if ( typeof depth === 'undefined' ) depth = 0;
+
+		// If this element is <html> we've reached the end of the path.
+		// also end after 2 elements with ids
+		if ( this.is('html')){
+			return 'html > ' + path;
+		} else if ( 2 === depth ){
+			return path;
+		}
+
+		// Add the element name.
+		var cur = this.get(0).nodeName.toLowerCase();
+
+		// Determine the IDs and path.
+		var el_id    = this.attr('id'),
+		    el_class = this.attr('class');
+
+		// Add the #id if there is one.
+		if ( typeof el_id !== 'undefined' ){
+			cur += '#' + el_id;
+			depth = depth + 1;
+		} else if ( typeof el_class !== 'undefined' ){
+			// Add any classes if there is no id
+			cur += '.' + el_class.split(/[\s\n]+/).join('.');
+		}
+
+		// add index if this element is not unique among its siblings
+		if( this.siblings( cur ).length ){
+			cur += ":eq(" + this.index() + ")";
+		}
+
+		// console.log( this.index() );
+
+		// Recurse up the DOM.
+		if( path === '' ){
+		    return this.parent().getPath( cur, depth );
+		} else {
+		    return this.parent().getPath( cur + ' > ' + path, depth );
+		}
+	}
+});

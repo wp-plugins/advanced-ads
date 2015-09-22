@@ -115,10 +115,20 @@
 										break;
 								endswitch;
 								do_action( 'advanced-ads-placement-options-after', $_placement_slug, $_placement );
+			    ob_start();
+				do_action( 'advanced-ads-placement-options-after-advanced', $_placement_slug, $_placement );
+			    $advanced_options = ob_get_clean();
+			    if( $advanced_options ) :
+				?><a class="advads-toggle-link" onclick="advads_toggle('.advads-placements-advanced-options-<?php
+				echo $_placement_slug; ?>')">- <?php _e( 'advanced options', ADVADS_SLUG ); ?> –</a>
+				<div class="advads-placements-advanced-options-<?php echo $_placement_slug; ?>" style="display: none"><?php
+				    echo $advanced_options;
+				?></div><?php
+			    endif;
                             ?></td>
                             <td>
                                 <input type="checkbox" id="adsads-placements-item-delete-<?php echo $_placement_slug; ?>" name="advads[placements][<?php echo $_placement_slug; ?>][delete]" value="1"/>
-                                <label for="adsads-placements-item-delete-<?php echo $_placement_slug; ?>"><?php _e( 'remove placement', ADVADS_SLUG ); ?></label>
+                                <label for="adsads-placements-item-delete-<?php echo $_placement_slug; ?>"><?php _ex( 'delete', 'checkbox to remove placement', ADVADS_SLUG ); ?></label>
                             </td>
                         </tr>
     <?php endforeach; ?>

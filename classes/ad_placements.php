@@ -255,6 +255,8 @@ class Advanced_Ads_Placements {
 						if ( ! in_array( $class, $args['output']['class'] ) ) {
 							$args['output']['class'][] = $class;
 						}
+
+						$args['output']['placement_id'] = $id;
 					}
 
 					// fix method id
@@ -404,4 +406,20 @@ class Advanced_Ads_Placements {
 
 		return $content;
 	}
+
+	/**
+	 * check if the placement can be displayed
+	 *
+	 * @since 1.6.9
+	 * @param int $id placement id
+	 * @return bool true if placement can be displayed
+	 */
+	static function can_display( $id = 0 ){
+		if ( ! isset($id) || $id === 0 ) {
+			return true;
+		}
+
+		return apply_filters( 'advanced-ads-can-display-placement', true, $id );
+	}
+
 }

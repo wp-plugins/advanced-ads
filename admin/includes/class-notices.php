@@ -175,20 +175,20 @@ class Advanced_Ads_Admin_Notices {
 			$queue = isset($options['queue']) ? $options['queue'] : array();
 			// check license keys
 
-			if ( Advanced_Ads_Plugin::check_licenses_invalid() && ! in_array( 'license_invalid', $queue )) {
+			if ( Advanced_Ads_Checks::licenses_invalid() && ! in_array( 'license_invalid', $queue )) {
 				$this->notices[] = 'license_invalid';
 			} else {
 				$this->remove_from_queue( 'license_invalid' );
 			}
 
 			// check expiring licenses
-			if ( Advanced_Ads_Plugin::check_licenses_expire() && ! in_array( 'license_expires', $queue )) {
+			if ( Advanced_Ads_Checks::licenses_expire() && ! in_array( 'license_expires', $queue )) {
 				$this->notices[] = 'license_expires';
 			} else {
 				$this->remove_from_queue( 'license_expires' );
 			}
 			// check expired licenses
-			if ( Advanced_Ads_Plugin::check_licenses_expired() && ! in_array( 'license_expired', $queue )) {
+			if ( Advanced_Ads_Checks::licenses_expired() && ! in_array( 'license_expired', $queue )) {
 				$this->notices[] = 'license_expired';
 			} else {
 				$this->remove_from_queue( 'license_expired' );

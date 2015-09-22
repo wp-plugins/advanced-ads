@@ -11,7 +11,7 @@ if ( $is_responsive ) {
 $use_paste_code = true;
 $use_paste_code = apply_filters( 'advanced-ads-gadsense-use-pastecode', $use_paste_code );
 
-$db = Gadsense_Data::get_instance();
+$db = Advanced_Ads_AdSense_Data::get_instance();
 $sizing_array = $db->get_responsive_sizing();
 
 ?>

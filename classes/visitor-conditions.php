@@ -265,23 +265,21 @@ class Advanced_Ads_Visitor_Conditions {
 		switch ( $operator ){
 			// referrer contains string on any position
 			case 'contain' :
-				$condition = strpos( $string, $value ) !== false;
+				$condition = stripos( $string, $value ) !== false;
 				break;
 
 			// referrer does not contain string on any position
 			case 'contain_not' :
-				$condition = strpos( $string, $value ) === false;
+				$condition = stripos( $string, $value ) === false;
 				break;
 
 			// referrer starts with the string
 			case 'start' :
-				// -TODO should allow a (locale aware) case insensitive comparision
-				$condition = strpos( $string, $value ) === 0;
+				$condition = stripos( $string, $value ) === 0;
 				break;
 			// referrer does not start with the string
 			case 'start_not' :
-				// -TODO should allow a (locale aware) case insensitive comparision
-				$condition = strpos( $string, $value ) !== 0;
+				$condition = stripos( $string, $value ) !== 0;
 				break;
 			// referrer ends with the string
 			case 'end' :
@@ -302,15 +300,13 @@ class Advanced_Ads_Visitor_Conditions {
 
 			// referrer is equal to the string
 			case 'match' :
-				// -TODO should allow a (locale aware) case insensitive comparision
 				// strings do match, but should not or not match but should
-				$condition = $value === $string;
+				$condition = strcasecmp($value, $string) === 0;
 				break;
 			// referrer is not equal to the string
 			case 'match_not' :
-				// -TODO should allow a (locale aware) case insensitive comparision
 				// strings do match, but should not or not match but should
-				$condition = $value !== $string;
+				$condition = strcasecmp($value, $string) !== 0;
 				break;
 			// string is a regular expression
 			case 'regex' :
@@ -326,7 +322,7 @@ class Advanced_Ads_Visitor_Conditions {
 				if( @preg_match( $value, null ) === false ){
 					Advanced_Ads::log( "Advanced Ads: regular expression '$value' in visitor condition is broken." );
 				} else {
-					! $condition = preg_match( $value, $string );
+					$condition = ! preg_match( $value, $string );
 				}
 				break;
 		}
@@ -334,4 +330,3 @@ class Advanced_Ads_Visitor_Conditions {
 		return $condition;
 	}
 }
-

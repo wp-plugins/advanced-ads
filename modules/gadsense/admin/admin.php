@@ -1,6 +1,6 @@
 <?php
 
-class Gadsense_Admin {
+class Advanced_Ads_AdSense_Admin {
 
 	private $data;
 	private $nonce;
@@ -9,7 +9,7 @@ class Gadsense_Admin {
         private $settings_page_hook = 'advanced-ads-adsense-settings-page';
 
 	private function __construct() {
-		$this->data = Gadsense_Data::get_instance();
+		$this->data = Advanced_Ads_AdSense_Data::get_instance();
 		add_action( 'advanced-ads-settings-init', array($this, 'settings_init') );
 		// add_action( 'advanced-ads-additional-settings-form', array($this, 'settings_init') );
                 add_filter('advanced-ads-setting-tabs', array($this, 'setting_tabs'));
@@ -34,7 +34,7 @@ class Gadsense_Admin {
 				('post-new.php' == $pagenow && Advanced_Ads::POST_TYPE_SLUG == $post_type) ||
 				('post.php' == $pagenow && Advanced_Ads::POST_TYPE_SLUG == $post_type && isset($_GET['action']) && 'edit' == $_GET['action'])
 		) {
-			$db = Gadsense_Data::get_instance();
+			$db = Advanced_Ads_AdSense_Data::get_instance();
 			$pub_id = $db->get_adsense_id();
 			?>
 			<script type="text/javascript">
@@ -143,6 +143,15 @@ class Gadsense_Admin {
 			'advanced_ads_adsense_setting_section'
 		);
 
+		// activate page-level ads
+		add_settings_field(
+			'adsense-page-level',
+			__( 'Activate Page-Level ads', ADVADS_SLUG ),
+			array($this, 'render_settings_adsense_page_level'),
+			$hook,
+			'advanced_ads_adsense_setting_section'
+		);
+
 		// hook for additional settings from add-ons
 		do_action( 'advanced-ads-adsense-settings-init', $hook );
 	}
@@ -154,6 +163,12 @@ class Gadsense_Admin {
 	 */
 	public function render_settings_section_callback(){
 		// for whatever purpose there might come
+		$adsense_id = $this->data->get_adsense_id();
+		if( ! $adsense_id ){
+		    ?><p class="advads-error-message"><?php
+		    printf(__( 'Please enter your Publisher ID in order to use AdSense on your page. See the <a href="%s" target="_blank">manual</a> for more information.', ADVADS_SLUG ), ADVADS_URL . 'manual/ad-types/adsense-ads/' );
+		    ?></p><?php
+		}
 	}
 
 	/**
@@ -176,15 +191,31 @@ class Gadsense_Admin {
 	public function render_settings_adsense_limit(){
                 $limit_per_page = $this->data->get_limit_per_page();
 
-                ?><input type="checkbox" name="<?php echo GADSENSE_OPT_NAME; ?>[limit-per-page]" value="1" <?php checked( $limit_per_page ); ?> />
-		<?php printf( __( 'Limit to %d AdSense ads', ADVADS_SLUG ), 3 ); ?>
+                ?><label><input type="checkbox" name="<?php echo GADSENSE_OPT_NAME; ?>[limit-per-page]" value="1" <?php checked( $limit_per_page ); ?> />
+		<?php printf( __( 'Limit to %d AdSense ads', ADVADS_SLUG ), 3 ); ?></label>
                 <p class="description">
 		<?php
 			printf(
 				__( 'Currently, Google AdSense <a target="_blank" href="%s" title="Terms Of Service">TOS</a> imposes a limit of %d display ads per page. You can disable this limitation at your own risks.', ADVADS_SLUG ),
 				esc_url( 'https://www.google.com/adsense/terms' ), 3
 			); ?><br/><?php
-						_e( 'Notice: Advanced Ads only considers the AdSense ad type for this limit.', ADVADS_SLUG );
+			_e( 'Notice: Advanced Ads only considers the AdSense ad type for this limit.', ADVADS_SLUG );
+	}
+
+	/**
+	 * render page-level ads setting
+	 *
+	 * @since 1.6.9
+	 */
+	public function render_settings_adsense_page_level(){
+                $options = $this->data->get_options();
+                $page_level = $options['page-level-enabled'];
+
+                ?><label><input type="checkbox" name="<?php echo GADSENSE_OPT_NAME; ?>[page-level-enabled]" value="1" <?php checked( $page_level ); ?> />
+		<?php _e( 'Insert Page-Level ads code on all pages.', ADVADS_SLUG ); ?></label>
+                <p class="description">
+		<?php _e( 'You still need to enable Page-Level ads in your AdSense account. See <a href="https://support.google.com/adsense/answer/6245304" target="_blank">AdSense Help</a> for more information', ADVADS_SLUG ); ?>
+		</p><?php
 	}
 
         /**

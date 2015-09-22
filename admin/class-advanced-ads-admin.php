@@ -553,7 +553,7 @@ class Advanced_Ads_Admin {
 		// get time set for ad or current timestamp (both GMT)
 		$time_adj = $ad->expiry_date ? $ad->expiry_date : time();
 		$time_adj = gmdate( 'Y-m-d H:i:s', $time_adj );
-		list($curr_year, $curr_month, $curr_day) = explode('-', get_date_from_gmt( $time_adj, 'Y-m-d' ) );
+		list( $curr_year, $curr_month, $curr_day, $curr_hour, $curr_minute ) = explode('-', get_date_from_gmt( $time_adj, 'Y-m-d-H-i' ) );
 		$enabled = 1 - empty($ad->expiry_date);
 
 		include ADVADS_BASE_PATH . 'admin/views/ad-submitbox-meta.php';
@@ -670,10 +670,20 @@ class Advanced_Ads_Admin {
 			$year   = absint( $_POST['advanced_ad']['expiry_date']['year'] );
 			$month  = absint( $_POST['advanced_ad']['expiry_date']['month'] );
 			$day    = absint( $_POST['advanced_ad']['expiry_date']['day'] );
-			// as PHP 5.2 has not reliable 'u' option need to calculate timestamps this way
-			$gmDate = get_gmt_from_date("$year-$month-$day 00:00:00", 'Y-m-d');
-			list( $year, $month, $day ) = explode( '-', $gmDate );
-			$ad->expiry_date = gmmktime(0, 0, 0, $month, $day, $year);
+			$hour   = absint( $_POST['advanced_ad']['expiry_date']['hour'] );
+			$minute = absint( $_POST['advanced_ad']['expiry_date']['minute'] );
+
+			$expiration_date = sprintf( "%04d-%02d-%02d %02d:%02d:%02d", $year, $month, $day, $hour, $minute, '00' );
+			$valid_date = wp_checkdate( $month, $day, $year, $expiration_date );
+
+			if ( !$valid_date ) {
+				$ad->expiry_date = 0;
+			} else {
+				// as PHP 5.2 has not reliable 'u' option need to calculate timestamps this way
+				$gmDate = get_gmt_from_date($expiration_date, 'Y-m-d-H-i');
+				list( $year, $month, $day, $hour, $minute ) = explode( '-', $gmDate );
+				$ad->expiry_date = gmmktime($hour, $minute, 0, $month, $day, $year);
+			}
 		} else {
 			$ad->expiry_date = 0;
 		}
@@ -986,7 +996,7 @@ class Advanced_Ads_Admin {
 	 */
 		public function render_settings_content_injection_priority(){
 			$options = Advanced_Ads::get_instance()->options();
-			$priority = ( ! empty($options['content-injection-priority'])) ? absint( $options['content-injection-priority'] ) : 100;
+			$priority = ( isset($options['content-injection-priority'])) ? intval( $options['content-injection-priority'] ) : 100;
 
 			echo '<input id="advanced-ads-content-injection-priority" type="number" value="'.$priority.'" name="'.ADVADS_SLUG.'[content-injection-priority]" size="3"/>';
 			echo '<p class="description">'. __( 'Play with this value in order to change the priority of the injected ads compared to other auto injected elements in the post content.', ADVADS_SLUG ) .'</p>';
@@ -1382,9 +1392,14 @@ class Advanced_Ads_Admin {
 	 * @since 1.5.3
 	 */
 	public function admin_notices(){
-	    if( current_user_can('manage_options') ){
-		$this->notices = Advanced_Ads_Admin_Notices::get_instance();
-	    }
+		if( current_user_can('manage_options') ){
+			$this->notices = Advanced_Ads_Admin_Notices::get_instance();
+		}
+
+		// display ad block message
+		if ( $this->screen_belongs_to_advanced_ads() ){
+			include ADVADS_BASE_PATH . 'admin/views/notices/adblock.php';
+		}
 	}
 
 	/**

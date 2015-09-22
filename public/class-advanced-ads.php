@@ -208,7 +208,7 @@ class Advanced_Ads {
 		// -TODO abstract
 		add_action( 'wp_head', array( $this, 'inject_header' ), 20 );
 		add_action( 'wp_footer', array( $this, 'inject_footer' ), 20 );
-		$content_injection_priority = isset( $options['content-injection-priority'] ) ? absint( $options['content-injection-priority'] ) : 100;
+		$content_injection_priority = isset( $options['content-injection-priority'] ) ? intval( $options['content-injection-priority'] ) : 100;
 		add_filter( 'the_content', array( $this, 'inject_content' ), $content_injection_priority );
 	}
 
@@ -351,6 +351,11 @@ class Advanced_Ads {
 		// run only within the loop on single pages of public post types
 		$public_post_types = get_post_types( array( 'public' => true, 'publicly_queryable' => true ), 'names', 'or' );
 
+		// make sure that no ad is injected into another ad
+		if ( get_post_type() == self::POST_TYPE_SLUG ){
+			return $content;
+		}
+
 		// check if admin allows injection in all places
 		$options = $this->plugin->options();
 		if( ! isset( $options['content-injection-everywhere'] ) ){
@@ -367,7 +372,6 @@ class Advanced_Ads {
 		foreach ( $placements as $_placement_id => $_placement ){
 			if ( empty($_placement['item']) || ! isset($_placement['type']) ) { continue; }
 			$_options = isset( $_placement['options'] ) ? $_placement['options'] : array();
-
 			switch ( $_placement['type'] ) {
 				case 'post_top':
 				    // TODO broken: does not serve placement but serves ad directly
