@@ -140,6 +140,11 @@ class Advanced_Ads_Select {
 			return ;
 		}
 
+		// check conditions
+		if ( ! Advanced_Ads_Placements::can_display( $args['id'] ) ) {
+			return;
+		}
+
 		// get placement content
 		$id = $args['id'];
 		return Advanced_Ads_Placements::output( $id, $args );

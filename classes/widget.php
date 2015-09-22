@@ -16,9 +16,20 @@
 class Advanced_Ads_Widget extends WP_Widget {
 
 	function __construct() {
-		$widget_ops = array('classname' => 'advads_widget', 'description' => __( 'Display Ads and Ad Groups.', ADVADS_SLUG ));
+
+		$options = Advanced_Ads_Plugin::get_instance()->options();
+
+		$prefix = Advanced_Ads_Plugin::get_instance()->get_frontend_prefix();
+		$classname = $prefix . 'widget';
+
+		$widget_ops = array('classname' => $classname, 'description' => __( 'Display Ads and Ad Groups.', ADVADS_SLUG ));
 		$control_ops = array();
-		parent::__construct( 'advads_ad_widget', __( 'Advanced Ads', ADVADS_SLUG ), $widget_ops, $control_ops );
+
+		// deprecated to keep previously changed prefixed working
+		$prefix2 = ( isset( $options['id-prefix'] ) && $options['id-prefix'] !== '' ) ? $options['id-prefix'] : 'advads_ad_';
+		$base_id = $prefix2 . 'widget';
+
+		parent::__construct( $base_id,'Advanced Ads', $widget_ops, $control_ops );
 	}
 
 	function widget($args, $instance) {
@@ -28,11 +39,17 @@ class Advanced_Ads_Widget extends WP_Widget {
 		extract( $args );
 		$item_id = empty($instance['item_id']) ? '' : $instance['item_id'];
 		$title = empty($instance['title']) ? '' : $instance['title'];
+
+		$output = self::output( $item_id );
+		if( $output == '' ){
+		    return;
+		}
+
 		echo $before_widget;
 		if ( ! empty( $title ) ) {
 			echo $before_title . $title . $after_title;
 		}
-		echo self::output( $item_id );
+		echo $output;
 		echo $after_widget;
 	}
 

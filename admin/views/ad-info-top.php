@@ -3,7 +3,7 @@
     <span id='advads-ad-info-close'>x</span>
     <h2>&#128077; <?php _e( 'Cool, you just published an ad. What now?', ADVADS_SLUG ); ?></h2>
     <h3><?php _e( 'Display the ad in …', ADVADS_SLUG ); ?></h3>
-    <div id="advads-ad-options-accordion">
+    <div class="advads-accordion">
 	<h3><?php _e( '… every post or page', ADVADS_SLUG ); ?></h3>
 	<div>
 	    <p><?php _e( 'Use placements to inject the ad automatically into posts and pages.', ADVADS_SLUG ); ?></p>
@@ -46,12 +46,6 @@
     <p><?php printf( __( 'Learn more about your choices to display an ad in the <a href="%s" target="_blank">manual</a>', ADVADS_SLUG ), ADVADS_URL . 'manual/display-ads/' ); ?></p>
 </div>
 <script>
-  jQuery(function() {
-    jQuery( "#advads-ad-options-accordion" ).accordion({
-	active: false,
-	collapsible: true,
-    });
-  });
   jQuery('#advads-ad-info-close').click(function(){
       jQuery('#advads-ad-info-top').fadeOut();
   });
