@@ -372,6 +372,12 @@ class Advanced_Ads {
 		foreach ( $placements as $_placement_id => $_placement ){
 			if ( empty($_placement['item']) || ! isset($_placement['type']) ) { continue; }
 			$_options = isset( $_placement['options'] ) ? $_placement['options'] : array();
+
+			// check if injection is ok for a specific placement id
+			if( ! apply_filters( 'advanced-ads-can-inject-into-content-' . $_placement_id, true, $content, $_placement_id )){
+				continue;
+			}
+
 			switch ( $_placement['type'] ) {
 				case 'post_top':
 				    // TODO broken: does not serve placement but serves ad directly

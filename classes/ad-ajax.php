@@ -43,6 +43,7 @@ class Advanced_Ads_Ajax {
 		$id = isset( $_REQUEST['ad_id'] ) ? (string) $_REQUEST['ad_id'] : null;
 		$arguments = isset( $_REQUEST['ad_args'] ) ? $_REQUEST['ad_args'] : array();
 		if (is_string($arguments)) {
+			$arguments = stripslashes($arguments);
 			$arguments = json_decode($arguments, true);
 		}
 		$adIds = isset( $_REQUEST['ad_ids'] ) ? $_REQUEST['ad_ids'] : null;

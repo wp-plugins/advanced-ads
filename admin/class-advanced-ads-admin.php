@@ -217,6 +217,7 @@ class Advanced_Ads_Admin {
 			'advanced-ads_page_advanced-ads-settings', // settings
 			'toplevel_page_advanced-ads', // overview
 			'admin_page_advanced-ads-debug', // debug
+			'advanced-ads_page_advanced-ads-support', // support
 			'admin_page_advanced-ads-intro', // intro
 		));
 

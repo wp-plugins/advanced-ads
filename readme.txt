@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 4.2, PHP 5.3
 Tested up to: 4.3.1
-Stable tag: 1.6.9.2
+Stable tag: 1.6.9.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -184,6 +184,14 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 4. Placements that let you inject ads anywhere into your site without coding (6 in Advanced Ads + 9 through add-ons)
 
 == Changelog ==
+
+= 1.6.9.3 =
+
+* order placement list by slug (which normally equals name)
+* updated Autoptimize message. If you use the Autoptimize plugin then check out the Autoptimize-Support in [Advanced Ads Pro](https://wpadvancedads.com/add-ons/advanced-ads-pro/)
+* unquote json request
+* added missing advertisement image for AdBlock check
+* added `advanced-ads-can-inject-into-content-` hook to check if individual placements can be injected into the content
 
 = 1.6.9.2 =
 

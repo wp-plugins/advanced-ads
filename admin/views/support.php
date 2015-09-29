@@ -37,17 +37,15 @@
     if( Advanced_Ads_Checks::licenses_expired() ) :
 	    $messages[] = sprintf( __( '<strong>Advanced Ads</strong> license(s) expired. Support and updates are disabled. Please visit <a href="%s"> the license page</a> for more information.', ADVADS_SLUG ), admin_url( 'admin.php?page=advanced-ads-settings#top#licenses' ) );
     endif;
-    if( Advanced_Ads_Checks::active_autoptimize() ) :
-	    $messages[] = __( '<strong>Autoptimize plugin detected</strong>. While this plugin is great for site performance, it is known to alter code, including scripts from ad networks. Please keep this in mind before asking for help about it.', ADVADS_SLUG );
+    if( Advanced_Ads_Checks::active_autoptimize() && ! defined( 'AAP_VERSION' ) ) :
+	    $messages[] = sprintf(__( '<strong>Autoptimize plugin detected</strong>. While this plugin is great for site performance, it is known to alter code, including scripts from ad networks. <a href="%s" target="_blank">Advanced Ads Pro</a> has a build-in support for Autoptimize.', ADVADS_SLUG ), ADVADS_URL . 'add-ons/advanced-ads-pro');
     endif;
 
     if( count( $messages )) :
 	foreach( $messages as $_message ) :
 	?><div class="message error"><p><?php echo $_message; ?></p></div><?php
 	endforeach;
-    endif;
-
-    Advanced_Ads_Checks::ad_blocker_notice(); ?>
+    endif; ?>
     <h2><?php _e( 'Contact', ADVADS_SLUG ); ?></h2>
     <p><?php printf(__( 'Please search the manual for a solution and take a look at <a href="%s" target="_blank">Ads not showing up?</a> before contacting me for help.', ADVADS_SLUG ), ADVADS_URL . 'manual/ads-not-showing-up/' ); ?></p>
     <form action="" method="post">

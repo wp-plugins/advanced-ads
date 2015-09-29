@@ -27,7 +27,9 @@
                     </tr>
                 </thead>
                 <tbody>
-    <?php foreach ( $placements as $_placement_slug => $_placement ) :
+    <?php // order by slug
+    ksort( $placements );
+    foreach ( $placements as $_placement_slug => $_placement ) :
 			$type_missing = false;
 			if( isset( $_placement['type'] ) && ! isset( $placement_types[$_placement['type']] )) {
 				$missed_type = $_placement['type'];

@@ -180,7 +180,7 @@
 .advads-placements-table .advads-usage input { width: 100%; }
 .advads-placements-table-options { text-align: right; }
 .advads-placement-options input, .advads-placement-options select { background: transparent; }
-.advads-placements-table-options input[type="number"] { width: 3em; }
+.advads-placements-table-options input[type="number"] { width: 4em; }
 
 /**
  GENERAL ELEMENTS

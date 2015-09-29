@@ -26,8 +26,10 @@ foreach ( $options as $_options ) :
 </div>
 <?php if( ! isset( $options ) || count( $options ) == 0 ) :
     ?><p><?php _e( 'Visitor conditions limit the number of users who can see your ad. There is no need to set visitor conditions if you want all users to see the ad.', ADVADS_SLUG ); ?></p><?php
-endif; ?>
-<hr/>
+elseif( Advanced_Ads_Checks::cache() && ! defined('AAP_VERSION') ) :
+    ?><p><?php printf(__( 'Check out cache-busting in <a href="%s" target="_blank">Advanced Ads Pro</a> if dynamic features get cached.', ADVADS_SLUG ), ADVADS_URL . 'add-ons/advanced-ads-pro' ); ?></p><?php
+endif;
+?><hr/>
 <fieldset>
     <legend><?php _e( 'New condition', ADVADS_SLUG ); ?></legend>
 <div id="advads-visitor-conditions-new">
