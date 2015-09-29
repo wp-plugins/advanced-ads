@@ -40,7 +40,7 @@ if ( isset($_REQUEST['message']) && ( $msg = (int) $_REQUEST['message'] ) || iss
 ?>
 
 <div class="wrap nosubsub">
-    <h2><?php
+    <h1><?php
 		echo esc_html( $title );
 	if ( ! empty($_REQUEST['s']) ) {
 		printf( '<span class="subtitle">' . __( 'Search results for &#8220;%s&#8221;', ADVADS_SLUG ) . '</span>', esc_html( wp_unslash( $_REQUEST['s'] ) ) );
@@ -48,7 +48,7 @@ if ( isset($_REQUEST['message']) && ( $msg = (int) $_REQUEST['message'] ) || iss
 		echo ' <a href="' . Advanced_Ads_Admin::group_page_url( array('action' => 'edit') ) . '" class="add-new-h2">' . $tax->labels->add_new_item . '</a>';
 	}
 		?>
-    </h2>
+    </h1>
     <p><?php _e( 'Ad Groups are a very flexible method to bundle ads. You can use them to display random ads in the frontend or run split tests, but also just for informational purposes. Not only can an Ad Groups have multiple ads, but an ad can belong to multiple ad groups.', ADVADS_SLUG ); ?></p>
     <?php if ( isset($message) ) : ?>
         <div id="message" class="updated"><p><?php echo $message; ?></p></div>

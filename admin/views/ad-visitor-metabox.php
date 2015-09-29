@@ -14,10 +14,10 @@ foreach ( $options as $_options ) :
 	}
 	if ( method_exists( $metabox[0], $metabox[1] ) ) {
 	    $_connector = isset( $_options['connector'] ) ? esc_attr( $_options['connector'] ) : 'and';
-	    ?><tr><td colspan="3" class="advads-visitor-conditions-connector-<?php echo $_connector; ?>"><?php echo $_connector ?><hr/></td></tr><?php
-	    ?><tr><td></td><td><?php
+	    ?><tr><td colspan="4" class="advads-visitor-conditions-connector-<?php echo $_connector; ?>"><?php echo $_connector ?><hr/></td></tr><?php
+	    ?><tr><td></td><td><?php echo $visitor_conditions[ $_options['type'] ]['label']; ?></td><td><?php
 		call_user_func( array( $metabox[0], $metabox[1] ), $_options, $i++ );
-	    ?></td><td><button type="button" class="advads-visitor-conditions-remove button">x</button></td></tr><?php
+		?></td><td><button type="button" class="advads-visitor-conditions-remove button">x</button></td></tr><?php
 	}
 	endforeach;
 	endif;
@@ -26,8 +26,10 @@ foreach ( $options as $_options ) :
 </div>
 <?php if( ! isset( $options ) || count( $options ) == 0 ) :
     ?><p><?php _e( 'Visitor conditions limit the number of users who can see your ad. There is no need to set visitor conditions if you want all users to see the ad.', ADVADS_SLUG ); ?></p><?php
-endif; ?>
-<hr/>
+elseif( Advanced_Ads_Checks::cache() && ! defined('AAP_VERSION') ) :
+    ?><p><?php printf(__( 'Check out cache-busting in <a href="%s" target="_blank">Advanced Ads Pro</a> if dynamic features get cached.', ADVADS_SLUG ), ADVADS_URL . 'add-ons/advanced-ads-pro' ); ?></p><?php
+endif;
+?><hr/>
 <fieldset>
     <legend><?php _e( 'New condition', ADVADS_SLUG ); ?></legend>
 <div id="advads-visitor-conditions-new">
@@ -51,6 +53,7 @@ endif; ?>
 jQuery( document ).ready(function ($) {
     $('#advads-visitor-conditions-new button').click(function(){
 	    var visitor_condition_type = $('#advads-visitor-conditions-new select').val();
+	    var visitor_condition_title = $('#advads-visitor-conditions-new select option:selected').text();
 	    if ( $('#advads-visitor-conditions-new .advads-buttonset :checked').length ){
 		    var visitor_condition_connector = $('#advads-visitor-conditions-new .advads-buttonset :checked').val();
 	    } else {
@@ -70,8 +73,8 @@ jQuery( document ).ready(function ($) {
 		    success: function (r, textStatus, XMLHttpRequest) {
 			    // add
 			    if (r) {
-				    var newline = '<tr class="advads-visitor-conditions-connector"><td colspan="3" class="advads-visitor-conditions-connector-' + visitor_condition_connector + '">' + visitor_condition_connector + '<hr/></td></tr>' +
-					    '<tr><td></td><td>' + r + '</td><td><button type="button" class="advads-visitor-conditions-remove button">x</button></td></tr>';
+				    var newline = '<tr class="advads-visitor-conditions-connector"><td colspan="4" class="advads-visitor-conditions-connector-' + visitor_condition_connector + '">' + visitor_condition_connector + '<hr/></td></tr>' +
+					    '<tr><td></td><td>' + visitor_condition_title + '</td><td>' + r + '</td><td><button type="button" class="advads-visitor-conditions-remove button">x</button></td></tr>';
 				    $( '#advads-visitor-conditions table tbody' ).append( newline );
 				    // increase count
 				    visitor_condition_index++;

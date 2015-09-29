@@ -28,28 +28,34 @@ class Advanced_Ads_Placements {
 	public static function get_placement_types() {
 		$types = array(
 			'default' => array(
-				'title' => __( 'default', ADVADS_SLUG ),
-				'description' => __( 'Manual placement.', ADVADS_SLUG ),
+				'title' => __( 'Manual Placement', ADVADS_SLUG ),
+				'description' => __( 'Manual placement to use as function or shortcode.', ADVADS_SLUG ),
+				'image' => ADVADS_BASE_URL . 'admin/assets/img/placements/manual.png'
 				),
 			'header' => array(
-				'title' => __( 'header', ADVADS_SLUG ),
-				'description' => __( 'Injected in Header (before closing </head> Tag, often not visible).', ADVADS_SLUG ),
+				'title' => __( 'Header Code', ADVADS_SLUG ),
+				'description' => __( 'Injected in Header (before closing &lt;/head&gt; Tag, often not visible).', ADVADS_SLUG ),
+				'image' => ADVADS_BASE_URL . 'admin/assets/img/placements/header.png'
 				),
 			'footer' => array(
-				'title' => __( 'footer', ADVADS_SLUG ),
-				'description' => __( 'Injected in Footer (before closing </body> Tag).', ADVADS_SLUG ),
+				'title' => __( 'Footer Code', ADVADS_SLUG ),
+				'description' => __( 'Injected in Footer (before closing &lt;/body&gt; Tag).', ADVADS_SLUG ),
+				'image' => ADVADS_BASE_URL . 'admin/assets/img/placements/footer.png'
 				),
 			'post_top' => array(
-				'title' => __( 'before post', ADVADS_SLUG ),
+				'title' => __( 'Before Content', ADVADS_SLUG ),
 				'description' => __( 'Injected before the post content.', ADVADS_SLUG ),
+				'image' => ADVADS_BASE_URL . 'admin/assets/img/placements/content-before.png'
 				),
 			'post_bottom' => array(
-				'title' => __( 'after post', ADVADS_SLUG ),
+				'title' => __( 'After Content', ADVADS_SLUG ),
 				'description' => __( 'Injected after the post content.', ADVADS_SLUG ),
+				'image' => ADVADS_BASE_URL . 'admin/assets/img/placements/content-after.png'
 				),
 			'post_content' => array(
-				'title' => __( 'post content', ADVADS_SLUG ),
+				'title' => __( 'Post Content', ADVADS_SLUG ),
 				'description' => __( 'Injected into the post content. You can choose the paragraph after which the ad content is displayed.', ADVADS_SLUG ),
+				'image' => ADVADS_BASE_URL . 'admin/assets/img/placements/content-within.png'
 				),
 		);
 		return apply_filters( 'advanced-ads-placement-types', $types );
@@ -62,24 +68,24 @@ class Advanced_Ads_Placements {
 	*/
 	static function update_placements(){
 
-	    // check user permissions
-	    if(!current_user_can('manage_options')){
+		// check user permissions
+		if(!current_user_can('manage_options')){
 		return;
-	    }
-	    remove_query_arg('message');
+		}
+		remove_query_arg('message');
 
-	    if ( isset($_POST['advads']['placement']) && check_admin_referer( 'advads-placement', 'advads_placement' ) ){
+		if ( isset($_POST['advads']['placement']) && check_admin_referer( 'advads-placement', 'advads_placement' ) ){
 		$success = self::save_new_placement( $_POST['advads']['placement'] );
-	    }
-	    // save placement data
-	    if ( isset($_POST['advads']['placements']) && check_admin_referer( 'advads-placement', 'advads_placement' )){
+		}
+		// save placement data
+		if ( isset($_POST['advads']['placements']) && check_admin_referer( 'advads-placement', 'advads_placement' )){
 		$success = self::save_placements( $_POST['advads']['placements'] );
-	    }
+		}
 
-	    if(isset($success)){
+		if(isset($success)){
 		$message = $success ? 'updated' : 'error';
 		wp_redirect( add_query_arg(array('message' => $message)) );
-	    }
+		}
 	}
 
 	/**
@@ -97,8 +103,8 @@ class Advanced_Ads_Placements {
 		$new_placement['slug'] = sanitize_title( $new_placement['name'] );
 
 		// check if slug already exists or is empty
-		if ( $new_placement['slug'] === '' || isset( $placements[$new_placement['slug']] ) ) {
-		    return false;
+		if ( $new_placement['slug'] === '' || isset( $placements[$new_placement['slug']]) || !isset( $new_placement['type'] ) ) {
+			return false;
 		}
 
 		// make sure only allowed types are being saved
@@ -110,7 +116,8 @@ class Advanced_Ads_Placements {
 		// add new place to all placements
 		$placements[$new_placement['slug']] = array(
 			'type' => $new_placement['type'],
-			'name' => $new_placement['name']
+			'name' => $new_placement['name'],
+			'item' => $new_placement['item']
 		);
 
 		// save array
@@ -145,6 +152,8 @@ class Advanced_Ads_Placements {
 				$placements[$_placement_slug]['options'] = $_placement['options'];
 				if ( isset($placements[$_placement_slug]['options']['index']) ) {
 					$placements[$_placement_slug]['options']['index'] = absint( $placements[$_placement_slug]['options']['index'] ); }
+			} else {
+				$placements[$_placement_slug]['options'] = array();
 			}
 		}
 
@@ -226,6 +235,15 @@ class Advanced_Ads_Placements {
 					}
 				}
 			}
+
+			// inject placement type
+			if ( isset( $placements[ $id ]['type'] ) ) {
+				$args[ 'placement_type' ] = $placements[ $id ]['type'];
+			}
+
+			// options
+			$prefix = Advanced_Ads_Plugin::get_instance()->get_frontend_prefix();
+
 			// return either ad or group content
 			switch ( $_item[0] ) {
 				case 'ad':
@@ -238,10 +256,12 @@ class Advanced_Ads_Placements {
 						if ( ! isset( $args['output']['class'] ) ) {
 							$args['output']['class'] = array();
 						}
-						$class = 'advads-' . $id;
+						$class = $prefix . $id;
 						if ( ! in_array( $class, $args['output']['class'] ) ) {
 							$args['output']['class'][] = $class;
 						}
+
+						$args['output']['placement_id'] = $id;
 					}
 
 					// fix method id
@@ -275,59 +295,136 @@ class Advanced_Ads_Placements {
 	 * @link inspired by http://www.wpbeginner.com/wp-tutorials/how-to-insert-ads-within-your-post-content-in-wordpress/
 	 */
 	public static function &inject_in_content($placement_id, $options, &$content) {
-		/*
-		 * hot-fixed to support some tags under idealised conditions.
-		 * this does ignore:
-		 * - autop() messups
-		 * - nesting of any kind
-		 * - non-valid XHTML (i.e. wild HTML)
-		 *
-		 * 'after' is experimental as the concept requires DOM and is not fully deterministic across implementations.
-		 * it falls back to 'before' n+1-th element or 'after' closing tag of the n-th.
-		 */
-		$tag = isset($options['tag']) ? $options['tag'] : 'p';
-		$position = isset($options['position']) ? $options['position'] : 'after';
-		$paragraph_id = isset($options['index']) ? $options['index'] : 1;
-		$offset = 0;
-		$insertAt = null;
-
-		// sanitise
-		$tag = preg_quote( strtolower( $tag ), '`' );
-		$before = $position !== 'after';
-		$paragraph_id = max( 1, (int) $paragraph_id );
-
-		// detect n-th tag
-		$matches = array();
-		while ( 1 === preg_match( "`<$tag(?=[ >/])(?:[^>]+/>|.+?(?:</$tag\s*>|(?=<$tag(?=[ >/])|$)))`Ssi", $content, $matches, PREG_OFFSET_CAPTURE, $offset ) ) {
-			$offset = $matches[0][1];
-
-			// skip empty
-			// -TODO should only ignore whitespaces, not all special chars
-			if ( '' === preg_replace( '/&[a-z0-9#]+;|\s+/i', '', strip_tags( htmlspecialchars( $matches[0][0] ) ) ) ) {
-				continue;
-			}
-
-			$paragraph_id--;
-			if ( $paragraph_id <= 0 ) {
-				$insertAt = $before ? $offset : $offset + strlen( $matches[0][0] );
-				break;
-			}
-
-			// start at next offset
-			$offset += strlen( $matches[0][0] );
+		// test ad is emtpy
+		$whitespaces = json_decode('"\t\n\r \u00A0"');
+		$adContent = Advanced_Ads_Select::get_instance()->get_ad_by_method( $placement_id, 'placement', $options );
+		if ( trim( $adContent, $whitespaces ) === '' ) {
+			return $content;
 		}
 
-		if ( isset($insertAt) ) {
-			$ad_content = Advanced_Ads_Select::get_instance()->get_ad_by_method( $placement_id, 'placement', $options );
-			if ( $insertAt === false ) {
-				$content .= $ad_content; // fallback: end-of-content
+		// parse document as DOM (fragment - having only a part of an actual post given)
+		// -TODO may want to verify the wpcharset is supported by server (mb_list_encodings)
+		// prevent messages from dom parser
+		$wpCharset = get_bloginfo('charset');
+		// check if mbstring exists
+		if ( ! function_exists( 'mb_convert_encoding' ) ) {
+			if ( $wpCharset === "UTF-8" ) {
+				$content = htmlspecialchars_decode( htmlentities( $content, ENT_COMPAT, $wpCharset, false ) );
 			} else {
-				$content = substr( $content, 0, $insertAt ) . $ad_content . substr( $content, $insertAt );
+				return $content;
 			}
+		} else {
+			$content = mb_convert_encoding( $content, 'HTML-ENTITIES', $wpCharset );
+		}
 
+		$dom = new DOMDocument('1.0', $wpCharset);
+		// may loose some fragments or add autop-like code
+		libxml_use_internal_errors(true); // avoid notices and warnings - html is most likely malformed
+		$success = $dom->loadHtml('<!DOCTYPE html><html><meta http-equiv="Content-Type" content="text/html; charset=' . $wpCharset . '" /><body>' . $content);
+		libxml_use_internal_errors(false);
+		if ($success !== true) {
+			// -TODO handle cases were dom-parsing failed (at least inform user)
 			return $content;
+		}
+
+		// parse arguments
+		$tag = isset($options['tag']) ? $options['tag'] : 'p';
+		$tag = preg_replace('/[^a-z0-9]/i', '', $tag); // simplify tag
+
+		// only has before and after
+		$before = isset($options['position']) && $options['position'] === 'before';
+		$paragraph_id = isset($options['index']) ? $options['index'] : 1;
+		$paragraph_id = max( 1, (int) $paragraph_id );
+		$paragraph_select_from_bottom = isset($options['start_from_bottom']) && $options['start_from_bottom'];
+
+		// select positions
+		$xpath = new DOMXPath($dom);
+		$items = $xpath->query('/html/body/' . $tag);
+		$offset = null;
+
+		// if there are to few items at this level test nesting
+		$itemLimit = $tag === 'p' ? 2 : 1;
+		if ($items->length < $itemLimit) {
+			$items = $xpath->query('/html/body/*/' . $tag);
+		}
+		// try third level as last resort
+		if ($items->length < $itemLimit) {
+			$items = $xpath->query('/html/body/*/*/' . $tag);
+		}
+
+
+		// filter empty tags from items
+		$paragraphs = array();
+		foreach ($items as $item) {
+			if ( isset($item->textContent) && trim($item->textContent, $whitespaces) !== '' ) {
+				$paragraphs[] = $item;
+			}
+		}
+
+		$paragraph_count = count($paragraphs);
+		if ($paragraph_count >= $paragraph_id) {
+			$offset = $paragraph_select_from_bottom ? $paragraph_count - $paragraph_id : $paragraph_id - 1;
+
+			// convert HTML to XML!
+			$adDom = new DOMDocument('1.0', $wpCharset);
+			libxml_use_internal_errors(true);
+			$adDom->loadHtml('<!DOCTYPE html><html><meta http-equiv="Content-Type" content="text/html; charset=' . $wpCharset . '" /><body>' . $adContent);
+			$adNode = $adDom->lastChild->lastChild; // >html>body
+			libxml_use_internal_errors(false);
+			$adContent = $adDom->saveXML($adNode);
+			$adContent = substr($adContent, 6, -7);
+			$adNode = $dom->createDocumentFragment();
+			$adNode->appendXML($adContent);
+
+			// inject
+			if ($before) {
+				$refNode = $paragraphs[$offset];
+				$refNode->parentNode->insertBefore($adNode, $refNode);
+			} else {
+				// append before next node or as last child to body
+				$refNode = $paragraphs[$offset]->nextSibling;
+				if (isset($refNode)) {
+					$refNode->parentNode->insertBefore($adNode, $refNode);
+				} else {
+					// append to body; -TODO using here that we only select direct children of the body tag
+					$paragraphs[$offset]->parentNode->appendChild($adNode);
+				}
+			}
+		}
+
+		// convert to text-representation
+		$content = $dom->saveHTML();
+		// remove head and tail (required for dom parser but unwanted for content)
+		$content = substr($content, stripos($content, '<body>') + 6);
+		$content = str_replace(array('</body>', '</html>'), '', $content);
+
+		// no fall-back desired: if there are too few paragraphs do nothing
+
+		// fix shortcode quotes (malformed by backend editor)
+		$matches = array();
+		if (0 < preg_match_all('/\[[^]]+\]/Siu', $content, $matches, PREG_OFFSET_CAPTURE) && isset($matches[0])) {
+			foreach ($matches[0] as $match) {
+				$offset = $match[1];
+				$content = substr($content, 0, $offset) . str_replace(array('“', '″', '&#8220;', '&quote;', '&#8243;'), '"', $match[0]) . substr($content, $offset + strlen($match[0]));
+			}
 		}
 
 		return $content;
 	}
+
+	/**
+	 * check if the placement can be displayed
+	 *
+	 * @since 1.6.9
+	 * @param int $id placement id
+	 * @return bool true if placement can be displayed
+	 */
+	static function can_display( $id = 0 ){
+		if ( ! isset($id) || $id === 0 ) {
+			return true;
+		}
+
+		return apply_filters( 'advanced-ads-can-display-placement', true, $id );
+	}
+
 }

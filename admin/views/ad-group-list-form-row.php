@@ -12,15 +12,17 @@
                 <p class="description"><?php echo $_type['description']; ?></p>
             </li><?php
 		endforeach; ?></ul><div class="clear"></div>
-        <label><strong><?php _e( 'Number of ads', ADVADS_SLUG ); ?></strong>
-        <select name="advads-groups[<?php echo $group->id; ?>][ad_count]"><?php
-		for ( $i = 1; $i <= 10; $i++ ) : ?>
-                <option <?php selected( $group->ad_count, $i ); ?>><?php echo $i; ?></option>
-            <?php endfor;
-                ?><option <?php selected( $group->ad_count, 'all' ); ?> value="all"><?php _ex('all', 'option to display all ads in an ad groups', ADVADS_SLUG); ?></option>
-		</select>
-        </label>
-        <p class="description"><?php _e( 'Number of ads to display in the block', ADVADS_SLUG ); ?></p>
+	<div class="advads-ad-group-number">
+	    <label><strong><?php _e( 'Number of visible ads', ADVADS_SLUG ); ?></strong>
+	    <select name="advads-groups[<?php echo $group->id; ?>][ad_count]"><?php
+		    for ( $i = 1; $i <= 10; $i++ ) : ?>
+		    <option <?php selected( $group->ad_count, $i ); ?>><?php echo $i; ?></option>
+		<?php endfor;
+		    ?><option <?php selected( $group->ad_count, 'all' ); ?> value="all"><?php _ex('all', 'option to display all ads in an ad groups', ADVADS_SLUG); ?></option>
+		    </select>
+	    </label>
+	    <p class="description"><?php _e( 'Number of ads that are visible at the same time', ADVADS_SLUG ); ?></p>
+	</div>
 	<?php do_action( 'advanced-ads-group-form-options', $group ); ?>
         <h3><?php _e( 'Ads', ADVADS_SLUG ); ?></h3>
         <?php if ( count( $ad_form_rows ) ) : ?>
