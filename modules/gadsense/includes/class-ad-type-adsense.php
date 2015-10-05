@@ -32,8 +32,8 @@ class Advanced_Ads_Ad_Type_Adsense extends Advanced_Ads_Ad_Type_Abstract {
 	 * @since 1.4
 	 */
 	public function __construct() {
-		$this->title = __( 'AdSense ad', ADVADS_SLUG );
-		$this->description = __( 'Use ads from your Google AdSense account', ADVADS_SLUG );
+		$this->title = __( 'AdSense ad', 'advanced-ads' );
+		$this->description = __( 'Use ads from your Google AdSense account', 'advanced-ads' );
 		$this->parameters = array(
 			'content' => ''
 		);
@@ -70,7 +70,7 @@ class Advanced_Ads_Ad_Type_Adsense extends Advanced_Ads_Ad_Type_Abstract {
 		// check pub_id for errors
 		$pub_id_errors = false;
 		if( $pub_id !== '' && 0 !== strpos( $pub_id, 'pub-' )){
-			$pub_id_errors = __( 'The Publisher ID has an incorrect format. (must start with "pub-")', ADVADS_SLUG );
+			$pub_id_errors = __( 'The Publisher ID has an incorrect format. (must start with "pub-")', 'advanced-ads' );
 		}
 
 		if ( ! empty($content) ) {
@@ -98,7 +98,7 @@ class Advanced_Ads_Ad_Type_Adsense extends Advanced_Ads_Ad_Type_Abstract {
 		}
 
 		if( '' === trim( $pub_id ) && '' !== trim( $unit_code ) ){
-			$pub_id_errors = __( 'Your AdSense Publisher ID is missing.', ADVADS_SLUG );
+			$pub_id_errors = __( 'Your AdSense Publisher ID is missing.', 'advanced-ads' );
 		}
 
 		$default_template = GADSENSE_BASE_PATH . 'admin/views/adsense-ad-parameters.php';

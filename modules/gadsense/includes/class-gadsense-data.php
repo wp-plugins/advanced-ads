@@ -43,7 +43,7 @@ class Advanced_Ads_AdSense_Data {
 
 		// Resizing method for responsive ads
 		$this->resizing = array(
-			'auto' => __( 'Auto', ADVADS_SLUG ),
+			'auto' => __( 'Auto', 'advanced-ads' ),
 		);
 	}
 

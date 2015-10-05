@@ -1,17 +1,17 @@
 <div id="advanced-ads-expiry-date" class="misc-pub-section curtime misc-pub-curtime">
     <label onclick="advads_toggle_box('#advanced-ads-expiry-date-enable', '#advanced-ads-expiry-date .inner')">
         <input type="checkbox" id="advanced-ads-expiry-date-enable" name="advanced_ad[expiry_date][enabled]"
-            value="1" <?php checked( $enabled, 1 ); ?>/><?php _e( 'Set expiry date', ADVADS_SLUG ); ?>
+            value="1" <?php checked( $enabled, 1 ); ?>/><?php _e( 'Set expiry date', 'advanced-ads' ); ?>
     </label>
     <br/>
-    
+
     <div class="inner" <?php if ( ! $enabled ) : ?>style="display:none;"<?php endif; ?>>
 	    <?php
 			$month = '<label><span class="screen-reader-text">' . __( 'Month' ) . '</span><select id="advads-exp-mm" name="advanced_ad[expiry_date][month]"' . ">\n";
 			for ( $i = 1; $i < 13; $i = $i + 1 ) {
 				$monthnum = zeroise( $i, 2 );
 				$month .= "\t\t\t" . '<option value="' . $monthnum . '" ' . selected( $curr_month, $monthnum, false ) . '>';
-				$month .= sprintf( _x( '%1$s-%2$s', '1: month number (01, 02, etc.), 2: month abbreviation', ADVADS_SLUG ),
+				$month .= sprintf( _x( '%1$s-%2$s', '1: month number (01, 02, etc.), 2: month abbreviation', 'advanced-ads' ),
 				$monthnum, $wp_locale->get_month_abbrev( $wp_locale->get_month( $i ) ) ) . "</option>\n";
 			}
 			$month .= '</select></label>';
@@ -24,7 +24,7 @@
 		?>
 		<fieldset id="advads-exp-timestampdiv">
 		<div class="timestamp-wrap">
-			<?php printf( _x( '%1$s %2$s, %3$s @ %4$s %5$s', 'order of expiry date fields 1: month, 2: day, 3: year, 4: hour, 5: minute', ADVADS_SLUG ), $month, $day, $year, $hour, $minute ); ?>
+			<?php printf( _x( '%1$s %2$s, %3$s @ %4$s %5$s', 'order of expiry date fields 1: month, 2: day, 3: year, 4: hour, 5: minute', 'advanced-ads' ), $month, $day, $year, $hour, $minute ); ?>
 	    </div>
 	    </fieldset>
     </div>

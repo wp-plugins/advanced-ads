@@ -28,33 +28,33 @@ class Advanced_Ads_Placements {
 	public static function get_placement_types() {
 		$types = array(
 			'default' => array(
-				'title' => __( 'Manual Placement', ADVADS_SLUG ),
-				'description' => __( 'Manual placement to use as function or shortcode.', ADVADS_SLUG ),
+				'title' => __( 'Manual Placement', 'advanced-ads' ),
+				'description' => __( 'Manual placement to use as function or shortcode.', 'advanced-ads' ),
 				'image' => ADVADS_BASE_URL . 'admin/assets/img/placements/manual.png'
 				),
 			'header' => array(
-				'title' => __( 'Header Code', ADVADS_SLUG ),
-				'description' => __( 'Injected in Header (before closing &lt;/head&gt; Tag, often not visible).', ADVADS_SLUG ),
+				'title' => __( 'Header Code', 'advanced-ads' ),
+				'description' => __( 'Injected in Header (before closing &lt;/head&gt; Tag, often not visible).', 'advanced-ads' ),
 				'image' => ADVADS_BASE_URL . 'admin/assets/img/placements/header.png'
 				),
 			'footer' => array(
-				'title' => __( 'Footer Code', ADVADS_SLUG ),
-				'description' => __( 'Injected in Footer (before closing &lt;/body&gt; Tag).', ADVADS_SLUG ),
+				'title' => __( 'Footer Code', 'advanced-ads' ),
+				'description' => __( 'Injected in Footer (before closing &lt;/body&gt; Tag).', 'advanced-ads' ),
 				'image' => ADVADS_BASE_URL . 'admin/assets/img/placements/footer.png'
 				),
 			'post_top' => array(
-				'title' => __( 'Before Content', ADVADS_SLUG ),
-				'description' => __( 'Injected before the post content.', ADVADS_SLUG ),
+				'title' => __( 'Before Content', 'advanced-ads' ),
+				'description' => __( 'Injected before the post content.', 'advanced-ads' ),
 				'image' => ADVADS_BASE_URL . 'admin/assets/img/placements/content-before.png'
 				),
 			'post_bottom' => array(
-				'title' => __( 'After Content', ADVADS_SLUG ),
-				'description' => __( 'Injected after the post content.', ADVADS_SLUG ),
+				'title' => __( 'After Content', 'advanced-ads' ),
+				'description' => __( 'Injected after the post content.', 'advanced-ads' ),
 				'image' => ADVADS_BASE_URL . 'admin/assets/img/placements/content-after.png'
 				),
 			'post_content' => array(
-				'title' => __( 'Post Content', ADVADS_SLUG ),
-				'description' => __( 'Injected into the post content. You can choose the paragraph after which the ad content is displayed.', ADVADS_SLUG ),
+				'title' => __( 'Post Content', 'advanced-ads' ),
+				'description' => __( 'Injected into the post content. You can choose the paragraph after which the ad content is displayed.', 'advanced-ads' ),
 				'image' => ADVADS_BASE_URL . 'admin/assets/img/placements/content-within.png'
 				),
 		);
@@ -196,10 +196,10 @@ class Advanced_Ads_Placements {
 	 */
 	public static function tags_for_content_injection(){
 		$tags = array(
-			'p' => sprintf( __( 'paragraph (%s)', ADVADS_SLUG ), '&lt;p&gt;' ),
-			'h2' => sprintf( __( 'headline 2 (%s)', ADVADS_SLUG ), '&lt;h2&gt;' ),
-			'h3' => sprintf( __( 'headline 3 (%s)', ADVADS_SLUG ), '&lt;h3&gt;' ),
-			'h4' => sprintf( __( 'headline 4 (%s)', ADVADS_SLUG ), '&lt;h4&gt;' ),
+			'p' => sprintf( __( 'paragraph (%s)', 'advanced-ads' ), '&lt;p&gt;' ),
+			'h2' => sprintf( __( 'headline 2 (%s)', 'advanced-ads' ), '&lt;h2&gt;' ),
+			'h3' => sprintf( __( 'headline 3 (%s)', 'advanced-ads' ), '&lt;h3&gt;' ),
+			'h4' => sprintf( __( 'headline 4 (%s)', 'advanced-ads' ), '&lt;h4&gt;' ),
 		);
 
 		return $tags;

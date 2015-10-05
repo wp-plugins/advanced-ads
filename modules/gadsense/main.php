@@ -16,7 +16,7 @@ if ( class_exists( 'Advanced_Ads', false ) ) {
 	}
 
 	function gadsense_date_time($time) {
-		return date_i18n( get_option( 'date_format' ), $time ) . __( ' at ', ADVADS_SLUG ) . date_i18n( get_option( 'time_format' ), $time );
+		return date_i18n( get_option( 'date_format' ), $time ) . __( ' at ', 'advanced-ads' ) . date_i18n( get_option( 'time_format' ), $time );
 	}
 
 	Advanced_Ads_AdSense_Data::get_instance();

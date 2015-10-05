@@ -23,7 +23,7 @@ class Advanced_Ads_AdSense_Admin {
 	public function ad_details_column($size, $the_ad) {
 		if ( 'adsense' == $the_ad->type ) {
 			$content = json_decode( $the_ad->content );
-			if ( $content && 'responsive' == $content->unitType ) { $size = __( 'Responsive', ADVADS_SLUG ); }
+			if ( $content && 'responsive' == $content->unitType ) { $size = __( 'Responsive', 'advanced-ads' ); }
 		}
 		return $size;
 	}
@@ -41,8 +41,8 @@ class Advanced_Ads_AdSense_Admin {
 				var gadsenseData = {
 					pubId : '<?php echo $pub_id; ?>',
 					msg : {
-						unknownAd : '<?php esc_attr_e( "The ad details couldn't be retrieved from the ad code", ADVADS_SLUG ); ?>',
-						pubIdMismatch : '<?php _e( 'Warning : The AdSense account from this code does not match the one set with the Advanced Ads Plugin. This ad might cause troubles when used in the front end.', ADVADS_SLUG ); ?>'
+						unknownAd : '<?php esc_attr_e( "The ad details couldn't be retrieved from the ad code", 'advanced-ads' ); ?>',
+						pubIdMismatch : '<?php _e( 'Warning : The AdSense account from this code does not match the one set with the Advanced Ads Plugin. This ad might cause troubles when used in the front end.', 'advanced-ads' ); ?>'
 					}
 				};
 			</script>
@@ -120,7 +120,7 @@ class Advanced_Ads_AdSense_Admin {
 		// add new section
 		add_settings_section(
                         'advanced_ads_adsense_setting_section',
-                        __( 'AdSense', ADVADS_SLUG ),
+                        __( 'AdSense', 'advanced-ads' ),
                         array($this, 'render_settings_section_callback'),
                         $hook
 		);
@@ -128,7 +128,7 @@ class Advanced_Ads_AdSense_Admin {
 		// add setting field to disable ads
 		add_settings_field(
 			'adsense-id',
-			__( 'AdSense ID', ADVADS_SLUG ),
+			__( 'AdSense ID', 'advanced-ads' ),
 			array($this, 'render_settings_adsense_id'),
 			$hook,
 			'advanced_ads_adsense_setting_section'
@@ -137,7 +137,7 @@ class Advanced_Ads_AdSense_Admin {
 		// add setting field for adsense limit
 		add_settings_field(
 			'adsense-limit',
-			__( 'Limit to 3 ads', ADVADS_SLUG ),
+			__( 'Limit to 3 ads', 'advanced-ads' ),
 			array($this, 'render_settings_adsense_limit'),
 			$hook,
 			'advanced_ads_adsense_setting_section'
@@ -146,7 +146,7 @@ class Advanced_Ads_AdSense_Admin {
 		// activate page-level ads
 		add_settings_field(
 			'adsense-page-level',
-			__( 'Activate Page-Level ads', ADVADS_SLUG ),
+			__( 'Activate Page-Level ads', 'advanced-ads' ),
 			array($this, 'render_settings_adsense_page_level'),
 			$hook,
 			'advanced_ads_adsense_setting_section'
@@ -166,7 +166,7 @@ class Advanced_Ads_AdSense_Admin {
 		$adsense_id = $this->data->get_adsense_id();
 		if( ! $adsense_id ){
 		    ?><p class="advads-error-message"><?php
-		    printf(__( 'Please enter your Publisher ID in order to use AdSense on your page. See the <a href="%s" target="_blank">manual</a> for more information.', ADVADS_SLUG ), ADVADS_URL . 'manual/ad-types/adsense-ads/' );
+		    printf(__( 'Please enter your Publisher ID in order to use AdSense on your page. See the <a href="%s" target="_blank">manual</a> for more information.', 'advanced-ads' ), ADVADS_URL . 'manual/ad-types/adsense-ads/' );
 		    ?></p><?php
 		}
 	}
@@ -180,7 +180,7 @@ class Advanced_Ads_AdSense_Admin {
                 $adsense_id = $this->data->get_adsense_id();
 
                 ?><input type="text" name="<?php echo GADSENSE_OPT_NAME; ?>[adsense-id]" id="adsense-id" size="32" value="<?php echo $adsense_id; ?>" />
-                <p class="description"><?php _e( 'Your AdSense Publisher ID <em>(pub-xxxxxxxxxxxxxx)</em>', ADVADS_SLUG ) ?></p><?php
+                <p class="description"><?php _e( 'Your AdSense Publisher ID <em>(pub-xxxxxxxxxxxxxx)</em>', 'advanced-ads' ) ?></p><?php
 	}
 
 	/**
@@ -192,14 +192,14 @@ class Advanced_Ads_AdSense_Admin {
                 $limit_per_page = $this->data->get_limit_per_page();
 
                 ?><label><input type="checkbox" name="<?php echo GADSENSE_OPT_NAME; ?>[limit-per-page]" value="1" <?php checked( $limit_per_page ); ?> />
-		<?php printf( __( 'Limit to %d AdSense ads', ADVADS_SLUG ), 3 ); ?></label>
+		<?php printf( __( 'Limit to %d AdSense ads', 'advanced-ads' ), 3 ); ?></label>
                 <p class="description">
 		<?php
 			printf(
-				__( 'Currently, Google AdSense <a target="_blank" href="%s" title="Terms Of Service">TOS</a> imposes a limit of %d display ads per page. You can disable this limitation at your own risks.', ADVADS_SLUG ),
+				__( 'Currently, Google AdSense <a target="_blank" href="%s" title="Terms Of Service">TOS</a> imposes a limit of %d display ads per page. You can disable this limitation at your own risks.', 'advanced-ads' ),
 				esc_url( 'https://www.google.com/adsense/terms' ), 3
 			); ?><br/><?php
-			_e( 'Notice: Advanced Ads only considers the AdSense ad type for this limit.', ADVADS_SLUG );
+			_e( 'Notice: Advanced Ads only considers the AdSense ad type for this limit.', 'advanced-ads' );
 	}
 
 	/**
@@ -212,9 +212,9 @@ class Advanced_Ads_AdSense_Admin {
                 $page_level = $options['page-level-enabled'];
 
                 ?><label><input type="checkbox" name="<?php echo GADSENSE_OPT_NAME; ?>[page-level-enabled]" value="1" <?php checked( $page_level ); ?> />
-		<?php _e( 'Insert Page-Level ads code on all pages.', ADVADS_SLUG ); ?></label>
+		<?php _e( 'Insert Page-Level ads code on all pages.', 'advanced-ads' ); ?></label>
                 <p class="description">
-		<?php _e( 'You still need to enable Page-Level ads in your AdSense account. See <a href="https://support.google.com/adsense/answer/6245304" target="_blank">AdSense Help</a> for more information', ADVADS_SLUG ); ?>
+		<?php _e( 'You still need to enable Page-Level ads in your AdSense account. See <a href="https://support.google.com/adsense/answer/6245304" target="_blank">AdSense Help</a> for more information', 'advanced-ads' ); ?>
 		</p><?php
 	}
 
@@ -233,7 +233,7 @@ class Advanced_Ads_AdSense_Admin {
                     add_settings_error(
                             'adsense-limit',
                             'settings_updated',
-                            __( 'The Publisher ID has an incorrect format. (must start with "pub-")', ADVADS_SLUG ));
+                            __( 'The Publisher ID has an incorrect format. (must start with "pub-")', 'advanced-ads' ));
                 }
 		// trim publisher id
 		$options['adsense-id'] = trim($options['adsense-id']);
@@ -255,7 +255,7 @@ class Advanced_Ads_AdSense_Admin {
                 'page' => $this->settings_page_hook,
                 'group' => ADVADS_SLUG . '-adsense',
                 'tabid' => 'adsense',
-                'title' => __( 'AdSense', ADVADS_SLUG )
+                'title' => __( 'AdSense', 'advanced-ads' )
             );
 
             return $tabs;

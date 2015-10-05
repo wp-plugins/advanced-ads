@@ -291,10 +291,10 @@ class Advanced_Ads {
 	static function log($message) {
 		if ( true === WP_DEBUG ) {
 			if ( is_array( $message ) || is_object( $message ) ) {
-				error_log( 'Advanced Ads Error following:', ADVADS_SLUG );
+				error_log( __('Advanced Ads Error following:', 'advanced-ads' ) );
 				error_log( print_r( $message, true ) );
 			} else {
-				$message = sprintf( __( 'Advanced Ads Error: %s', ADVADS_SLUG ), $message );
+				$message = sprintf( __( 'Advanced Ads Error: %s', 'advanced-ads' ), $message );
 				error_log( $message );
 			}
 		}
@@ -522,18 +522,18 @@ class Advanced_Ads {
 	 */
 	protected function get_group_taxonomy_params(){
 		$labels = array(
-			'name'              => _x( 'Ad Groups', 'ad group general name', ADVADS_SLUG ),
-			'singular_name'     => _x( 'Ad Group', 'ad group singular name', ADVADS_SLUG ),
-			'search_items'      => __( 'Search Ad Groups', ADVADS_SLUG ),
-			'all_items'         => __( 'All Ad Groups', ADVADS_SLUG ),
-			'parent_item'       => __( 'Parent Ad Groups', ADVADS_SLUG ),
-			'parent_item_colon' => __( 'Parent Ad Groups:', ADVADS_SLUG ),
-			'edit_item'         => __( 'Edit Ad Group', ADVADS_SLUG ),
-			'update_item'       => __( 'Update Ad Group', ADVADS_SLUG ),
-			'add_new_item'      => __( 'Add New Ad Group', ADVADS_SLUG ),
-			'new_item_name'     => __( 'New Ad Groups Name', ADVADS_SLUG ),
-			'menu_name'         => __( 'Groups', ADVADS_SLUG ),
-			'not_found'         => __( 'No Ad Group found', ADVADS_SLUG ),
+			'name'              => _x( 'Ad Groups', 'ad group general name', 'advanced-ads' ),
+			'singular_name'     => _x( 'Ad Group', 'ad group singular name', 'advanced-ads' ),
+			'search_items'      => __( 'Search Ad Groups', 'advanced-ads' ),
+			'all_items'         => __( 'All Ad Groups', 'advanced-ads' ),
+			'parent_item'       => __( 'Parent Ad Groups', 'advanced-ads' ),
+			'parent_item_colon' => __( 'Parent Ad Groups:', 'advanced-ads' ),
+			'edit_item'         => __( 'Edit Ad Group', 'advanced-ads' ),
+			'update_item'       => __( 'Update Ad Group', 'advanced-ads' ),
+			'add_new_item'      => __( 'Add New Ad Group', 'advanced-ads' ),
+			'new_item_name'     => __( 'New Ad Groups Name', 'advanced-ads' ),
+			'menu_name'         => __( 'Groups', 'advanced-ads' ),
+			'not_found'         => __( 'No Ad Group found', 'advanced-ads' ),
 		);
 
 		$args = array(
@@ -559,19 +559,19 @@ class Advanced_Ads {
 	 */
 	protected function get_post_type_params() {
 		$labels = array(
-			'name' => __( 'Ads', ADVADS_SLUG ),
-			'singular_name' => __( 'Ad', ADVADS_SLUG ),
-			'add_new' => __( 'New Ad', ADVADS_SLUG ),
-			'add_new_item' => __( 'Add New Ad', ADVADS_SLUG ),
-			'edit' => __( 'Edit', ADVADS_SLUG ),
-			'edit_item' => __( 'Edit Ad', ADVADS_SLUG ),
-			'new_item' => __( 'New Ad', ADVADS_SLUG ),
-			'view' => __( 'View', ADVADS_SLUG ),
-			'view_item' => __( 'View the Ad', ADVADS_SLUG ),
-			'search_items' => __( 'Search Ads', ADVADS_SLUG ),
-			'not_found' => __( 'No Ads found', ADVADS_SLUG ),
-			'not_found_in_trash' => __( 'No Ads found in Trash', ADVADS_SLUG ),
-			'parent' => __( 'Parent Ad', ADVADS_SLUG ),
+			'name' => __( 'Ads', 'advanced-ads' ),
+			'singular_name' => __( 'Ad', 'advanced-ads' ),
+			'add_new' => __( 'New Ad', 'advanced-ads' ),
+			'add_new_item' => __( 'Add New Ad', 'advanced-ads' ),
+			'edit' => __( 'Edit', 'advanced-ads' ),
+			'edit_item' => __( 'Edit Ad', 'advanced-ads' ),
+			'new_item' => __( 'New Ad', 'advanced-ads' ),
+			'view' => __( 'View', 'advanced-ads' ),
+			'view_item' => __( 'View the Ad', 'advanced-ads' ),
+			'search_items' => __( 'Search Ads', 'advanced-ads' ),
+			'not_found' => __( 'No Ads found', 'advanced-ads' ),
+			'not_found_in_trash' => __( 'No Ads found in Trash', 'advanced-ads' ),
+			'parent' => __( 'Parent Ad', 'advanced-ads' ),
 		);
 
 		$post_type_params = array(

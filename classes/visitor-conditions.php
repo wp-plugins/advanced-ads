@@ -29,14 +29,14 @@ class Advanced_Ads_Visitor_Conditions {
 	    // register conditions
 	    $this->conditions = apply_filters( 'advanced-ads-visitor-conditions', array(
 			'mobile' => array( // type of the condition
-				'label' => __( 'mobile device', ADVADS_SLUG ),
-				'description' => __( 'Display ads only on mobile devices or hide them.', ADVADS_SLUG ),
+				'label' => __( 'mobile device', 'advanced-ads' ),
+				'description' => __( 'Display ads only on mobile devices or hide them.', 'advanced-ads' ),
 				'metabox' => array( 'Advanced_Ads_Visitor_Conditions', 'metabox_is_or_not' ), // callback to generate the metabox
 				'check' => array( 'Advanced_Ads_Visitor_Conditions', 'check_mobile' ) // callback for frontend check
 			),
 			'loggedin' => array(
-				'label' => __( 'logged in visitor', ADVADS_SLUG ),
-				'description' => __( 'Whether the visitor has to be logged in or not in order to see the ads.', ADVADS_SLUG ),
+				'label' => __( 'logged in visitor', 'advanced-ads' ),
+				'description' => __( 'Whether the visitor has to be logged in or not in order to see the ads.', 'advanced-ads' ),
 				'metabox' => array( 'Advanced_Ads_Visitor_Conditions', 'metabox_is_or_not' ), // callback to generate the metabox
 				'check' => array( 'Advanced_Ads_Visitor_Conditions', 'check_logged_in' ) // callback for frontend check
 			),
@@ -117,9 +117,9 @@ class Advanced_Ads_Visitor_Conditions {
 	    ?><input type="hidden" name="<?php echo $name; ?>[type]" value="<?php echo $options['type']; ?>"/>
 		<input type="hidden" name="<?php echo $name; ?>[connector]" value="<?php echo $connector; ?>"/>
 		<select name="<?php echo $name; ?>[operator]">
-		    <option value="is_equal" <?php selected( 'is_equal', $operator ); ?>><?php _e( 'equal', ADVADS_SLUG ); ?></option>
-		    <option value="is_higher" <?php selected( 'is_higher', $operator ); ?>><?php _e( 'equal or higher', ADVADS_SLUG ); ?></option>
-		    <option value="is_lower" <?php selected( 'is_lower', $operator ); ?>><?php _e( 'equal or lower', ADVADS_SLUG ); ?></option>
+		    <option value="is_equal" <?php selected( 'is_equal', $operator ); ?>><?php _e( 'equal', 'advanced-ads' ); ?></option>
+		    <option value="is_higher" <?php selected( 'is_higher', $operator ); ?>><?php _e( 'equal or higher', 'advanced-ads' ); ?></option>
+		    <option value="is_lower" <?php selected( 'is_lower', $operator ); ?>><?php _e( 'equal or lower', 'advanced-ads' ); ?></option>
 		</select><input type="number" name="<?php echo $name; ?>[value]" value="<?php echo absint( $value ); ?>"/>
 	    <p class="description"><?php echo $type_options[ $options['type'] ]['description']; ?></p><?php
 	}
@@ -151,16 +151,16 @@ class Advanced_Ads_Visitor_Conditions {
 	    ?><input type="hidden" name="<?php echo $name; ?>[type]" value="<?php echo $options['type']; ?>"/>
 		<input type="hidden" name="<?php echo $name; ?>[connector]" value="<?php echo $connector; ?>"/>
 		<select name="<?php echo $name; ?>[operator]">
-		    <option value="contain" <?php selected( 'contain', $operator ); ?>><?php _e( 'contains', ADVADS_SLUG ); ?></option>
-		    <option value="start" <?php selected( 'start', $operator ); ?>><?php _e( 'starts with', ADVADS_SLUG ); ?></option>
-		    <option value="end" <?php selected( 'end', $operator ); ?>><?php _e( 'ends with', ADVADS_SLUG ); ?></option>
-		    <option value="match" <?php selected( 'match', $operator ); ?>><?php _e( 'matches', ADVADS_SLUG ); ?></option>
-		    <option value="regex" <?php selected( 'regex', $operator ); ?>><?php _e( 'matches regex', ADVADS_SLUG ); ?></option>
-		    <option value="contain_not" <?php selected( 'contain_not', $operator ); ?>><?php _e( 'does not contain', ADVADS_SLUG ); ?></option>
-		    <option value="start_not" <?php selected( 'start_not', $operator ); ?>><?php _e( 'does not start with', ADVADS_SLUG ); ?></option>
-		    <option value="end_not" <?php selected( 'end_not', $operator ); ?>><?php _e( 'does not end with', ADVADS_SLUG ); ?></option>
-		    <option value="match_not" <?php selected( 'match_not', $operator ); ?>><?php _e( 'does not match', ADVADS_SLUG ); ?></option>
-		    <option value="regex_not" <?php selected( 'regex_not', $operator ); ?>><?php _e( 'does not match regex', ADVADS_SLUG ); ?></option>
+		    <option value="contain" <?php selected( 'contain', $operator ); ?>><?php _e( 'contains', 'advanced-ads' ); ?></option>
+		    <option value="start" <?php selected( 'start', $operator ); ?>><?php _e( 'starts with', 'advanced-ads' ); ?></option>
+		    <option value="end" <?php selected( 'end', $operator ); ?>><?php _e( 'ends with', 'advanced-ads' ); ?></option>
+		    <option value="match" <?php selected( 'match', $operator ); ?>><?php _e( 'matches', 'advanced-ads' ); ?></option>
+		    <option value="regex" <?php selected( 'regex', $operator ); ?>><?php _e( 'matches regex', 'advanced-ads' ); ?></option>
+		    <option value="contain_not" <?php selected( 'contain_not', $operator ); ?>><?php _e( 'does not contain', 'advanced-ads' ); ?></option>
+		    <option value="start_not" <?php selected( 'start_not', $operator ); ?>><?php _e( 'does not start with', 'advanced-ads' ); ?></option>
+		    <option value="end_not" <?php selected( 'end_not', $operator ); ?>><?php _e( 'does not end with', 'advanced-ads' ); ?></option>
+		    <option value="match_not" <?php selected( 'match_not', $operator ); ?>><?php _e( 'does not match', 'advanced-ads' ); ?></option>
+		    <option value="regex_not" <?php selected( 'regex_not', $operator ); ?>><?php _e( 'does not match regex', 'advanced-ads' ); ?></option>
 		</select><input type="text" name="<?php echo $name; ?>[value]" value="<?php echo $value; ?>"/>
 	    <p class="description"><?php echo $type_options[ $options['type'] ]['description']; ?></p><?php
 	}

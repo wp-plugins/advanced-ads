@@ -237,35 +237,35 @@ class Advanced_Ads_Admin {
 
 		// add main menu item with overview page
 		add_menu_page(
-			__( 'Overview', ADVADS_SLUG ), 'Advanced Ads', 'manage_options', $this->plugin_slug, array($this, 'display_overview_page'), 'dashicons-chart-line', '58.74'
+			__( 'Overview', 'advanced-ads' ), 'Advanced Ads', 'manage_options', $this->plugin_slug, array($this, 'display_overview_page'), 'dashicons-chart-line', '58.74'
 		);
 
 		add_submenu_page(
-			$this->plugin_slug, __( 'Ads', ADVADS_SLUG ), __( 'Ads', ADVADS_SLUG ), 'manage_options', 'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG
+			$this->plugin_slug, __( 'Ads', 'advanced-ads' ), __( 'Ads', 'advanced-ads' ), 'manage_options', 'edit.php?post_type=' . Advanced_Ads::POST_TYPE_SLUG
 		);
 
 		$this->ad_group_hook_suffix = add_submenu_page(
-			$this->plugin_slug, __( 'Ad Groups', ADVADS_SLUG ), __( 'Groups', ADVADS_SLUG ), 'manage_options', $this->plugin_slug . '-groups', array($this, 'ad_group_admin_page')
+			$this->plugin_slug, __( 'Ad Groups', 'advanced-ads' ), __( 'Groups', 'advanced-ads' ), 'manage_options', $this->plugin_slug . '-groups', array($this, 'ad_group_admin_page')
 		);
 
 		// add placements page
 		add_submenu_page(
-			$this->plugin_slug, __( 'Ad Placements', ADVADS_SLUG ), __( 'Placements', ADVADS_SLUG ), 'manage_options', $this->plugin_slug . '-placements', array($this, 'display_placements_page')
+			$this->plugin_slug, __( 'Ad Placements', 'advanced-ads' ), __( 'Placements', 'advanced-ads' ), 'manage_options', $this->plugin_slug . '-placements', array($this, 'display_placements_page')
 		);
 		// add settings page
 		$this->plugin_screen_hook_suffix = add_submenu_page(
-			$this->plugin_slug, __( 'Advanced Ads Settings', ADVADS_SLUG ), __( 'Settings', ADVADS_SLUG ), 'manage_options', $this->plugin_slug . '-settings', array($this, 'display_plugin_settings_page')
+			$this->plugin_slug, __( 'Advanced Ads Settings', 'advanced-ads' ), __( 'Settings', 'advanced-ads' ), 'manage_options', $this->plugin_slug . '-settings', array($this, 'display_plugin_settings_page')
 		);
 		add_submenu_page(
-			null, __( 'Advanced Ads Debugging', ADVADS_SLUG ), __( 'Debug', ADVADS_SLUG ), 'manage_options', $this->plugin_slug . '-debug', array($this, 'display_plugin_debug_page')
+			null, __( 'Advanced Ads Debugging', 'advanced-ads' ), __( 'Debug', 'advanced-ads' ), 'manage_options', $this->plugin_slug . '-debug', array($this, 'display_plugin_debug_page')
 		);
 		// intro page
 		add_submenu_page(
-			null, __( 'Advanced Ads Intro', ADVADS_SLUG ), __( 'Advanced Ads Intro', ADVADS_SLUG ), 'manage_options', $this->plugin_slug . '-intro', array($this, 'display_plugin_intro_page')
+			null, __( 'Advanced Ads Intro', 'advanced-ads' ), __( 'Advanced Ads Intro', 'advanced-ads' ), 'manage_options', $this->plugin_slug . '-intro', array($this, 'display_plugin_intro_page')
 		);
 		// add support page
 		add_submenu_page(
-			$this->plugin_slug, __( 'Support', ADVADS_SLUG ), __( 'Support', ADVADS_SLUG ), 'manage_options', $this->plugin_slug . '-support', array($this, 'display_support_page')
+			$this->plugin_slug, __( 'Support', 'advanced-ads' ), __( 'Support', 'advanced-ads' ), 'manage_options', $this->plugin_slug . '-support', array($this, 'display_support_page')
 		);
 
 		// allows extensions to insert sub menu pages
@@ -395,7 +395,7 @@ class Advanced_Ads_Admin {
 			check_admin_referer( 'update-group_' . $group_id );
 
 			if ( ! current_user_can( $tax->cap->edit_terms ) ) {
-				wp_die( __( 'Sorry, you are not allowed to access this feature.', ADVADS_SLUG ) ); }
+				wp_die( __( 'Sorry, you are not allowed to access this feature.', 'advanced-ads' ) ); }
 
 			// handle new groups
 			if ( 0 == $group_id ) {
@@ -408,7 +408,7 @@ class Advanced_Ads_Admin {
 			} else {
 				$tag = get_term( $group_id, $taxonomy );
 				if ( ! $tag ) {
-					wp_die( __( 'You attempted to edit an ad group that doesn&#8217;t exist. Perhaps it was deleted?', ADVADS_SLUG ) ); }
+					wp_die( __( 'You attempted to edit an ad group that doesn&#8217;t exist. Perhaps it was deleted?', 'advanced-ads' ) ); }
 
 				$ret = wp_update_term( $group_id, $taxonomy, $_POST );
 				if ( $ret && ! is_wp_error( $ret ) ) {
@@ -422,7 +422,7 @@ class Advanced_Ads_Admin {
 			check_admin_referer( 'delete-tag_' . $group_id );
 
 			if ( ! current_user_can( $tax->cap->delete_terms ) ) {
-				wp_die( __( 'Sorry, you are not allowed to access this feature.', ADVADS_SLUG ) ); }
+				wp_die( __( 'Sorry, you are not allowed to access this feature.', 'advanced-ads' ) ); }
 
 			wp_delete_term( $group_id, $taxonomy );
 
@@ -481,7 +481,7 @@ class Advanced_Ads_Admin {
 
 		return array_merge(
 			array(
-			'settings' => '<a href="' . admin_url( 'edit.php?post_type=advanced_ads&page=advanced-ads-settings' ) . '">' . __( 'Settings', ADVADS_SLUG ) . '</a>'
+			'settings' => '<a href="' . admin_url( 'edit.php?post_type=advanced_ads&page=advanced-ads-settings' ) . '">' . __( 'Settings', 'advanced-ads' ) . '</a>'
 				), $links
 		);
 	}
@@ -523,19 +523,19 @@ class Advanced_Ads_Admin {
 	 */
 	public function add_meta_boxes() {
 		add_meta_box(
-			'ad-main-box', __( 'Ad Type', ADVADS_SLUG ), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+			'ad-main-box', __( 'Ad Type', 'advanced-ads' ), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
 		);
 		add_meta_box(
-			'ad-parameters-box', __( 'Ad Parameters', ADVADS_SLUG ), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+			'ad-parameters-box', __( 'Ad Parameters', 'advanced-ads' ), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
 		);
 		add_meta_box(
-			'ad-output-box', __( 'Layout / Output', ADVADS_SLUG ), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+			'ad-output-box', __( 'Layout / Output', 'advanced-ads' ), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
 		);
 		add_meta_box(
-			'ad-display-box', __( 'Display Conditions', ADVADS_SLUG ), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+			'ad-display-box', __( 'Display Conditions', 'advanced-ads' ), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
 		);
 		add_meta_box(
-			'ad-visitor-box', __( 'Visitor Conditions', ADVADS_SLUG ), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
+			'ad-visitor-box', __( 'Visitor Conditions', 'advanced-ads' ), array($this, 'markup_meta_boxes'), Advanced_Ads::POST_TYPE_SLUG, 'normal', 'high'
 		);
 	}
 
@@ -711,19 +711,19 @@ class Advanced_Ads_Admin {
 
 			$messages[Advanced_Ads::POST_TYPE_SLUG] = array(
 		0  => '', // Unused. Messages start at index 1.
-		1  => __( 'Ad updated.', ADVADS_SLUG ),
-		4  => __( 'Ad updated.', ADVADS_SLUG ),
+		1  => __( 'Ad updated.', 'advanced-ads' ),
+		4  => __( 'Ad updated.', 'advanced-ads' ),
 		/* translators: %s: date and time of the revision */
-		5  => isset( $_GET['revision'] ) ? sprintf( __( 'Ad restored to revision from %s', ADVADS_SLUG ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-		6  => __( 'Ad published.', ADVADS_SLUG ),
-		7  => __( 'Ad saved.', ADVADS_SLUG ),
-		8  => __( 'Ad submitted.', ADVADS_SLUG ),
+		5  => isset( $_GET['revision'] ) ? sprintf( __( 'Ad restored to revision from %s', 'advanced-ads' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+		6  => __( 'Ad published.', 'advanced-ads' ),
+		7  => __( 'Ad saved.', 'advanced-ads' ),
+		8  => __( 'Ad submitted.', 'advanced-ads' ),
 		9  => sprintf(
-			__( 'Ad scheduled for: <strong>%1$s</strong>.', ADVADS_SLUG ),
+			__( 'Ad scheduled for: <strong>%1$s</strong>.', 'advanced-ads' ),
 			// translators: Publish box date format, see http://php.net/date
-			date_i18n( __( 'M j, Y @ G:i', ADVADS_SLUG ), strtotime( $post->post_date ) )
+			date_i18n( __( 'M j, Y @ G:i', 'advanced-ads' ), strtotime( $post->post_date ) )
 		),
-		10 => __( 'Ad draft updated.', ADVADS_SLUG )
+		10 => __( 'Ad draft updated.', 'advanced-ads' )
 			);
 			return $messages;
 		}
@@ -781,7 +781,7 @@ class Advanced_Ads_Admin {
 			// general settings section
 			add_settings_section(
 				'advanced_ads_setting_section',
-				__( 'General', ADVADS_SLUG ),
+				__( 'General', 'advanced-ads' ),
 				array($this, 'render_settings_section_callback'),
 				$hook
 			);
@@ -793,7 +793,7 @@ class Advanced_Ads_Admin {
 
 			    add_settings_section(
 				    'advanced_ads_settings_license_section',
-				    __( 'Licenses', ADVADS_SLUG ),
+				    __( 'Licenses', 'advanced-ads' ),
 				    array($this, 'render_settings_licenses_section_callback'),
 				    'advanced-ads-settings-license-page'
 			    );
@@ -804,7 +804,7 @@ class Advanced_Ads_Admin {
 			// add setting fields to disable ads
 			add_settings_field(
 				'disable-ads',
-				__( 'Disable ads', ADVADS_SLUG ),
+				__( 'Disable ads', 'advanced-ads' ),
 				array($this, 'render_settings_disable_ads'),
 				$hook,
 				'advanced_ads_setting_section'
@@ -812,7 +812,7 @@ class Advanced_Ads_Admin {
 			// add setting fields for user role
 			add_settings_field(
 				'hide-for-user-role',
-				__( 'Hide ads for logged in users', ADVADS_SLUG ),
+				__( 'Hide ads for logged in users', 'advanced-ads' ),
 				array($this, 'render_settings_hide_for_users'),
 				$hook,
 				'advanced_ads_setting_section'
@@ -820,7 +820,7 @@ class Advanced_Ads_Admin {
 			// add setting fields for advanced js
 			add_settings_field(
 				'activate-advanced-js',
-				__( 'Use advanced JavaScript', ADVADS_SLUG ),
+				__( 'Use advanced JavaScript', 'advanced-ads' ),
 				array($this, 'render_settings_advanced_js'),
 				$hook,
 				'advanced_ads_setting_section'
@@ -828,7 +828,7 @@ class Advanced_Ads_Admin {
 			// add setting fields for content injection protection
 			add_settings_field(
 				'content-injection-everywhere',
-				__( 'Unlimited ad injection', ADVADS_SLUG ),
+				__( 'Unlimited ad injection', 'advanced-ads' ),
 				array($this, 'render_settings_content_injection_everywhere'),
 				$hook,
 				'advanced_ads_setting_section'
@@ -836,7 +836,7 @@ class Advanced_Ads_Admin {
 			// add setting fields for content injection priority
 			add_settings_field(
 				'content-injection-priority',
-				__( 'Priority of content injection filter', ADVADS_SLUG ),
+				__( 'Priority of content injection filter', 'advanced-ads' ),
 				array($this, 'render_settings_content_injection_priority'),
 				$hook,
 				'advanced_ads_setting_section'
@@ -844,7 +844,7 @@ class Advanced_Ads_Admin {
 			// add setting fields for content injection priority
 			add_settings_field(
 				'block-bots',
-				__( 'Hide ads from bots', ADVADS_SLUG ),
+				__( 'Hide ads from bots', 'advanced-ads' ),
 				array($this, 'render_settings_block_bots'),
 				$hook,
 				'advanced_ads_setting_section'
@@ -852,7 +852,7 @@ class Advanced_Ads_Admin {
 			// opt out from internal notices
 			add_settings_field(
 				'disable-notices',
-				__( 'Disable notices', ADVADS_SLUG ),
+				__( 'Disable notices', 'advanced-ads' ),
 				array($this, 'render_settings_disabled_notices'),
 				$hook,
 				'advanced_ads_setting_section'
@@ -860,7 +860,7 @@ class Advanced_Ads_Admin {
 			// opt out from internal notices
 			add_settings_field(
 				'front-prefix',
-				__( 'ID prefix', ADVADS_SLUG ),
+				__( 'ID prefix', 'advanced-ads' ),
 				array($this, 'render_settings_front_prefix'),
 				$hook,
 				'advanced_ads_setting_section'
@@ -868,7 +868,7 @@ class Advanced_Ads_Admin {
 			// remove id from widgets
 			add_settings_field(
 				'remove-widget-id',
-				__( 'Remove Widget ID', ADVADS_SLUG ),
+				__( 'Remove Widget ID', 'advanced-ads' ),
 				array($this, 'render_settings_remove_widget_id'),
 				$hook,
 				'advanced_ads_setting_section'
@@ -889,7 +889,7 @@ class Advanced_Ads_Admin {
 				'page' => 'advanced-ads-settings-license-page',
 				'group' => ADVADS_SLUG . '-licenses',
 				'tabid' => 'licenses',
-				'title' => __( 'Licenses', ADVADS_SLUG )
+				'title' => __( 'Licenses', 'advanced-ads' )
 			);
 
 			return $tabs;
@@ -910,7 +910,7 @@ class Advanced_Ads_Admin {
 	 * @since 1.5.1
 	 */
 		public function render_settings_licenses_section_callback(){
-			echo '<p>'. __( 'Enter license keys for our powerful <a href="'.ADVADS_URL.'add-ons/" target="_blank">add-ons</a>.', ADVADS_SLUG ) .'</p>';
+			echo '<p>'. __( 'Enter license keys for our powerful <a href="'.ADVADS_URL.'add-ons/" target="_blank">add-ons</a>.', 'advanced-ads' ) .'</p>';
 			// nonce field
 			echo '<input type="hidden" id="advads-licenses-ajax-referrer" value="' . wp_create_nonce( "advads_ajax_license_nonce" ) . '"/>';
 		}
@@ -943,12 +943,12 @@ class Advanced_Ads_Admin {
 			$current_capability_role = isset($options['hide-for-user-role']) ? $options['hide-for-user-role'] : 0;
 
 			$capability_roles = array(
-			'' => __( '(display to all)', ADVADS_SLUG ),
-			'read' => __( 'Subscriber', ADVADS_SLUG ),
-			'delete_posts' => __( 'Contributor', ADVADS_SLUG ),
-			'edit_posts' => __( 'Author', ADVADS_SLUG ),
-			'edit_pages' => __( 'Editor', ADVADS_SLUG ),
-			'activate_plugins' => __( 'Admin', ADVADS_SLUG ),
+			'' => __( '(display to all)', 'advanced-ads' ),
+			'read' => __( 'Subscriber', 'advanced-ads' ),
+			'delete_posts' => __( 'Contributor', 'advanced-ads' ),
+			'edit_posts' => __( 'Author', 'advanced-ads' ),
+			'edit_pages' => __( 'Editor', 'advanced-ads' ),
+			'activate_plugins' => __( 'Admin', 'advanced-ads' ),
 			);
 			echo '<select name="'.ADVADS_SLUG.'[hide-for-user-role]">';
 			foreach ( $capability_roles as $_capability => $_role ) {
@@ -956,7 +956,7 @@ class Advanced_Ads_Admin {
 			}
 			echo '</select>';
 
-			echo '<p class="description">'. __( 'Choose the lowest role a user must have in order to not see any ads.', ADVADS_SLUG ) .'</p>';
+			echo '<p class="description">'. __( 'Choose the lowest role a user must have in order to not see any ads.', 'advanced-ads' ) .'</p>';
 		}
 
 		/**
@@ -970,10 +970,10 @@ class Advanced_Ads_Admin {
 
 			// display notice if js file was overridden
 			if( ! $checked && apply_filters( 'advanced-ads-activate-advanced-js', $checked ) ){
-				echo '<p>' . __( '<strong>notice: </strong>the file is currently enabled by an add-on that needs it.', ADVADS_SLUG ) . '</p>';
+				echo '<p>' . __( '<strong>notice: </strong>the file is currently enabled by an add-on that needs it.', 'advanced-ads' ) . '</p>';
 			}
 			echo '<input id="advanced-ads-advanced-js" type="checkbox" value="1" name="'.ADVADS_SLUG.'[advanced-js]" '.checked( $checked, 1, false ).'>';
-			echo '<p class="description">'. sprintf( __( 'Enable advanced JavaScript functions (<a href="%s" target="_blank">here</a>). Some features and add-ons might override this setting if they need features from this file.', ADVADS_SLUG ), ADVADS_URL . 'javascript-functions/' ) .'</p>';
+			echo '<p class="description">'. sprintf( __( 'Enable advanced JavaScript functions (<a href="%s" target="_blank">here</a>). Some features and add-ons might override this setting if they need features from this file.', 'advanced-ads' ), ADVADS_URL . 'javascript-functions/' ) .'</p>';
 		}
 
 	/**
@@ -986,7 +986,7 @@ class Advanced_Ads_Admin {
 		$everywhere = ( isset($options['content-injection-everywhere']) ) ? true : false;
 
 		echo '<input id="advanced-ads-injection-everywhere" type="checkbox" value="true" name="'.ADVADS_SLUG.'[content-injection-everywhere]" '.checked( $everywhere, true, false ).'>';
-		echo '<p class="description">'. __( 'Some plugins and themes trigger ad injection where it shouldn’t happen. Therefore, Advanced Ads ignores injected placements on non-singular pages and outside the loop. However, this can cause problems with some themes. You can enable this option if you don’t see ads or want to enable ad injections on archive pages AT YOUR OWN RISK.', ADVADS_SLUG ) .'</p>';
+		echo '<p class="description">'. __( 'Some plugins and themes trigger ad injection where it shouldn’t happen. Therefore, Advanced Ads ignores injected placements on non-singular pages and outside the loop. However, this can cause problems with some themes. You can enable this option if you don’t see ads or want to enable ad injections on archive pages AT YOUR OWN RISK.', 'advanced-ads' ) .'</p>';
 
 	}
 
@@ -1000,7 +1000,7 @@ class Advanced_Ads_Admin {
 			$priority = ( isset($options['content-injection-priority'])) ? intval( $options['content-injection-priority'] ) : 100;
 
 			echo '<input id="advanced-ads-content-injection-priority" type="number" value="'.$priority.'" name="'.ADVADS_SLUG.'[content-injection-priority]" size="3"/>';
-			echo '<p class="description">'. __( 'Play with this value in order to change the priority of the injected ads compared to other auto injected elements in the post content.', ADVADS_SLUG ) .'</p>';
+			echo '<p class="description">'. __( 'Play with this value in order to change the priority of the injected ads compared to other auto injected elements in the post content.', 'advanced-ads' ) .'</p>';
 		}
 
 		/**
@@ -1013,8 +1013,8 @@ class Advanced_Ads_Admin {
 			$checked = ( ! empty($options['block-bots'])) ? 1 : 0;
 
 			echo '<input id="advanced-ads-block-bots" type="checkbox" value="1" name="'.ADVADS_SLUG.'[block-bots]" '.checked( $checked, 1, false ).'>';
-			echo '<p class="description">'. sprintf( __( 'Hide ads from crawlers, bots and empty user agents. Also prevents counting impressions for bots when using the <a href="%s" target="_blank">Tracking Add-On</a>.', ADVADS_SLUG ), ADVADS_URL . 'add-ons/tracking/' ) .'<br/>'
-						. __( 'Disabling this option only makes sense if your ads contain content you want to display to bots (like search engines) or your site is cached and bots could create a cached version without the ads.', ADVADS_SLUG ) . '</p>';
+			echo '<p class="description">'. sprintf( __( 'Hide ads from crawlers, bots and empty user agents. Also prevents counting impressions for bots when using the <a href="%s" target="_blank">Tracking Add-On</a>.', 'advanced-ads' ), ADVADS_URL . 'add-ons/tracking/' ) .'<br/>'
+						. __( 'Disabling this option only makes sense if your ads contain content you want to display to bots (like search engines) or your site is cached and bots could create a cached version without the ads.', 'advanced-ads' ) . '</p>';
 		}
 
 		/**
@@ -1027,7 +1027,7 @@ class Advanced_Ads_Admin {
 			$checked = ( ! empty($options['disable-notices'])) ? 1 : 0;
 
 			echo '<input id="advanced-ads-disabled-notices" type="checkbox" value="1" name="'.ADVADS_SLUG.'[disable-notices]" '.checked( $checked, 1, false ).'>';
-			echo '<p class="description">'. __( 'Disable internal notices like tips, tutorials, email newsletters and update notices. Disabling notices is recommended if you run multiple blogs with Advanced Ads already.', ADVADS_SLUG ) . '</p>';
+			echo '<p class="description">'. __( 'Disable internal notices like tips, tutorials, email newsletters and update notices. Disabling notices is recommended if you run multiple blogs with Advanced Ads already.', 'advanced-ads' ) . '</p>';
 		}
 
 		/**
@@ -1049,7 +1049,7 @@ class Advanced_Ads_Admin {
 			echo '<input id="advanced-ads-front-prefix" type="text" value="' .$prefix .'" name="'.ADVADS_SLUG.'[front-prefix]" />';
 			// deprecated
 			echo '<input type="hidden" value="' .$old_prefix .'" name="'.ADVADS_SLUG.'[id-prefix]" />';
-			echo '<p class="description">'. __( 'Prefix of class or id attributes in the frontend. Change it if you don’t want <strong>ad blockers</strong> to mark these blocks as ads.<br/>You might need to <strong>rewrite css rules afterwards</strong>.', ADVADS_SLUG ) .'</p>';
+			echo '<p class="description">'. __( 'Prefix of class or id attributes in the frontend. Change it if you don’t want <strong>ad blockers</strong> to mark these blocks as ads.<br/>You might need to <strong>rewrite css rules afterwards</strong>.', 'advanced-ads' ) .'</p>';
 		}
 
 		/**
@@ -1070,7 +1070,7 @@ class Advanced_Ads_Admin {
 			}
 
 			echo '<input id="advanced-ads-remove-widget-id" type="checkbox" ' . checked( $remove, true, false ) . ' name="'.ADVADS_SLUG.'[remove-widget-id]" />';
-			echo '<p class="description">'. __( 'Remove the ID attribute from widgets in order to not make them an easy target of ad blockers.', ADVADS_SLUG ) .'</p>';
+			echo '<p class="description">'. __( 'Remove the ID attribute from widgets in order to not make them an easy target of ad blockers.', 'advanced-ads' ) .'</p>';
 		}
 
 		/**
@@ -1123,7 +1123,7 @@ class Advanced_Ads_Admin {
 		foreach( $columns as $key => $value ) {
 			$new_columns[ $key ] = $value;
 			if ( $key == 'title' ){
-				$new_columns[ 'ad_details' ] = __( 'Ad Details', ADVADS_SLUG );
+				$new_columns[ 'ad_details' ] = __( 'Ad Details', 'advanced-ads' );
 			}
 		}
 
@@ -1197,7 +1197,7 @@ class Advanced_Ads_Admin {
 			if ( in_array( $post_type, $public_post_types ) ) {
 				add_meta_box(
 					'advads-ad-settings',
-					__( 'Ad Settings', ADVADS_SLUG ),
+					__( 'Ad Settings', 'advanced-ads' ),
 					array( $this, 'render_post_meta_box' ),
 					$post_type,
 					'advanced',
@@ -1276,7 +1276,7 @@ class Advanced_Ads_Admin {
 			if( ! current_user_can('publish_posts') ) {
 			        return;
 			}
-			add_meta_box( 'advads_dashboard_widget', __( 'Ads Dashboard', ADVADS_SLUG ), array($this, 'dashboard_widget_function'), 'dashboard', 'side', 'high' );
+			add_meta_box( 'advads_dashboard_widget', __( 'Ads Dashboard', 'advanced-ads' ), array($this, 'dashboard_widget_function'), 'dashboard', 'side', 'high' );
 		}
 
 		/**
@@ -1288,7 +1288,7 @@ class Advanced_Ads_Admin {
 			array(
 				'link'         => 'http://webgilde.com/en/ad-optimization/',
 				'url'          => 'http://webgilde.com/en/ad-optimization/feed/',
-				'title'        => __( 'From the ad optimization universe', ADVADS_SLUG ),
+				'title'        => __( 'From the ad optimization universe', 'advanced-ads' ),
 				'items'        => 2,
 				'show_summary' => 0,
 				'show_author'  => 0,
@@ -1297,7 +1297,7 @@ class Advanced_Ads_Admin {
 			array(
 				'link'         => ADVADS_URL,
 				'url'          => ADVADS_URL . 'feed/',
-				'title'        => __( 'Advanced Ads Tutorials', ADVADS_SLUG ),
+				'title'        => __( 'Advanced Ads Tutorials', 'advanced-ads' ),
 				'items'        => 2,
 				'show_summary' => 0,
 				'show_author'  => 0,
@@ -1308,7 +1308,7 @@ class Advanced_Ads_Admin {
 			// get number of ads
 			$recent_ads = Advanced_Ads::get_instance()->get_model()->get_ads();
 			echo '<p>';
-			printf(__( '%d ads – <a href="%s">manage</a> - <a href="%s">new</a>', ADVADS_SLUG ),
+			printf(__( '%d ads – <a href="%s">manage</a> - <a href="%s">new</a>', 'advanced-ads' ),
 				count( $recent_ads ),
 				'edit.php?post_type='. Advanced_Ads::POST_TYPE_SLUG,
 			'post-new.php?post_type='. Advanced_Ads::POST_TYPE_SLUG);
@@ -1319,21 +1319,21 @@ class Advanced_Ads_Admin {
 			if ( isset($advads_plugin_data['Version']) ){
 				$version = $advads_plugin_data['Version'];
 				echo '<p><a href="'.ADVADS_URL.'" target="_blank" title="'.
-					__( 'plugin manual and homepage', ADVADS_SLUG ).'">Advanced Ads</a> '. $version .'</p>';
+					__( 'plugin manual and homepage', 'advanced-ads' ).'">Advanced Ads</a> '. $version .'</p>';
 			}
 
 			$notice_options = Advanced_Ads_Admin_Notices::get_instance()->options();
 			$_notice = 'nl_first_steps';
 			if ( ! isset($notice_options['closed'][ $_notice ] ) ) {
 				?><div class="advads-admin-notice">
-				    <p><button type="button" class="button-primary advads-notices-button-subscribe" data-notice="<?php echo $_notice ?>"><?php _e('Get the tutorial via email', ADVADS_SLUG); ?></button></p>
+				    <p><button type="button" class="button-primary advads-notices-button-subscribe" data-notice="<?php echo $_notice ?>"><?php _e('Get the tutorial via email', 'advanced-ads'); ?></button></p>
 				</div><?php
 			}
 
 			$_notice = 'nl_adsense';
 			if ( ! isset($notice_options['closed'][ $_notice ] ) ) {
 				?><div class="advads-admin-notice">
-				    <p><button type="button" class="button-primary advads-notices-button-subscribe" data-notice="<?php echo $_notice ?>"><?php _e('Get AdSense tips via email', ADVADS_SLUG); ?></button></p>
+				    <p><button type="button" class="button-primary advads-notices-button-subscribe" data-notice="<?php echo $_notice ?>"><?php _e('Get AdSense tips via email', 'advanced-ads'); ?></button></p>
 				</div><?php
 			}
 
@@ -1412,13 +1412,13 @@ class Advanced_Ads_Admin {
 	public function activate_license( $addon = '', $plugin_name = '', $options_slug = '' ) {
 
 		if ( '' === $addon || '' === $plugin_name || '' === $options_slug ) {
-			return __( 'Error while trying to register the license. Please contact support.', ADVADS_SLUG );
+			return __( 'Error while trying to register the license. Please contact support.', 'advanced-ads' );
 		}
 
 		$licenses = get_option(ADVADS_SLUG . '-licenses', array());
 		$license_key = isset($licenses[$addon]) ? $licenses[$addon] : '';
 		if ( '' == $license_key ) {
-			return __( 'Please enter and save a valid license key first.', ADVADS_SLUG );
+			return __( 'Please enter and save a valid license key first.', 'advanced-ads' );
 		}
 
 		$api_params = array(

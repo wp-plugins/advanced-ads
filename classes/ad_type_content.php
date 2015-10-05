@@ -32,8 +32,8 @@ class Advanced_Ads_Ad_Type_Content extends Advanced_Ads_Ad_Type_Abstract{
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		$this->title = __( 'Rich Content', ADVADS_SLUG );
-		$this->description = __( 'The full content editor from WordPress with all features like shortcodes, image upload or styling, but also simple text/html mode for scripts and code.', ADVADS_SLUG );
+		$this->title = __( 'Rich Content', 'advanced-ads' );
+		$this->description = __( 'The full content editor from WordPress with all features like shortcodes, image upload or styling, but also simple text/html mode for scripts and code.', 'advanced-ads' );
 		$this->parameters = array(
 			'content' => ''
 		);
@@ -60,7 +60,7 @@ class Advanced_Ads_Ad_Type_Content extends Advanced_Ads_Ad_Type_Abstract{
 		 * don’t build it when ajax is used; display message and buttons instead
 		 */
 		if ( defined( 'DOING_AJAX' ) ){
-			?><p><?php _e( 'Please <strong>save the ad</strong> before changing it to the content type.', ADVADS_SLUG ); ?></p><?php
+			?><p><?php _e( 'Please <strong>save the ad</strong> before changing it to the content type.', 'advanced-ads' ); ?></p><?php
 			$status = get_post_status( $ad->id );
 if ( 'publish' != $status && 'future' != $status && 'pending' != $status ) { ?>
                 <input <?php if ( 'private' == $status ) { ?>style="display:none"<?php } ?> type="submit" name="save" id="save-post" value="<?php esc_attr_e( 'Save Draft' ); ?>" class="button button-primary" />

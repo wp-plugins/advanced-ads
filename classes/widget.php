@@ -22,7 +22,7 @@ class Advanced_Ads_Widget extends WP_Widget {
 		$prefix = Advanced_Ads_Plugin::get_instance()->get_frontend_prefix();
 		$classname = $prefix . 'widget';
 
-		$widget_ops = array('classname' => $classname, 'description' => __( 'Display Ads and Ad Groups.', ADVADS_SLUG ));
+		$widget_ops = array('classname' => $classname, 'description' => __( 'Display Ads and Ad Groups.', 'advanced-ads' ));
 		$control_ops = array();
 
 		// deprecated to keep previously changed prefixed working
@@ -71,16 +71,16 @@ class Advanced_Ads_Widget extends WP_Widget {
 			$items = self::items_for_select();
 		?>
         <select id="<?php echo $this->get_field_id( 'item_id' ); ?>" name="<?php echo $this->get_field_name( 'item_id' ); ?>">
-            <option value=""><?php _e( '--empty--', ADVADS_SLUG );  ?></option>
+            <option value=""><?php _e( '--empty--', 'advanced-ads' );  ?></option>
             <?php if ( isset($items['groups']) ) : ?>
-            <optgroup label="<?php _e( 'Ad Groups', ADVADS_SLUG ); ?>">
+            <optgroup label="<?php _e( 'Ad Groups', 'advanced-ads' ); ?>">
             <?php foreach ( $items['groups'] as $_item_id => $_item_title ) : ?>
             <option value="<?php echo $_item_id; ?>" <?php selected( $_item_id, $elementid ); ?>><?php echo $_item_title; ?></option>
             <?php endforeach; ?>
             </optgroup>
             <?php endif; ?>
             <?php if ( isset($items['ads']) ) : ?>
-            <optgroup label="<?php _e( 'Ads', ADVADS_SLUG ); ?>">
+            <optgroup label="<?php _e( 'Ads', 'advanced-ads' ); ?>">
             <?php foreach ( $items['ads'] as $_item_id => $_item_title ) : ?>
             <option value="<?php echo $_item_id; ?>" <?php selected( $_item_id, $elementid ); ?>><?php echo $_item_title; ?></option>
             <?php endforeach; ?>

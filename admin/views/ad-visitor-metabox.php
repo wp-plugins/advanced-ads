@@ -1,7 +1,7 @@
 <?php
 $visitor_conditions = Advanced_Ads_Visitor_Conditions::get_instance()->conditions;
 $options = $ad->options( 'visitors' );
-?><p class="description"><?php _e( 'Display conditions that are based on the user. Use with caution on cached websites.', ADVADS_SLUG ); ?></p>
+?><p class="description"><?php _e( 'Display conditions that are based on the user. Use with caution on cached websites.', 'advanced-ads' ); ?></p>
 <div id="advads-visitor-conditions">
 	<table><tbody><?php
     if ( isset( $options ) ) :
@@ -25,29 +25,29 @@ foreach ( $options as $_options ) :
     <input type="hidden" id="advads-visitor-conditions-index" value="<?php echo isset( $options ) ? count( $options ) : 0; ?>"/>
 </div>
 <?php if( ! isset( $options ) || count( $options ) == 0 ) :
-    ?><p><?php _e( 'Visitor conditions limit the number of users who can see your ad. There is no need to set visitor conditions if you want all users to see the ad.', ADVADS_SLUG ); ?></p><?php
+    ?><p><?php _e( 'Visitor conditions limit the number of users who can see your ad. There is no need to set visitor conditions if you want all users to see the ad.', 'advanced-ads' ); ?></p><?php
 elseif( Advanced_Ads_Checks::cache() && ! defined('AAP_VERSION') ) :
-    ?><p><?php printf(__( 'Check out cache-busting in <a href="%s" target="_blank">Advanced Ads Pro</a> if dynamic features get cached.', ADVADS_SLUG ), ADVADS_URL . 'add-ons/advanced-ads-pro' ); ?></p><?php
+    ?><p><?php printf(__( 'Check out cache-busting in <a href="%s" target="_blank">Advanced Ads Pro</a> if dynamic features get cached.', 'advanced-ads' ), ADVADS_URL . 'add-ons/advanced-ads-pro' ); ?></p><?php
 endif;
 ?><hr/>
 <fieldset>
-    <legend><?php _e( 'New condition', ADVADS_SLUG ); ?></legend>
+    <legend><?php _e( 'New condition', 'advanced-ads' ); ?></legend>
 <div id="advads-visitor-conditions-new">
     <div class="advads-buttonset"<?php if ( ! isset( $options ) || 0 === count( $options ) ) { echo ' style="display: none;"'; } ?>>
-	<input type="radio" name="advads-visitor-conditions-new-andor" id="advads-visitor-conditions-new-and" value="and"/><label for="advads-visitor-conditions-new-and"><?php _ex( 'and', 'visitor condition connector', ADVADS_SLUG ); ?></label>
-	<input type="radio" name="advads-visitor-conditions-new-andor" id="advads-visitor-conditions-new-or" value="or"/><label for="advads-visitor-conditions-new-or"><?php _ex( 'or', 'visitor condition connector', ADVADS_SLUG ); ?></label>
+	<input type="radio" name="advads-visitor-conditions-new-andor" id="advads-visitor-conditions-new-and" value="and"/><label for="advads-visitor-conditions-new-and"><?php _ex( 'and', 'visitor condition connector', 'advanced-ads' ); ?></label>
+	<input type="radio" name="advads-visitor-conditions-new-andor" id="advads-visitor-conditions-new-or" value="or"/><label for="advads-visitor-conditions-new-or"><?php _ex( 'or', 'visitor condition connector', 'advanced-ads' ); ?></label>
     </div>
 <select>
-    <option value=""><?php _e( '-- choose a condition --', ADVADS_SLUG ); ?></option>
+    <option value=""><?php _e( '-- choose a condition --', 'advanced-ads' ); ?></option>
     <?php foreach ( $visitor_conditions as $_condition_id => $_condition ) : ?>
 	<option value="<?php echo $_condition_id; ?>"><?php echo $_condition['label']; ?></option>
     <?php endforeach; ?>
 </select>
-<button type="button" class="button"><?php _e( 'add', ADVADS_SLUG ); ?></button>
+<button type="button" class="button"><?php _e( 'add', 'advanced-ads' ); ?></button>
 </div>
 </fieldset>
 <?php if ( ! defined( 'AAR_SLUG' ) ) : ?>
-<p><?php printf( __( 'Define the exact browser width for which an ad should be visible using the <a href="%s" target="_blank">Responsive add-on</a>.', ADVADS_SLUG ), ADVADS_URL . 'add-ons/responsive-ads/' ); ?></p>
+<p><?php printf( __( 'Define the exact browser width for which an ad should be visible using the <a href="%s" target="_blank">Responsive add-on</a>.', 'advanced-ads' ), ADVADS_URL . 'add-ons/responsive-ads/' ); ?></p>
 <?php endif;
 ?><script>
 jQuery( document ).ready(function ($) {
@@ -105,21 +105,21 @@ function advads_toogle_visitor_conditions_connector(){
 </script>
 <?php $options = $ad->options( 'visitor' );
 if ( isset( $options['mobile'] ) && '' !== $options['mobile'] ) :
-	?><p style="color: red;"><?php _e( 'The visitor conditions below are deprecated. Please use the new version of visitor conditions to replace it.', ADVADS_SLUG ); ?></p>
+	?><p style="color: red;"><?php _e( 'The visitor conditions below are deprecated. Please use the new version of visitor conditions to replace it.', 'advanced-ads' ); ?></p>
 <ul id="advanced-ad-visitor-mobile">
     <li>
         <input type="radio" name="advanced_ad[visitor][mobile]"
                id="advanced-ad-visitor-mobile-all" value=""
 				<?php checked( empty($options['mobile']), 1 ); ?>/>
-        <label for="advanced-ad-visitor-mobile-all"><?php _e( 'Display on all devices', ADVADS_SLUG ); ?></label>
+        <label for="advanced-ad-visitor-mobile-all"><?php _e( 'Display on all devices', 'advanced-ads' ); ?></label>
         <input type="radio" name="advanced_ad[visitor][mobile]"
                id="advanced-ad-visitor-mobile-only" value="only"
 				<?php checked( $options['mobile'], 'only' ); ?>/>
-        <label for="advanced-ad-visitor-mobile-only"><?php _e( 'only on mobile devices', ADVADS_SLUG ); ?></label>
+        <label for="advanced-ad-visitor-mobile-only"><?php _e( 'only on mobile devices', 'advanced-ads' ); ?></label>
         <input type="radio" name="advanced_ad[visitor][mobile]"
                id="advanced-ad-visitor-mobile-no" value="no"
 				<?php checked( $options['mobile'], 'no' ); ?>/>
-        <label for="advanced-ad-visitor-mobile-no"><?php _e( 'not on mobile devices', ADVADS_SLUG ); ?></label>
+        <label for="advanced-ad-visitor-mobile-no"><?php _e( 'not on mobile devices', 'advanced-ads' ); ?></label>
     </li>
 </ul>
 <?php endif; ?>

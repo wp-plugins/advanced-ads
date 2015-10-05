@@ -356,7 +356,7 @@ class Advanced_Ads_Admin_Notices {
 		$user = wp_get_current_user();
 
 		if ( $user->user_email == '' ) {
-			return sprintf( __( 'You don’t seem to have an email address. Please use <a href="%s" target="_blank">this form</a> to sign up.', ADVADS_SLUG ), 'http://eepurl.com/bk4z4P' );
+			return sprintf( __( 'You don’t seem to have an email address. Please use <a href="%s" target="_blank">this form</a> to sign up.', 'advanced-ads' ), 'http://eepurl.com/bk4z4P' );
 		}
 
 		$data = array(
@@ -374,12 +374,12 @@ class Advanced_Ads_Admin_Notices {
 		);
 
 		if ( is_wp_error( $result ) ) {
-			return __( 'How embarrassing. The email server seems to be down. Please try again later.', ADVADS_SLUG );
+			return __( 'How embarrassing. The email server seems to be down. Please try again later.', 'advanced-ads' );
 		} else {
 			// mark as subscribed and move notice from quere
 			$this->mark_as_subscribed();
 			$this->remove_from_queue( $notice );
-			return sprintf(__( 'Please check your email (%s) for the confirmation message. If you didn’t receive one or want to use another email address then please use <a href="%s" target="_blank">this form</a> to sign up.', ADVADS_SLUG ), $user->user_email, 'http://eepurl.com/bk4z4P' );
+			return sprintf(__( 'Please check your email (%s) for the confirmation message. If you didn’t receive one or want to use another email address then please use <a href="%s" target="_blank">this form</a> to sign up.', 'advanced-ads' ), $user->user_email, 'http://eepurl.com/bk4z4P' );
 		}
 	}
 
