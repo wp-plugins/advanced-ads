@@ -5,20 +5,20 @@
         <p class="description"><?php echo $group->description; ?></p>
         <?php echo $this->render_action_links( $group ); ?>
         <div class="hidden advads-usage">
-            <label><?php _e( 'shortcode', ADVADS_SLUG ); ?>
+            <label><?php _e( 'shortcode', 'advanced-ads' ); ?>
                 <code><input type="text" onclick="this.select();" style="width: 200px;" value='[the_ad_group id="<?php echo $group->id; ?>"]'/></code>
             </label><br/>
-            <label><?php _e( 'template', ADVADS_SLUG ); ?>
+            <label><?php _e( 'template', 'advanced-ads' ); ?>
                 <code><input type="text" onclick="this.select();" value="the_ad_group(<?php echo $group->id; ?>);"/></code>
             </label>
-            <p><?php printf( __( 'Learn more about using groups in the <a href="%s" target="_blank">manual</a>.', ADVADS_SLUG ), ADVADS_URL . 'manual/ad-groups/' ); ?></p>
+            <p><?php printf( __( 'Learn more about using groups in the <a href="%s" target="_blank">manual</a>.', 'advanced-ads' ), ADVADS_URL . 'manual/ad-groups/' ); ?></p>
         </div>
     </td>
     <td>
         <ul><?php $_type = isset($this->types[$group->type]['title']) ? $this->types[$group->type]['title'] : 'default'; ?>
-            <li><strong><?php printf( __( 'Type: %s', ADVADS_SLUG ), $_type ); ?></strong></li>
-            <li><?php printf( __( 'ID: %s', ADVADS_SLUG ), $group->id ); ?></li>
-            <li><?php printf( __( 'Slug: %s', ADVADS_SLUG ), $group->slug ); ?></li>
+            <li><strong><?php printf( __( 'Type: %s', 'advanced-ads' ), $_type ); ?></strong></li>
+            <li><?php printf( __( 'ID: %s', 'advanced-ads' ), $group->id ); ?></li>
+            <li><?php printf( __( 'Slug: %s', 'advanced-ads' ), $group->slug ); ?></li>
         </ul>
     </td>
     <td class="advads-ad-group-list-ads"><?php $this->render_ads_list( $group ); ?></td>

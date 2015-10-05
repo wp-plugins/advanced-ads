@@ -16,13 +16,15 @@ if ( class_exists( 'Advanced_Ads', false ) ) {
 	}
 
 	function gadsense_date_time($time) {
-		return date_i18n( get_option( 'date_format' ), $time ) . __( ' at ', ADVADS_SLUG ) . date_i18n( get_option( 'time_format' ), $time );
+		return date_i18n( get_option( 'date_format' ), $time ) . __( ' at ', 'advanced-ads' ) . date_i18n( get_option( 'time_format' ), $time );
 	}
 
-	Gadsense_Data::get_instance();
+	Advanced_Ads_AdSense_Data::get_instance();
 	add_filter( 'advanced-ads-ad-types', 'advads_add_ad_type_adsense' );
 
 	if ( ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX) && is_admin() ) {
-		Gadsense_Admin::get_instance();
+		Advanced_Ads_AdSense_Admin::get_instance();
+	} else {
+		Advanced_Ads_AdSense_Public::get_instance();
 	}
 }

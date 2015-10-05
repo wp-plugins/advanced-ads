@@ -50,8 +50,9 @@ class Advanced_Ads_Module_Display_By_Query {
                 $args['wp_the_query'] = array();
             }
             $query = $wp_the_query->get_queried_object();
+	    // term_id exists only for taxonomy archive pages
             if ( ! isset( $args['wp_the_query']['term_id'] ) && $query ) {
-                $args['wp_the_query']['term_id'] = $query->term_id;
+                $args['wp_the_query']['term_id'] = isset( $query->term_id ) ? $query->term_id : '';
             }
 
             // query type/ context

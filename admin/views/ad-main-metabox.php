@@ -1,6 +1,6 @@
 <?php $types = Advanced_Ads::get_instance()->ad_types; ?>
 <?php if ( empty($types) ) : ?>
-    <p><?php _e( 'No ad types defined', ADVADS_SLUG ); ?></p>
+    <p><?php _e( 'No ad types defined', 'advanced-ads' ); ?></p>
 <?php else : ?>
     <ul id="advanced-ad-type">
         <?php
