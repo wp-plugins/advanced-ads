@@ -191,6 +191,8 @@ jQuery( document ).ready(function ($) {
 		$( '#' + active_tab ).addClass( 'active' );
 		$( '#' + active_tab + '-tab' ).addClass( 'nav-tab-active' );
 		$( '.nav-tab-active' ).click();
+		// set all tab urls
+		advads_set_tab_hashes();
 
         /**
          * SETTINGS PAGE
@@ -240,6 +242,24 @@ jQuery( document ).ready(function ($) {
 		}
 	});
 });
+
+/**
+ * store the action hash in settings form action
+ * thanks for Yoast SEO for this idea
+ */
+function advads_set_tab_hashes() {
+	// iterate through forms
+	jQuery( '#advads-tabs' ).find( 'a' ).each(function () {
+		var id = jQuery( this ).attr( 'id' ).replace( '-tab', '' );
+		var optiontab = jQuery( '#' + id );
+
+		var form = optiontab.parent('form');
+		if ( form.length ) {
+			var currentUrl = form.attr( 'action' ).split( '#' )[ 0 ];
+			form.attr( 'action', currentUrl + jQuery( this ).attr( 'href' ) );
+		}
+	});
+}
 
 /**
  * callback for term search autocomplete
