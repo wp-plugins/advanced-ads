@@ -1,6 +1,4 @@
 jQuery( document ).ready(function ($) {
-	"use strict";
-
 	function advads_load_ad_type_parameter_metabox(ad_type) {
 		$( '#advanced-ads-ad-parameters' ).html( '<span class="spinner advads-ad-parameters-spinner advads-spinner"></span>' );
 		$.ajax({
@@ -45,18 +43,24 @@ jQuery( document ).ready(function ($) {
 		advads_toggle_single_display_conditions( this );
 	});
 
+	// activate general buttons
+	$( '.advads-buttonset' ).buttonset();
+	// activate accordions
+	$( ".advads-accordion" ).accordion({
+	    active: false,
+	    collapsible: true,
+	});
+
 	// toggle single display condition checkboxes that have a counterpart
 	$( document ).on('click', '.advads-conditions-single input[type="checkbox"]', function () {
-				advads_toggle_single_display_condition_checkbox( this );
-				// update buttons
-				$( '.advads-conditions-terms-buttons label' ).button( 'refresh' );
+		    advads_toggle_single_display_condition_checkbox( this );
+		    // update buttons when main conditions get unchecked
+		    //$( '.advads-conditions-terms-buttons' ).button( 'refresh' );
 	});
 	// toggle single display condition checkboxes that have a counterpart on load
 	$( '.advads-conditions-single input[type="checkbox"]' ).each(function () {
 		advads_toggle_single_display_condition_checkbox( this );
 	});
-	// activate general buttons
-	$( '.advads-buttonset' ).buttonset();
 
 	$( document ).on('click', '.advads-conditions-terms-buttons .button', function (e) {
 		$( this ).remove();
@@ -123,8 +127,14 @@ jQuery( document ).ready(function ($) {
 			},
 			close: function( event, ui ) {
 				$( '#advads-display-conditions-individual-post' ).val( '' );
-			}
-		});
+			},
+		})
+		.autocomplete().data("ui-autocomplete")._renderItem = function( ul, item ) {
+		    ul.addClass( "advads-conditions-postids-autocomplete-suggestions" );
+		    return $( "<li></li>" )
+		      .append( "<span class='left'>" + item.label + "</span><span class='right'>" + item.info + "</span>" )
+		      .appendTo( ul );
+		};
 	};
 
 	// remove individual posts from the display conditions post list
@@ -153,6 +163,16 @@ jQuery( document ).ready(function ($) {
 				usagediv.show();
 			}
 		});
+		// display ad groups usage
+		$( '.advads-placements-table .usage-link' ).click(function(e){
+			e.preventDefault();
+			var usagediv = $( this ).next( '.advads-usage' );
+			if(usagediv.is( ':visible' )){
+				usagediv.hide();
+			} else {
+				usagediv.show();
+			}
+		});
 		// menu tabs
 		$( '#advads-tabs' ).find( 'a' ).click(function () {
 			$( '#advads-tabs' ).find( 'a' ).removeClass( 'nav-tab-active' );
@@ -171,59 +191,17 @@ jQuery( document ).ready(function ($) {
 		$( '#' + active_tab ).addClass( 'active' );
 		$( '#' + active_tab + '-tab' ).addClass( 'nav-tab-active' );
 		$( '.nav-tab-active' ).click();
+		// set all tab urls
+		advads_set_tab_hashes();
 
         /**
          * SETTINGS PAGE
          */
-        // render button sets on settings page
-        $(function() {
-	    $( ".advads-settings-buttonset" ).buttonset();
-        });
-
-	/**
-	 * ADMIN NOTICES
-	 */
-	// close button
-	$(document).on('click', '.advads-notices-button-close', function(){
-	    if(this.dataset.notice === undefined) return;
-	    var messagebox = $(this).parents('.advads-admin-notice');
-
-	    var query = {
-		action: 'advads-close-notice',
-		notice: this.dataset.notice
-	    };
-	    // send and close message
-	    $.post(ajaxurl, query, function (r) {
-		messagebox.fadeOut();
-	    });
-
-	});
-	// autoresponder button
-	$('.advads-notices-button-subscribe').click(function(){
-	    if(this.dataset.notice === undefined) return;
-	    var messagebox = $(this).parents('.advads-admin-notice');
-	    messagebox.find('p').append( '<span class="spinner advads-spinner"></span>' );
-
-	    var query = {
-		action: 'advads-subscribe-notice',
-		notice: this.dataset.notice
-	    };
-	    // send and close message
-	    $.post(ajaxurl, query, function (r) {
-		if(r === '1'){
-		    messagebox.fadeOut();
-		} else {
-		    messagebox.find('p').html(r);
-		    messagebox.removeClass('updated').addClass('error');
-		}
-	    });
-
-	});
 
 	// activate licenses
 	$('.advads-license-activate').click(function(){
 
-	var button = $(this);
+	    var button = $(this);
 	    if( ! this.dataset.addon ) { return }
 
 	    var query = {
@@ -251,7 +229,93 @@ jQuery( document ).ready(function ($) {
 		}
 	    });
 	});
+
+	/**
+         * PLACEMENTS
+         */
+
+	 // show image tooltips
+	var advads_tooltips = $( ".advads-placements-new-form .advads-placement-type" ).tooltip({
+		items: "span",
+		content: function() {
+			return $( this ).parents('.advads-placement-type').find( '.advads-placement-description' ).html();
+		}
+	});
+
+	/**
+         * Image ad uploader
+         */
+
+	$('body').on('click', '.advads_image_upload', function(e) {
+
+		e.preventDefault();
+
+		var button = $(this);
+
+		// If the media frame already exists, reopen it.
+		if ( file_frame ) {
+			// file_frame.uploader.uploader.param( 'post_id', set_to_post_id );
+			file_frame.open();
+			return;
+		}
+
+		// Create the media frame.
+		file_frame = wp.media.frames.file_frame = wp.media( {
+			frame: 'post',
+			state: 'insert',
+			title: button.data( 'uploaderTitle' ),
+			button: {
+				text: button.data( 'uploaderButtonText' )
+			},
+			multiple: false // only allow one file to be selected
+		} );
+
+		// When an image is selected, run a callback.
+		file_frame.on( 'insert', function() {
+
+			var selection = file_frame.state().get('selection');
+			selection.each( function( attachment, index ) {
+				attachment = attachment.toJSON();
+				if ( 0 === index ) {
+					// place first attachment in field
+					$( '#advads-image-id' ).val( attachment.id );
+					$( '#advanced-ads-ad-parameters-size input[name="advanced_ad[width]"]' ).val( attachment.width );
+					$( '#advanced-ads-ad-parameters-size input[name="advanced_ad[height]"]' ).val( attachment.height );
+					// update image preview
+					var new_image = '<img width="'+ attachment.width +'" height="'+ attachment.height +
+						'" title="'+ attachment.title +'" alt="'+ attachment.alt +'" src="'+ attachment.url +'"/>';
+					$('#advads-image-preview').html( new_image );
+					$('#advads-image-edit-link').attr( 'href', attachment.editLink );
+				}
+			});
+		});
+
+		// Finally, open the modal
+		file_frame.open();
+	});
+
+	// WP 3.5+ uploader
+	var file_frame;
+	window.formfield = '';
 });
+
+/**
+ * store the action hash in settings form action
+ * thanks for Yoast SEO for this idea
+ */
+function advads_set_tab_hashes() {
+	// iterate through forms
+	jQuery( '#advads-tabs' ).find( 'a' ).each(function () {
+		var id = jQuery( this ).attr( 'id' ).replace( '-tab', '' );
+		var optiontab = jQuery( '#' + id );
+
+		var form = optiontab.parent('form');
+		if ( form.length ) {
+			var currentUrl = form.attr( 'action' ).split( '#' )[ 0 ];
+			form.attr( 'action', currentUrl + jQuery( this ).attr( 'href' ) );
+		}
+	});
+}
 
 /**
  * callback for term search autocomplete
@@ -315,7 +379,8 @@ function advads_post_search(query, callback) {
 			r.map(function(element, index){
 				results[index] = {
 					label: element.title,
-					value: element.ID
+					value: element.ID,
+					info: element.info
 				};
 			});
 		}
@@ -380,6 +445,8 @@ function advads_toggle_single_display_conditions(checkbox) {
 	if (jQuery( checkbox ).is( ':checked' )) {
 		jQuery( checkbox ).parents( '.advanced-ad-display-condition' ).find( '.advads-conditions-single' ).addClass( 'disabled' ).find( 'input' ).attr( 'disabled', 'disabled' );
 	} else {
+		// activate buttonsets
+		jQuery( checkbox ).parents( '.advanced-ad-display-condition' ).find( '.advads-conditions-single.advads-buttonset' ).buttonset();
 		jQuery( checkbox ).parents( '.advanced-ad-display-condition' ).find( '.advads-conditions-single' ).removeClass( 'disabled' ).find( 'input' ).removeAttr( 'disabled' );
 	}
 }
@@ -402,4 +469,25 @@ function advads_toggle_single_display_condition_checkbox(checkbox) {
 				jQuery( 'label[for="' + counterpart.attr( 'id' ) + '"]' ).removeClass( 'ui-button-disabled' );
 				jQuery( 'label[for="' + counterpart.attr( 'id' ) + '"]' ).removeClass( 'ui-state-disabled' );
 	}
+}
+
+/**
+ * validate placement form on submit
+ */
+function advads_validate_placement_form(){
+	// check if placement type was selected
+	if( ! jQuery('.advads-placement-type input:checked').length){
+		jQuery('.advads-placement-type-error').show();
+		return false;
+	} else {
+		jQuery('.advads-placement-type-error').hide();
+	}
+	// check if placement name was entered
+	if( jQuery('.advads-new-placement-name').val() == '' ){
+		jQuery('.advads-placement-name-error').show();
+		return false;
+	} else {
+		jQuery('.advads-placement-name-error').hide();
+	}
+	return true;
 }

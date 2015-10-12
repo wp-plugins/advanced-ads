@@ -32,8 +32,8 @@ class Advanced_Ads_Ad_Type_Adsense extends Advanced_Ads_Ad_Type_Abstract {
 	 * @since 1.4
 	 */
 	public function __construct() {
-		$this->title = __( 'AdSense ad', ADVADS_SLUG );
-		$this->description = __( 'Use ads from your Google AdSense account', ADVADS_SLUG );
+		$this->title = __( 'AdSense ad', 'advanced-ads' );
+		$this->description = __( 'Use ads from your Google AdSense account', 'advanced-ads' );
 		$this->parameters = array(
 			'content' => ''
 		);
@@ -64,8 +64,14 @@ class Advanced_Ads_Ad_Type_Adsense extends Advanced_Ads_Ad_Type_Abstract {
 			'at_media' => array(),
 		);
 
-		$db = Gadsense_Data::get_instance();
-		$pub_id = $db->get_adsense_id();
+		$db = Advanced_Ads_AdSense_Data::get_instance();
+		$pub_id = trim( $db->get_adsense_id() );
+
+		// check pub_id for errors
+		$pub_id_errors = false;
+		if( $pub_id !== '' && 0 !== strpos( $pub_id, 'pub-' )){
+			$pub_id_errors = __( 'The Publisher ID has an incorrect format. (must start with "pub-")', 'advanced-ads' );
+		}
 
 		if ( ! empty($content) ) {
 			$json_content = $content;
@@ -90,6 +96,11 @@ class Advanced_Ads_Ad_Type_Adsense extends Advanced_Ads_Ad_Type_Abstract {
 				}
 			}
 		}
+
+		if( '' === trim( $pub_id ) && '' !== trim( $unit_code ) ){
+			$pub_id_errors = __( 'Your AdSense Publisher ID is missing.', 'advanced-ads' );
+		}
+
 		$default_template = GADSENSE_BASE_PATH . 'admin/views/adsense-ad-parameters.php';
 		/**
 		 * Inclusion of other UI template is done here. The content is passed in order to allow the inclusion of different
@@ -128,7 +139,7 @@ class Advanced_Ads_Ad_Type_Adsense extends Advanced_Ads_Ad_Type_Abstract {
 
 		$content = json_decode( $ad->content );
 		$output = '';
-		$db = Gadsense_Data::get_instance();
+		$db = Advanced_Ads_AdSense_Data::get_instance();
 		$pub_id = $db->get_adsense_id();
 		$limit_per_page = $db->get_limit_per_page();
 
