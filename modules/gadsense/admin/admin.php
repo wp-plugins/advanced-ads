@@ -1,6 +1,6 @@
 <?php
 
-class Gadsense_Admin {
+class Advanced_Ads_AdSense_Admin {
 
 	private $data;
 	private $nonce;
@@ -9,21 +9,21 @@ class Gadsense_Admin {
         private $settings_page_hook = 'advanced-ads-adsense-settings-page';
 
 	private function __construct() {
-		$this->data = Gadsense_Data::get_instance();
+		$this->data = Advanced_Ads_AdSense_Data::get_instance();
 		add_action( 'advanced-ads-settings-init', array($this, 'settings_init') );
 		// add_action( 'advanced-ads-additional-settings-form', array($this, 'settings_init') );
                 add_filter('advanced-ads-setting-tabs', array($this, 'setting_tabs'));
 
 		add_action( 'admin_enqueue_scripts', array($this, 'enqueue_scripts') );
 		add_action( 'admin_print_scripts', array($this, 'print_scripts') );
-		add_action( 'admin_init', array($this, 'init') );
 		add_filter( 'advanced-ads-list-ad-size', array($this, 'ad_details_column'), 10, 2 );
+		add_filter( 'advanced-ads-ad-settings-pre-save', array($this, 'sanitize_ad_settings') );
 	}
 
 	public function ad_details_column($size, $the_ad) {
 		if ( 'adsense' == $the_ad->type ) {
 			$content = json_decode( $the_ad->content );
-			if ( 'responsive' == $content->unitType ) { $size = __( 'Responsive', ADVADS_SLUG ); }
+			if ( $content && 'responsive' == $content->unitType ) { $size = __( 'Responsive', 'advanced-ads' ); }
 		}
 		return $size;
 	}
@@ -34,71 +34,20 @@ class Gadsense_Admin {
 				('post-new.php' == $pagenow && Advanced_Ads::POST_TYPE_SLUG == $post_type) ||
 				('post.php' == $pagenow && Advanced_Ads::POST_TYPE_SLUG == $post_type && isset($_GET['action']) && 'edit' == $_GET['action'])
 		) {
-			$db = Gadsense_Data::get_instance();
+			$db = Advanced_Ads_AdSense_Data::get_instance();
 			$pub_id = $db->get_adsense_id();
 			?>
 			<script type="text/javascript">
 				var gadsenseData = {
 					pubId : '<?php echo $pub_id; ?>',
 					msg : {
-						unknownAd : '<?php esc_attr_e( "The ad details couldn't be retrieved from the ad code", ADVADS_SLUG ); ?>',
-						pubIdMismatch : '<?php _e( 'Warning : The AdSense account from this code does not match the one set with the Advanced Ads Plugin. This ad might cause troubles when used in the front end.', ADVADS_SLUG ); ?>',
-						missingPubId : '<?php _e( 'Warning : You have not yet entered an AdSense account ID. The plugin won’t work without that', ADVADS_SLUG ); ?>',
+						unknownAd : '<?php esc_attr_e( "The ad details couldn't be retrieved from the ad code", 'advanced-ads' ); ?>',
+						pubIdMismatch : '<?php _e( 'Warning : The AdSense account from this code does not match the one set with the Advanced Ads Plugin. This ad might cause troubles when used in the front end.', 'advanced-ads' ); ?>'
 					}
 				};
 			</script>
 			<?php
 		}
-	}
-
-	public function init() {
-		if ( isset($_POST['gadsense-nonce']) ) {
-			$this->form_treatment();
-		}
-		$this->nonce = wp_create_nonce( 'gadsense_nonce' );
-
-		// admin notices
-		if ( isset($_COOKIE['gadsense_admin_notice']) ) {
-			// passing the actual message by cookie would enable an injection
-			if ( $_COOKIE['gadsense_admin_notice'] > 0 ) {
-				// error
-				$msg = __( 'The Publisher ID has an incorrect format. (must start with "pub-")', ADVADS_SLUG );
-				$css = 'error';
-			} else {
-				// success
-				$msg = __( 'Data updated', ADVADS_SLUG );
-				$css = 'updated';
-			}
-			$this->notice = array(
-				'msg' => $msg,
-				'class' => $css,
-			);
-			setcookie( 'gadsense_admin_notice', null, -1 );
-		}
-	}
-
-	public function form_treatment() {
-		if ( 1 === wp_verify_nonce( $_POST['gadsense-nonce'], 'gadsense_nonce' ) ) {
-			switch ( $_POST['gadsense-form-name'] ) {
-				case 'cred-form' :
-					$id = strtolower( trim( wp_unslash( $_POST['adsense-id'] ) ) );
-					$limit = (isset($_POST['limit-per-page']))? true : false;
-					$isError = false;
-					if ( 0 === strpos( $id, 'pub-' ) ) {
-						$this->data->set_adsense_id( $id );
-						$this->data->set_limit_per_page( $limit );
-					} else {
-						$isError = true;
-					}
-					setcookie( 'gadsense_admin_notice', (string) (int) $isError, time() + 900 ); // only display for 15 minutes
-					break;
-				default :
-			}
-		}
-
-		// redirect
-		wp_redirect( $_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING'] );
-		die();
 	}
 
 	public function enqueue_scripts() {
@@ -171,7 +120,7 @@ class Gadsense_Admin {
 		// add new section
 		add_settings_section(
                         'advanced_ads_adsense_setting_section',
-                        __( 'AdSense', ADVADS_SLUG ),
+                        __( 'AdSense', 'advanced-ads' ),
                         array($this, 'render_settings_section_callback'),
                         $hook
 		);
@@ -179,7 +128,7 @@ class Gadsense_Admin {
 		// add setting field to disable ads
 		add_settings_field(
 			'adsense-id',
-			__( 'AdSense ID', ADVADS_SLUG ),
+			__( 'AdSense ID', 'advanced-ads' ),
 			array($this, 'render_settings_adsense_id'),
 			$hook,
 			'advanced_ads_adsense_setting_section'
@@ -188,8 +137,17 @@ class Gadsense_Admin {
 		// add setting field for adsense limit
 		add_settings_field(
 			'adsense-limit',
-			__( 'Limit to 3 ads', ADVADS_SLUG ),
+			__( 'Limit to 3 ads', 'advanced-ads' ),
 			array($this, 'render_settings_adsense_limit'),
+			$hook,
+			'advanced_ads_adsense_setting_section'
+		);
+
+		// activate page-level ads
+		add_settings_field(
+			'adsense-page-level',
+			__( 'Activate Page-Level ads', 'advanced-ads' ),
+			array($this, 'render_settings_adsense_page_level'),
 			$hook,
 			'advanced_ads_adsense_setting_section'
 		);
@@ -205,6 +163,12 @@ class Gadsense_Admin {
 	 */
 	public function render_settings_section_callback(){
 		// for whatever purpose there might come
+		$adsense_id = $this->data->get_adsense_id();
+		if( ! $adsense_id ){
+		    ?><p class="advads-error-message"><?php
+		    printf(__( 'Please enter your Publisher ID in order to use AdSense on your page. See the <a href="%s" target="_blank">manual</a> for more information.', 'advanced-ads' ), ADVADS_URL . 'manual/ad-types/adsense-ads/' );
+		    ?></p><?php
+		}
 	}
 
 	/**
@@ -216,7 +180,7 @@ class Gadsense_Admin {
                 $adsense_id = $this->data->get_adsense_id();
 
                 ?><input type="text" name="<?php echo GADSENSE_OPT_NAME; ?>[adsense-id]" id="adsense-id" size="32" value="<?php echo $adsense_id; ?>" />
-                <p class="description"><?php _e( 'Your AdSense Publisher ID <em>(pub-xxxxxxxxxxxxxx)</em>', ADVADS_SLUG ) ?></p><?php
+                <p class="description"><?php _e( 'Your AdSense Publisher ID <em>(pub-xxxxxxxxxxxxxx)</em>', 'advanced-ads' ) ?></p><?php
 	}
 
 	/**
@@ -227,15 +191,31 @@ class Gadsense_Admin {
 	public function render_settings_adsense_limit(){
                 $limit_per_page = $this->data->get_limit_per_page();
 
-                ?><input type="checkbox" name="<?php echo GADSENSE_OPT_NAME; ?>[limit-per-page]" value="1" <?php checked( $limit_per_page ); ?> />
-		<?php printf( __( 'Limit to %d AdSense ads', ADVADS_SLUG ), 3 ); ?>
+                ?><label><input type="checkbox" name="<?php echo GADSENSE_OPT_NAME; ?>[limit-per-page]" value="1" <?php checked( $limit_per_page ); ?> />
+		<?php printf( __( 'Limit to %d AdSense ads', 'advanced-ads' ), 3 ); ?></label>
                 <p class="description">
 		<?php
 			printf(
-				__( 'Currently, Google AdSense <a target="_blank" href="%s" title="Terms Of Service">TOS</a> imposes a limit of %d display ads per page. You can disable this limitation at your own risks.', ADVADS_SLUG ),
+				__( 'Currently, Google AdSense <a target="_blank" href="%s" title="Terms Of Service">TOS</a> imposes a limit of %d display ads per page. You can disable this limitation at your own risks.', 'advanced-ads' ),
 				esc_url( 'https://www.google.com/adsense/terms' ), 3
 			); ?><br/><?php
-						_e( 'Notice: Advanced Ads only considers the AdSense ad type for this limit.', ADVADS_SLUG );
+			_e( 'Notice: Advanced Ads only considers the AdSense ad type for this limit.', 'advanced-ads' );
+	}
+
+	/**
+	 * render page-level ads setting
+	 *
+	 * @since 1.6.9
+	 */
+	public function render_settings_adsense_page_level(){
+                $options = $this->data->get_options();
+                $page_level = $options['page-level-enabled'];
+
+                ?><label><input type="checkbox" name="<?php echo GADSENSE_OPT_NAME; ?>[page-level-enabled]" value="1" <?php checked( $page_level ); ?> />
+		<?php _e( 'Insert Page-Level ads code on all pages.', 'advanced-ads' ); ?></label>
+                <p class="description">
+		<?php _e( 'You still need to enable Page-Level ads in your AdSense account. See <a href="https://support.google.com/adsense/answer/6245304" target="_blank">AdSense Help</a> for more information', 'advanced-ads' ); ?>
+		</p><?php
 	}
 
         /**
@@ -253,7 +233,7 @@ class Gadsense_Admin {
                     add_settings_error(
                             'adsense-limit',
                             'settings_updated',
-                            __( 'The Publisher ID has an incorrect format. (must start with "pub-")', ADVADS_SLUG ));
+                            __( 'The Publisher ID has an incorrect format. (must start with "pub-")', 'advanced-ads' ));
                 }
 		// trim publisher id
 		$options['adsense-id'] = trim($options['adsense-id']);
@@ -275,10 +255,40 @@ class Gadsense_Admin {
                 'page' => $this->settings_page_hook,
                 'group' => ADVADS_SLUG . '-adsense',
                 'tabid' => 'adsense',
-                'title' => __( 'AdSense', ADVADS_SLUG )
+                'title' => __( 'AdSense', 'advanced-ads' )
             );
 
             return $tabs;
         }
+
+	/**
+	 * sanitize ad settings
+	 *  save publisher id from new ad unit if not given in main options
+	 *
+	 * @since 1.6.2
+	 * @param arr $ad_settings_post
+	 * @return arr $ad_settings_post
+	 */
+	public function sanitize_ad_settings( array $ad_settings_post ){
+
+	    // check ad type
+	    if( ! isset( $ad_settings_post['type'] ) ||  'adsense' !== $ad_settings_post['type'] ){
+		return $ad_settings_post;
+	    }
+
+	    // save AdSense publisher ID if given and remove it from options
+	    if ( ! empty($ad_settings_post['output']['adsense-pub-id']) ) {
+		    // get options
+		    $adsense_options = get_option( 'advanced-ads-adsense', array() );
+		    $adsense_options['adsense-id'] = $ad_settings_post['output']['adsense-pub-id'];
+
+		    // save adsense options including publisher id
+		    update_option( 'advanced-ads-adsense', $adsense_options );
+
+	    }
+	    unset( $ad_settings_post['output']['adsense-pub-id'] );
+
+	    return $ad_settings_post;
+	}
 
 }

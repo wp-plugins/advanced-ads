@@ -49,6 +49,13 @@ class Advanced_Ads_Ad {
 	public $width = 0;
 
 	/**
+	 * target url
+	 *
+	 * @since 1.6.10
+	 */
+	public $url = '';
+
+	/**
 	 * ad height
 	 */
 	public $height = 0;
@@ -157,6 +164,7 @@ class Advanced_Ads_Ad {
 		} else {
 			$this->type_obj = new Advanced_Ads_Ad_Type_Abstract;
 		}
+		$this->url = $this->options( 'url' );
 		$this->width = $this->options( 'width' );
 		$this->height = $this->options( 'height' );
 		$this->conditions = $this->options( 'conditions' );
@@ -367,6 +375,9 @@ class Advanced_Ads_Ad {
 		$where = array('ID' => $this->id);
 		$wpdb->update( $wpdb->posts, array( 'post_content' => $content ), $where );
 
+		// clean post from object cache
+		clean_post_cache( $this->id );
+
 		// sanitize conditions
 		// see sanitize_conditions function for example on using this filter
 		$conditions = self::sanitize_conditions_on_save( $this->conditions );
@@ -375,6 +386,7 @@ class Advanced_Ads_Ad {
 		$options = $this->options();
 
 		$options['type'] = $this->type;
+		$options['url'] = $this->url;
 		$options['width'] = $this->width;
 		$options['height'] = $this->height;
 		$options['conditions'] = $conditions;
@@ -432,7 +444,7 @@ class Advanced_Ads_Ad {
 		$output = $this->type_obj->prepare_output( $this );
 		// don’t deliver anything, if main ad content is empty
 		if( $output == '' ) {
-		    return;
+			return;
 		}
 
 		// filter to manipulate the output before the wrapper is added
@@ -570,6 +582,8 @@ class Advanced_Ads_Ad {
 					break;
 				case 'center' :
 					$wrapper['style']['text-align'] = 'center';
+					// add css rule after wrapper to center the ad
+					// add_filter( 'advanced-ads-output-wrapper-after-content', array( $this, 'center_ad_content' ), 10, 2 );
 					break;
 				case 'clearfix' :
 					$wrapper['style']['clear'] = 'both';
@@ -577,8 +591,17 @@ class Advanced_Ads_Ad {
 			}
 		}
 
-		if ( ! empty($this->output['class']) && is_array( $this->output['class'] ) ) {
+		if ( isset($this->output['class']) && is_array( $this->output['class'] ) ) {
 			$wrapper['class'] = $this->output['class'];
+		}
+
+		// add manual classes
+		if ( isset($this->output['wrapper-class']) && '' !== $this->output['wrapper-class'] ) {
+			$classes = explode( ' ', $this->output['wrapper-class'] );
+
+			foreach( $classes as $_class ){
+				$wrapper['class'][] = sanitize_key( $_class );
+			}
 		}
 
 		if ( ! empty($this->output['margin']['top']) ) {
@@ -647,12 +670,39 @@ class Advanced_Ads_Ad {
 	}
 
 	/**
+	 * function to add css rule after the ad to center its content
+	 *
+	 * @since 1.6.9.5
+	 * @param str $output additional output in wrapper after content
+	 * @param obj $ad Advanced_Ads_Ad object
+	 * @return str $output
+	 *
+	 */
+	/*public function center_ad_content( $output, Advanced_Ads_Ad $ad ){
+
+		// no additional check needed, because the hook is only called when the ad is centered
+		if( isset( $ad->wrapper['id'] )){
+			// does not work with most div elements, so actually not used now
+			$output .= '<style type="text/css">#'. $ad->wrapper['id'] . ' img, #'. $ad->wrapper['id'] . ' div { display: inline !important; }</style>';
+		}
+
+		return $output;
+	}*/
+
+	/**
 	 * create a random wrapper id
 	 *
 	 * @since 1.1.4
 	 * @return string $id random id string
 	 */
 	private function create_wrapper_id(){
-		return 'advads-' . mt_rand();
+
+		if( isset( $this->output['wrapper-id'] )){
+			return sanitize_key( $this->output['wrapper-id'] );
+		}
+
+		$prefix = Advanced_Ads_Plugin::get_instance()->get_frontend_prefix();
+
+		return $prefix . mt_rand();
 	}
 }
