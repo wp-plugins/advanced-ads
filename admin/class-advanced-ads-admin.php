@@ -193,6 +193,12 @@ class Advanced_Ads_Admin {
 		    wp_register_script( 'inline-edit-group-ads', plugins_url( 'assets/js/inline-edit-group-ads.js', __FILE__ ), array('jquery'), ADVADS_VERSION );
 		}
 
+		//call media manager for image upload only on ad edit pages
+		$screen = get_current_screen();
+		if( isset( $screen->id ) && Advanced_Ads::POST_TYPE_SLUG === $screen->id ) {
+			wp_enqueue_media();
+		}
+
 	}
 
 	/**
@@ -642,6 +648,10 @@ class Advanced_Ads_Admin {
 			$ad->set_option( 'visitors', $_POST['advanced_ad']['visitors'] );
 		} else {
 			$ad->set_option( 'visitors', array() );
+		}
+		$ad->url = 0;
+		if ( isset($_POST['advanced_ad']['url']) ) {
+			$ad->url = esc_url( $_POST['advanced_ad']['url'] );
 		}
 		// save size
 		$ad->width = 0;

@@ -196,4 +196,20 @@ class Advanced_Ads_Checks {
 
 		return false;
 	}
+
+	/**
+	 * check for additional conflicting plugins
+	 *
+	 * @return arr $plugins names of conflicting plugins
+	 */
+	public static function conflicting_plugins(){
+
+		$conflicting_plugins = array();
+
+		if( defined( 'Publicize_Base' )){ // JetPack Publicize module
+			$conflicting_plugins[] = 'Jetpack – Publicize';
+		}
+
+		return $conflicting_plugins;
+	}
 }

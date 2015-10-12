@@ -279,6 +279,7 @@ class Advanced_Ads {
 	function setup_default_ad_types($types){
 		$types['plain'] = new Advanced_Ads_Ad_Type_Plain(); /* plain text and php code */
 		$types['content'] = new Advanced_Ads_Ad_Type_Content(); /* rich content editor */
+		$types['image'] = new Advanced_Ads_Ad_Type_Image(); /* image ads */
 		return $types;
 	}
 

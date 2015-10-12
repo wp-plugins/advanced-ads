@@ -40,6 +40,10 @@
     if( Advanced_Ads_Checks::active_autoptimize() && ! defined( 'AAP_VERSION' ) ) :
 	    $messages[] = sprintf(__( '<strong>Autoptimize plugin detected</strong>. While this plugin is great for site performance, it is known to alter code, including scripts from ad networks. <a href="%s" target="_blank">Advanced Ads Pro</a> has a build-in support for Autoptimize.', 'advanced-ads' ), ADVADS_URL . 'add-ons/advanced-ads-pro');
     endif;
+    if( count( Advanced_Ads_Checks::conflicting_plugins() ) ) :
+	    $messages[] = sprintf(__( 'Plugins that are known to cause (partial) problems: <strong>%1$s</strong>. <a href="%2$s" target="_blank">Learn more</a>.', 'advanced-ads' ), implode( ', ', Advanced_Ads_Checks::conflicting_plugins() ), ADVADS_URL . 'manual/known-plugin-conflicts/');
+    endif;
+
 
     if( count( $messages )) :
 	foreach( $messages as $_message ) :

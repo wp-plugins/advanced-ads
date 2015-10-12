@@ -241,6 +241,62 @@ jQuery( document ).ready(function ($) {
 			return $( this ).parents('.advads-placement-type').find( '.advads-placement-description' ).html();
 		}
 	});
+
+	/**
+         * Image ad uploader
+         */
+
+	$('body').on('click', '.advads_image_upload', function(e) {
+
+		e.preventDefault();
+
+		var button = $(this);
+
+		// If the media frame already exists, reopen it.
+		if ( file_frame ) {
+			// file_frame.uploader.uploader.param( 'post_id', set_to_post_id );
+			file_frame.open();
+			return;
+		}
+
+		// Create the media frame.
+		file_frame = wp.media.frames.file_frame = wp.media( {
+			frame: 'post',
+			state: 'insert',
+			title: button.data( 'uploaderTitle' ),
+			button: {
+				text: button.data( 'uploaderButtonText' )
+			},
+			multiple: false // only allow one file to be selected
+		} );
+
+		// When an image is selected, run a callback.
+		file_frame.on( 'insert', function() {
+
+			var selection = file_frame.state().get('selection');
+			selection.each( function( attachment, index ) {
+				attachment = attachment.toJSON();
+				if ( 0 === index ) {
+					// place first attachment in field
+					$( '#advads-image-id' ).val( attachment.id );
+					$( '#advanced-ads-ad-parameters-size input[name="advanced_ad[width]"]' ).val( attachment.width );
+					$( '#advanced-ads-ad-parameters-size input[name="advanced_ad[height]"]' ).val( attachment.height );
+					// update image preview
+					var new_image = '<img width="'+ attachment.width +'" height="'+ attachment.height +
+						'" title="'+ attachment.title +'" alt="'+ attachment.alt +'" src="'+ attachment.url +'"/>';
+					$('#advads-image-preview').html( new_image );
+					$('#advads-image-edit-link').attr( 'href', attachment.editLink );
+				}
+			});
+		});
+
+		// Finally, open the modal
+		file_frame.open();
+	});
+
+	// WP 3.5+ uploader
+	var file_frame;
+	window.formfield = '';
 });
 
 /**

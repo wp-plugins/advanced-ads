@@ -15,7 +15,8 @@
 	<div class="advads-ad-group-number">
 	    <label><strong><?php _e( 'Number of visible ads', 'advanced-ads' ); ?></strong>
 	    <select name="advads-groups[<?php echo $group->id; ?>][ad_count]"><?php
-		    for ( $i = 1; $i <= 10; $i++ ) : ?>
+		    $max = ( count( $ad_form_rows ) >= 10 ) ? count( $ad_form_rows ) + 2 : 10;
+		    for ( $i = 1; $i <= $max; $i++ ) : ?>
 		    <option <?php selected( $group->ad_count, $i ); ?>><?php echo $i; ?></option>
 		<?php endfor;
 		    ?><option <?php selected( $group->ad_count, 'all' ); ?> value="all"><?php _ex('all', 'option to display all ads in an ad groups', 'advanced-ads'); ?></option>

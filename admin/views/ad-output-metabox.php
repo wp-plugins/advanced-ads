@@ -30,4 +30,14 @@
 		if ( isset($options['margin']['left']) ) { echo $options['margin']['left']; } ?>" name="advanced_ad[output][margin][left]"/>px</label>
         <p class="description"><?php _e( 'tip: use this to add a margin around the ad', 'advanced-ads' ); ?></p>
     </div>
+    <p><label><strong><?php _e( 'container id', 'advanced-ads' ); ?></strong><br/>
+	    <input type="text" name="advanced_ad[output][wrapper-id]" value="<?php if ( isset($options['wrapper-id']) ) { echo $options['wrapper-id']; } ?>"/><?php
+    ?></label></p><p class="description"><?php
+		_e( 'Specify the id of the ad container. Leave blank for random or no id.', 'advanced-ads' );
+		?></p>
+    <p><label><strong><?php _e( 'container classes', 'advanced-ads' ); ?></strong><br/>
+	    <input type="text" name="advanced_ad[output][wrapper-class]" value="<?php if ( isset($options['wrapper-class']) ) { echo $options['wrapper-class']; } ?>"/><?php
+	?></label></p><p class="description"><?php
+		_e( 'Specify one or more classes for the container. Separate multiple classes with a space', 'advanced-ads.' );
+		?></p>
 </div>

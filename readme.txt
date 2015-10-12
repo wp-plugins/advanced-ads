@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 4.2, PHP 5.3
 Tested up to: 4.3.1
-Stable tag: 1.6.9.4
+Stable tag: 1.6.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -184,6 +184,13 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 4. Placements that let you inject ads anywhere into your site without coding (6 in Advanced Ads + 9 through add-ons)
 
 == Changelog ==
+
+= 1.6.10 =
+
+* added image ad type
+* added option to set id and class attributes
+* added check for conflicting plugins
+* allow a higher number of visible ads in a group if more are existing
 
 = 1.6.9.4 =
 

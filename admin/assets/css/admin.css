@@ -135,6 +135,13 @@
 #advads-exp-jj, #advads-exp-hh, #advads-exp-mn { width: 2em; }
 #advads-exp-aa { width: 3.4em; }
 
+#advads-url,
+#advads-image-url,
+#advads-image-title,
+#advads-image-alt { width: 80%; }
+#advads-image-edit-link[href=""] { display: none; }
+#advads-image-preview img { max-width: 100%; height: auto; }
+
 /**
  AD GROUP LIST
 */
