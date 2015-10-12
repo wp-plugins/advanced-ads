@@ -698,7 +698,10 @@ class Advanced_Ads_Ad {
 	private function create_wrapper_id(){
 
 		if( isset( $this->output['wrapper-id'] )){
-			return sanitize_key( $this->output['wrapper-id'] );
+			$id = sanitize_key( $this->output['wrapper-id'] );
+			if( '' !== $id ){
+				return $id;
+			}
 		}
 
 		$prefix = Advanced_Ads_Plugin::get_instance()->get_frontend_prefix();
