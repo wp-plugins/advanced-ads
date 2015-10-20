@@ -469,4 +469,15 @@ class Advanced_Ads_Plugin {
 		return $prefix;
 	}
 
+	/**
+	 * get priority used for injection inside content
+	 *
+	 * @since 1.6.10.2
+	 */
+	public function get_content_injection_priority(){
+		$options = $this->options();
+
+		return isset( $options['content-injection-priority'] ) ? intval( $options['content-injection-priority'] ) : 100;
+	}
+
 }

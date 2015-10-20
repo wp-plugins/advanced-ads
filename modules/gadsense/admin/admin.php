@@ -200,6 +200,10 @@ class Advanced_Ads_AdSense_Admin {
 				esc_url( 'https://www.google.com/adsense/terms' ), 3
 			); ?><br/><?php
 			_e( 'Notice: Advanced Ads only considers the AdSense ad type for this limit.', 'advanced-ads' );
+			?></p>
+		<?php if( defined( 'AAP_VERSION' ) ) : /* give warning when cache-busting in Pro is active */ ?>
+		<p class="advads-error-message"><?php _e( 'Due to technical restrictions, the limit does not work on placements with cache-busting enabled.', 'advanced-ads' ); ?></p>
+		<?php endif;
 	}
 
 	/**

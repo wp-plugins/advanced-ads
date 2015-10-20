@@ -149,8 +149,6 @@ class Advanced_Ads {
 	 */
 	public function wp_plugins_loaded()
 	{
-		$options = $this->plugin->options();
-
 		// register hook for global constants
 		add_action( 'wp', array( $this, 'set_disabled_constant' ) );
 
@@ -158,7 +156,7 @@ class Advanced_Ads {
 		add_filter( 'advanced-ads-ad-types', array( $this, 'setup_default_ad_types' ), 5 );
 
 		// register hooks and filters for auto ad injection
-		$this->init_injection( $options );
+		$this->init_injection();
 
 		// allow add-ons to hook
 		do_action( 'advanced-ads-plugin-loaded' );
@@ -204,12 +202,11 @@ class Advanced_Ads {
 		$this->ad_types = apply_filters( 'advanced-ads-ad-types', $types );
 	}
 
-	public function init_injection($options) {
+	public function init_injection() {
 		// -TODO abstract
 		add_action( 'wp_head', array( $this, 'inject_header' ), 20 );
 		add_action( 'wp_footer', array( $this, 'inject_footer' ), 20 );
-		$content_injection_priority = isset( $options['content-injection-priority'] ) ? intval( $options['content-injection-priority'] ) : 100;
-		add_filter( 'the_content', array( $this, 'inject_content' ), $content_injection_priority );
+		add_filter( 'the_content', array( $this, 'inject_content' ), $this->plugin->get_content_injection_priority() );
 	}
 
 	/**

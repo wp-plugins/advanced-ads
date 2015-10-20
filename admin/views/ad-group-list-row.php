@@ -18,7 +18,6 @@
         <ul><?php $_type = isset($this->types[$group->type]['title']) ? $this->types[$group->type]['title'] : 'default'; ?>
             <li><strong><?php printf( __( 'Type: %s', 'advanced-ads' ), $_type ); ?></strong></li>
             <li><?php printf( __( 'ID: %s', 'advanced-ads' ), $group->id ); ?></li>
-            <li><?php printf( __( 'Slug: %s', 'advanced-ads' ), $group->slug ); ?></li>
         </ul>
     </td>
     <td class="advads-ad-group-list-ads"><?php $this->render_ads_list( $group ); ?></td>

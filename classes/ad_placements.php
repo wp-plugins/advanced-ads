@@ -195,12 +195,12 @@ class Advanced_Ads_Placements {
 	 * @return arr $tags array with tags that can be used for content injection
 	 */
 	public static function tags_for_content_injection(){
-		$tags = array(
+		$tags = apply_filters( 'advanced-ads-tags-for-injection', array(
 			'p' => sprintf( __( 'paragraph (%s)', 'advanced-ads' ), '&lt;p&gt;' ),
 			'h2' => sprintf( __( 'headline 2 (%s)', 'advanced-ads' ), '&lt;h2&gt;' ),
 			'h3' => sprintf( __( 'headline 3 (%s)', 'advanced-ads' ), '&lt;h3&gt;' ),
 			'h4' => sprintf( __( 'headline 4 (%s)', 'advanced-ads' ), '&lt;h4&gt;' ),
-		);
+		));
 
 		return $tags;
 	}
@@ -317,6 +317,10 @@ class Advanced_Ads_Placements {
 			$content = mb_convert_encoding( $content, 'HTML-ENTITIES', $wpCharset );
 		}
 
+		if ( Advanced_Ads_Plugin::get_instance()->get_content_injection_priority() < 10 ) {
+			$content = wpautop( $content );
+		}
+
 		$dom = new DOMDocument('1.0', $wpCharset);
 		// may loose some fragments or add autop-like code
 		libxml_use_internal_errors(true); // avoid notices and warnings - html is most likely malformed
@@ -342,21 +346,33 @@ class Advanced_Ads_Placements {
 		$items = $xpath->query('/html/body/' . $tag);
 		$offset = null;
 
-		// if there are to few items at this level test nesting
-		$itemLimit = $tag === 'p' ? 2 : 1;
-		if ($items->length < $itemLimit) {
+		$options = array(
+		    'allowEmpty' => false,   // whether the tag can be empty to be counted
+		);
+		// if there are too few items at this level test nesting
+		$options['itemLimit'] = $tag === 'p' ? 2 : 1;
+
+		// allow hooks to change some options
+		$options = apply_filters(
+			'advanced-ads-placement-content-injection-options',
+			$options,
+			$tag );
+
+		if ($items->length < $options['itemLimit'] ) {
 			$items = $xpath->query('/html/body/*/' . $tag);
 		}
 		// try third level as last resort
-		if ($items->length < $itemLimit) {
+		if ($items->length < $options['itemLimit']) {
 			$items = $xpath->query('/html/body/*/*/' . $tag);
 		}
 
+		// allow to select other elements
+		$items = apply_filters( 'advanced-ads-placement-content-injection-items', $items, $xpath, $tag );
 
 		// filter empty tags from items
 		$paragraphs = array();
 		foreach ($items as $item) {
-			if ( isset($item->textContent) && trim($item->textContent, $whitespaces) !== '' ) {
+			if ( $options['allowEmpty'] || ( isset($item->textContent) && trim($item->textContent, $whitespaces) !== '' ) ) {
 				$paragraphs[] = $item;
 			}
 		}
@@ -377,12 +393,14 @@ class Advanced_Ads_Placements {
 			$adNode->appendXML($adContent);
 
 			// inject
+			$node = apply_filters( 'advanced-ads-placement-content-injection-node', $paragraphs[$offset], $tag, $before );
 			if ($before) {
-				$refNode = $paragraphs[$offset];
+				$refNode = $node;
+				$items = $xpath->query('/html/body/' . $tag);
 				$refNode->parentNode->insertBefore($adNode, $refNode);
 			} else {
 				// append before next node or as last child to body
-				$refNode = $paragraphs[$offset]->nextSibling;
+				$refNode = $node->nextSibling;
 				if (isset($refNode)) {
 					$refNode->parentNode->insertBefore($adNode, $refNode);
 				} else {

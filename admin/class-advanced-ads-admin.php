@@ -1010,7 +1010,12 @@ class Advanced_Ads_Admin {
 			$priority = ( isset($options['content-injection-priority'])) ? intval( $options['content-injection-priority'] ) : 100;
 
 			echo '<input id="advanced-ads-content-injection-priority" type="number" value="'.$priority.'" name="'.ADVADS_SLUG.'[content-injection-priority]" size="3"/>';
-			echo '<p class="description">'. __( 'Play with this value in order to change the priority of the injected ads compared to other auto injected elements in the post content.', 'advanced-ads' ) .'</p>';
+			echo '<p class="description">';
+			if ( $priority < 11 ) {
+				echo '<span class="advads-error-message">' . __( 'Please check your post content. A priority of 10 and below might cause issues (wpautop function might run twice).', 'advanced-ads' ) . '</span><br />';
+			}
+			_e( 'Play with this value in order to change the priority of the injected ads compared to other auto injected elements in the post content.', 'advanced-ads' );
+			echo '</p>';
 		}
 
 		/**
