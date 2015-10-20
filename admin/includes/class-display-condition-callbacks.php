@@ -25,10 +25,10 @@ class Advanced_Ads_Display_Condition_Callbacks {
 		}
 
 		?><h4><label class="advads-conditions-all"><input type="checkbox" name="advanced_ad[conditions][posttypes][all]" value="1" <?php checked( $_all, 1 ); ?>><?php
-		_e( 'Display on all public <strong>post types</strong>.', ADVADS_SLUG ); ?></label></h4><?php
+		_e( 'Display on all public <strong>post types</strong>.', 'advanced-ads' ); ?></label></h4><?php
 		$post_types = get_post_types( array('public' => true, 'publicly_queryable' => true), 'object', 'or' );
 		?><div class="advads-conditions-single">
-        <p class="description"><?php _e( 'Choose the public post types on which to display the ad.', ADVADS_SLUG ); ?></p><?php
+        <p class="description"><?php _e( 'Choose the public post types on which to display the ad.', 'advanced-ads' ); ?></p><?php
 		// backward compatibility
 		// TODO: remove in a later version
 		$_includes = ( ! empty($ad->conditions['posttypes']['include']) && is_string( $ad->conditions['posttypes']['include'] )) ? explode( ',', $ad->conditions['posttypes']['include'] ) : array();
@@ -83,8 +83,8 @@ class Advanced_Ads_Display_Condition_Callbacks {
 		}
 
 		?><h4><label class="advads-conditions-all"><input type="checkbox" name="advanced_ad[conditions][categoryids][all]" value="1" <?php checked( $_all, 1 ); ?>><?php
-		_e( 'Display for all <strong>categories, tags and taxonomies</strong>.', ADVADS_SLUG ); ?></label></h4><?php
-		?><div class="advads-conditions-single"><h5 class="header"><?php _e( 'Display here', ADVADS_SLUG ); ?></h5><p class="description"><?php _e( 'Choose terms from public categories, tags and other taxonomies a post must belong to in order to have ads.', ADVADS_SLUG ); ?></p>
+		_e( 'Display for all <strong>categories, tags and taxonomies</strong>.', 'advanced-ads' ); ?></label></h4><?php
+		?><div class="advads-conditions-single advads-buttonset"><h5 class="header"><?php _e( 'Display here', 'advanced-ads' ); ?></h5><p class="description"><?php _e( 'Choose terms from public categories, tags and other taxonomies a post must belong to in order to have ads.', 'advanced-ads' ); ?></p>
                 <table><?php
 				self::_display_taxonomy_term_list( $_includes, 'include', 'advanced_ad[conditions][categoryids][include][]', 'categoryids' );
 		?></table><?php
@@ -101,7 +101,7 @@ if ( ! empty($ad->conditions['categoryids']['exclude']) ){
 	$_excludes = array();
 }
 
-		?><h5 class="header"><?php _e( 'Hide from here', ADVADS_SLUG ); ?></h5><p class="description"><?php _e( 'Choose the terms from public categories, tags and other taxonomies a post must belong to hide the ad from it.', ADVADS_SLUG ); ?></p>
+		?><h5 class="header"><?php _e( 'Hide from here', 'advanced-ads' ); ?></h5><p class="description"><?php _e( 'Choose the terms from public categories, tags and other taxonomies a post must belong to hide the ad from it.', 'advanced-ads' ); ?></p>
         <table><?php
 		self::_display_taxonomy_term_list( $_excludes, 'exclude', 'advanced_ad[conditions][categoryids][exclude][]', 'categoryids' );
 		?></table></div><?php
@@ -146,11 +146,11 @@ if ( is_array( $checked ) && count( $checked ) ){
 }
 
 	?></div><span class="advads-conditions-terms-show-search button" title="<?php
-		_ex( 'add more terms', 'display the terms search field on ad edit page', ADVADS_SLUG );
-		?>">+</span><span class="description"><?php _e( 'add more terms', ADVADS_SLUG );
+		_ex( 'add more terms', 'display the terms search field on ad edit page', 'advanced-ads' );
+		?>">+</span><span class="description"><?php _e( 'add more terms', 'advanced-ads' );
 			?></span><br/><input type="text" class="advads-conditions-terms-search" data-tag-name="<?php echo $_tax->name;
 			?>" data-include-type="<?php echo $includetype; ?>" data-group="<?php echo $group; ?>" placeholder="<?php
-				_e( 'term name or id', ADVADS_SLUG ); ?>"/><?php
+				_e( 'term name or id', 'advanced-ads' ); ?>"/><?php
 					else :
 						?><div class="advads-conditions-terms-buttons advads-buttonset"><?php
 foreach ( $terms as $_term ) :
@@ -194,10 +194,10 @@ foreach ( $terms as $_term ) :
 			}
 
 			?><h4><label class="advads-conditions-all"><input type="checkbox" name="advanced_ad[conditions][categoryarchiveids][all]" value="1" <?php checked( $_all, 1 ); ?>><?php
-		_e( 'Display on all <strong>category archive pages</strong>.', ADVADS_SLUG ); ?></label></h4><?php
+		_e( 'Display on all <strong>category archive pages</strong>.', 'advanced-ads' ); ?></label></h4><?php
 		$taxonomies = get_taxonomies( array('public' => true, 'publicly_queryable' => true), 'objects', 'or' );
-		?><div class="advads-conditions-single"><table>
-                <p class="description"><?php _e( 'Choose the terms from public categories, tags and other taxonomies on which\'s archive page ads can appear', ADVADS_SLUG ); ?></p>
+		?><div class="advads-conditions-single advads-buttonset"><table>
+                <p class="description"><?php _e( 'Choose the terms from public categories, tags and other taxonomies on which\'s archive page ads can appear', 'advanced-ads' ); ?></p>
                 <table><?php
 					self::_display_taxonomy_term_list( $_includes, 'include', 'advanced_ad[conditions][categoryarchiveids][include][]', 'categoryarchiveids' );
 			?></table><?php
@@ -214,7 +214,7 @@ if ( ! empty($ad->conditions['categoryarchiveids']['exclude']) ){
 	$_excludes = array();
 }
 
-		?><h5 class="header"><?php _e( 'Hide from here', ADVADS_SLUG ); ?></h5><p class="description"><?php _e( 'Choose the terms from public categories, tags and other taxonomies on which\'s archive pages ads are hidden.', ADVADS_SLUG ); ?></p>
+		?><h5 class="header"><?php _e( 'Hide from here', 'advanced-ads' ); ?></h5><p class="description"><?php _e( 'Choose the terms from public categories, tags and other taxonomies on which\'s archive pages ads are hidden.', 'advanced-ads' ); ?></p>
         <table><?php
 			self::_display_taxonomy_term_list( $_excludes, 'exclude', 'advanced_ad[conditions][categoryarchiveids][exclude][]', 'categoryarchiveids' );
 			?></table></div><?php
@@ -236,10 +236,10 @@ if ( ! empty($ad->conditions['categoryarchiveids']['exclude']) ){
 			}
 
 			?><h4><label class="advads-conditions-all"><input type="checkbox" name="advanced_ad[conditions][postids][all]" value="1" <?php
-			checked( $_all, 1 ); ?>><?php _e( 'Display an all <strong>individual posts, pages</strong> and public post type pages', ADVADS_SLUG ); ?></label></h4><?php
+			checked( $_all, 1 ); ?>><?php _e( 'Display an all <strong>individual posts, pages</strong> and public post type pages', 'advanced-ads' ); ?></label></h4><?php
 
 		?><div class="advads-conditions-single">
-        <p class="description"><?php _e( 'Choose on which individual posts, pages and public post type pages you want to display or hide ads.', ADVADS_SLUG ); ?></p><?php
+        <p class="description"><?php _e( 'Choose on which individual posts, pages and public post type pages you want to display or hide ads.', 'advanced-ads' ); ?></p><?php
 
 		// derrive method from previous setup
 		// set defaults
@@ -256,10 +256,10 @@ if ( ! empty($ad->conditions['categoryarchiveids']['exclude']) ){
 			}
 		}
 
-		?><p><?php _e( 'What should happen with ads on the list of individual posts below?', ADVADS_SLUG ); ?></p>
-        <label><input type="radio" name='advanced_ad[conditions][postids][method]' value='' <?php checked( '', $_method ); ?>><?php _e( 'ignore the list', ADVADS_SLUG ); ?></label></li>
-        <label><input type="radio" name='advanced_ad[conditions][postids][method]' value='include' <?php checked( 'include', $_method ); ?>><?php _e( 'display the ad only there', ADVADS_SLUG ); ?></label></li>
-        <label><input type="radio" name='advanced_ad[conditions][postids][method]' value='exclude' <?php checked( 'exclude', $_method ); ?>><?php _e( 'hide the ad here', ADVADS_SLUG ); ?></label></li>
+		?><p><?php _e( 'What should happen with ads on the list of individual posts below?', 'advanced-ads' ); ?></p>
+        <label><input type="radio" name='advanced_ad[conditions][postids][method]' value='' <?php checked( '', $_method ); ?>><?php _e( 'ignore the list', 'advanced-ads' ); ?></label></li>
+        <label><input type="radio" name='advanced_ad[conditions][postids][method]' value='include' <?php checked( 'include', $_method ); ?>><?php _e( 'display the ad only there', 'advanced-ads' ); ?></label></li>
+        <label><input type="radio" name='advanced_ad[conditions][postids][method]' value='exclude' <?php checked( 'exclude', $_method ); ?>><?php _e( 'hide the ad here', 'advanced-ads' ); ?></label></li>
         <?php
 
 		/**
@@ -267,12 +267,12 @@ if ( ! empty($ad->conditions['categoryarchiveids']['exclude']) ){
 		 * @todo remove on a later version, if no longer needed
 		 */
 		if ( ! empty($ad->conditions['postids']['include']) && ! empty($ad->conditions['postids']['exclude']) ){
-			?><div style="color: red;"><p><strong><?php _e( 'Update warning', ADVADS_SLUG ); ?></strong></p>
-                <p><?php _e( 'Due to some conflicts before version 1.2.6, it is from now on only possible to choose either individual pages to include or exclude an ad, but not both with mixed settings. It seems you are still using mixed settings on this page. Please consider changing your setup for this ad.', ADVADS_SLUG ); ?></p>
-                <p><?php _e( 'Your old values are:', ADVADS_SLUG ); ?></p>
-                <p><?php _e( 'Post IDs the ad is displayed on:', ADVADS_SLUG ); echo $ad->conditions['postids']['include']; ?></p>
-                <p><?php _e( 'Post IDs the ad is hidden from:', ADVADS_SLUG ); echo $ad->conditions['postids']['exclude']; ?></p>
-                <p><?php _e( 'Below you find the pages the ad is displayed on. If this is ok, just save the ad. If not, please update your settings.', ADVADS_SLUG ); ?></p>
+			?><div style="color: red;"><p><strong><?php _e( 'Update warning', 'advanced-ads' ); ?></strong></p>
+                <p><?php _e( 'Due to some conflicts before version 1.2.6, it is from now on only possible to choose either individual pages to include or exclude an ad, but not both with mixed settings. It seems you are still using mixed settings on this page. Please consider changing your setup for this ad.', 'advanced-ads' ); ?></p>
+                <p><?php _e( 'Your old values are:', 'advanced-ads' ); ?></p>
+                <p><?php _e( 'Post IDs the ad is displayed on:', 'advanced-ads' ); echo $ad->conditions['postids']['include']; ?></p>
+                <p><?php _e( 'Post IDs the ad is hidden from:', 'advanced-ads' ); echo $ad->conditions['postids']['exclude']; ?></p>
+                <p><?php _e( 'Below you find the pages the ad is displayed on. If this is ok, just save the ad. If not, please update your settings.', 'advanced-ads' ); ?></p>
 
         </div><?php
 		}
@@ -315,9 +315,9 @@ if ( $_postids != array() ){
 		echo '<li><a class="remove" href="#">remove</a><a href="'.get_permalink( $the_query->post->ID ).'">' . get_the_title( $the_query->post->ID ) . '</a><input type="hidden" name="advanced_ad[conditions][postids][ids][]" value="'.$the_query->post->ID.'"></li>';
 	}
 }
-		?><li class="show-search"><a href="#"><?php _e( 'new', ADVADS_SLUG ); ?></a>
+		?><li class="show-search"><a href="#"><?php _e( 'new', 'advanced-ads' ); ?></a>
             <input type="text" style="display:none;" id="advads-display-conditions-individual-post" value="" placeholder="<?php
-			_e( 'type the title', ADVADS_SLUG ); ?>"/>
+			_e( 'type the title', 'advanced-ads' ); ?>"/>
 				<?php wp_nonce_field( 'internal-linking', '_ajax_linking_nonce', false ); ?>
 			</li>
 			</ul>

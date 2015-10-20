@@ -65,15 +65,14 @@
 			var theContent = $( '<div />' ).html( rawContent );
 			var adByGoogle = theContent.find( 'ins' );
 			theAd.slotId = adByGoogle.attr( 'data-ad-slot' );
-			theAd.pubId = '';
 			if ('undefined' != typeof(adByGoogle.attr( 'data-ad-client' ))) {
 				theAd.pubId = adByGoogle.attr( 'data-ad-client' ).substr( 3 );
 			}
-			if ('' != theAd.slotId && '' != theAd.pubId) {
+			if (undefined !== theAd.slotId && '' != theAd.pubId) {
 				theAd.display = adByGoogle.css( 'display' );
 				theAd.format = adByGoogle.attr( 'data-ad-format' );
 				theAd.style = adByGoogle.attr( 'style' );
-
+                
 				if ('undefined' == typeof(theAd.format) && -1 != theAd.style.indexOf( 'width' )) {
 					/* normal ad */
 					theAd.type = 'normal';
@@ -96,6 +95,7 @@
 		 */
 		function setDetailsFromAdCode(theAd) {
 			$( '#unit-code' ).val( theAd.slotId );
+			$( '#advads-adsense-pub-id' ).val( theAd.pubId );
 			if ('normal' == theAd.type) {
 				$( '#unit-type' ).val( 'normal' );
 				$( '#advanced-ads-ad-parameters-size input[name="advanced_ad[width]"]' ).val( theAd.width );
@@ -108,9 +108,7 @@
 				$( '#advanced-ads-ad-parameters-size input[name="advanced_ad[height]"]' ).val( '' );
 			}
 			var storedPubId = gadsenseData.pubId;
-			if ('' == storedPubId) {
-				$( '#adsense-ad-param-error' ).text( gadsenseData.msg.missingPubId );
-			} else if (theAd.pubId != storedPubId) {
+			if ('' !== storedPubId && theAd.pubId != storedPubId) {
 				$( '#adsense-ad-param-error' ).text( gadsenseData.msg.pubIdMismatch );
 			} else {
 				$( '#adsense-ad-param-error' ).empty();
