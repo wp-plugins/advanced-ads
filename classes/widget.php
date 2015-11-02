@@ -162,7 +162,7 @@ class Advanced_Ads_Widget extends WP_Widget {
 		if ( $item[0] == 'ad' ){
 			return get_ad( absint( $item_id ) );
 		} elseif ( $item[0] == 'group' ){
-			return get_ad_group( abs_int( $item_id ) );
+			return get_ad_group( absint( $item_id ) );
 		} elseif ( $item[0] == 'placement' ){
 			return get_ad_placement( $item_id );
 		}
