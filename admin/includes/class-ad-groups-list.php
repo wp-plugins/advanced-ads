@@ -155,21 +155,21 @@ class Advanced_Ads_Groups_List {
 				$status = get_post_status();
 				switch ( $status ){
 					case 'future' :
-						$line_output .= '<i>(' . __( 'scheduled', ADVADS_SLUG ) . ')</i>';
+						$line_output .= '<i>(' . __( 'scheduled', 'advanced-ads' ) . ')</i>';
 						break;
 					case 'pending' :
-						$line_output .= '<i>(' . __( 'pending', ADVADS_SLUG ) . ')</i>';
+						$line_output .= '<i>(' . __( 'pending', 'advanced-ads' ) . ')</i>';
 						break;
 				}
 				// check expiry date
 				$ad = new Advanced_Ads_Ad( get_the_ID() );
 				if( ! $ad->can_display_by_expiry_date() ) {
-				    $line_output .= '<i>(' . __( 'expired', ADVADS_SLUG ) . ')</i>';
+				    $line_output .= '<i>(' . __( 'expired', 'advanced-ads' ) . ')</i>';
 				}
 
 				$_weight = (isset($weights[get_the_ID()])) ? $weights[get_the_ID()] : Advanced_Ads_Group::MAX_AD_GROUP_WEIGHT;
 				if ( $group->type == 'default' && $weight_sum ) {
-					$line_output .= '<span class="ad-weight" title="'.__( 'Ad weight', ADVADS_SLUG ).'">' . number_format( ($_weight / $weight_sum) * 100 ) .'%</span></li>';
+					$line_output .= '<span class="ad-weight" title="'.__( 'Ad weight', 'advanced-ads' ).'">' . number_format( ($_weight / $weight_sum) * 100 ) .'%</span></li>';
 				}
 				$ads_output[get_the_ID()] = $line_output;
 			}
@@ -179,12 +179,12 @@ class Advanced_Ads_Groups_List {
 			echo implode( '', $ads_output );
 			echo ($group->type == 'default' && $weight_sum) ? '</ul>' : '</ol>';
 			if ( $group->ad_count === 'all' ) {
-			    echo '<p>' . __( 'all published ads are displayed', ADVADS_SLUG ) . '</p>';
+			    echo '<p>' . __( 'all published ads are displayed', 'advanced-ads' ) . '</p>';
 			} elseif ( $group->ad_count > 1 ) {
-			    echo '<p>' . sprintf( __( 'up to %d ads displayed', ADVADS_SLUG ), $group->ad_count ) . '</p>';
+			    echo '<p>' . sprintf( __( 'up to %d ads displayed', 'advanced-ads' ), $group->ad_count ) . '</p>';
 			}
 		} else {
-			_e( 'No ads assigned', ADVADS_SLUG );
+			_e( 'No ads assigned', 'advanced-ads' );
 		}
 		// Restore original Post Data
 		wp_reset_postdata();
@@ -218,7 +218,8 @@ class Advanced_Ads_Groups_List {
 			'post_type' => $this->post_type,
 			'post_status' => array('publish', 'pending', 'future', 'private'),
 			'taxonomy' => $group->taxonomy,
-			'term' => $group->slug
+			'term' => $group->slug,
+			'posts_per_page' => -1
 		);
 		return $ads = new WP_Query( $args );
 	}
@@ -231,12 +232,12 @@ class Advanced_Ads_Groups_List {
 	public function get_ad_group_types(){
 		$types = array(
 			'default' => array(
-				'title' => __( 'Random ads', ADVADS_SLUG ),
-				'description' => __( 'Display random ads based on ad weight', ADVADS_SLUG )
+				'title' => __( 'Random ads', 'advanced-ads' ),
+				'description' => __( 'Display random ads based on ad weight', 'advanced-ads' )
 			),
 			'ordered' => array(
-				'title' => __( 'Ordered ads', ADVADS_SLUG ),
-				'description' => __( 'Display ads with the highest ad weight first', ADVADS_SLUG ),
+				'title' => __( 'Ordered ads', 'advanced-ads' ),
+				'description' => __( 'Display ads with the highest ad weight first', 'advanced-ads' ),
 			)
 		);
 
@@ -255,8 +256,8 @@ class Advanced_Ads_Groups_List {
 
 		$actions = array();
 		if ( current_user_can( $tax->cap->edit_terms ) ) {
-			$actions['edit'] = '<a class="edit">' . __( 'Edit', ADVADS_SLUG ) . '</a>';
-			$actions['usage'] = '<a class="usage">' . __( 'Usage', ADVADS_SLUG ) . '</a>';
+			$actions['edit'] = '<a class="edit">' . __( 'Edit', 'advanced-ads' ) . '</a>';
+			$actions['usage'] = '<a class="usage">' . __( 'Usage', 'advanced-ads' ) . '</a>';
 		}
 
 		if ( current_user_can( $tax->cap->delete_terms ) ){
@@ -286,12 +287,12 @@ class Advanced_Ads_Groups_List {
 		if ( ! isset( $_POST['advads-group-update-nonce'] )
 			|| ! wp_verify_nonce( $_POST['advads-group-update-nonce'], 'update-advads-groups' ) ){
 
-			return new WP_Error( 'invalid_ad_group', __( 'Invalid Ad Group', ADVADS_SLUG ) );
+			return new WP_Error( 'invalid_ad_group', __( 'Invalid Ad Group', 'advanced-ads' ) );
 		}
 
 		// check user rights
 		if ( ! current_user_can( 'manage_options' ) ){
-			return new WP_Error( 'invalid_ad_group_rights', __( 'You don’t have permission to change the ad groups', ADVADS_SLUG ) );
+			return new WP_Error( 'invalid_ad_group_rights', __( 'You don’t have permission to change the ad groups', 'advanced-ads' ) );
 		}
 
 		// iterate through groups

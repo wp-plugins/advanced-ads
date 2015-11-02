@@ -20,10 +20,10 @@ add_thickbox();
 if ( wp_is_mobile() ) {
 	wp_enqueue_script( 'jquery-touch-punch' ); }
 
-$title = __( 'Ads Dashboard', ADVADS_SLUG );
+$title = __( 'Ads Dashboard', 'advanced-ads' );
 
 ?><div class="wrap">
-    <h2><?php echo esc_html( $title ); ?></h2>
+    <h1><?php echo esc_html( $title ); ?></h1>
 
     <div id="dashboard-widgets-wrap">
     <?php wp_dashboard(); ?>
