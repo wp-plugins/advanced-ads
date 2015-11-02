@@ -207,6 +207,8 @@ class Advanced_Ads_Group {
 		// load the ad output
 		$output = array();
 		$ads_displayed = 0;
+		$ad_count = apply_filters( 'advanced-ads-group-ad-count', $this->ad_count, $this );
+
 		$ad_select = Advanced_Ads_Select::get_instance();
 		foreach ( $ordered_ad_ids as $_ad_id ) {
 			// load the ad object
@@ -215,7 +217,7 @@ class Advanced_Ads_Group {
 				$output[] = $ad;
 				$ads_displayed++;
 				// break the loop when maximum ads are reached
-				if( $ads_displayed === $this->ad_count ) {
+				if( $ads_displayed === $ad_count ) {
 					break;
 				}
 			}

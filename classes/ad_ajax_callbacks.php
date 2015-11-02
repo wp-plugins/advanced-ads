@@ -28,6 +28,7 @@ class Advanced_Ads_Ad_Ajax_Callbacks {
                 add_action( 'wp_ajax_advads-close-notice', array( $this, 'close_notice' ) );
                 add_action( 'wp_ajax_advads-subscribe-notice', array( $this, 'subscribe' ) );
                 add_action( 'wp_ajax_advads-activate-license', array( $this, 'activate_license' ) );
+                add_action( 'wp_ajax_advads-deactivate-license', array( $this, 'deactivate_license' ) );
 	}
 
 	/**
@@ -48,9 +49,9 @@ class Advanced_Ads_Ad_Ajax_Callbacks {
 			$types[$type]->render_parameters( $ad );
 			?>
 			<div id="advanced-ads-ad-parameters-size">
-				<p><?php _e( 'size:', ADVADS_SLUG ); ?></p>
-				<label><?php _e( 'width', ADVADS_SLUG ); ?><input type="number" size="4" maxlength="4" value="<?php echo isset($ad->width) ? $ad->width : 0; ?>" name="advanced_ad[width]">px</label>
-				<label><?php _e( 'height', ADVADS_SLUG ); ?><input type="number" size="4" maxlength="4" value="<?php echo isset($ad->height) ? $ad->height : 0; ?>" name="advanced_ad[height]">px</label>
+				<p><?php _e( 'size:', 'advanced-ads' ); ?></p>
+				<label><?php _e( 'width', 'advanced-ads' ); ?><input type="number" size="4" maxlength="4" value="<?php echo isset($ad->width) ? $ad->width : 0; ?>" name="advanced_ad[width]">px</label>
+				<label><?php _e( 'height', 'advanced-ads' ); ?><input type="number" size="4" maxlength="4" value="<?php echo isset($ad->height) ? $ad->height : 0; ?>" name="advanced_ad[height]">px</label>
 			</div>
 			<?php
 		}
@@ -158,6 +159,24 @@ class Advanced_Ads_Ad_Ajax_Callbacks {
 	    if ( !isset( $_POST['addon'] ) || $_POST['addon'] === '' ) { die(); }
 
 	    echo Advanced_Ads_Admin::get_instance()->activate_license( $_POST['addon'], $_POST['pluginname'], $_POST['optionslug'] );
+
+	    die();
+	}
+	
+	/**
+	 * deactivate license of an add-on
+	 *
+	 * @since 1.6.11
+	 */
+	public function deactivate_license(){
+
+
+	    // check nonce
+	    check_ajax_referer( 'advads_ajax_license_nonce', 'security' );
+
+	    if ( !isset( $_POST['addon'] ) || $_POST['addon'] === '' ) { die(); }
+
+	    echo Advanced_Ads_Admin::get_instance()->deactivate_license( $_POST['addon'], $_POST['pluginname'], $_POST['optionslug'] );
 
 	    die();
 	}
