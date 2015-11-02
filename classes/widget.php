@@ -68,10 +68,17 @@ class Advanced_Ads_Widget extends WP_Widget {
 		?><p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
             <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" /></p><?php
 
-			$items = self::items_for_select();
+			$items = array_merge( self::items_for_select(), self::widget_placements_for_select() );
 		?>
         <select id="<?php echo $this->get_field_id( 'item_id' ); ?>" name="<?php echo $this->get_field_name( 'item_id' ); ?>">
             <option value=""><?php _e( '--empty--', 'advanced-ads' );  ?></option>
+            <?php if ( isset($items['placements']) ) : ?>
+            <optgroup label="<?php _e( 'Placements', 'advanced-ads' ); ?>">
+            <?php foreach ( $items['placements'] as $_item_id => $_item_title ) : ?>
+            <option value="<?php echo $_item_id; ?>" <?php selected( $_item_id, $elementid ); ?>><?php echo $_item_title; ?></option>
+            <?php endforeach; ?>
+            </optgroup>
+            <?php endif; ?>
             <?php if ( isset($items['groups']) ) : ?>
             <optgroup label="<?php _e( 'Ad Groups', 'advanced-ads' ); ?>">
             <?php foreach ( $items['groups'] as $_item_id => $_item_title ) : ?>
@@ -113,7 +120,26 @@ class Advanced_Ads_Widget extends WP_Widget {
 
 		return $select;
 	}
-
+	
+	/**
+	 * get widget placements for select field
+	 * 
+	 * @since 1.6.11
+	 * @return arr $items for select field
+	 */
+	public static function widget_placements_for_select(){
+		$select = array();
+		$placements = Advanced_Ads::get_ad_placements_array();
+		
+		foreach( $placements as $_placement_slug => $_placement ){
+			if( 'sidebar_widget' === $_placement['type'] ){
+				$select['placements']['placement_' . $_placement_slug ] = $_placement['name'];
+			}
+		}
+		
+		return $select;
+	}
+	
 	/**
 	 * return content of an in a widget
 	 *
@@ -124,17 +150,21 @@ class Advanced_Ads_Widget extends WP_Widget {
 		// get placement data for the slug
 		if ( empty($id) ) { return; }
 
-		$item = explode( '_', $id );
-
+		$item = explode( '_', $id, 2 );
+		
 		if ( isset($item[1]) ) {
-			$item_id = absint( $item[1] ); }
-		elseif (empty($item_id)) return;
+			$item_id = $item[1];
+		} elseif (empty($item_id)) {
+			return;
+		}
 
 		// return either ad or group content
 		if ( $item[0] == 'ad' ){
-			return get_ad( $item_id );
+			return get_ad( absint( $item_id ) );
 		} elseif ( $item[0] == 'group' ){
-			return get_ad_group( $item_id );
+			return get_ad_group( abs_int( $item_id ) );
+		} elseif ( $item[0] == 'placement' ){
+			return get_ad_placement( $item_id );
 		}
 
 		return;

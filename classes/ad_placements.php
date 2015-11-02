@@ -57,6 +57,11 @@ class Advanced_Ads_Placements {
 				'description' => __( 'Injected into the post content. You can choose the paragraph after which the ad content is displayed.', 'advanced-ads' ),
 				'image' => ADVADS_BASE_URL . 'admin/assets/img/placements/content-within.png'
 				),
+			'sidebar_widget' => array(
+				'title' => __( 'Sidebar Widget', 'advanced-ads' ),
+				'description' => __( 'Create a sidebar widget with an ad. Can be placed and used like any other widget.', 'advanced-ads' ),
+				'image' => ADVADS_BASE_URL . 'admin/assets/img/placements/widget.png'
+				),
 		);
 		return apply_filters( 'advanced-ads-placement-types', $types );
 	}
@@ -317,7 +322,9 @@ class Advanced_Ads_Placements {
 			$content = mb_convert_encoding( $content, 'HTML-ENTITIES', $wpCharset );
 		}
 
-		if ( Advanced_Ads_Plugin::get_instance()->get_content_injection_priority() < 10 ) {
+		// check which priority the wpautop filter has; might have been disabled on purpose
+		$wpautop_priority = has_filter( 'the_content', 'wpautop');
+		if ( $wpautop_priority && Advanced_Ads_Plugin::get_instance()->get_content_injection_priority() < $wpautop_priority ) {
 			$content = wpautop( $content );
 		}
 

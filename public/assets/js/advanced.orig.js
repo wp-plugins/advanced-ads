@@ -82,10 +82,24 @@ advads = {
 	 *  set null to expire cookie in the current session
 	 */
 	set_cookie: function (name, value, exdays, path, domain, secure) {
+		// days in seconds	
+		var expiry = exdays * 24 * 60 * 60;
+		this.set_cookie_sec( name, value, expiry, path, domain, secure );
+	},
+	/**
+	 * set a cookie with expiry given in seconds
+	 *
+	 * @param {str} name of the cookie
+	 * @param {str} value of the cookie
+	 * @param {int} expiry seconds until cookie expires
+	 *  set 0 to expire cookie immidiatelly
+	 *  set null to expire cookie in the current session
+	 */
+	set_cookie_sec: function (name, value, expiry, path, domain, secure) {
 		var exdate = new Date();
-		exdate.setDate( exdate.getDate() + exdays );
+		exdate.setSeconds( exdate.getSeconds() + parseInt( expiry ) );
 		document.cookie = name + "=" + escape( value ) +
-				((exdays == null) ? "" : "; expires=" + exdate.toUTCString()) +
+				((expiry == null) ? "" : "; expires=" + exdate.toUTCString()) +
 				((path == null) ? "; path=/" : "; path=" + path) +
 				((domain == null) ? "" : "; domain=" + domain) +
 				((secure == null) ? "" : "; secure");

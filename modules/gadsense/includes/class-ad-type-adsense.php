@@ -75,7 +75,10 @@ class Advanced_Ads_Ad_Type_Adsense extends Advanced_Ads_Ad_Type_Abstract {
 
 		if ( ! empty($content) ) {
 			$json_content = $content;
-			$content = json_decode( $content );
+
+			// get json content striped by slashes
+			$content = json_decode( stripslashes( $content ) );
+
 			if ( isset($content->unitType) ) {
 				$content->json = $json_content;
 				$unit_type = $content->unitType;

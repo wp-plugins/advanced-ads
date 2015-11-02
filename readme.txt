@@ -4,7 +4,7 @@ Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
 Requires at least: WP 4.2, PHP 5.3
 Tested up to: 4.3.1
-Stable tag: 1.6.10.2
+Stable tag: 1.6.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -184,6 +184,18 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 4. Placements that let you inject ads anywhere into your site without coding (6 in Advanced Ads + 9 through add-ons)
 
 == Changelog ==
+
+= 1.6.11 =
+
+* added icon to rich media editor to quickly add shortcodes
+* added widget placement type
+* added new column for ad planning
+* TinyMCE is now working when ad type is switched to content ad
+* enable license key deactivation
+* hide unnecessary fields for image ads in media gallery
+* loading jQuery ui styles only on Advanced Ads dashboard pages now
+* fixed AdSense ad not retrieving values due to slashes
+* fixed issue with licenses being activated twice
 
 = 1.6.10.2 =
 

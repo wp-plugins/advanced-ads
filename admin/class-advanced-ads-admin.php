@@ -79,9 +79,12 @@ class Advanced_Ads_Admin {
 		} else {
 			add_action( 'plugins_loaded', array( $this, 'wp_plugins_loaded' ) );
 		}
+		// add shortcode creator to TinyMCE
+		new Advanced_Ads_Shortcode_Creator;
 		// registering custom columns needs to work with and without DOING_AJAX
 		add_filter( 'manage_advanced_ads_posts_columns', array($this, 'ad_list_columns_head') ); // extra column
 		add_filter( 'manage_advanced_ads_posts_custom_column', array($this, 'ad_list_columns_content'), 10, 2 ); // extra column
+		add_filter( 'manage_advanced_ads_posts_custom_column', array($this, 'ad_list_columns_timing'), 10, 2 ); // extra column
 
 	}
 
@@ -165,8 +168,10 @@ class Advanced_Ads_Admin {
 	 */
 	public function enqueue_admin_styles() {
 		wp_enqueue_style( $this->plugin_slug . '-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), ADVADS_VERSION );
-		// jQuery ui smoothness style 1.11.4
-		wp_enqueue_style( $this->plugin_slug . '-jquery-ui-styles', plugins_url( 'assets/jquery-ui/jquery-ui.min.css', __FILE__ ), array(), '1.11.4' );
+		if( self::screen_belongs_to_advanced_ads() ){
+			// jQuery ui smoothness style 1.11.4
+			wp_enqueue_style( $this->plugin_slug . '-jquery-ui-styles', plugins_url( 'assets/jquery-ui/jquery-ui.min.css', __FILE__ ), array(), '1.11.4' );
+		}
 		//wp_enqueue_style( 'jquery-style', '//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css' );
 	}
 
@@ -1139,6 +1144,7 @@ class Advanced_Ads_Admin {
 			$new_columns[ $key ] = $value;
 			if ( $key == 'title' ){
 				$new_columns[ 'ad_details' ] = __( 'Ad Details', 'advanced-ads' );
+				$new_columns[ 'ad_timing' ] = __( 'Ad Planning', 'advanced-ads' );
 			}
 		}
 
@@ -1167,7 +1173,7 @@ class Advanced_Ads_Admin {
 		return $vars;
 	}
 
-		/**
+	/**
 	 * display ad details in ads list
 	 *
 	 * @since 1.3.3
@@ -1191,6 +1197,34 @@ class Advanced_Ads_Admin {
 			$size = apply_filters( 'advanced-ads-list-ad-size', $size, $ad );
 
 			include ADVADS_BASE_PATH . 'admin/views/ad-list-details-column.php';
+		}
+	}
+	
+	/**
+	 * display ad details in ads list
+	 *
+	 * @since 1.6.11
+	 * @param string $column_name name of the column
+	 * @param int $ad_id id of the ad
+	 */
+	public function  ad_list_columns_timing($column_name, $ad_id) {
+		if ( $column_name == 'ad_timing' ) {
+			$ad = new Advanced_Ads_Ad( $ad_id );
+			
+			$expiry = false;
+			$post_future = false;
+			$post_start = get_the_date('U', $ad->id );
+			
+			if( isset( $ad->expiry_date ) && $ad->expiry_date ){
+				if( $ad->expiry_date > time() ){
+					$expiry = $ad->expiry_date;
+				}
+			}
+			if( $post_start > time() ){
+				$post_future = $post_start;
+			}
+
+			include ADVADS_BASE_PATH . 'admin/views/ad-list-timing-column.php';
 		}
 	}
 
@@ -1435,14 +1469,20 @@ class Advanced_Ads_Admin {
 		if ( '' == $license_key ) {
 			return __( 'Please enter and save a valid license key first.', 'advanced-ads' );
 		}
-
+		
 		$api_params = array(
 			'edd_action'=> 'activate_license',
 			'license' 	=> $license_key,
 			'item_name' => urlencode( $plugin_name ),
 			'url'       => home_url()
 		);
-		$response = wp_remote_get( add_query_arg( $api_params, ADVADS_URL ) );
+		// Call the custom API.
+		$response = wp_remote_post( ADVADS_URL, array(
+			'timeout'   => 15,
+			'sslverify' => false,
+			'body'      => $api_params
+		) );
+		
 		if ( is_wp_error( $response ) ) {
 			return wp_remote_retrieve_body( $response );
 		}
@@ -1457,6 +1497,52 @@ class Advanced_Ads_Admin {
 		} else {
 		    // save license value time
 		    update_option($options_slug . '-license-expires', $license_data->expires, false);
+		}
+
+		return 1;
+	}
+	
+	/**
+	 * deactivate license key
+	 *
+	 * @since 1.6.11
+	 * @param string $addon string with addon identifier
+	 */
+	public function deactivate_license( $addon = '', $plugin_name = '', $options_slug = '' ) {
+
+		if ( '' === $addon || '' === $plugin_name || '' === $options_slug ) {
+			return __( 'Error while trying to disable the license. Please contact support.', 'advanced-ads' );
+		}
+
+		$licenses = get_option(ADVADS_SLUG . '-licenses', array());
+		$license_key = isset($licenses[$addon]) ? $licenses[$addon] : '';
+
+		$api_params = array(
+			'edd_action' => 'deactivate_license',
+			'license'    => $license_key,
+			'item_name'  => urlencode( $plugin_name )
+		);
+		// Send the remote request
+		$response = wp_remote_post( ADVADS_URL, array( 
+		    'body' => $api_params, 
+		    'timeout' => 15,
+		    'sslverify' => false,
+		) );
+		
+		if ( is_wp_error( $response ) ) {
+			return wp_remote_retrieve_body( $response );
+		}
+
+		$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+		
+		// save license status
+
+		// remove data
+		if( 'deactivated' === $license_data->license ) {
+		    delete_option( $options_slug . '-license-status' );
+		    delete_option( $options_slug . '-license-expires' );
+		} else {
+		    return __( 'License couldn’t be deactivated. Please try again later or contact support.', 'advanced-ads' );
 		}
 
 		return 1;

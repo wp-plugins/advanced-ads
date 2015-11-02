@@ -59,17 +59,9 @@ class Advanced_Ads_Ad_Type_Content extends Advanced_Ads_Ad_Type_Abstract{
 		 *
 		 * don’t build it when ajax is used; display message and buttons instead
 		 */
-		if ( defined( 'DOING_AJAX' ) ){
-			?><p><?php _e( 'Please <strong>save the ad</strong> before changing it to the content type.', 'advanced-ads' ); ?></p><?php
-			$status = get_post_status( $ad->id );
-if ( 'publish' != $status && 'future' != $status && 'pending' != $status ) { ?>
-                <input <?php if ( 'private' == $status ) { ?>style="display:none"<?php } ?> type="submit" name="save" id="save-post" value="<?php esc_attr_e( 'Save Draft' ); ?>" class="button button-primary" />
-                <?php } else {
-		?><input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Update' ) ?>" />
-		<input name="save" type="submit" class="button button-primary button-large" id="publish" accesskey="p" value="<?php esc_attr_e( 'Update' ) ?>" /><?php
-}
-if ( ! empty($ad->content) ) : ?><textarea id="advads-ad-content-plain" style="display:none;" cols="1" rows="1" name="advanced_ad[content]"><?php
-echo $ad->content; ?></textarea><?php endif;
+		if ( defined( 'DOING_AJAX' ) ){ ?>
+			<textarea id="advads-ad-content-plain" style="display:none;" cols="40" rows="10" name="advanced_ad[content]"><?php echo $content; ?></textarea>
+		<?php
 		} else {
 			$args = array(
 				'textarea_name' => 'advanced_ad[content]',

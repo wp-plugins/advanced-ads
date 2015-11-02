@@ -1,5 +1,7 @@
 jQuery( document ).ready(function ($) {
 	function advads_load_ad_type_parameter_metabox(ad_type) {
+		jQuery( '#advanced-ad-type input' ).prop( 'disabled', true );
+		$( '#advanced-ads-tinymce-wrapper' ).hide();
 		$( '#advanced-ads-ad-parameters' ).html( '<span class="spinner advads-ad-parameters-spinner advads-spinner"></span>' );
 		$.ajax({
 			type: 'POST',
@@ -13,12 +15,15 @@ jQuery( document ).ready(function ($) {
 				// toggle main content field
 				if (data) {
 					$( '#advanced-ads-ad-parameters' ).html( data ).trigger( 'paramloaded' );
+					advads_maybe_textarea_to_tinymce( ad_type );
 				}
 			},
 			error: function (MLHttpRequest, textStatus, errorThrown) {
 				$( '#advanced-ads-ad-parameters' ).html( errorThrown );
 			}
-		});
+		}).always( function ( MLHttpRequest, textStatus, errorThrown ) {
+			jQuery( '#advanced-ad-type input').prop( 'disabled', false );
+		});;
 	}
 	;
 
@@ -202,7 +207,11 @@ jQuery( document ).ready(function ($) {
 	$('.advads-license-activate').click(function(){
 
 	    var button = $(this);
+	    
 	    if( ! this.dataset.addon ) { return }
+	    
+	    // hide button to prevent issues with activation when people click twice
+	    button.hide();
 
 	    var query = {
 		action: 'advads-activate-license',
@@ -226,6 +235,43 @@ jQuery( document ).ready(function ($) {
 		    button.siblings('.advads-license-activate-active').fadeIn();
 		} else {
 		    button.next('.advads-license-activate-error').text( r );
+		}
+	    });
+	});
+	
+	// deactivate licenses
+	$('.advads-license-deactivate').click(function(){
+
+	    var button = $(this);
+	    
+	    if( ! this.dataset.addon ) { return }
+	    
+	    // hide button to prevent issues with double clicking
+	    button.hide();
+
+	    var query = {
+		action: 'advads-deactivate-license',
+		addon: this.dataset.addon,
+		pluginname: this.dataset.pluginname,
+		optionslug: this.dataset.optionslug,
+		security: $('#advads-licenses-ajax-referrer').val()
+	    };
+
+	    // show loader
+	    $( '<span class="spinner advads-spinner"></span>' ).insertAfter( button );
+
+	    // send and close message
+	    $.post(ajaxurl, query, function (r) {
+		// remove spinner
+		$('span.spinner').remove();
+
+		if( r === '1' ){
+		    button.siblings('.advads-license-activate-error').hide();
+		    button.siblings('.advads-license-activate-active').hide();
+		    button.fadeOut();
+		} else {
+		    button.next('.advads-license-activate-error').show().text( r );
+		    button.siblings('.advads-license-activate-active').hide();
 		}
 	    });
 	});
@@ -261,17 +307,19 @@ jQuery( document ).ready(function ($) {
 
 		// Create the media frame.
 		file_frame = wp.media.frames.file_frame = wp.media( {
-			frame: 'post',
-			state: 'insert',
+			id: 'advads_type_image_wp_media',
 			title: button.data( 'uploaderTitle' ),
 			button: {
 				text: button.data( 'uploaderButtonText' )
+			},
+			library: {
+				type: 'image'
 			},
 			multiple: false // only allow one file to be selected
 		} );
 
 		// When an image is selected, run a callback.
-		file_frame.on( 'insert', function() {
+		file_frame.on( 'select', function() {
 
 			var selection = file_frame.state().get('selection');
 			selection.each( function( attachment, index ) {
@@ -490,4 +538,43 @@ function advads_validate_placement_form(){
 		jQuery('.advads-placement-name-error').hide();
 	}
 	return true;
+}
+
+/**
+ * replace textarea with TinyMCE editor for Rich Content ad type
+ */
+function advads_maybe_textarea_to_tinymce( ad_type ) {
+	var textarea            = jQuery( '#advads-ad-content-plain' ),
+		textarea_html       = textarea.val(),
+		tinymce_id          = 'advanced-ads-tinymce',
+		tinymce_id_ws       = jQuery( '#' + tinymce_id ),
+		tinymce_wrapper_div = jQuery ( '#advanced-ads-tinymce-wrapper' );
+
+	if ( ad_type !== 'content' ) {
+		tinymce_id_ws.prop('name', tinymce_id );
+		tinymce_wrapper_div.hide();
+		return false;
+	}
+
+	if ( typeof tinyMCE === 'object' && tinyMCE.get( tinymce_id ) !== null ) {
+		// visual mode
+		if ( textarea_html ) {
+			// see BeforeSetContent in the wp-includes\js\tinymce\plugins\wordpress\plugin.js
+			var wp = window.wp,
+			hasWpautop = ( wp && wp.editor && wp.editor.autop && tinyMCE.get( tinymce_id ).getParam( 'wpautop', true ) );
+			if ( hasWpautop ) {
+				textarea_html = wp.editor.autop( textarea_html );
+			}
+			tinyMCE.get( tinymce_id ).setContent( textarea_html );
+		}
+		textarea.remove();
+		tinymce_id_ws.prop('name', textarea.prop( 'name' ) );
+		tinymce_wrapper_div.show();
+	} else if ( tinymce_id_ws.length ) {
+		// text mode
+		tinymce_id_ws.val( textarea_html );
+		textarea.remove();
+		tinymce_id_ws.prop('name', textarea.prop( 'name' ) );
+		tinymce_wrapper_div.show();
+	}
 }

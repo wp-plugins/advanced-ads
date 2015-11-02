@@ -169,9 +169,10 @@ class Advanced_Ads_Visitor_Conditions {
 	 * controls frontend checks for conditions
 	 *
 	 * @param arr $options options of the condition
+	 * @param ob $ad Advanced_Ads_Ad
 	 * @return bool false, if ad can’t be delivered
 	 */
-	static function frontend_check( $options = array() ){
+	static function frontend_check( $options = array(), $ad = false ){
 		$visitor_conditions = Advanced_Ads_Visitor_Conditions::get_instance()->conditions;
 
 		if ( is_array( $options ) && isset( $visitor_conditions[ $options['type'] ]['check'] ) ) {
@@ -182,7 +183,7 @@ class Advanced_Ads_Visitor_Conditions {
 
 		// call frontend check callback
 		if ( method_exists( $check[0], $check[1] ) ) {
-			return call_user_func( array( $check[0], $check[1] ), $options );
+			return call_user_func( array( $check[0], $check[1] ), $options, $ad );
 		}
 
 		return true;

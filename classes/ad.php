@@ -307,7 +307,7 @@ class Advanced_Ads_Ad {
 		    $visitor_conditions = $this->options['visitors'];
 
 		    foreach( $visitor_conditions as $_condition ) {
-			$result = Advanced_Ads_Visitor_Conditions::frontend_check( $_condition );
+			$result = Advanced_Ads_Visitor_Conditions::frontend_check( $_condition, $this );
 			if( ! $result ) {
 			    // return false only, if the next condition doesn’t have an OR operator
 			    $next = next( $visitor_conditions );
