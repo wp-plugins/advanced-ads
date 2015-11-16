@@ -32,8 +32,8 @@ class Advanced_Ads_Ad_Type_Content extends Advanced_Ads_Ad_Type_Abstract{
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		$this->title = __( 'Rich Content', ADVADS_SLUG );
-		$this->description = __( 'The full content editor from WordPress with all features like shortcodes, image upload or styling, but also simple text/html mode for scripts and code.', ADVADS_SLUG );
+		$this->title = __( 'Rich Content', 'advanced-ads' );
+		$this->description = __( 'The full content editor from WordPress with all features like shortcodes, image upload or styling, but also simple text/html mode for scripts and code.', 'advanced-ads' );
 		$this->parameters = array(
 			'content' => ''
 		);
@@ -59,17 +59,9 @@ class Advanced_Ads_Ad_Type_Content extends Advanced_Ads_Ad_Type_Abstract{
 		 *
 		 * don’t build it when ajax is used; display message and buttons instead
 		 */
-		if ( defined( 'DOING_AJAX' ) ){
-			?><p><?php _e( 'Please <strong>save the ad</strong> before changing it to the content type.', ADVADS_SLUG ); ?></p><?php
-			$status = get_post_status( $ad->id );
-if ( 'publish' != $status && 'future' != $status && 'pending' != $status ) { ?>
-                <input <?php if ( 'private' == $status ) { ?>style="display:none"<?php } ?> type="submit" name="save" id="save-post" value="<?php esc_attr_e( 'Save Draft' ); ?>" class="button button-primary" />
-                <?php } else {
-		?><input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Update' ) ?>" />
-		<input name="save" type="submit" class="button button-primary button-large" id="publish" accesskey="p" value="<?php esc_attr_e( 'Update' ) ?>" /><?php
-}
-if ( ! empty($ad->content) ) : ?><textarea id="advads-ad-content-plain" style="display:none;" cols="1" rows="1" name="advanced_ad[content]"><?php
-echo $ad->content; ?></textarea><?php endif;
+		if ( defined( 'DOING_AJAX' ) ){ ?>
+			<textarea id="advads-ad-content-plain" style="display:none;" cols="40" rows="10" name="advanced_ad[content]"><?php echo $content; ?></textarea>
+		<?php
 		} else {
 			$args = array(
 				'textarea_name' => 'advanced_ad[content]',
@@ -106,9 +98,12 @@ echo $ad->content; ?></textarea><?php endif;
 	public function prepare_output($ad){
 
 		// apply functions normally running through the_content filter
-		// the_content filter not used here because it created an infinite loop (ads within ads)
+		// the_content filter is not used here because it created an infinite loop (ads within ads for "before content" and other auto injections)
+		// maybe the danger is not here yet, but changing it to use the_content filter changes a lot
 
-		$output = wptexturize( $ad->content );
+		$output = $ad->content;
+
+		$output = wptexturize( $output );
 		$output = convert_smilies( $output );
 		$output = convert_chars( $output );
 		$output = wpautop( $output );

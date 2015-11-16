@@ -2,9 +2,9 @@
 Contributors: webzunft
 Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5RRRCEBGN3UT2
 Tags: ads, ad, adsense, display, banner, advertisements, adverts, advert, monetization
-Requires at least: WP 3.5, PHP 5.3
-Tested up to: 4.2.2
-Stable tag: 1.6.1
+Requires at least: WP 4.2, PHP 5.3
+Tested up to: 4.3.1
+Stable tag: 1.6.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ Manage and optimize your ads in WordPress as easy as creating posts. Including s
 
 Advanced Ads is a simple ad manager made by a publisher for publishers. Based on my experience delivering millions of ads per month I built this plugin as a powerful, but light weight solution to not only manage and serve ads in WordPress, but to test and optimize them as well.
 
-Learn more on the [plugin homepage](https://wpadvancedads.com).
+[Full Feature List](https://wpadvancedads.com/features/).
 
 = create and manage ads =
 
@@ -33,6 +33,7 @@ choose between different ad types that enable you to:
 * display images and image banners
 * use shortcodes (to also deliver ads from other ad plugins)
 * create content rich ad with the tinymc editor
+* flash files including a fallback – included in [Pro](https://wpadvancedads.com/add-ons/advanced-ads-pro/)
 
 = display ads =
 
@@ -70,17 +71,22 @@ global conditions
 
 display ads by conditions based on the visitor
 
-* display ads on all devices, mobile only or exclude mobile users
+* display or hide ads for mobile visitors
+* display or hide ads for logged in visitors
 * hide all ads from logged in users based on their role
+* advanced visitor conditions: previous visited url (referrer), user capability, browser language, browser and device, url parameters included in [Pro](https://wpadvancedads.com/add-ons/advanced-ads-pro/)
 * display ads by exact browser width with the [Responsive add-on](https://wpadvancedads.com/add-ons/responsive-ads/)
 
-= ad injection =
+= ad injection | placements =
 
-Advanced Ads comes with many options for ad injection (= display ads without the need to alter content or code)
+Placements to inject ads in pre-defined positions in your theme and content:
 
-* inject ads into header and footer
-* inject ads into posts content (top, bottom, by paragraph)
-* inject ads into content before or after a specific paragraph or headline
+* ads after any given paragraph or headline in the post content
+* ads at the top of the post content
+* ads at the bottom of the post content
+* ads before closing `</head>` tag
+* ads into page footer
+* many more with [add-ons](https://wpadvancedads.com/add-ons/)
 
 = ad networks =
 
@@ -89,13 +95,15 @@ You can also use it to add additional ad network tags into header or footer of y
 
 = Google AdSense =
 
-There is an ad type dedicated to Google AdSense that supports:
-
-* switch ad sizes
-* switch between normal and responsive
+* switch sizes of an ad
+* switch between normal and responsive ads
 * automatic limit 3 AdSense ads according to AdSense terms of service (can be disabled)
+* insert Page-Level ads code globally
 * assistant for exact sizes of responsive ads with the [Responsive add-on](https://wpadvancedads.com/add-ons/responsive-ads/)
-* (more coming soon)
+
+= ad blocker =
+
+* basic features to prevent ad blocks from being removed by AdBlock and co
 
 = based on WordPress standards =
 
@@ -104,15 +112,16 @@ There is an ad type dedicated to Google AdSense that supports:
 
 Learn more on the [plugin homepage](https://wpadvancedads.com).
 
-Localizations: English, German, Italien, Portuguese
+Localizations: English, German, Dutch, Italian, Portuguese
 
 > <strong>Add-Ons</strong>
 >
-> * Tracking – ad tracking and statistics – [more](https://wpadvancedads.com/add-ons/tracking/)
-> * Responsive Ads – create mobile ads or ads for specific browser sizes - [Demo](https://wpadvancedads.com/add-ons/responsive-ads/)
-> * Sticky Ads – increase click rates with fixed, sticky, and anchor ads - [Demo](https://wpadvancedads.com/sticky-ads/demo/)
-> * PopUp and Layer Ads – display ads and other content in layers and popups - [Demo](https://wpadvancedads.com/add-ons/popup-and-layer-ads/)
-> * Slider – create a simple slider from your ads – [more](https://wpadvancedads.com/add-ons/slider/)
+> * [Advanced Ads Pro](https://wpadvancedads.com/add-ons/advanced-ads-pro/) – powerful tools for ad optimizations: cache-busting, more placements, etc.
+> * [Tracking](https://wpadvancedads.com/add-ons/tracking/) – ad tracking and statistics
+> * [Responsive Ads ](https://wpadvancedads.com/add-ons/responsive-ads/) – create mobile ads or ads for specific browser sizes
+> * [Sticky Ads](https://wpadvancedads.com/sticky-ads/demo/) – increase click rates with fixed, sticky, and anchor ads
+> * [PopUp and Layer Ads](https://wpadvancedads.com/add-ons/popup-and-layer-ads/) – display ads and other content in layers and popups
+> * [Slider](https://wpadvancedads.com/add-ons/slider/) – create a simple slider from your ads
 
 == Installation ==
 
@@ -172,8 +181,221 @@ There is no revenue share. Advanced Ads doesn’t alter your ad codes in a way t
 1. Create an ad almost like you would create an article or page.
 2. Align the ad and set a margin to other elements
 3. Choose from various conditions where and where not to display your ad.
+4. Placements that let you inject ads anywhere into your site without coding (6 in Advanced Ads + 9 through add-ons)
 
 == Changelog ==
+
+= 1.6.12 =
+
+* added filters to ad list
+* display expired date in ad list
+* display ad dates in ads list on group page
+* hide unrelated columns in ad list
+* fix saving adsense ad unit as non-superadmin
+* error message for possible jQueryUI library conflicts
+* fix widget_title override
+
+= 1.6.11.1 =
+
+* hotfix for widgets
+
+= 1.6.11 =
+
+* added icon to rich media editor to quickly add shortcodes
+* added widget placement type
+* added new column for ad planning
+* TinyMCE is now working when ad type is switched to content ad
+* enable license key deactivation
+* hide unnecessary fields for image ads in media gallery
+* loading jQuery ui styles only on Advanced Ads dashboard pages now
+* fixed AdSense ad not retrieving values due to slashes
+* fixed issue with licenses being activated twice
+
+= 1.6.10.2 =
+
+* warn on support page if ads are (partially) disabled
+* inform users of Pro that AdSense limit does not work with cache-busting
+* added hooks to extend content injection
+* group slug hidden, because it currently serves no purpose
+* fixed possible issues with content injection priority being lower than wpautop
+
+= 1.6.10.1 =
+
+* hotfix for empty id field
+
+= 1.6.10 =
+
+* added image ad type
+* added option to set id and class attributes
+* added check for conflicting plugins
+* allow a higher number of visible ads in a group if more are existing
+
+= 1.6.9.4 =
+
+* last settings tab is now opened again after being saved
+* exchanged text domain constants with string to match wp.org translate criteria
+
+= 1.6.9.3 =
+
+* order placement list by slug (which normally equals name)
+* updated Autoptimize message. If you use the Autoptimize plugin then check out the Autoptimize-Support in [Advanced Ads Pro](https://wpadvancedads.com/add-ons/advanced-ads-pro/)
+* unquote json request
+* added missing advertisement image for AdBlock check
+* added `advanced-ads-can-inject-into-content-` hook to check if individual placements can be injected into the content
+
+= 1.6.9.2 =
+
+* small adjustment to make cache-busting from [Advanced Ads Pro](https://wpadvancedads.com/add-ons/advanced-ads-pro/) compatible with [Sticky Ads](https://wpadvancedads.com/add-ons/sticky-ads/)
+
+= 1.6.9.1 =
+
+* fixed AdBlocker check on Support page
+* display Advanced Ads notices on Support page
+
+= 1.6.9 =
+
+*features*
+
+* add AdSense Page-Level ads code globally
+* added hours and minutes to expiry date
+* allow to set content priority to negative value
+* added checks for main issues to the Support page
+* added check for AdBlocker to all Advanced Ads pages in the dashboard
+
+*fixes and maintenance*
+
+* don’t display error message if not on archive page
+* fixed issue with placement tooltips not showing up
+* optimized content injection code
+* added collapsed field for advanced placement options
+* fix "support email sent" message showing all the time
+* allow JSON encoded arguments for ajax callback
+* make conditions case insensitive and binary safe
+* renamed some classes belonging to AdSense module
+* updated composer
+* display warning on AdSense settings page if publisher ID is missing
+* optimized support form layout
+* added can-display check + filter for placements
+
+= 1.6.8.3 =
+
+* Hoe vet is dat!? – added Dutch translation
+* fix selecting placement type in IE 11
+* fix errors with content injection when mbstring extension is missing on the server
+
+= 1.6.8.2 =
+
+* added introduction page with first steps
+* optimized error handling in placement form
+* added option to remove the public id from widgets completely
+* rewritten dismiss buttons of notices based on new WP standard
+
+= 1.6.8.1 =
+
+* added menu page to get support from within your dashboard
+* stricter control of ad group archives not being public
+* fix: content-injection requires more than one item per level for p-tags only
+* updated German translation
+
+= 1.6.8 =
+
+* added option to change the prefix of ids and classes in the frontend to prevent widgets from being ad-blocked
+* minor optimization to autocomplete feature of post display condition
+* minor changes to align with changes in WordPress 4.3
+* content-injection now detects wrappers around content up to the third level
+
+= 1.6.7.1 =
+
+* hotfix to prevent error message on empty content injection placements
+
+= 1.6.7 =
+
+*features*
+
+* allow to inject ads into content starting from bottom
+* prevent ad injection into lower-level paragraphs (e.g. into tables or containers)
+* hide ad widget when the content is empty
+* show post type or date when searching an individual post display condition
+
+*fixes and maintenance*
+
+* fix placement types images not showing up completely
+* warn if any used placement type is missing
+* added `advads-ad-allow-php` class to php-setting of plain text
+* added `advanced-ads-activate-advanced-js` filter to allow add-ons to attach advanced js file without bothering the user
+* updated German translation
+
+= 1.6.6.1 =
+
+* removed link to no-longer-existing manual page
+* the option to close internal notices now also hides update messages
+* fixed broken html on placement page
+
+= 1.6.6 =
+
+*features*
+
+* added images to placement form ui
+* allow to select item when creating a new placement
+* always display placement form if no placement exists
+* display shortcode and function for default placement type
+* display notice if license keys are invalid, expired, or expire soon
+* display error when AdSense Publisher ID is missing
+* log error message in case regular expression is used wrong in visitor conditions
+
+*fixes and under-the-hood*
+
+* extended advanced js by move and fix_element function
+* minified advanced js file
+* added `advanced-ads-sanitize-settings` filter to sanitize plugin options
+* added `advanced-ads-can-inject-into-content` filter
+* added `advanced-ads-dashboard-screens` filter
+* removed wrong output on Responsive settings
+* store jquery ui css locally
+* fixed saving empty placement options
+* fixed free add-on notice showing up twice
+* fixed error message in ads list when AdSense ad is empty
+* fixed saving quick edit on ad list returning wrong columns
+
+= 1.6.5 =
+
+* removed "use strict" from js
+* hide error message caused by third party code that uses post_updated_messages filter wrong
+* hide licenses tab on non-main-blogs on multisites
+* made plugin name untranslatable
+
+= 1.6.4.1 =
+
+* fixed free-add-on notice not closing forever
+
+= 1.6.4 =
+
+COOL: newsletter subscribers now receive 2 free add-ons
+
+* changed newsletter subscription text
+* display description of visitor conditions, if selected
+* minor fix to display conditions ui
+* updated German translation
+
+= 1.6.3 =
+
+* added visitor condition to check for logged in visitors
+* fixed display conditions buttons
+* updated German translation
+
+= 1.6.2.1 =
+
+* added missing files to repository
+
+= 1.6.2 =
+
+* display dashboard widget only to authors and higher roles
+* include admin javascript file only on pages which need it
+* no need to save AdSense publisher ID separately anymore
+* added warning if AdSense publisher ID has wrong format
+* list more than 10 ads from a group on the group overview page
+* active settings and conditions are now blue
+* clear object cache when saving an ad (thanks to pete-sch)
 
 = 1.6.1 =
 
@@ -210,174 +432,6 @@ Changes under the hood:
 * `advanced-ads-ajax-ad-select-init` action when ad is going to be selected by ajax call
 * provide action when plugin was loaded
 
-= 1.5.6 =
-
-* check out the new [Slider add-on](https://wpadvancedads.com/add-ons/slider/)
-* please [vote for your preferred support channel](http://webgilde.com/en/how-would-you-like-to-get-help/)
-* display usage help after an ad was published
-* fixed AdSense ads counting when injected outside the loop
-* added better explanation for visitor conditions
-* updated German translation
-
-= 1.5.5 =
-
-* fixed outdated links to the manual and feature requests
-* added hooks and options to be able to extend ad groups
-
-= 1.5.4.1 =
-
-* hotfix for new visitor conditions not showing up
-
-= 1.5.4 =
-
-* PLEASE READ the [update notice](https://wpadvancedads.com/advanced-ads-1-5-4/) to learn more about the changes on visitor conditions
-* visitor conditions completely rewritten to allow combination of multiple conditions
-* created simpler placement creation
-* reordered Advanced Ads dashboard
-* added AdSense tutorial
-
-= 1.5.3 =
-
-* display all ads of an ad group
-* no ad wrapper is created if the main ad content is empty
-* hide ad meta box on posts and pages for non admins
-* display if ad expired on group overview
-* added tutorial subscription
-* added notices and newsletter logic
-* new hook `advanced-ads-debug-after`
-* updated all class names from "Advads_" to "Advanced_Ads_"
-* updated German translation
-
-= 1.5.2.1 =
-
-* fixed inclusion / exclusion of ads for single posts
-
-= 1.5.2 =
-
-* fixed empty bots not excluded if option is activated
-* fixed updated placements not showing up right away
-* removing spaces from AdSense publisher id
-* simplify admin capabilities for modules
-* fixed admin includes to avoid relative paths
-* fixed a warning in add-on admin settings
-* fixed wrong path to advanced.js
-* removed old code and global ad conditions previously saved in field 'advads-ads-by-conditions'
-* updated German translation
-
-= 1.5.1 =
-
-* added tab menu für settings
-* allow to set ad weights for pending, future and private ads
-* improvements to groups overview based on group types
-* fixed switching ad types
-* fixed individual post conditions not showing up
-* fixed update message being displayed for new installations
-* other fixes under the hood
-* new hooks: `advanced-ads-setting-tabs`, `advanced-ads-adsense-settings-init`
-* removed hooks: `advanced-ads-gadsense-after-id-changed`
-
-= 1.5.0 =
-
-* major changes in the code base to support upcoming features
-* further interface cleanup
-* fully implemented autoloading
-* added composer definitions
-* hook modules deep into ad selection and display
-* autoload modules (for base plugin and add-ons)
-* added `advanced-ads-ad-select-args` filter to modify ad selection arguments
-* added `advanced-ads-ad-select-methods` filter to append or override ad code selection methods
-* standardise and autoload modules
-* add AJAX handler
-
-= 1.4.9 =
-
-* added option to hide ads from crawlers and other bots (option is disabled by default)
-* added Secondary Queries display condition, e.g. to hide ads from posts in sidebars
-* added frontend function `advads_can_display_ads()` to check if ads are displayed in general
-* global option to disable all ads in secondary queries
-* search for term ids in display conditions
-* fixed ad conditions using conditional tags of subquery instead of the main query
-* fixed search for terms in display conditions
-
-= 1.4.8 =
-
-* COMPLETE MAKEOVER OF AD GROUPS
-* added ordered ad group type to control the order of ads displayed
-* display multiple ads from an ad group (allowing ad blocks)
-* fixed wrong group ids displaying ads
-* fixed ads group output being empty on first frontend impression
-* added filter `advanced-ads-group-types`
-
-= 1.4.7 =
-
-* COOL: beautiful selection of terms in display conditions
-* search for terms if there are more than 50 in the current taxonomy
-* updated more messages in the dashboard
-* fixed expiry date discrepancy
-* minor general code fixes
-* minor fix for AdSense ads
-
-= 1.4.6 =
-
-* hotfix
-
-= 1.4.5 =
-
-* optimized code for some WordPress coding standards
-* ad content injection now also supports tags with attributes (e.g. `<h2 class="headline">)
-* added `advanced-ads-output-inside-wrapper` filter
-* avoid session for gadsense module option page
-* complete makeover of display conditions for specific page types
-* added logic for important update messages
-* fix for `is_home` condition
-
-= 1.4.4 =
-
-* possible hotfix for update issue
-* cleared unneeded sessions for better performance
-
-= 1.4.3 =
-
-* COOL: complete makeover of the plugin dashboard based on WP standards
-* added `advanced-ads-admin-overview-after` action hook to overview page
-* fixed display of only 10 posts for display conditions
-* minor optimization
-* updated German translation
-
-= 1.4.2 =
-
-* COOL: [vote for and suggest features](http://wpadvancedads.com/feature-requests/)
-* switching from an existing plain text ad with AdSense code into the AdSense ad type gets the right options automatically
-* added Advanced Ads Tutorials rss to dashboard widget
-
-Need ad analytics and impression tracking? Try the [tracking add-on](http://wpadvancedads.com/ad-tracking/).
-
-= 1.4.1 =
-
-* COOL: limitation of AdSense ads prevents you from breaking the AdSense terms of service (can be disabled)
-* added option to change the content injection priority
-* load ad output for content injection only, if injection is possible
-* added hook `advanced-ads-settings-init` to add new settings
-* renamed multiple hooks in the AdSense module
-* updated German translation
-
-= 1.4.0 =
-
-* COOL: AdSense ad type, [manual](http://wpadvancedads.com/manual/ad-types/adsense-ads/)
-* added multiple action hooks
-* fix translation of textdomain if the plugin folder is renamed
-* load pro module, if exists
-* updated German translation
-
-[Changelog Archive](http://wpadvancedads.com/advancedads/codex/changelog-archive/)
+[Changelog Archive](http://wpadvancedads.com/codex/changelog-archive/)
 
 == Upgrade Notice ==
-
-= 1.3.2 =
-
-Hotfix: prevent infinite loops (ads within ads) for rich content ads
-
-= 1.3 =
-
-Don’t miss out on the new layout options to align ads and set margins
-Also fixed issues with languages and added Italien and German translation (partial)

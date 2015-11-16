@@ -32,8 +32,8 @@ class Advanced_Ads_Ad_Type_Adsense extends Advanced_Ads_Ad_Type_Abstract {
 	 * @since 1.4
 	 */
 	public function __construct() {
-		$this->title = __( 'AdSense ad', ADVADS_SLUG );
-		$this->description = __( 'Use ads from your Google AdSense account', ADVADS_SLUG );
+		$this->title = __( 'AdSense ad', 'advanced-ads' );
+		$this->description = __( 'Use ads from your Google AdSense account', 'advanced-ads' );
 		$this->parameters = array(
 			'content' => ''
 		);
@@ -64,12 +64,22 @@ class Advanced_Ads_Ad_Type_Adsense extends Advanced_Ads_Ad_Type_Abstract {
 			'at_media' => array(),
 		);
 
-		$db = Gadsense_Data::get_instance();
-		$pub_id = $db->get_adsense_id();
+		$db = Advanced_Ads_AdSense_Data::get_instance();
+		$pub_id = trim( $db->get_adsense_id() );
+
+		// check pub_id for errors
+		$pub_id_errors = false;
+		if( $pub_id !== '' && 0 !== strpos( $pub_id, 'pub-' )){
+			$pub_id_errors = __( 'The Publisher ID has an incorrect format. (must start with "pub-")', 'advanced-ads' );
+		}
 
 		if ( ! empty($content) ) {
-			$json_content = $content;
-			$content = json_decode( $content );
+			
+			$json_content = stripslashes( $content );
+
+			// get json content striped by slashes
+			$content = json_decode( stripslashes( $content ) );
+
 			if ( isset($content->unitType) ) {
 				$content->json = $json_content;
 				$unit_type = $content->unitType;
@@ -90,6 +100,11 @@ class Advanced_Ads_Ad_Type_Adsense extends Advanced_Ads_Ad_Type_Abstract {
 				}
 			}
 		}
+
+		if( '' === trim( $pub_id ) && '' !== trim( $unit_code ) ){
+			$pub_id_errors = __( 'Your AdSense Publisher ID is missing.', 'advanced-ads' );
+		}
+
 		$default_template = GADSENSE_BASE_PATH . 'admin/views/adsense-ad-parameters.php';
 		/**
 		 * Inclusion of other UI template is done here. The content is passed in order to allow the inclusion of different
@@ -112,8 +127,7 @@ class Advanced_Ads_Ad_Type_Adsense extends Advanced_Ads_Ad_Type_Abstract {
 	 * @since 1.0.0
 	 */
 	public function sanitize_content($content = '') {
-		$content = wp_unslash( $content );
-		return $content = apply_filters( 'content_save_pre', $content );
+		return $content = wp_unslash( $content );
 	}
 
 	/**
@@ -126,9 +140,9 @@ class Advanced_Ads_Ad_Type_Adsense extends Advanced_Ads_Ad_Type_Abstract {
 	public function prepare_output($ad) {
 		global $gadsense;
 
-		$content = json_decode( $ad->content );
+		$content = json_decode( stripslashes( $ad->content ) );
 		$output = '';
-		$db = Gadsense_Data::get_instance();
+		$db = Advanced_Ads_AdSense_Data::get_instance();
 		$pub_id = $db->get_adsense_id();
 		$limit_per_page = $db->get_limit_per_page();
 
