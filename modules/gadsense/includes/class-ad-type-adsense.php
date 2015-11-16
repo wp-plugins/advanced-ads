@@ -74,7 +74,8 @@ class Advanced_Ads_Ad_Type_Adsense extends Advanced_Ads_Ad_Type_Abstract {
 		}
 
 		if ( ! empty($content) ) {
-			$json_content = $content;
+			
+			$json_content = stripslashes( $content );
 
 			// get json content striped by slashes
 			$content = json_decode( stripslashes( $content ) );
@@ -126,8 +127,7 @@ class Advanced_Ads_Ad_Type_Adsense extends Advanced_Ads_Ad_Type_Abstract {
 	 * @since 1.0.0
 	 */
 	public function sanitize_content($content = '') {
-		$content = wp_unslash( $content );
-		return $content = apply_filters( 'content_save_pre', $content );
+		return $content = wp_unslash( $content );
 	}
 
 	/**
@@ -140,7 +140,7 @@ class Advanced_Ads_Ad_Type_Adsense extends Advanced_Ads_Ad_Type_Abstract {
 	public function prepare_output($ad) {
 		global $gadsense;
 
-		$content = json_decode( $ad->content );
+		$content = json_decode( stripslashes( $ad->content ) );
 		$output = '';
 		$db = Advanced_Ads_AdSense_Data::get_instance();
 		$pub_id = $db->get_adsense_id();

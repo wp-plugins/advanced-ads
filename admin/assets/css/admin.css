@@ -160,6 +160,7 @@
 .advads-ad-group-form label { display: inline-block; margin-bottom: 1em; }
 .advads-ad-group-form strong { float: left; width: 180px; }
 .advads-ad-group-form ul { float: left; }
+.advads-ad-group-list-ads li { padding-bottom: 10px; }
 
 /**
  AD PLACEMENTS
@@ -226,6 +227,7 @@ tr:hover .on-hover { display: block; }
 - GENERAL
 -*/
 .advads-error-message { color: red !important; }
+.advads-hidden { display: none; }
 
 /* Image Ad */
 #advads_type_image_wp_media .media-sidebar .setting:not([data-setting="title"]):not([data-setting="alt"]),
@@ -237,3 +239,8 @@ tr:hover .on-hover { display: block; }
 #advads-select-for-shortcode { box-sizing: border-box; }
 #advads-select-for-shortcode optgroup { font-weight: 700; font-family: Tahoma, sans-serif; }
 #advads-select-for-shortcode optgroup option { padding-left: 20px; }
+
+/* Filter dropdowns on the ad list table */
+.advads-ad-list-even { background-color: #f9f9f9 !important; }
+.advads-ad-list-odd { background-color: #fff !important; }
+.edit-php.post-type-advanced_ads #filter-by-date, .edit-php.post-type-advanced_ads label[for=filter-by-date], .edit-php.post-type-advanced_ads #post-query-submit { display: none; }

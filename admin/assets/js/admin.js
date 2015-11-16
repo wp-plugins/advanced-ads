@@ -345,6 +345,8 @@ jQuery( document ).ready(function ($) {
 	// WP 3.5+ uploader
 	var file_frame;
 	window.formfield = '';
+
+	advads_ad_list_build_filters();
 });
 
 /**
@@ -577,4 +579,84 @@ function advads_maybe_textarea_to_tinymce( ad_type ) {
 		tinymce_id_ws.prop('name', textarea.prop( 'name' ) );
 		tinymce_wrapper_div.show();
 	}
+}
+
+ /**
+ * adds <option> tags to <select> dropdowns before the 'Filter' button on the ad list table
+ * @param {string} jQuery wrapped set where to find value/text for <option>
+ * @param {string} jQuery wrapped set with <select> tag
+ */
+function advads_ad_list_add_items_to_dropdowns( $input, $select ) {
+	var all_unique_rows = [];
+
+	$input.each( function() {
+		var one_row = jQuery( this ).text();
+
+		if ( jQuery.inArray( one_row, all_unique_rows ) === -1 ) {
+			all_unique_rows.push( one_row );
+			$select.append(
+				jQuery("<option/>", {
+					value: one_row,
+					text: one_row
+				})
+			);
+		}
+	});
+}
+
+ /**
+ * adds filter dropdowns before the 'Filter' button on the ad list table
+ */
+function advads_ad_list_build_filters() {
+	var $filter_type     = jQuery( '#advads-filter-type' ),
+		$filter_size     = jQuery( '#advads-filter-size' ),
+		$filter_group    = jQuery( '#advads-filter-group' ),
+		$filter_date     = jQuery( '#advads-filter-date' ),
+		$ad_planning_col = jQuery( '.advads-filter-timing' );
+
+	advads_ad_list_add_items_to_dropdowns( jQuery( '.advads-ad-type' ), $filter_type );
+	advads_ad_list_add_items_to_dropdowns( jQuery( '.advads-ad-size' ), $filter_size );
+	advads_ad_list_add_items_to_dropdowns( jQuery( '.taxonomy-advanced_ads_groups a' ), $filter_group );
+	// if such classes exist on the page - show related <option>s
+	jQuery.each( ['advads-filter-future', 'advads-filter-any-exp-date', 'advads-filter-expired' ], function( i, v ) {
+		if ( $ad_planning_col.hasClass( v ) ) {
+			$filter_date.children( 'option[value="' + v + '"] ' ).show();
+		}
+	});
+
+	jQuery( "#advads-filter-type, #advads-filter-size, #advads-filter-group, #advads-filter-date"  ).change( function() {
+		var $the_list_tr = jQuery( '#the-list tr' ).removeClass( 'advads-hidden' );
+
+		if ( $filter_type.val() ) {
+			$the_list_tr.filter( function() {
+				return jQuery( this ).find( '.advads-ad-type' ).text() !== $filter_type.val();
+			}).addClass( 'advads-hidden' );
+		}
+		if ( $filter_size.val() ) {
+			$the_list_tr.not( '.advads-hidden' ).filter ( function() {
+				return jQuery( this ).find( '.advads-ad-size' ).text() !== $filter_size.val();
+			}).addClass( 'advads-hidden' );
+		}
+		if ( $filter_date.val() ) {
+			$the_list_tr.not( '.advads-hidden' ).filter( function() {
+				return jQuery( this ).find( '.' + $filter_date.val() ).length === 0;
+			}).addClass( 'advads-hidden' );
+		}
+		if ( $filter_group.val() ) {
+			$the_list_tr.not( '.advads-hidden' ).filter( function() {
+				var ret = false;
+				//iterate through each group within current tr
+				jQuery( this ).find( '.taxonomy-advanced_ads_groups a' ).each( function() {
+					if ( jQuery( this ).text() === $filter_group.val() ) {
+						ret = true;
+						return false; //break the loop
+					}
+				});
+				return ret === false;
+			}).addClass( 'advads-hidden' );
+		}
+		// create stripped table, because css nth-child does not counts hidden rows
+		$the_list_tr.not( '.advads-hidden' ).filter( ':odd' ).addClass( 'advads-ad-list-odd' ).removeClass( 'advads-ad-list-even' ).end()
+		.filter( ':even' ).addClass( 'advads-ad-list-even' ).removeClass( 'advads-ad-list-odd' );
+	});
 }

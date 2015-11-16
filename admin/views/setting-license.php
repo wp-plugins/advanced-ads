@@ -39,7 +39,7 @@ else :
 endif;
 ?><span class="advads-license-activate-error" <?php if( ! $errortext ) echo 'style="display: none;"'; ?>><?php echo $errortext; ?></span>
 <span class="advads-license-activate-active" <?php if( ! $show_active ) echo 'style="display: none;"'; ?>><?php _e( 'active', 'advanced-ads' );
-?>&nbsp;<?php if( isset( $days_left ) && $days_left > 0 ) echo sprintf( __('(%d days left)', 'advanced-ads' ), $days_left );
+ if( isset( $days_left ) && 0 < $days_left && 91 > $days_left ) { echo '&nbsp;' . sprintf( __('(%d days left)', 'advanced-ads' ), $days_left ); }
 ?></span><?php
 if($license_key === '') :
     ?><p class="description"><?php _e( '1. enter the key and save options; 2. click the activate button behind the field', 'advanced-ads' ); ?></p><?php

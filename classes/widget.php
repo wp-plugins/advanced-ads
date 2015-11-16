@@ -38,7 +38,6 @@ class Advanced_Ads_Widget extends WP_Widget {
 
 		extract( $args );
 		$item_id = empty($instance['item_id']) ? '' : $instance['item_id'];
-		$title = empty($instance['title']) ? '' : $instance['title'];
 
 		$output = self::output( $item_id );
 		if( $output == '' ){

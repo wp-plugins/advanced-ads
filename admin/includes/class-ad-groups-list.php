@@ -121,9 +121,8 @@ class Advanced_Ads_Groups_List {
 				$row .= '</select></td></tr>';
 				$ad_form_rows[$_ad->ID] = $row;
 			}
-
-			$ad_form_rows = $this->remove_empty_weights( $ad_form_rows );
 		}
+		$ad_form_rows = $this->remove_empty_weights( $ad_form_rows );
 		// Restore original Post Data
 		wp_reset_postdata();
 
@@ -152,25 +151,28 @@ class Advanced_Ads_Groups_List {
 				$ads->the_post();
 				$line_output = '<li><a href="' . get_edit_post_link( get_the_ID() ) . '">' . get_the_title() . '</a>';
 
-				$status = get_post_status();
-				switch ( $status ){
-					case 'future' :
-						$line_output .= '<i>(' . __( 'scheduled', 'advanced-ads' ) . ')</i>';
-						break;
-					case 'pending' :
-						$line_output .= '<i>(' . __( 'pending', 'advanced-ads' ) . ')</i>';
-						break;
-				}
-				// check expiry date
-				$ad = new Advanced_Ads_Ad( get_the_ID() );
-				if( ! $ad->can_display_by_expiry_date() ) {
-				    $line_output .= '<i>(' . __( 'expired', 'advanced-ads' ) . ')</i>';
-				}
-
 				$_weight = (isset($weights[get_the_ID()])) ? $weights[get_the_ID()] : Advanced_Ads_Group::MAX_AD_GROUP_WEIGHT;
 				if ( $group->type == 'default' && $weight_sum ) {
-					$line_output .= '<span class="ad-weight" title="'.__( 'Ad weight', 'advanced-ads' ).'">' . number_format( ($_weight / $weight_sum) * 100 ) .'%</span></li>';
+					$line_output .= '<span class="ad-weight" title="'.__( 'Ad weight', 'advanced-ads' ).'">' . number_format( ($_weight / $weight_sum) * 100 ) .'%</span>';
 				}
+
+				$ad = new Advanced_Ads_Ad( get_the_ID() );
+				$expiry_date_format = get_option( 'date_format' ). ', ' . get_option( 'time_format' );
+				$post_start = get_the_date('U', $ad->id );
+				
+				if ( $post_start > time() ) {
+					$line_output .= '<br />' . sprintf( __( 'starts %s', 'advanced-ads' ), date( $expiry_date_format, $post_start ) );
+				}
+				if ( isset( $ad->expiry_date ) && $ad->expiry_date ) {
+					$expiry = $ad->expiry_date;
+					if ( $expiry > time() ) {
+						$line_output .= '<br />' . sprintf( __( 'expires %s', 'advanced-ads' ), date( $expiry_date_format, $expiry ) );
+					} elseif ( $expiry <= time() ) {
+						$line_output .= '<br />' . sprintf( __( '<strong>expired</strong> %s', 'advanced-ads' ), date( $expiry_date_format, $expiry ) );
+					}
+				}
+				$line_output .= '</li>';
+
 				$ads_output[get_the_ID()] = $line_output;
 			}
 

@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Advanved Ads\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
 "POT-Creation-Date: 2015-01-27 16:47+0100\n"
-"POT-Revision-Date: Thu Oct 29 2015 21:36:22 GMT+0100 (CET)\n"
+"POT-Revision-Date: Wed Nov 11 2015 11:44:39 GMT+0100 (CET)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thomas Maier <post@webzunft.de>\n"
 "Language-Team: webgilde <thomas.maier@webgilde.com>\n"
@@ -397,9 +397,17 @@ msgstr ""
 msgid "Please enter and save a valid license key first."
 msgstr ""
 
-#: ../admin/class-advanced-ads-admin.php:1490
+#: ../admin/class-advanced-ads-admin.php:1496
 #, php-format
 msgid "License is invalid. Reason: %s"
+msgstr ""
+
+#: ../admin/class-advanced-ads-admin.php:1514
+msgid "Error while trying to disable the license. Please contact support."
+msgstr ""
+
+#: ../admin/class-advanced-ads-admin.php:1545
+msgid "License couldn’t be deactivated. Please try again later or contact support."
 msgstr ""
 
 #: ../admin/includes/class-ad-groups-list.php:158
@@ -1316,15 +1324,15 @@ msgid ""
 "with a space"
 msgstr ""
 
-#: ../admin/views/ad-parameters-metabox.php:25 ../classes/ad_ajax_callbacks.php:51
+#: ../admin/views/ad-parameters-metabox.php:25 ../classes/ad_ajax_callbacks.php:52
 msgid "size:"
 msgstr ""
 
-#: ../admin/views/ad-parameters-metabox.php:26 ../classes/ad_ajax_callbacks.php:52
+#: ../admin/views/ad-parameters-metabox.php:26 ../classes/ad_ajax_callbacks.php:53
 msgid "width"
 msgstr ""
 
-#: ../admin/views/ad-parameters-metabox.php:27 ../classes/ad_ajax_callbacks.php:53
+#: ../admin/views/ad-parameters-metabox.php:27 ../classes/ad_ajax_callbacks.php:54
 msgid "height"
 msgstr ""
 
@@ -1688,28 +1696,32 @@ msgstr ""
 msgid "License key"
 msgstr ""
 
-#: ../admin/views/setting-license.php:26
+#: ../admin/views/setting-license.php:24
+msgid "Deactivate License"
+msgstr ""
+
+#: ../admin/views/setting-license.php:32
 msgid "Activate License"
 msgstr ""
 
-#: ../admin/views/setting-license.php:29
+#: ../admin/views/setting-license.php:35
 msgid "Please enter a valid license key"
 msgstr ""
 
-#: ../admin/views/setting-license.php:31
+#: ../admin/views/setting-license.php:37
 msgid "License key invalid"
 msgstr ""
 
-#: ../admin/views/setting-license.php:37
+#: ../admin/views/setting-license.php:41
 msgid "active"
 msgstr ""
 
-#: ../admin/views/setting-license.php:38
+#: ../admin/views/setting-license.php:42
 #, php-format
 msgid "(%d days left)"
 msgstr ""
 
-#: ../admin/views/setting-license.php:41
+#: ../admin/views/setting-license.php:45
 msgid ""
 "1. enter the key and save options; 2. click the activate button behind the "
 "field"
@@ -2014,6 +2026,14 @@ msgstr ""
 msgid "Execute PHP code (wrapped in <code>&lt;?php ?&gt;</code>)"
 msgstr ""
 
+#: ../classes/checks.php:223
+#, php-format
+msgid ""
+"Possible conflict between jQueryUI library, used by Advanced Ads and other "
+"libraries (probably <a href=\"%s\">Twitter Bootstrap</a>). This might lead to "
+"misfortunate formats in forms, but should not damage features."
+msgstr ""
+
 #: ../classes/EDD_SL_Plugin_Updater.php:177
 #, php-format
 msgid ""
@@ -2281,7 +2301,8 @@ msgstr ""
 msgid ""
 "You still need to enable Page-Level ads in your AdSense account. See <a "
 "href=\"https://support.google.com/adsense/answer/6245304\" "
-"target=\"_blank\">AdSense Help</a> for more information"
+"target=\"_blank\">AdSense Help</a> (requires AdSense-login) for more "
+"information"
 msgstr ""
 
 #: ../modules/gadsense/admin/admin.php:240 ../modules/gadsense/includes/class-ad-

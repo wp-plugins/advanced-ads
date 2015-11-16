@@ -212,4 +212,22 @@ class Advanced_Ads_Checks {
 
 		return $conflicting_plugins;
 	}
+	
+	/**
+	 * check for potential jQuery errors
+	 * only script, so no return, but direct output
+	 * 
+	 */
+	public static function jquery_ui_conflict(){
+	    ?>
+	    <div id="advads-jqueryui-conflict-message" style="display:none;" class="message error"><p><?php printf( __( 'Possible conflict between jQueryUI library, used by Advanced Ads and other libraries (probably <a href="%s">Twitter Bootstrap</a>). This might lead to misfortunate formats in forms, but should not damage features.', 'advanced-ads' ), 'http://getbootstrap.com/javascript/#js-noconflict' ); ?></p></div>
+	    <script>// string from jquery-ui source code
+		jQuery(document).ready(function(){
+		    var needle = 'var g="string"==typeof f,h=c.call(arguments,1)';
+		    if ( jQuery.fn.button.toString().indexOf( needle ) === -1 || jQuery.fn.tooltip.toString().indexOf( needle ) === -1 ) {
+			    jQuery( '#advads-jqueryui-conflict-message' ).show();
+		    }
+		});
+	    </script><?php
+	}
 }

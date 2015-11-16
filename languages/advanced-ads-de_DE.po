@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Advanved Ads\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
 "POT-Creation-Date: 2015-01-27 16:47+0100\n"
-"PO-Revision-Date: Thu Oct 29 2015 21:40:08 GMT+0100 (CET)\n"
+"PO-Revision-Date: Wed Nov 11 2015 11:47:33 GMT+0100 (CET)\n"
 "Last-Translator: admin <post@webzunft.de>\n"
 "Language-Team: webgilde <thomas.maier@webgilde.com>\n"
 "Language: German\n"
@@ -26,77 +26,41 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 "X-Loco-Target-Locale: de_DE"
 
-#: ../admin/class-advanced-ads-admin.php:1020
-msgid ""
-"Please check your post content. A priority of 10 and below might cause "
-"issues (wpautop function might run twice)."
+#: ../admin/class-advanced-ads-admin.php:1514
+msgid "Error while trying to disable the license. Please contact support."
+msgstr "Fehler beim Deaktivieren der Lizenz. Bitte kontaktieren Sie den Support."
+
+#: ../admin/class-advanced-ads-admin.php:1545
+msgid "License couldn’t be deactivated. Please try again later or contact support."
 msgstr ""
-"Bitte überprüfen Sie die Anzeigen im Beitrag. Eine Priorität von 10 und "
-"darunter könnte Probleme verursachen (wg. wpautop)"
+"Die Lizenz konnte nicht deaktiviert werden. Bitte versuchen Sie es später "
+"oder kontaktieren Sie den Support."
 
-#: ../admin/class-advanced-ads-admin.php:1147
-msgid "Ad Planning"
-msgstr "Planung"
+#: ../admin/views/setting-license.php:24
+msgid "Deactivate License"
+msgstr "Lizenz deaktivieren"
 
-#: ../admin/includes/shortcode-creator-l10n.php:10
-msgctxt "shortcode creator"
-msgid "Add an ad"
-msgstr "Anzeige einfügen"
-
-#: ../admin/includes/shortcode-creator-l10n.php:11
-msgctxt "shortcode creator"
-msgid "Add shortcode"
-msgstr "Shortcode einfügen"
-
-#: ../admin/includes/shortcode-creator-l10n.php:12
-msgctxt "shortcode creator"
-msgid "Cancel"
-msgstr "Abbruch"
-
-#: ../admin/views/ad-list-timing-column.php:4
-#, php-format
-msgid "starts %s"
-msgstr "Start %s"
-
-#: ../admin/views/ad-list-timing-column.php:7
-#, php-format
-msgid "expires %s"
-msgstr "Ende %s"
-
-#: ../admin/views/setting-license.php:29
-msgid "Please enter a valid license key"
-msgstr "Bitte geben Sie eine gültige Lizenz ein"
-
-#: ../admin/views/setting-license.php:31
-msgid "License key invalid"
-msgstr "Der Lizenzschlüssel ist ungültig"
-
-#: ../admin/views/support.php:48
+#: ../classes/checks.php:223
 #, php-format
 msgid ""
-"Ads are disabled for all or some pages. See \"disabled ads\" in <a "
-"href=\"%s\">settings</a>."
+"Possible conflict between jQueryUI library, used by Advanced Ads and other "
+"libraries (probably <a href=\"%s\">Twitter Bootstrap</a>). This might lead to "
+"misfortunate formats in forms, but should not damage features."
 msgstr ""
-"Anzeigen sind für alle oder einige Seiten deaktiviert. Vgl. <a "
-"href=\"%s\">Einstellungen</a>."
+"Möglicher Konflikt zwischen jQueryUI Bibliotheken von Advanced Ads und "
+"anderen Plugins/Themes. Es kann zu ungünstigen Formatierungen, jedoch nicht "
+"zu Problemen mit Funktionen führen."
 
-#: ../classes/ad_placements.php:61
-msgid "Sidebar Widget"
-msgstr "Sidebar Widget"
-
-#: ../classes/ad_placements.php:62
+#: ../modules/gadsense/admin/admin.php:221
 msgid ""
-"Create a sidebar widget with an ad. Can be placed and used like any other "
-"widget."
-msgstr "Diese Platzierung kann in einem Widget verwendet werden."
-
-#: ../modules/gadsense/admin/admin.php:205
-msgid ""
-"Due to technical restrictions, the limit does not work on placements with "
-"cache-busting enabled."
+"You still need to enable Page-Level ads in your AdSense account. See <a "
+"href=\"https://support.google.com/adsense/answer/6245304\" "
+"target=\"_blank\">AdSense Help</a> (requires AdSense-login) for more "
+"information"
 msgstr ""
-"Aufgrund technischer Einschränkungen ist das Limit in Platzierungen mit "
-"Cache-Busting nicht verfügbar."
+"Sie müssen die Anzeigen auf Seitenebene auch in Ihrem AdSense-Account "
+"aktivieren. Vgl. <a href=\"https://support.google.com/adsense/answer/6245304\" "
+"target=\"_blank\">AdSense-Hilfe</a> (wenn in AdSense eingeloggt)."
 
 #. Name of the plugin
 msgid "Advanced Ads"
@@ -393,6 +357,14 @@ msgstr ""
 "werden überall dort, wo Beiträge geladen werden, angezeigt (z.B. auch auf "
 "Archiv-Seiten)."
 
+#: ../admin/class-advanced-ads-admin.php:1020
+msgid ""
+"Please check your post content. A priority of 10 and below might cause "
+"issues (wpautop function might run twice)."
+msgstr ""
+"Bitte überprüfen Sie die Anzeigen im Beitrag. Eine Priorität von 10 und "
+"darunter könnte Probleme verursachen (wg. wpautop)"
+
 #: ../admin/class-advanced-ads-admin.php:1022
 msgid ""
 "Play with this value in order to change the priority of the injected ads "
@@ -453,6 +425,10 @@ msgstr ""
 msgid "Ad Details"
 msgstr "Anzeigeneinstellungen"
 
+#: ../admin/class-advanced-ads-admin.php:1147
+msgid "Ad Planning"
+msgstr "Planung"
+
 #: ../admin/class-advanced-ads-admin.php:1249
 msgid "Ad Settings"
 msgstr "Anzeigen-Einstellungen"
@@ -496,7 +472,7 @@ msgstr ""
 msgid "Please enter and save a valid license key first."
 msgstr "Bitte speichern Sie zunächst einen gültigen Lizenzschlüssel."
 
-#: ../admin/class-advanced-ads-admin.php:1490
+#: ../admin/class-advanced-ads-admin.php:1496
 #, php-format
 msgid "License is invalid. Reason: %s"
 msgstr "Die Lizenz ist ungültig. Grund: %s"
@@ -1090,6 +1066,21 @@ msgstr ""
 "Ads</strong> sind abgelaufen. Support und Updates sind deaktiviert. Bitte "
 "besuchen Sie die <a href=\"%s\">Lizenz-Übersicht</a> für weitere Informationen."
 
+#: ../admin/includes/shortcode-creator-l10n.php:10
+msgctxt "shortcode creator"
+msgid "Add an ad"
+msgstr "Anzeige einfügen"
+
+#: ../admin/includes/shortcode-creator-l10n.php:11
+msgctxt "shortcode creator"
+msgid "Add shortcode"
+msgstr "Shortcode einfügen"
+
+#: ../admin/includes/shortcode-creator-l10n.php:12
+msgctxt "shortcode creator"
+msgid "Cancel"
+msgstr "Abbruch"
+
 #: ../admin/views/ad-display-metabox.php:8
 msgid "Choose where to display the ad and where to hide it."
 msgstr "Wählen Sie, wo die Anzeige sichtbar und wo sie versteckt ist."
@@ -1402,6 +1393,16 @@ msgstr "Beschreibung angeben"
 msgid "Internal description or your own notes about this ad."
 msgstr "Eigene Beschreibung und Notizen zu dieser Anzeige."
 
+#: ../admin/views/ad-list-timing-column.php:4
+#, php-format
+msgid "starts %s"
+msgstr "Start %s"
+
+#: ../admin/views/ad-list-timing-column.php:7
+#, php-format
+msgid "expires %s"
+msgstr "Ende %s"
+
 #: ../admin/views/ad-main-metabox.php:3
 msgid "No ad types defined"
 msgstr "Keine Anzeigentypen definiert"
@@ -1486,15 +1487,15 @@ msgid ""
 "with a space"
 msgstr "Eine oder mehrere, durch Leerzeichen festgelegte Class-Attribute."
 
-#: ../admin/views/ad-parameters-metabox.php:25 ../classes/ad_ajax_callbacks.php:51
+#: ../admin/views/ad-parameters-metabox.php:25 ../classes/ad_ajax_callbacks.php:52
 msgid "size:"
 msgstr "Größe:"
 
-#: ../admin/views/ad-parameters-metabox.php:26 ../classes/ad_ajax_callbacks.php:52
+#: ../admin/views/ad-parameters-metabox.php:26 ../classes/ad_ajax_callbacks.php:53
 msgid "width"
 msgstr "Breite"
 
-#: ../admin/views/ad-parameters-metabox.php:27 ../classes/ad_ajax_callbacks.php:53
+#: ../admin/views/ad-parameters-metabox.php:27 ../classes/ad_ajax_callbacks.php:54
 msgid "height"
 msgstr "Höhe"
 
@@ -1909,20 +1910,28 @@ msgstr ""
 msgid "License key"
 msgstr "Lizenzschlüssel"
 
-#: ../admin/views/setting-license.php:26
+#: ../admin/views/setting-license.php:32
 msgid "Activate License"
 msgstr "Lizenz aktivieren"
 
+#: ../admin/views/setting-license.php:35
+msgid "Please enter a valid license key"
+msgstr "Bitte geben Sie eine gültige Lizenz ein"
+
 #: ../admin/views/setting-license.php:37
+msgid "License key invalid"
+msgstr "Der Lizenzschlüssel ist ungültig"
+
+#: ../admin/views/setting-license.php:41
 msgid "active"
 msgstr "aktiv"
 
-#: ../admin/views/setting-license.php:38
+#: ../admin/views/setting-license.php:42
 #, php-format
 msgid "(%d days left)"
 msgstr "(noch %d Tage)"
 
-#: ../admin/views/setting-license.php:41
+#: ../admin/views/setting-license.php:45
 msgid ""
 "1. enter the key and save options; 2. click the activate button behind the "
 "field"
@@ -2078,6 +2087,15 @@ msgstr ""
 "Plugins die (teilweise) Probleme verursachen können: <strong>%1$s</strong>. "
 "<a href=\"%2$s\" target=\"_blank\">Mehr erfahren</a>."
 
+#: ../admin/views/support.php:48
+#, php-format
+msgid ""
+"Ads are disabled for all or some pages. See \"disabled ads\" in <a "
+"href=\"%s\">settings</a>."
+msgstr ""
+"Anzeigen sind für alle oder einige Seiten deaktiviert. Vgl. <a "
+"href=\"%s\">Einstellungen</a>."
+
 #: ../admin/views/support.php:57
 msgid "Contact"
 msgstr "Kontakt aufnehmen"
@@ -2171,6 +2189,16 @@ msgid ""
 msgstr ""
 "Injiziert in den Beitrags-Inhalt. Sie können den Absatz oder die Überschrift "
 "wählen, nach dem die Anzeige eingebunden wird."
+
+#: ../classes/ad_placements.php:61
+msgid "Sidebar Widget"
+msgstr "Sidebar Widget"
+
+#: ../classes/ad_placements.php:62
+msgid ""
+"Create a sidebar widget with an ad. Can be placed and used like any other "
+"widget."
+msgstr "Diese Platzierung kann in einem Widget verwendet werden."
 
 #: ../classes/ad_placements.php:204
 #, php-format
@@ -2527,19 +2555,17 @@ msgstr ""
 msgid "Notice: Advanced Ads only considers the AdSense ad type for this limit."
 msgstr "Hinweis: Advanced Ads zählt nur die AdSense-Anzeigentypen für dieses Limit."
 
+#: ../modules/gadsense/admin/admin.php:205
+msgid ""
+"Due to technical restrictions, the limit does not work on placements with "
+"cache-busting enabled."
+msgstr ""
+"Aufgrund technischer Einschränkungen ist das Limit in Platzierungen mit "
+"Cache-Busting nicht verfügbar."
+
 #: ../modules/gadsense/admin/admin.php:219
 msgid "Insert Page-Level ads code on all pages."
 msgstr "Code für Anzeigen auf Seitenebene auf allen Seiten einbinden."
-
-#: ../modules/gadsense/admin/admin.php:221
-msgid ""
-"You still need to enable Page-Level ads in your AdSense account. See <a "
-"href=\"https://support.google.com/adsense/answer/6245304\" "
-"target=\"_blank\">AdSense Help</a> for more information"
-msgstr ""
-"Sie müssen die Anzeigen auf Seitenebene auch in Ihrem AdSense-Account "
-"aktivieren. Vgl. <a href=\"https://support.google.com/adsense/answer/6245304\" "
-"target=\"_blank\">AdSense-Hilfe</a>."
 
 #: ../modules/gadsense/admin/admin.php:240 ../modules/gadsense/includes/class-ad-
 #: type-adsense.php:73

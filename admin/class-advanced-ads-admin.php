@@ -85,7 +85,7 @@ class Advanced_Ads_Admin {
 		add_filter( 'manage_advanced_ads_posts_columns', array($this, 'ad_list_columns_head') ); // extra column
 		add_filter( 'manage_advanced_ads_posts_custom_column', array($this, 'ad_list_columns_content'), 10, 2 ); // extra column
 		add_filter( 'manage_advanced_ads_posts_custom_column', array($this, 'ad_list_columns_timing'), 10, 2 ); // extra column
-
+		add_action( 'restrict_manage_posts', array( $this, 'ad_list_add_filters') );
 	}
 
 	public function wp_plugins_loaded() {
@@ -268,11 +268,11 @@ class Advanced_Ads_Admin {
 			$this->plugin_slug, __( 'Advanced Ads Settings', 'advanced-ads' ), __( 'Settings', 'advanced-ads' ), 'manage_options', $this->plugin_slug . '-settings', array($this, 'display_plugin_settings_page')
 		);
 		add_submenu_page(
-			null, __( 'Advanced Ads Debugging', 'advanced-ads' ), __( 'Debug', 'advanced-ads' ), 'manage_options', $this->plugin_slug . '-debug', array($this, 'display_plugin_debug_page')
+			'options.php', __( 'Advanced Ads Debugging', 'advanced-ads' ), __( 'Debug', 'advanced-ads' ), 'manage_options', $this->plugin_slug . '-debug', array($this, 'display_plugin_debug_page')
 		);
 		// intro page
 		add_submenu_page(
-			null, __( 'Advanced Ads Intro', 'advanced-ads' ), __( 'Advanced Ads Intro', 'advanced-ads' ), 'manage_options', $this->plugin_slug . '-intro', array($this, 'display_plugin_intro_page')
+			'options.php', __( 'Advanced Ads Intro', 'advanced-ads' ), __( 'Advanced Ads Intro', 'advanced-ads' ), 'manage_options', $this->plugin_slug . '-intro', array($this, 'display_plugin_intro_page')
 		);
 		// add support page
 		add_submenu_page(
@@ -1147,9 +1147,22 @@ class Advanced_Ads_Admin {
 				$new_columns[ 'ad_timing' ] = __( 'Ad Planning', 'advanced-ads' );
 			}
 		}
-
-		// remove the date
-		unset( $new_columns[ 'date' ] );
+		
+		// white-listed columns
+		$whitelist = apply_filters( 'advanced-ads-ad-list-allowed-columns', array(
+		    'cb', // checkbox
+		    'title',
+		    'ad_details',
+		    'ad_timing',
+		    'taxonomy-advanced_ads_groups',
+		) );
+		
+		// remove non-white-listed columns
+		foreach( $new_columns as $_key => $_value ){
+			if( ! in_array( $_key, $whitelist ) ){
+				unset( $new_columns[ $_key ] );
+			}
+		}
 
 		return $new_columns;
 	}
@@ -1208,24 +1221,43 @@ class Advanced_Ads_Admin {
 	 * @param int $ad_id id of the ad
 	 */
 	public function  ad_list_columns_timing($column_name, $ad_id) {
+	    
 		if ( $column_name == 'ad_timing' ) {
 			$ad = new Advanced_Ads_Ad( $ad_id );
 			
 			$expiry = false;
 			$post_future = false;
 			$post_start = get_the_date('U', $ad->id );
-			
+			$html_classes = 'advads-filter-timing';
+			$expiry_date_format = get_option( 'date_format' ). ', ' . get_option( 'time_format' );
+
 			if( isset( $ad->expiry_date ) && $ad->expiry_date ){
-				if( $ad->expiry_date > time() ){
-					$expiry = $ad->expiry_date;
+				$html_classes .= ' advads-filter-any-exp-date';
+
+				$expiry = $ad->expiry_date;
+				if( $ad->expiry_date < time() ){
+					$html_classes .= ' advads-filter-expired';
 				}
 			}
 			if( $post_start > time() ){
 				$post_future = $post_start;
+				$html_classes .= ' advads-filter-future';
 			}
 
 			include ADVADS_BASE_PATH . 'admin/views/ad-list-timing-column.php';
 		}
+	}
+
+	/**
+	 * adds filter dropdowns before the 'Filter' button on the ad list table
+	 */
+	function ad_list_add_filters() {
+		$screen = get_current_screen();
+		if ( ! isset( $screen->id ) || $screen->id !== 'edit-advanced_ads' ) {
+			return;
+		}
+
+		include ADVADS_BASE_PATH . 'admin/views/ad-list-filters.php';
 	}
 
 	/**

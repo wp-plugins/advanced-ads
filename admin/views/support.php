@@ -47,7 +47,7 @@
     if( isset( $options['disabled-ads'])  ){
 	    $messages[] = sprintf(__( 'Ads are disabled for all or some pages. See "disabled ads" in <a href="%s">settings</a>.', 'advanced-ads' ), admin_url('admin.php?page=advanced-ads-settings#top#general') );
     }
-
+    Advanced_Ads_Checks::jquery_ui_conflict();
 
     if( count( $messages )) :
 	foreach( $messages as $_message ) :

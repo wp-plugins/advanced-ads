@@ -218,7 +218,7 @@ class Advanced_Ads_AdSense_Admin {
                 ?><label><input type="checkbox" name="<?php echo GADSENSE_OPT_NAME; ?>[page-level-enabled]" value="1" <?php checked( $page_level ); ?> />
 		<?php _e( 'Insert Page-Level ads code on all pages.', 'advanced-ads' ); ?></label>
                 <p class="description">
-		<?php _e( 'You still need to enable Page-Level ads in your AdSense account. See <a href="https://support.google.com/adsense/answer/6245304" target="_blank">AdSense Help</a> for more information', 'advanced-ads' ); ?>
+		<?php _e( 'You still need to enable Page-Level ads in your AdSense account. See <a href="https://support.google.com/adsense/answer/6245304" target="_blank">AdSense Help</a> (requires AdSense-login) for more information', 'advanced-ads' ); ?>
 		</p><?php
 	}
 
